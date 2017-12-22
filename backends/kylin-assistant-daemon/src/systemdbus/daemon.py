@@ -36,7 +36,7 @@ from gi.repository import GObject
 import threading
 import thread
 from server import PolicyKitService
-from policykit import UK_ACTION_YOUKER
+from policykit import KYLIN_ASSISTANT_ACTION
 import time
 import cleaner
 from detailinfo.cpuinfo import DetailInfo
@@ -292,7 +292,7 @@ class Daemon(PolicyKitService):
 
     @dbus.service.method(INTERFACE, in_signature='s', out_signature='b', sender_keyword='sender')
     def kill_root_process(self, pid, sender=None):
-        status = self._check_permission(sender, UK_ACTION_YOUKER)
+        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
         if not status:
             return False
         cmd = 'kill -9 %s' % pid
@@ -470,7 +470,7 @@ class Daemon(PolicyKitService):
 
     @dbus.service.method(INTERFACE, in_signature='as', out_signature='', sender_keyword='sender')
     def onekey_clean_crufts_function(self, mode_list, sender=None):
-        status = self._check_permission(sender, UK_ACTION_YOUKER)
+        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
         if not status:
             self.revoke_clean_onekey('yes')
             return
@@ -488,7 +488,7 @@ class Daemon(PolicyKitService):
 
 #    @dbus.service.method(INTERFACE, in_signature='as', out_signature='', sender_keyword='sender')
 #    def onekey_clean_crufts_function_by_threading(self, mode_list, sender=None):
-#        status = self._check_permission(sender, UK_ACTION_YOUKER)
+#        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
 #        if not status:
 #            self.revoke_clean_onekey('yes')
 #            return
@@ -510,7 +510,7 @@ class Daemon(PolicyKitService):
 
 #    @dbus.service.method(INTERFACE, in_signature='s', out_signature='', sender_keyword='sender')
 #    def history_clean_records_function(self, flag, sender=None):
-#        status = self._check_permission(sender, UK_ACTION_YOUKER)
+#        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
 #        if not status:
 #            self.clean_complete_msg('')
 #            return
@@ -524,7 +524,7 @@ class Daemon(PolicyKitService):
 
 #    @dbus.service.method(INTERFACE, in_signature='', out_signature='', sender_keyword='sender')
 #    def clean_system_history(self, sender=None):
-#        status = self._check_permission(sender, UK_ACTION_YOUKER)
+#        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
 #        if not status:
 #            self.clean_complete_msg('')
 #            return
@@ -538,7 +538,7 @@ class Daemon(PolicyKitService):
 
     #@dbus.service.method(INTERFACE, in_signature='', out_signature='', sender_keyword='sender')
     #def clean_dash_history(self, sender=None):
-    #    status = self._check_permission(sender, UK_ACTION_YOUKER)
+    #    status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
     #    if not status:
     #        self.clean_complete_msg('')
     #        return
@@ -552,7 +552,7 @@ class Daemon(PolicyKitService):
 
 #    @dbus.service.method(INTERFACE, in_signature = 'as', out_signature = '', sender_keyword = 'sender')
 #    def cookies_clean_record_function(self, flag, sender=None):
-#        status = self._check_permission(sender, UK_ACTION_YOUKER)
+#        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
 #        if not status:
 #            self.clean_single_complete_msg('')
 #            return
@@ -566,7 +566,7 @@ class Daemon(PolicyKitService):
 
 #    @dbus.service.method(INTERFACE, in_signature = 's', out_signature = '', sender_keyword = 'sender')
 #    def cookies_clean_records_function(self, flag, sender = None):
-#        status = self._check_permission(sender, UK_ACTION_YOUKER)
+#        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
 #        if not status:
 #            self.quit_clean_work(flag)
 #            return
@@ -582,7 +582,7 @@ class Daemon(PolicyKitService):
     ### input-['filepath', 'file...]   output-''
 #    @dbus.service.method(INTERFACE, in_signature='ass', out_signature='', sender_keyword='sender')
 #    def clean_file_cruft(self, cruft_list, flagstr, sender=None):
-#        status = self._check_permission(sender, UK_ACTION_YOUKER)
+#        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
 #        if not status:
 #            self.clean_complete_msg('')
 #            return
@@ -638,7 +638,7 @@ class Daemon(PolicyKitService):
     ### input-['packagename', 'pack...]   output-''
 #    @dbus.service.method(INTERFACE, in_signature='ass', out_signature='', sender_keyword='sender')
 #    def clean_package_cruft(self, cruftlist, flag, sender=None):
-#        status = self._check_permission(sender, UK_ACTION_YOUKER)
+#        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
 #        if not status:
 #            self.finish_clean_msg('')
 #            return
@@ -660,7 +660,7 @@ class Daemon(PolicyKitService):
 
 #    @dbus.service.method(INTERFACE, in_signature='a{sv}', out_signature='', sender_keyword='sender')
 #    def remove_select_items(self, mode_dic, sender=None):
-#        status = self._check_permission(sender, UK_ACTION_YOUKER)
+#        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
 #        if not status:
 #            self.quit_clean(False)
 ##            self.quit_clean_work()
@@ -714,7 +714,7 @@ class Daemon(PolicyKitService):
 
     @dbus.service.method(INTERFACE, in_signature='a{sv}', out_signature='', sender_keyword='sender')
     def remove_select_items(self, mode_dic, sender=None):
-        status = self._check_permission(sender, UK_ACTION_YOUKER)
+        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
         if not status:
             self.quit_clean(False)
             return
@@ -723,7 +723,7 @@ class Daemon(PolicyKitService):
         thread.start_new_thread(self.start_clean_all, (mode_dic,))
 #    @dbus.service.method(INTERFACE, in_signature='s', out_signature='', sender_keyword='sender')
 #    def remove_file(self, fp):
-#        status = self._check_permission(sender, UK_ACTION_YOUKER)
+#        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
 #        if not status:
 #            self.revoke_clean_onekey('yes')
 #            return
@@ -733,7 +733,7 @@ class Daemon(PolicyKitService):
 
 #    @dbus.service.method(INTERFACE, in_signature='s', out_signature='', sender_keyword='sender')
 #    def remove_package(self, pkgname, sender=None):
-#        status = self._check_permission(sender, UK_ACTION_YOUKER)
+#        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
 #        if not status:
 #            self.revoke_clean_onekey('yes')
 #            return
@@ -743,7 +743,7 @@ class Daemon(PolicyKitService):
 
 #    @dbus.service.method(INTERFACE, in_signature='', out_signature='', sender_keyword='sender')
 #    def remove_firefox_history(self, sender=None):
-#        status = self._check_permission(sender, UK_ACTION_YOUKER)
+#        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
 #        if not status:
 #            self.revoke_clean_onekey('yes')
 #            return
@@ -753,7 +753,7 @@ class Daemon(PolicyKitService):
 
 #    @dbus.service.method(INTERFACE, in_signature='', out_signature='', sender_keyword='sender')
 #    def remove_chromium_history(self, sender=None):
-#        status = self._check_permission(sender, UK_ACTION_YOUKER)
+#        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
 #        if not status:
 #            self.revoke_clean_onekey('yes')
 #            return
@@ -763,7 +763,7 @@ class Daemon(PolicyKitService):
 
 #    @dbus.service.method(INTERFACE, in_signature='s', out_signature='', sender_keyword='sender')
 #    def remove_firefox_cookies(self, domain, sender=None):
-#        status = self._check_permission(sender, UK_ACTION_YOUKER)
+#        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
 #        if not status:
 #            self.revoke_clean_onekey('yes')
 #            return
@@ -773,7 +773,7 @@ class Daemon(PolicyKitService):
 
 #    @dbus.service.method(INTERFACE, in_signature='s', out_signature='', sender_keyword='sender')
 #    def remove_chromium_cookies(self, domain, sender=None):
-#        status = self._check_permission(sender, UK_ACTION_YOUKER)
+#        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)
 #        if not status:
 #            self.revoke_clean_onekey('yes')
 #            return

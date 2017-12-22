@@ -57,7 +57,7 @@ SystemDispatcher::~SystemDispatcher() {
 void SystemDispatcher::initData()
 {
     systemiface = new QDBusInterface("com.kylin.assistant.systemdaemon",
-                               "com/kylin/assistant/systemdaemon",
+                               "/com/kylin/assistant/systemdaemon",
                                "com.kylin.assistant.systemdaemon",
                                QDBusConnection::systemBus());
 
@@ -127,7 +127,7 @@ bool SystemDispatcher::update_myself()
        q.quit();
     }
     return true;
-//    QDBusReply<bool> reply = systemiface->call("install", "youker-assistant");
+//    QDBusReply<bool> reply = systemiface->call("install", "kylin-assistant");
 //    return reply.value();
 }
 

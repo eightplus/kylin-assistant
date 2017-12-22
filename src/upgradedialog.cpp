@@ -34,8 +34,7 @@ UpgradeDialog::UpgradeDialog(QWidget *parent, /*const QString &version, */QStrin
 
     isBusy = false;
     upgradeOver = false;
-//    cur_version = version;
-    cur_version = VERSION;
+    cur_version = qApp->applicationVersion();
 
     baseWidget = new QWidget(this);
     baseWidget->setGeometry(QRect(0, 0, 334, 191));
@@ -100,7 +99,7 @@ UpgradeDialog::UpgradeDialog(QWidget *parent, /*const QString &version, */QStrin
     version_label = new QLabel(this);
     version_label->setObjectName("smallgrayLabel");
     version_label->setGeometry(QRect(10, 440, 324, 20));
-    version_label->setText(tr("Current verison:") + VERSION);
+    version_label->setText(tr("Current verison:") + qApp->applicationVersion());
     doing_label = new QLabel(this);
     doing_label->setWordWrap(true);//QLabel自动换行
     doing_label->setStyleSheet("QLabel{color:#000000;font-family: 方正黑体_GBK;font-size: 22px;text-align: center;}");

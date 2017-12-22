@@ -28,10 +28,8 @@
 #define PAGESPACE 20
 #define ITEMWIDTH 650
 
-#define VERSION "2.4.1"
-
-const QString YOUKER_COMPANY_SETTING = "ubuntukylin/kylin-assistant";
-const QString YOUKER_SETTING_FILE_NAME_SETTING = "kylin-assistant";
+const QString KYLIN_COMPANY_SETTING = "kylin/kylin-assistant";
+const QString KYLIN_SETTING_FILE_NAME_SETTING = "kylin-assistant";
 
 typedef enum{
     YOUKER_EN,

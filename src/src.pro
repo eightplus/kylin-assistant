@@ -10,7 +10,6 @@ CONFIG += c++11
 CONFIG += qt warn_on
 CONFIG += release
 CONFIG += link_pkgconfig
-INCLUDEPATH += .
 
 QT += dbus
 
@@ -22,7 +21,7 @@ inst3.files += res/default/
 inst3.path = /var/lib/kylin-assistant-daemon/
 inst4.files += res/custom/
 inst4.path = /var/lib/kylin-assistant-daemon/
-inst5.files += res/autostart-default.png
+inst5.files += res/app-autostart-default.png
 inst5.path = /usr/share/pixmaps
 target.source += $$TARGET
 target.path = /usr/bin
@@ -32,8 +31,6 @@ INSTALLS += inst1 \
     inst4 \
     inst5 \
     target
-
-include(../qtsingleapplication/src/qtsingleapplication.pri)
 
 QMAKE_CPPFLAGS *= $(shell dpkg-buildflags --get CPPFLAGS)
 QMAKE_CFLAGS   *= $(shell dpkg-buildflags --get CFLAGS)
@@ -45,9 +42,9 @@ isEqual(QT_MAJOR_VERSION, 5) {
 }
 
 unix {
-        UI_DIR = .ui
-        MOC_DIR = .moc
-        OBJECTS_DIR = .obj
+    UI_DIR = .ui
+    MOC_DIR = .moc
+    OBJECTS_DIR = .obj
 }
 
 SOURCES += main.cpp\

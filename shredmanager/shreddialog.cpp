@@ -41,7 +41,7 @@ ShredDialog::ShredDialog(ShredManager *plugin, QDialog *parent)
     this->setFixedSize(500, 471);
     process_plugin = plugin;
 
-    shredSettings = new QSettings(YOUKER_COMPANY_SETTING, YOUKER_SETTING_FILE_NAME_SETTING);
+    shredSettings = new QSettings(KYLIN_COMPANY_SETTING, KYLIN_SETTING_FILE_NAME_SETTING);
     shredSettings->setIniCodec("UTF-8");
 
     title_bar = new KylinTitleBar();

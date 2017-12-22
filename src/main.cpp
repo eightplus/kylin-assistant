@@ -21,7 +21,6 @@
 #include <QApplication>
 #include <QTextCodec>
 #include <QTranslator>
-#include <QtSingleApplication>
 #include <QScreen>
 #include <QDebug>
 #include <QPixmap>
@@ -121,7 +120,9 @@ int make_pid_file() {
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-
+    app.setOrganizationName("kylin");
+    app.setApplicationName("kylin-assistant");
+    app.setApplicationVersion("1.0.0");
 
     //单程序运行处理
     QSharedMemory mem("KA");
@@ -135,14 +136,6 @@ int main(int argc, char *argv[])
 #else
     qDebug() << "debug mode";
 #endif
-
-    //单程序运行处理
-    /*QtSingleApplication app(argc, argv);
-    if (app.isRunning())
-    {
-        qDebug() << QObject::tr("kylin-assistant had already running!");
-        return 0;
-    }*/
 
 #if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
     QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
@@ -195,14 +188,14 @@ int main(int argc, char *argv[])
 //    mdlg.show();
 
     //启动图片
-    QPixmap pixmap("://res/skin/x.png");
+    /*QPixmap pixmap("://res/skin/x.png");
     QSplashScreen screen(pixmap);
     screen.show();
-    screen.showMessage("START...", Qt::AlignCenter, Qt::white);
+    screen.showMessage("START...", Qt::AlignCenter, Qt::white);*/
 
     MainWindow w(arch, sCount);
 
-#if 0
+/*#if 0
     //延时
     int delayTime = 3;
     QElapsedTimer timer;
@@ -211,7 +204,7 @@ int main(int argc, char *argv[])
         app.processEvents();
     }
     screen.finish(&w);
-#endif
+#endif*/
 
     w.setTranslator(&translator);
 

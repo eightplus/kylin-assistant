@@ -72,15 +72,15 @@ AboutDialog::AboutDialog(QWidget *parent, /*const QString &version, */QString sk
     nameLabel->setAlignment(Qt::AlignCenter);
 //    if (arch == "aarch64" || os == "Kylin" || os == "YHKylin") {//20161228
 //        close_btn->move(442-36, 0);
-//        nameLabel->setText(tr("Kylin Assisant") + " " + VERSION);
+//        nameLabel->setText(tr("Kylin Assisant") + " " + qApp->applicationVersion());
 //    }
 //    else {
 //        close_btn->move(0, 0);
-//        nameLabel->setText(tr("Kylin Assisant") + " " + VERSION);
+//        nameLabel->setText(tr("Kylin Assisant") + " " + qApp->applicationVersion());
 //    }
 
     close_btn->move(442-36, 0);
-    nameLabel->setText(tr("Kylin Assistant") + " " + VERSION);
+    nameLabel->setText(tr("Kylin Assistant") + " " + qApp->applicationVersion());
 
 //    linkLabel->setAlignment(Qt::AlignRight);
 //    linkLabel->setText(QString::fromLocal8Bit("<a style='color: green;' href = https://launchpad.net/kylin-assistant> home page</a>"));

@@ -1,1 +1,1 @@
-UK_ACTION_YOUKER = 'com.kylin.assistant.systemdaemon.action'
+KYLIN_ASSISTANT_ACTION = 'com.kylin.assistant.systemdaemon.action'

@@ -556,11 +556,11 @@ class CloudConfig(threading.Thread):
         self.kuaipan_path = self.get_kuaipan_path() + '/[Ubuntu Kylin Sync]'
         if not os.path.isdir(self.kuaipan_path):
             os.makedirs(self.kuaipan_path)
-        self.kuaipan_path = self.kuaipan_path + '/youker-assistant'
+        self.kuaipan_path = self.kuaipan_path + '/kylin-assistant'
         if not os.path.isdir(self.kuaipan_path):
             os.makedirs(self.kuaipan_path)
-        self.youker_path = self.home + '/.config/ubuntukylin/youker-assistant/'
-        youker_abs_path = self.youker_path + 'youker-settings-cloud.conf'
+        self.youker_path = self.home + '/.config/ubuntukylin/kylin-assistant/'
+        youker_abs_path = self.youker_path + 'kylin-settings-cloud.conf'
         self.save_configuration_to_local_file(youker_abs_path)
         copy(youker_abs_path, self.kuaipan_path)
         self.sysdaemon.upload_cloud_conf_signal('upload_ok')
@@ -571,11 +571,11 @@ class CloudConfig(threading.Thread):
         # 快盘没有启动或没有安装，提示用户安装并启动快盘才能下载
             self.sysdaemon.download_cloud_conf_signal('download_norun')
             return
-        self.youker_path = self.home + '/.config/ubuntukylin/youker-assistant/'
-        youker_abs_path = self.youker_path + 'youker-settings-cloud.conf'
+        self.youker_path = self.home + '/.config/ubuntukylin/kylin-assistant/'
+        youker_abs_path = self.youker_path + 'kylin-settings-cloud.conf'
         if not os.path.exists(youker_abs_path):
             os.mknod(youker_abs_path)
-        cloud_abs_path = self.get_kuaipan_path() + '/[Ubuntu Kylin Sync]/youker-assistant/youker-settings-cloud.conf'
+        cloud_abs_path = self.get_kuaipan_path() + '/[Ubuntu Kylin Sync]/kylin-assistant/kylin-settings-cloud.conf'
         if not os.path.isfile(cloud_abs_path):
         # 云端没有备份的配置文件
             self.sysdaemon.download_cloud_conf_signal('download_notconf')

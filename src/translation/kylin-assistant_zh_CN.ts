@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="zh_CN">
+<TS version="2.1" language="zh_CN">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -124,7 +124,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>BoardWidget</name>
     <message>
-        <location filename="../../info/boardwidget.cpp" line="83"/>
+        <location filename="../../info/boardwidget.cpp" line="98"/>
         <source>Board Info</source>
         <translation>主板信息</translation>
     </message>
@@ -478,7 +478,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>CleanerItems</name>
     <message>
-        <location filename="../../cleaner/cleaneritems.cpp" line="175"/>
+        <location filename="../../cleaner/cleaneritems.cpp" line="177"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
@@ -1432,7 +1432,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>CpuWidget</name>
     <message>
-        <location filename="../../info/cpuwidget.cpp" line="90"/>
+        <location filename="../../info/cpuwidget.cpp" line="105"/>
         <source>CPU Info</source>
         <translation>处理器信息</translation>
     </message>
@@ -1440,7 +1440,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>DesktopWidget</name>
     <message>
-        <location filename="../../info/desktopwidget.cpp" line="82"/>
+        <location filename="../../info/desktopwidget.cpp" line="96"/>
         <source>Desktop Info</source>
         <translation>桌面环境信息</translation>
     </message>
@@ -1456,60 +1456,60 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>FontWidget</name>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="87"/>
-        <location filename="../../setting/fontwidget.cpp" line="88"/>
         <location filename="../../setting/fontwidget.cpp" line="89"/>
         <location filename="../../setting/fontwidget.cpp" line="90"/>
         <location filename="../../setting/fontwidget.cpp" line="91"/>
+        <location filename="../../setting/fontwidget.cpp" line="92"/>
+        <location filename="../../setting/fontwidget.cpp" line="93"/>
         <source>Click here to change font</source>
         <translation>点击此处更换字体</translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="277"/>
+        <location filename="../../setting/fontwidget.cpp" line="279"/>
         <source>Default Font</source>
         <translation>默认字体</translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="278"/>
+        <location filename="../../setting/fontwidget.cpp" line="280"/>
         <source>Desktop Font</source>
         <translation>桌面字体</translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="279"/>
+        <location filename="../../setting/fontwidget.cpp" line="281"/>
         <source>Monospace Font</source>
         <translation>等宽字体</translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="280"/>
+        <location filename="../../setting/fontwidget.cpp" line="282"/>
         <source>Document Font</source>
         <translation>文档字体</translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="281"/>
+        <location filename="../../setting/fontwidget.cpp" line="283"/>
         <source>Titlebar Font</source>
         <translation>标题栏字体</translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="282"/>
+        <location filename="../../setting/fontwidget.cpp" line="284"/>
         <source>Global Font Scaling</source>
         <translation>全局字体缩放</translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="283"/>
+        <location filename="../../setting/fontwidget.cpp" line="285"/>
         <source>Hinting</source>
         <translation>平滑</translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="284"/>
+        <location filename="../../setting/fontwidget.cpp" line="286"/>
         <source>Antialiasing</source>
         <translation>反锯齿</translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="285"/>
-        <location filename="../../setting/fontwidget.cpp" line="286"/>
         <location filename="../../setting/fontwidget.cpp" line="287"/>
         <location filename="../../setting/fontwidget.cpp" line="288"/>
         <location filename="../../setting/fontwidget.cpp" line="289"/>
+        <location filename="../../setting/fontwidget.cpp" line="290"/>
+        <location filename="../../setting/fontwidget.cpp" line="291"/>
         <source>Restore</source>
         <translation>恢复默认</translation>
     </message>
@@ -1723,7 +1723,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>HomePage</name>
     <message>
-        <location filename="../homepage.cpp" line="184"/>
+        <location filename="../homepage.cpp" line="183"/>
         <source>Boot Manager</source>
         <translation>启动项管理</translation>
     </message>
@@ -1732,42 +1732,42 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
         <translation type="obsolete">摄像头</translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="259"/>
+        <location filename="../homepage.cpp" line="258"/>
         <source>Current Version Number</source>
         <translation>当前版本号</translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="260"/>
+        <location filename="../homepage.cpp" line="259"/>
         <source>Update to the lastest version, make it work better</source>
         <translation>更新至最新版本，使软件更好用</translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="261"/>
+        <location filename="../homepage.cpp" line="260"/>
         <source>updating on the backend</source>
         <translation>正在后台升级</translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="282"/>
+        <location filename="../homepage.cpp" line="281"/>
         <source>Upgrade is complete</source>
         <translation>升级完成</translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="284"/>
+        <location filename="../homepage.cpp" line="283"/>
         <source>Updating on the backend</source>
         <translation>正在后台升级</translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="262"/>
+        <location filename="../homepage.cpp" line="261"/>
         <source>Common toolbox</source>
         <translation>工具箱</translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="263"/>
+        <location filename="../homepage.cpp" line="262"/>
         <source>Fast and practical, making the system more personalized</source>
         <translation>更快更好，让系统更具个性化</translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="184"/>
+        <location filename="../homepage.cpp" line="183"/>
         <source>More</source>
         <translation>更多</translation>
     </message>
@@ -2048,14 +2048,14 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="54"/>
+        <location filename="../mainwindow.cpp" line="56"/>
+        <location filename="../mainwindow.cpp" line="61"/>
         <source>Kylin Assistant</source>
         <translation>麒麟助手</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="59"/>
         <source>Youker Assistant</source>
-        <translation>优客助手</translation>
+        <translation type="vanished">优客助手</translation>
     </message>
 </context>
 <context>
@@ -2252,7 +2252,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="127"/>
+        <location filename="../main.cpp" line="130"/>
         <source>kylin-assistant had already running!</source>
         <translation>麒麟助手运行中</translation>
     </message>
@@ -2472,8 +2472,8 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     </message>
     <message>
         <location filename="../../shredmanager/shreddialog.cpp" line="110"/>
-        <location filename="../../shredmanager/shreddialog.cpp" line="238"/>
-        <location filename="../../shredmanager/shreddialog.cpp" line="250"/>
+        <location filename="../../shredmanager/shreddialog.cpp" line="239"/>
+        <location filename="../../shredmanager/shreddialog.cpp" line="251"/>
         <source>No select any file which need to be shredded</source>
         <translation>没有选择需要粉碎的文件</translation>
     </message>
@@ -2488,22 +2488,21 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
         <translation>取消粉碎</translation>
     </message>
     <message>
-        <location filename="../../shredmanager/shreddialog.cpp" line="209"/>
         <source>Allfile(*)</source>
-        <translation>所有文件(*)</translation>
+        <translation type="vanished">所有文件(*)</translation>
     </message>
     <message>
-        <location filename="../../shredmanager/shreddialog.cpp" line="226"/>
+        <location filename="../../shredmanager/shreddialog.cpp" line="227"/>
         <source>Select file!</source>
         <translation>选择文件！</translation>
     </message>
     <message>
-        <location filename="../../shredmanager/shreddialog.cpp" line="237"/>
+        <location filename="../../shredmanager/shreddialog.cpp" line="238"/>
         <source>Shred successfully!</source>
         <translation>粉碎成功！</translation>
     </message>
     <message>
-        <location filename="../../shredmanager/shreddialog.cpp" line="243"/>
+        <location filename="../../shredmanager/shreddialog.cpp" line="244"/>
         <source>Shred failed!</source>
         <translation>粉碎失败！</translation>
     </message>
@@ -2511,12 +2510,12 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>ShredManager</name>
     <message>
-        <location filename="../../shredmanager/shredmanager.cpp" line="40"/>
+        <location filename="../../shredmanager/shredmanager.cpp" line="44"/>
         <source>Shred Manager</source>
         <translation>文件粉碎机</translation>
     </message>
     <message>
-        <location filename="../../shredmanager/shredmanager.cpp" line="45"/>
+        <location filename="../../shredmanager/shredmanager.cpp" line="49"/>
         <source>Delete files makes it unable to recover</source>
         <translation>彻底删除文件使其无法恢复</translation>
     </message>
@@ -2524,28 +2523,28 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>SkinCenter</name>
     <message>
-        <location filename="../skincenter.cpp" line="37"/>
-        <location filename="../skincenter.cpp" line="66"/>
+        <location filename="../skincenter.cpp" line="38"/>
+        <location filename="../skincenter.cpp" line="67"/>
         <source>Skin Setting</source>
         <translation>皮肤设置</translation>
     </message>
     <message>
-        <location filename="../skincenter.cpp" line="77"/>
+        <location filename="../skincenter.cpp" line="78"/>
         <source>Default</source>
         <translation>默认皮肤</translation>
     </message>
     <message>
-        <location filename="../skincenter.cpp" line="80"/>
+        <location filename="../skincenter.cpp" line="81"/>
         <source>Custom</source>
         <translation>自定义</translation>
     </message>
     <message>
-        <location filename="../skincenter.cpp" line="503"/>
+        <location filename="../skincenter.cpp" line="504"/>
         <source>Open File</source>
         <translation>打开文件</translation>
     </message>
     <message>
-        <location filename="../skincenter.cpp" line="504"/>
+        <location filename="../skincenter.cpp" line="505"/>
         <source>Files(*.png *.jpg)</source>
         <translation>文件(*.png *.jpg)</translation>
     </message>
@@ -2677,116 +2676,116 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>UpgradeDialog</name>
     <message>
-        <location filename="../upgradedialog.cpp" line="61"/>
+        <location filename="../upgradedialog.cpp" line="60"/>
         <source>check and update</source>
         <translation>检查更新</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="103"/>
-        <location filename="../upgradedialog.cpp" line="398"/>
+        <location filename="../upgradedialog.cpp" line="102"/>
+        <location filename="../upgradedialog.cpp" line="397"/>
         <source>Current verison:</source>
         <translation>当前版本：</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="139"/>
+        <location filename="../upgradedialog.cpp" line="138"/>
         <source>Official version</source>
         <translation>正式版</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="162"/>
+        <location filename="../upgradedialog.cpp" line="161"/>
         <source>An error occurred!</source>
         <translation>出错了！无法升级</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="163"/>
+        <location filename="../upgradedialog.cpp" line="162"/>
         <source>Network or local sources anomaly</source>
         <translation>网络或源地址连接失败，升级未成功</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="164"/>
-        <location filename="../upgradedialog.cpp" line="278"/>
+        <location filename="../upgradedialog.cpp" line="163"/>
+        <location filename="../upgradedialog.cpp" line="277"/>
         <source>Testing network and local sources...</source>
         <translation>正在检查网络和本地源...</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="172"/>
+        <location filename="../upgradedialog.cpp" line="171"/>
         <source>Retry</source>
         <translation>重试</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="185"/>
+        <location filename="../upgradedialog.cpp" line="184"/>
         <source>Finish</source>
         <translation>完成</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="192"/>
+        <location filename="../upgradedialog.cpp" line="191"/>
         <source>Upgrade</source>
         <translation>升级</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="254"/>
-        <location filename="../upgradedialog.cpp" line="337"/>
+        <location filename="../upgradedialog.cpp" line="253"/>
+        <location filename="../upgradedialog.cpp" line="336"/>
         <source>Start to update the local sources</source>
         <translation>开始更新本地源</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="333"/>
+        <location filename="../upgradedialog.cpp" line="332"/>
         <source>Start to download</source>
         <translation>开始下载</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="382"/>
+        <location filename="../upgradedialog.cpp" line="381"/>
         <source>Updating local sources...</source>
         <translation>正在更新本地源...</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="397"/>
+        <location filename="../upgradedialog.cpp" line="396"/>
         <source>Kylin Assistant is the latest version</source>
         <translation>麒麟助手已经是最新的版本</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="410"/>
+        <location filename="../upgradedialog.cpp" line="409"/>
         <source>Start to install</source>
         <translation>开始安装</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="344"/>
+        <location filename="../upgradedialog.cpp" line="343"/>
         <source>Download completely</source>
         <translation>下载完成</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="355"/>
+        <location filename="../upgradedialog.cpp" line="354"/>
         <source>Local sources updated</source>
         <translation>源更新完毕</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="365"/>
+        <location filename="../upgradedialog.cpp" line="364"/>
         <source>Found a new version</source>
         <translation>发现新版本</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="153"/>
+        <location filename="../upgradedialog.cpp" line="152"/>
         <source>New version:</source>
         <translation>新版本号：</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="167"/>
+        <location filename="../upgradedialog.cpp" line="166"/>
         <source>you can visit the&lt;a style=&apos;color: #3f96e4;&apos; href = http://www.ubuntukylin.com&gt; UK official website&lt;/a&gt; to download the lastest deb package</source>
         <translation>您可以访问 &lt;a style=&apos;color: #3f96e4;&apos; href = http://www.ubuntukylin.com&gt; UK 官网&lt;/a&gt; 下载最新的deb包</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="360"/>
-        <location filename="../upgradedialog.cpp" line="374"/>
+        <location filename="../upgradedialog.cpp" line="359"/>
+        <location filename="../upgradedialog.cpp" line="373"/>
         <source>Not found</source>
         <translation>没有发现新版本</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="418"/>
+        <location filename="../upgradedialog.cpp" line="417"/>
         <source>Upgrading the main program...</source>
         <translation>正在升级主程序...</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="472"/>
+        <location filename="../upgradedialog.cpp" line="471"/>
         <source>Start to upgrade the main program</source>
         <translation>开始升级主程序</translation>
     </message>

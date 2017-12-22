@@ -22,6 +22,7 @@
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QDesktopWidget>
+#include <QGraphicsDropShadowEffect>
 #include "shadowwidget.h"
 //#include "cameramanager.h"
 #include "../component/threadpool.h"
@@ -73,10 +74,23 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget *parent) :
     status = HOMEPAGE;
     statusFlag = false;
 
+
+
+//    this->setWindowFlags(Qt::FramelessWindowHint);
+    this->setAttribute(Qt::WA_TranslucentBackground);
+    this->setAttribute(Qt::WA_ShowModal);
+
+    /*QGraphicsDropShadowEffect *shadow_effect = new QGraphicsDropShadowEffect(this);
+    shadow_effect->setBlurRadius(15.0);
+    shadow_effect->setColor(QColor(0, 0, 0, 100));//shadow_effect->setColor(Qt::gray);
+    shadow_effect->setOffset(1.0);//shadow_effect->setOffset(-5, 5);
+    this->setGraphicsEffect(shadow_effect);*/
+
+
     sessioninterface = NULL;
     systeminterface = NULL;
 
-    mSettings = new QSettings(YOUKER_COMPANY_SETTING, YOUKER_SETTING_FILE_NAME_SETTING);
+    mSettings = new QSettings(KYLIN_COMPANY_SETTING, KYLIN_SETTING_FILE_NAME_SETTING);
     mSettings->setIniCodec("UTF-8");
 
 
@@ -671,7 +685,7 @@ inline bool isRunningInstalled() {
 
 inline QString getAppDirectory() {
     if (isRunningInstalled()) {
-        return QString("/var/lib/youker-assistant-daemon/");
+        return QString("/var/lib/kylin-assistant-daemon/");
     } else {
         return QString(QCoreApplication::applicationDirPath());
     }
