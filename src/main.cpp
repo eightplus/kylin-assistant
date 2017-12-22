@@ -120,19 +120,36 @@ int make_pid_file() {
 
 int main(int argc, char *argv[])
 {
-//    QApplication app(argc, argv);
+    QApplication app(argc, argv);
+
+
     //单程序运行处理
-    QtSingleApplication app(argc, argv);
+    QSharedMemory mem("KA");
+    if (!mem.create(1)) {
+        qDebug() << QObject::tr("kylin-assistant had already running!");
+        return 1;
+    }
+
+#ifdef QT_NO_DEBUG
+    qDebug() << "release mode";
+#else
+    qDebug() << "debug mode";
+#endif
+
+    //单程序运行处理
+    /*QtSingleApplication app(argc, argv);
     if (app.isRunning())
     {
         qDebug() << QObject::tr("kylin-assistant had already running!");
         return 0;
-    }
+    }*/
 
-//    QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
-//    QTextCodec::setCodecForCStrings(QTextCodec::codecForLocale());
-//    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
-//    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+#if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
+    QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForLocale());
+    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+#endif
 
     if (make_pid_file()) {
         exit(1);

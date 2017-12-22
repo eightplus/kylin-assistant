@@ -35,7 +35,7 @@ public:
 };
 
 //Q_DECLARE_INTERFACE定义在在qobject.h中，用来告诉Qt meta-object system 这个接口名称
-Q_DECLARE_INTERFACE(PluginInterface, "com.ubuntukylin.Plugin.PluginInterface ")
+Q_DECLARE_INTERFACE(PluginInterface, "com.ubuntukylin.Plugin.PluginInterface")
 
 #endif // PLUGININTERFACE_H
 

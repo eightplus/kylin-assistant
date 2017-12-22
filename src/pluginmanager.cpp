@@ -20,6 +20,7 @@
 #include "pluginmanager.h"
 #include "../component/plugininterface.h"
 #include <QDir>
+#include <QApplication>
 #include <QDebug>
 
 PluginManager::PluginManager(void)
@@ -39,15 +40,29 @@ PluginManager* PluginManager::Instance()
 
 bool PluginManager::loadPlugin(QString plugin_path)
 {
+    /*QDir pluginsDir(qApp->applicationDirPath());//QCoreApplication::applicationDirPath()
+#ifdef QT_DEBUG
+    pluginsDir.cd("libs");
+#else
+    pluginsDir.cd("../libs");
+#endif*/
+
     QDir pluginsDir(plugin_path + "/libs");
     foreach (QString fileName, pluginsDir.entryList(QStringList("*.so"),QDir::Files)) {
-        QPluginLoader  *pluginLoader = new  QPluginLoader(pluginsDir.absoluteFilePath(fileName));
+        if (!QLibrary::isLibrary(fileName))
+            continue;
+
+        QPluginLoader *pluginLoader = new QPluginLoader(pluginsDir.absoluteFilePath(fileName));
         QObject *plugin = pluginLoader->instance();
         if (plugin) {//测试插件是否有效:使用 qobject_cast()测试插件是否给出了相应接口并进行类型转换，转换成接口对象指针.
             PluginInterface* interface = qobject_cast<PluginInterface*>(plugin);
             if (interface) {
                 QString guid = interface->getGuid();
                 plugin_map.insert(guid, pluginLoader);
+            }
+            else {
+                pluginLoader->unload();
+                pluginLoader->deleteLater();
             }
         }
         else {
