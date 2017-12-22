@@ -18,7 +18,7 @@
  */
 
 #include "kylinmenu.h"
-#include "../mainui/mainwindow.h"
+#include "../src/mainwindow.h"
 #include <QEvent>
 #include <QHelpEvent>
 
@@ -236,7 +236,7 @@ void KylinMenu::forumHelp()
 void KylinMenu::questionFeedback()
 {
     this->close();
-    QUrl url(QString("https://bugs.launchpad.net/youker-assistant"));
+    QUrl url(QString("https://bugs.launchpad.net/kylin-assistant"));
     QDesktopServices::openUrl(url);
 }
 

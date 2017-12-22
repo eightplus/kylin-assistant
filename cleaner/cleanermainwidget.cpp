@@ -19,7 +19,7 @@
 
 #include "cleanermainwidget.h"
 #include <QDebug>
-#include "../mainui/mainwindow.h"
+#include "../src/mainwindow.h"
 #include "../component/cleangroup.h"
 
 CleanerMainWidget::CleanerMainWidget(QWidget *parent, SessionDispatcher *seroxy, MainWindow *window, Toolkits *kits, QString skin)

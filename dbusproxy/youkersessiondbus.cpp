@@ -23,9 +23,9 @@
 SessionDispatcher::SessionDispatcher(QObject *parent)
     : QObject(parent)
 {
-    sessioniface = new QDBusInterface("com.ubuntukylin.session",
-                               "/",
-                               "com.ubuntukylin.session",
+    sessioniface = new QDBusInterface("com.kylin.assistant.sessiondaemon",
+                               "/com/kylin/assistant/sessiondaemon",
+                               "com.kylin.assistant.sessiondaemon",
                                QDBusConnection::sessionBus());
 
 //    QObject::connect(sessioniface, SIGNAL(autostartmanage_data_signal(QVariantMap)), this, SLOT(handlerAutoManageData(QVariantMap)));
@@ -126,6 +126,7 @@ bool SessionDispatcher::start_check_source_useable_qt()
         check_thread->start();
 //        qDebug() << "check_thread is ready to run......";
     }
+    return true;
 }
 
 void SessionDispatcher::runApp(QString pkgname)

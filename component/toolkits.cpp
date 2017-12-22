@@ -15,6 +15,7 @@
  */
 
 #include "toolkits.h"
+#include <QGraphicsOpacityEffect>
 
 Toolkits::Toolkits(QObject *parent, int width, int height) :
     QObject(parent), parent_width(width), parent_height(height)

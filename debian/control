@@ -1,23 +1,26 @@
-Source: youker-assistant
+Source: kylin-assistant
 Section: misc
 Priority: optional
 Maintainer: Ubuntu Kylin Team <ubuntukylin-members@list.launchpad.net>
+Uploaders:
+ lixiang <lixiang@kylinos.cn>
 Build-Depends: debhelper (>= 9),
                python-dev,
                python-lxml,
                python-piston-mini-client,
                python-xdg,
-               libqt4-dev,
+               qtbase5-dev (>= 5.1),
+               qt5-qmake,
+               qtscript5-dev,
+               qttools5-dev-tools,
                pkg-config,
                python (>= 2.6.6-3~),
                libglib2.0-dev,
                libgtop2-dev
 Standards-Version: 3.9.8
-Homepage: https://launchpad.net/youker-assistant
-Vcs-Browser: https://code.launchpad.net/~ubuntukylin-members/youker-assistant/trunk
-Vcs-Bzr: lp:youker-assistant
+Homepage: https://github.com/KylinAppCenter/kylin-assistant
 
-Package: youker-assistant
+Package: kylin-assistant
 Architecture: amd64 arm64 armhf i386 
 Depends: python-dbus,
          python-psutil,
@@ -39,7 +42,7 @@ Depends: python-dbus,
          ${python:Depends},
          ${shlibs:Depends},
 Description: Integrated tool to aid in routine system maintenance tasks
- Youker Assistant is a tool designed to help Ubuntu and Ubuntu Kylin 
+ Kylin Assistant is a tool designed to help Ubuntu and Ubuntu Kylin 
  desktop users manage and maintain many aspects of their working 
  environment conveniently in a single application, providing a consistent
  user experience.

@@ -19,9 +19,11 @@
 
 #include "fontwidget.h"
 #include <QDebug>
+#include <QDoubleSpinBox>
+#include <QComboBox>
 #include "../component/kylinfontdialog.h"
 #include "../dbusproxy/youkersessiondbus.h"
-#include "../mainui/mainwindow.h"
+#include "../src/mainwindow.h"
 
 FontWidget::FontWidget(QWidget *parent, SessionDispatcher *proxy, MainWindow *window, QString cur_desktop, QString skin) :
     QWidget(parent),

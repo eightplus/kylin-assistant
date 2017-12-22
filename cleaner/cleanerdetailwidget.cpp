@@ -19,7 +19,7 @@
 
 #include "cleanerdetailwidget.h"
 #include "ui_cleanerdetailwidget.h"
-#include "../mainui/mainwindow.h"
+#include "../src/mainwindow.h"
 #include "../component/cleansubgroup.h"
 #include <QDebug>
 #include <QBoxLayout>
@@ -32,7 +32,7 @@ CleanerDetailWidget::CleanerDetailWidget(QWidget *parent, SessionDispatcher *ser
 //    this->setStyleSheet("QWidget{border: none}");
     this->setFixedSize(900, 403);
     this->setObjectName("transparentWidget");
-    this->setWindowIcon(QIcon(":/res/youker-assistant.png"));
+    this->setWindowIcon(QIcon(":/res/kylin-assistant.png"));
 
     /*this->setAutoFillBackground(true);
     QPalette palette;

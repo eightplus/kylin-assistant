@@ -18,6 +18,10 @@
  */
 
 #include "shredmanager.h"
+#include <QApplication>
+#include <QDesktopWidget>
+#include <sys/types.h>
+#include <unistd.h>
 
 ShredManager::ShredManager(QObject *parent)
 :QObject(parent), shred_dialog(this)
@@ -60,4 +64,6 @@ void  ShredManager::doAction()
     shred_dialog.raise();
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 Q_EXPORT_PLUGIN2(ShredManager, ShredManager)
+#endif

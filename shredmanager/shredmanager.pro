@@ -23,7 +23,7 @@ MOC_DIR += $$PWD/../tmp/shredmanager/
 OBJECTS_DIR = $$PWD/../obj/shredmanager
 
 target.source += $$TARGET
-target.path = /var/lib/youker-assistant-daemon/libs/
+target.path = /var/lib/kylin-assistant-daemon/libs/
 INSTALLS +=target
 
 HEADERS += \
@@ -53,4 +53,4 @@ FORMS += \
     ../component/alertdialog.ui
 
 RESOURCES += \
-    ../mainui/img.qrc
+    ../src/img.qrc

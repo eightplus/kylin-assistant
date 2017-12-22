@@ -30,8 +30,8 @@
 
 #define VERSION "2.4.1"
 
-const QString YOUKER_COMPANY_SETTING = "ubuntukylin/youker-assistant";
-const QString YOUKER_SETTING_FILE_NAME_SETTING = "youker-assistant";
+const QString YOUKER_COMPANY_SETTING = "ubuntukylin/kylin-assistant";
+const QString YOUKER_SETTING_FILE_NAME_SETTING = "kylin-assistant";
 
 typedef enum{
     YOUKER_EN,

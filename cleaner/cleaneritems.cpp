@@ -20,6 +20,8 @@
 #include "cleaneritems.h"
 #include "mainwindow.h"
 #include <QDebug>
+#include <QCheckBox>
+#include <QGroupBox>
 
 //CleanerItems::CleanerItems(QStringList &arglist, QStringList &statuslist, int height, const QString title_text, QWidget *parent)
 //    : QWidget(parent),titleName(title_text)/*, widgetHeight(height)*/
@@ -29,7 +31,7 @@ CleanerItems::CleanerItems(QStringList &arglist, QStringList &statuslist, QStrin
 {
     setWindowFlags(Qt::FramelessWindowHint);
     this->setStyleSheet("QDialog{border: 1px solid white;border-radius:1px;background-color: #ffffff;}");
-    this->setWindowIcon(QIcon(":/res/youker-assistant.png"));
+    this->setWindowIcon(QIcon(":/res/kylin-assistant.png"));
 
     this->setFixedSize(410, height);
 //    this->setObjectName("transparentWidget");

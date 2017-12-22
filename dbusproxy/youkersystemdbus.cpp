@@ -56,9 +56,9 @@ SystemDispatcher::~SystemDispatcher() {
 
 void SystemDispatcher::initData()
 {
-    systemiface = new QDBusInterface("com.ubuntukylin.youker",
-                               "/",
-                               "com.ubuntukylin.youker",
+    systemiface = new QDBusInterface("com.kylin.assistant.systemdaemon",
+                               "com/kylin/assistant/systemdaemon",
+                               "com.kylin.assistant.systemdaemon",
                                QDBusConnection::systemBus());
 
     QObject::connect(systemiface,SIGNAL(quit_clean(bool)),this,SLOT(handler_interrupt_clean(bool)));
