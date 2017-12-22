@@ -256,6 +256,7 @@ MainWindow::~MainWindow()
 //        delete systeminterface;
 //        systeminterface = NULL;
 //    }
+    qDebug() << "mainwindow destroy...............";
     if (sessioninterface) {
         sessioninterface->deleteLater();
     }
@@ -622,6 +623,7 @@ void MainWindow::changeLanguage(LANGUAGE language)
 
 void MainWindow::displayMainWindow(/*int count*/)
 {
+    qDebug() << "displayMainWindow============";
     this->battery = sessioninterface->judge_power_is_exists_qt();
     this->sensor = systeminterface->judge_sensors_exists_qt();
     login_widget->setSessionDbusProxy(sessioninterface);
@@ -704,7 +706,7 @@ void MainWindow::startDbusDaemon()
 
 //    connect(systeminterface, &SystemDispatcher::dbusInitFinished, this, [=] {dlg.close();this->displayMainWindow();
 //    });
-    connect(systeminterface, SIGNAL(dbusInitFinished()), this, SLOT(displayMainWindow()));//数据获取完毕后，告诉界面去更新数据后显示界面
+    connect(systeminterface, SIGNAL(dbusInitFinished()), this, SLOT(displayMainWindow()), Qt::QueuedConnection);//数据获取完毕后，告诉界面去更新数据后显示界面
     systemThread->start();
 
 
@@ -951,10 +953,12 @@ void MainWindow::closeYoukerAssistant() {
     connect(animation, SIGNAL(finished()), this, SLOT(close()));
 }
 
-void MainWindow::closeEvent(QCloseEvent *)
+void MainWindow::closeEvent(QCloseEvent *event)
 {
+    qDebug() << "MainWindow::closeEvent.....";
 //    QApplication::quit();
     qApp->exit();
+//    QDialog::closeEvent(event);
 }
 
 void MainWindow::setCurrentPageIndex(int index)

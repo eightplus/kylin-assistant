@@ -4,9 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+isEqual(QT_MAJOR_VERSION, 5) {
+    QT += widgets gui
+}
 
 TARGET = shredmanager
 TEMPLATE = lib

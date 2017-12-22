@@ -2,6 +2,7 @@ TEMPLATE = subdirs
 SUBDIRS = \
     src \
     shredmanager \
+    processmanager \
     backends
 
 TRANSLATIONS += \

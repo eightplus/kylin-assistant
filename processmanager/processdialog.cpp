@@ -26,6 +26,7 @@
 #include <QDir>
 #include <QProcess>
 #include <QDebug>
+#include <QHeaderView>
 
 //pkg-config --cflags libgtop-2.0
 //pkg-config --libs glib-2.0 libgtop-2.0
@@ -38,7 +39,7 @@ ProcessDialog::ProcessDialog(ProcessManager *plugin, QDialog *parent)
     this->setWindowIcon(QIcon(":/res/youker-assistant.png"));
     title_bar = new KylinTitleBar();
 
-    proSettings = new QSettings(YOUKER_COMPANY_SETTING, YOUKER_SETTING_FILE_NAME_SETTING);
+    proSettings = new QSettings(KYLIN_COMPANY_SETTING, KYLIN_SETTING_FILE_NAME_SETTING);
     proSettings->setIniCodec("UTF-8");
 
     initTitleBar();
@@ -255,7 +256,9 @@ void ProcessDialog::showProList() {
     columnHeaderItem8->setTextColor(QColor(200,111,30));
 
     //表头设置
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     tableWidget->horizontalHeader()->setClickable(false);
+#endif
     tableWidget->horizontalHeader()->resizeSection(0,150);
     tableWidget->horizontalHeader()->resizeSection(1,80);
     tableWidget->horizontalHeader()->resizeSection(2,50);

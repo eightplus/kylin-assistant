@@ -4,16 +4,15 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+isEqual(QT_MAJOR_VERSION, 5) {
+    QT += widgets gui
+}
 
 TARGET = processmanager
 TEMPLATE = lib
-CONFIG += plugin
 INCLUDEPATH += ../processmanager
 DESTDIR = ../libs
-CONFIG += link_pkgconfig
+CONFIG += plugin c++11 link_pkgconfig
 PKGCONFIG += libgtop-2.0
 
 UI_DIR += $$PWD/../tmp/processmanager/
@@ -26,7 +25,7 @@ OBJECTS_DIR = $$PWD/../obj/processmanager
 
 
 target.source += $$TARGET
-target.path = /var/lib/youker-assistant-daemon/libs/
+target.path = /var/lib/kylin-assistant-daemon/libs/
 INSTALLS +=target
 
 HEADERS += \
@@ -58,4 +57,4 @@ FORMS += \
     ../component/alertdialog.ui
 
 RESOURCES += \
-    ../mainui/img.qrc
+    ../src/img.qrc

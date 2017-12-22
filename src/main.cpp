@@ -18,6 +18,7 @@
  */
 
 #include "mainwindow.h"
+#include "kpplication.h"
 #include <QApplication>
 #include <QTextCodec>
 #include <QTranslator>
@@ -32,6 +33,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <pwd.h>
+#include <signal.h>
 
 #define BUFF_SIZE (512)
 char filePath[BUFF_SIZE] = {0};
@@ -115,19 +117,35 @@ int make_pid_file() {
 
 
 
+bool registerSingleInstance(const QString &path)
+{
+    QString dbusName = QString("com.kylin.assistant-single-instance.%1").arg(path);
+    auto sessionBus = QDBusConnection::sessionBus();
+    if (!sessionBus.registerService(dbusName)) {
+        qDebug() << "Register single dbus service failed:" << sessionBus.lastError();
+        return false;
+    }
+    return true;
+}
 
+//void sig_int(int signal)
+//{
+//    QApplication::quit();
+//}
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+//    QApplication app(argc, argv);
+    Kpplication app("kylin-assistant", argc, argv);
+    app.setQuitOnLastWindowClosed(false);
+
     app.setOrganizationName("kylin");
     app.setApplicationName("kylin-assistant");
     app.setApplicationVersion("1.0.0");
 
-    //单程序运行处理
-    QSharedMemory mem("KA");
-    if (!mem.create(1)) {
-        qDebug() << QObject::tr("kylin-assistant had already running!");
+    Kpplication *app_ins = Kpplication::instance();
+    if (app_ins->isRunning()) {
+        app_ins->sendMessage("Hello");
         return 1;
     }
 
@@ -137,18 +155,28 @@ int main(int argc, char *argv[])
     qDebug() << "debug mode";
 #endif
 
+    //单程序运行处理
+//    QSharedMemory mem("KA");
+//    if (!mem.create(1)) {
+//        qDebug() << QObject::tr("kylin-assistant had already running!");
+//        return 1;
+//    }
+    /*const QString socketPath(QString("kylin-assistant_%1").arg(getuid()));
+    if (registerSingleInstance(socketPath)) {*/
 #if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
-    QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForLocale());
-    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+        QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
+        QTextCodec::setCodecForCStrings(QTextCodec::codecForLocale());
+        QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+        QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 #endif
 
-    if (make_pid_file()) {
-        exit(1);
-    }
+//        signal(SIGINT, sig_int);
 
-    QString arch = "";
+    //    if (make_pid_file()) {
+    //        exit(1);
+    //    }
+
+        QString arch = "";
 
 #ifdef __x86_64__
         arch = "x86_64";
@@ -158,149 +186,63 @@ int main(int argc, char *argv[])
         arch = "aarch64";
 #endif
 
-    QString locale = QLocale::system().name();
-    QTranslator translator;
-    if(locale == "zh_CN" || locale == "es" || locale == "fr" || locale == "de" || locale == "ru") {//中文 西班牙语 法语 德语 俄语
-        if(!translator.load("kylin-assistant_" + locale + ".qm",
-                            ":/qmfile/translation/"))
-            qDebug() << "Load translation file："<< "kylin-assistant_" + locale + ".qm" << " failed!";
-        else
-            app.installTranslator(&translator);
-    }
+        QString locale = QLocale::system().name();
+        QTranslator translator;
+        if(locale == "zh_CN" || locale == "es" || locale == "fr" || locale == "de" || locale == "ru") {//中文 西班牙语 法语 德语 俄语
+            if(!translator.load("kylin-assistant_" + locale + ".qm",
+                                ":/qmfile/translation/"))
+                qDebug() << "Load translation file："<< "kylin-assistant_" + locale + ".qm" << " failed!";
+            else
+                app.installTranslator(&translator);
+        }
 
-    //加载Qt对话框默认的国际化
-    QTranslator qtTranslator;
-    qtTranslator.load("qt_" + locale,
-                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    app.installTranslator(&qtTranslator);
+        //加载Qt对话框默认的国际化
+        QTranslator qtTranslator;
+        qtTranslator.load("qt_" + locale,
+                          QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+        app.installTranslator(&qtTranslator);
 
-    QFile qss(":/qssfile/res/qss/kylin-assistant.qss");
-    qss.open(QFile::ReadOnly);
-    qApp->setStyleSheet(qss.readAll());
-    qss.close();
+        QFile qss(":/qssfile/res/qss/kylin-assistant.qss");
+        qss.open(QFile::ReadOnly);
+        qApp->setStyleSheet(qss.readAll());
+        qss.close();
 
-    QDesktopWidget *desktop = QApplication::desktop();
-//    qDebug() << desktop->primaryScreen();//获取主屏幕的索引序号
-    int sCount = desktop->screenCount();//获取当前显示器的个数
-//    qDebug() << sCount;
-    //如果有两个显示，则N=2，qt默认的计算机主机的index = 0，外接显示器的index = 1；
-//    mdlg.setGeometry(desktop->screenGeometry(1));//QDialog 有个成员函数叫setGeometry，只需要将dialog对象的Geometry设置为index为1的显示器即可，默认为0.如果要显示的dialog的对象为mdlg，则
-//    mdlg.show();
+        QDesktopWidget *desktop = QApplication::desktop();
+    //    qDebug() << desktop->primaryScreen();//获取主屏幕的索引序号
+        int sCount = desktop->screenCount();//获取当前显示器的个数
+    //    qDebug() << sCount;
+        //如果有两个显示，则N=2，qt默认的计算机主机的index = 0，外接显示器的index = 1；
+    //    mdlg.setGeometry(desktop->screenGeometry(1));//QDialog 有个成员函数叫setGeometry，只需要将dialog对象的Geometry设置为index为1的显示器即可，默认为0.如果要显示的dialog的对象为mdlg，则
+    //    mdlg.show();
 
-    //启动图片
-    /*QPixmap pixmap("://res/skin/x.png");
-    QSplashScreen screen(pixmap);
-    screen.show();
-    screen.showMessage("START...", Qt::AlignCenter, Qt::white);*/
+        //启动图片
+        /*QPixmap pixmap("://res/skin/x.png");
+        QSplashScreen screen(pixmap);
+        screen.show();
+        screen.showMessage("START...", Qt::AlignCenter, Qt::white);*/
 
-    MainWindow w(arch, sCount);
+        MainWindow w(arch, sCount);
 
-/*#if 0
-    //延时
-    int delayTime = 3;
-    QElapsedTimer timer;
-    timer.start();
-    while (timer.elapsed() < (delayTime * 1000)) {
-        app.processEvents();
-    }
-    screen.finish(&w);
-#endif*/
+    /*#if 0
+        //延时
+        int delayTime = 3;
+        QElapsedTimer timer;
+        timer.start();
+        while (timer.elapsed() < (delayTime * 1000)) {
+            app.processEvents();
+        }
+        screen.finish(&w);
+    #endif*/
 
-    w.setTranslator(&translator);
+        w.setTranslator(&translator);
 
+    //    if (sCount > 1) {
+    //        w.setGeometry(desktop->screenGeometry(1));
+    //    }
+    //    w.display(sCount);
 
+        return app.exec();
+    //}
 
-//    if (sCount > 1) {
-//        w.setGeometry(desktop->screenGeometry(1));
-//    }
-//    w.display(sCount);
-
-    return app.exec();
+    //return 0;
 }
-
-
-/*
-测试多屏（只测了横屏，没测试纵屏）： 根据当前屏幕数量n，生成n个窗口，每个窗口都占据了一个屏幕
-#include "mainwindow.h"
-
-#include <QApplication>
-
-#include <QDesktopWidget>
-
-#include <cstdio>
-
-#include <QMessageBox>
-
-
-
-typedef struct{
-
-int screen_no;
-
-QRect rect;
-
-}SCREEN;
-
-SCREEN g_screens[10];
-
-
-
-int main(int argc, char *argv[])
-
-{
-
-QApplication app(argc, argv);
-
-QDesktopWidget *desktop = QApplication::desktop();
-
-
-int screen_count = desktop->screenCount();
-
-
-int prim_screen = desktop->primaryScreen();
-
-char warning[100], *idx=warning;
-
-for(int i=0; i<screen_count ;i++ ){
-
-g_screens[i].screen_no = prim_screen + i;
-
-g_screens[i].rect = desktop->screenGeometry(prim_screen + i);
-
-sprintf(idx, "screen%d w[%d], h[%d] ",i, g_screens[i].rect.width(),g_screens[i].rect.height() );
-
-idx += strlen(idx);
-
-}
-
-sprintf(idx, "total width[%d] , total height[%d] \n", desktop->width(), desktop->height() );
-
-QMessageBox::warning(NULL, "screen", warning, QMessageBox::Ok);
-
-
-MainWindow wnd[5];
-
-for(int i=0; i < screen_count; i++){
-
-wnd[i].resize(g_screens[i].rect.width(),g_screens[i].rect.height());
-
-if(i == 0)
-
-wnd[i].move(0,0);
-
-else
-
-wnd[i].move(i* g_screens[i-1].rect.width(),0);
-
-char str[50];
-
-sprintf(str,"this is screen %d",i);
-
-wnd[i].show();
-
-}
-
-return app.exec();
-
-}
- * */

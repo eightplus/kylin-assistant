@@ -11,7 +11,7 @@ CONFIG += qt warn_on
 CONFIG += release
 CONFIG += link_pkgconfig
 
-QT += dbus
+QT += dbus network
 
 inst1.files += res/kylin-assistant.png
 inst1.path = /usr/share/pixmaps
@@ -136,6 +136,7 @@ SOURCES += main.cpp\
     ../component/basewidget.cpp
 
 HEADERS  += mainwindow.h \
+    kpplication.h \
     titlewidget.h \
     actionwidget.h \
     homeactionwidget.h \
@@ -236,3 +237,10 @@ FORMS    += \
 
 RESOURCES += \
     img.qrc
+
+
+INCLUDEPATH += qtsingleapplication
+DEPENDPATH += qtsingleapplication
+
+SOURCES += qtsingleapplication/qtsingleapplication.cpp qtsingleapplication/qtlocalpeer.cpp
+HEADERS += qtsingleapplication/qtsingleapplication.h qtsingleapplication/qtlocalpeer.h

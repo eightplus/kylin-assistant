@@ -46,7 +46,7 @@ SystemDispatcher::~SystemDispatcher() {
         clean_thread = NULL;
     }
 
-
+    qDebug() << "system dbus destroy..............";
     this->exit_qt();
     if (systemiface != NULL) {
         delete systemiface;
@@ -61,15 +61,17 @@ void SystemDispatcher::initData()
                                "com.kylin.assistant.systemdaemon",
                                QDBusConnection::systemBus());
 
-    QObject::connect(systemiface,SIGNAL(quit_clean(bool)),this,SLOT(handler_interrupt_clean(bool)));
-    QObject::connect(systemiface,SIGNAL(clean_complete_onekey(QString)),this,SLOT(handler_clear_rubbish_main_onekey(QString)));
-    QObject::connect(systemiface,SIGNAL(clean_error_onekey(QString)),this,SLOT(handler_clear_rubbish_main_error(QString)));
-    QObject::connect(systemiface,SIGNAL(status_for_quick_clean(QString,QString)),this,SLOT(handler_status_for_quick_clean(QString,QString)));
+    QObject::connect(systemiface,SIGNAL(quit_clean(bool)),this,SLOT(handler_interrupt_clean(bool))/*, Qt::QueuedConnection*/);
+
+    QObject::connect(systemiface,SIGNAL(clean_complete_onekey(QString)),this,SLOT(handler_clear_rubbish_main_onekey(QString))/*, Qt::QueuedConnection*/);
+
+    QObject::connect(systemiface,SIGNAL(clean_error_onekey(QString)),this,SLOT(handler_clear_rubbish_main_error(QString))/*, Qt::QueuedConnection*/);
+
+    QObject::connect(systemiface,SIGNAL(status_for_quick_clean(QString,QString)),this,SLOT(handler_status_for_quick_clean(QString,QString))/*, Qt::QueuedConnection*/);
 
     QObject::connect(systemiface,SIGNAL(subpage_data_signal(QStringList)),this,SLOT(handlerCleanerSubPageDataSignal(QStringList)));
     QObject::connect(systemiface,SIGNAL(subpage_status_signal(QString, QString)),this,SLOT(handlerCleanerSubPageStatusSignal(QString, QString)));
     QObject::connect(systemiface,SIGNAL(subpage_error_signal(QString)),this,SLOT(handlerCleanerSubPageErrorSignal(QString)));
-
 
     QObject::connect(systemiface,SIGNAL(youker_fetch_signal(QString, QStringList)),this,SIGNAL(get_fetch_signal(QString, QStringList)));
     QObject::connect(systemiface,SIGNAL(youker_apt_signal(QString, QStringList)),this,SIGNAL(get_apt_signal(QString, QStringList)));

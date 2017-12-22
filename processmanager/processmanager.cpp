@@ -19,6 +19,8 @@
 
 #include "processmanager.h"
 #include <QDebug>
+#include <QApplication>
+#include <QDesktopWidget>
 
 ProcessManager::ProcessManager(QObject *parent)
 :QObject(parent), process_dialog(this)
@@ -60,4 +62,6 @@ void  ProcessManager::doAction()
     process_dialog.raise();
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 Q_EXPORT_PLUGIN2(ProcessManager, ProcessManager)
+#endif
