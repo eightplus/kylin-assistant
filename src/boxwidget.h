@@ -29,6 +29,8 @@
 //#include "../component/kylinlistview.h"
 
 class SessionDispatcher;
+class PluginManager;
+class QStackedLayout;
 
 class BoxWidget : public QWidget
 {
@@ -48,6 +50,8 @@ public slots:
   void displayBoxHomePage();
   void displayBoxSubPage(QString plugin_id);
 
+//  void pluginAdded(QWidget * const w);
+
 private:
     QListView *list_view;
 //    KylinListView *list_view;
@@ -56,6 +60,11 @@ private:
     QString osarch;
     QString plugin_path;
     SessionDispatcher *sessionProxy;
+
+//    PluginManager *m_pluginsManager = nullptr;
+//    QStackedLayout *m_pluginsLayout;
+//    QWidget *m_pluginLayoutWidget;
+//    QWidget *m_pluginWidget;
 };
 
 #endif // BOXWIDGET_H

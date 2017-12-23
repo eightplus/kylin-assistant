@@ -19,8 +19,6 @@
 
 #include "fontwidget.h"
 #include <QDebug>
-#include <QDoubleSpinBox>
-#include <QComboBox>
 #include "../component/kylinfontdialog.h"
 #include "../dbusproxy/youkersessiondbus.h"
 #include "../src/mainwindow.h"

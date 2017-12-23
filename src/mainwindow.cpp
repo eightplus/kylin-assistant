@@ -24,13 +24,18 @@
 #include <QDesktopWidget>
 #include <QGraphicsDropShadowEffect>
 #include "shadowwidget.h"
+#include "../component/utils.h"
 //#include "cameramanager.h"
 #include "../component/threadpool.h"
 
 QString GlobalData::globalarch = ""; // add by hebing, just for transmit var
 
-MainWindow::MainWindow(QString cur_arch, int d_count, QWidget *parent) :
-    QDialog(parent), arch(cur_arch), display_count(d_count)/*skin_center(parent),*/
+//MainWindow::MainWindow(QString cur_arch, int d_count, QWidget *parent) :
+//    QDialog(parent), arch(cur_arch), display_count(d_count)/*skin_center(parent),*/
+MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::WindowFlags flags)
+    : QMainWindow( parent, flags )
+    ,arch(cur_arch)
+    ,display_count(d_count)
 {
 
     GlobalData::globalarch = this->arch;
@@ -48,7 +53,7 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget *parent) :
 
 //    this->osName = "Kylin";
 //    if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin") {
-    if (this->desktop == "MATE" || this->desktop == "mate" || this->desktop == "UKUI" || this->desktop == "ukui") {
+    /*if (this->desktop == "MATE" || this->desktop == "mate" || this->desktop == "UKUI" || this->desktop == "ukui") {
         this->isTopLevel();
         this->resize(900, 600);
         this->setAutoFillBackground(true);
@@ -59,12 +64,19 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget *parent) :
         this->setFixedSize(900, 600);
         this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowSystemMenuHint);
         this->setWindowTitle(tr("Kylin Assistant"));
-    }
+    }*/
+
+    this->setWindowTitle(tr("Kylin Assistant"));
+    this->setMouseTracking(true);
+    this->setAutoFillBackground(true);
+    QWidget::setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    this->setMinimumSize(900, 600);
+    this->resize(900, 600);
 
 //    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowSystemMenuHint);
 ////    this->setAttribute(Qt::WA_TranslucentBackground, true);
 
-    this->setWindowIcon(QIcon(":/res/v-assistant.png"));
+    this->setWindowIcon(QIcon(":/res/kylin-assistant.png"));
     this->setWindowOpacity(1);
 //    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Widget);
 //    this->setAttribute(Qt::WA_TranslucentBackground);
@@ -74,18 +86,11 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget *parent) :
     status = HOMEPAGE;
     statusFlag = false;
 
-
-
-//    this->setWindowFlags(Qt::FramelessWindowHint);
-    this->setAttribute(Qt::WA_TranslucentBackground);
-    this->setAttribute(Qt::WA_ShowModal);
-
     /*QGraphicsDropShadowEffect *shadow_effect = new QGraphicsDropShadowEffect(this);
     shadow_effect->setBlurRadius(15.0);
     shadow_effect->setColor(QColor(0, 0, 0, 100));//shadow_effect->setColor(Qt::gray);
     shadow_effect->setOffset(1.0);//shadow_effect->setOffset(-5, 5);
     this->setGraphicsEffect(shadow_effect);*/
-
 
     sessioninterface = NULL;
     systeminterface = NULL;
@@ -256,7 +261,6 @@ MainWindow::~MainWindow()
 //        delete systeminterface;
 //        systeminterface = NULL;
 //    }
-    qDebug() << "mainwindow destroy...............";
     if (sessioninterface) {
         sessioninterface->deleteLater();
     }
@@ -623,7 +627,6 @@ void MainWindow::changeLanguage(LANGUAGE language)
 
 void MainWindow::displayMainWindow(/*int count*/)
 {
-    qDebug() << "displayMainWindow============";
     this->battery = sessioninterface->judge_power_is_exists_qt();
     this->sensor = systeminterface->judge_sensors_exists_qt();
     login_widget->setSessionDbusProxy(sessioninterface);
@@ -706,7 +709,7 @@ void MainWindow::startDbusDaemon()
 
 //    connect(systeminterface, &SystemDispatcher::dbusInitFinished, this, [=] {dlg.close();this->displayMainWindow();
 //    });
-    connect(systeminterface, SIGNAL(dbusInitFinished()), this, SLOT(displayMainWindow()), Qt::QueuedConnection);//数据获取完毕后，告诉界面去更新数据后显示界面
+    connect(systeminterface, SIGNAL(dbusInitFinished()), this, SLOT(displayMainWindow()));//数据获取完毕后，告诉界面去更新数据后显示界面
     systemThread->start();
 
 
@@ -953,12 +956,10 @@ void MainWindow::closeYoukerAssistant() {
     connect(animation, SIGNAL(finished()), this, SLOT(close()));
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
+void MainWindow::closeEvent(QCloseEvent *)
 {
-    qDebug() << "MainWindow::closeEvent.....";
 //    QApplication::quit();
     qApp->exit();
-//    QDialog::closeEvent(event);
 }
 
 void MainWindow::setCurrentPageIndex(int index)
@@ -1294,13 +1295,21 @@ void MainWindow::setupConfigure()
 
 }
 
+void MainWindow::createAboutDialog()
+{
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+    aboutDlg = new AboutDialog(0, last_skin_path, this->arch, this->osName);
+    aboutDlg->setModal(false);
+    QApplication::restoreOverrideCursor();
+}
+
 void MainWindow::aboutUs()
 {
-    int w_x = this->frameGeometry().topLeft().x() + (900 / 2) - (442  / 2);
+    /*int w_x = this->frameGeometry().topLeft().x() + (900 / 2) - (442  / 2);
     int w_y = this->frameGeometry().topLeft().y() + (600 /2) - (326  / 2);
     if(aboutDlg == NULL)
     {
-        aboutDlg = new AboutDialog(0, /*version, */last_skin_path, this->arch, this->osName);
+        aboutDlg = new AboutDialog(0, last_skin_path, this->arch, this->osName);
         aboutDlg->move(w_x, w_y);
         aboutDlg->show();
         aboutDlg->raise();
@@ -1309,7 +1318,14 @@ void MainWindow::aboutUs()
         aboutDlg->move(w_x, w_y);
         aboutDlg->show();
         aboutDlg->raise();
+    }*/
+    if (!aboutDlg) {
+        createAboutDialog();
     }
+    int w_x = this->frameGeometry().topLeft().x() + (900 / 2) - (442  / 2);
+    int w_y = this->frameGeometry().topLeft().y() + (600 /2) - (326  / 2);
+    aboutDlg->move(w_x, w_y);
+    aboutDlg->show();
 }
 
 

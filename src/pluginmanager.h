@@ -1,8 +1,6 @@
-#ifndef PLUGINSMANAGER_H
-#define PLUGINSMANAGER_H
-
 #include <QMap>
 #include <QPluginLoader>
+#include <QObject>
 
 class PluginManager
 {
@@ -65,32 +63,19 @@ private:
 };
 
 
-
-/*#include "frameproxyinterface.h"
-
-#include <QObject>
-
-using namespace dcc;
-
-class PluginsController : public QObject, public FrameProxyInterface
+/*class PluginManager : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit PluginsController(QObject *parent = 0);
+    explicit PluginManager(QObject *parent = 0);
+    ~PluginManager();
+
+    static PluginManager* Instance();
 
 signals:
-    void pluginAdded(QWidget * const w);
-    void requestModulePage(const QString &module, const QString &page);
+    void pluginAdded(QWidget *const w);
 
 public slots:
-    void loadPlugins();
-
-private:
-    void pushWidget(ModuleInterface * const, ContentWidget * const) {}
-    void setFrameAutoHide(ModuleInterface * const, const bool) {}
-    void setModuleVisible(ModuleInterface * const, const bool) {}
-    void showModulePage(const QString &module, const QString &page);
+    void loadPlugin(QString plugin_path);
 };*/
-
-#endif // PLUGINSMANAGER_H

@@ -56,5 +56,8 @@ SOURCES += \
 FORMS += \
     ../component/alertdialog.ui
 
+OTHER_FILES += \
+    process.json
+
 RESOURCES += \
     ../src/img.qrc

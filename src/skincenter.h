@@ -21,6 +21,7 @@
 #define SKINCENTER_H
 
 #include <QDialog>
+#include <QFileDialog>
 //#include <QTimer>
 
 #include "../component/kylinlistwidget.h"

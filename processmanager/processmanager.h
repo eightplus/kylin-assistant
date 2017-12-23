@@ -33,8 +33,9 @@ class ProcessManager : public QObject , PluginInterface
 #endif
 
 public:
-    ProcessManager(QObject* parent = 0);
+    explicit ProcessManager(QObject* parent = 0);
     virtual ~ProcessManager();
+    QWidget *centralWidget();
 
 public slots:
 
@@ -46,5 +47,6 @@ public:
     virtual void doAction();
 
 private:
-    ProcessDialog process_dialog;
+    ProcessDialog *process_dialog = nullptr;
+//    QWidget *m_view;
 };

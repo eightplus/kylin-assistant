@@ -20,8 +20,6 @@
 #include "cleaneritems.h"
 #include "mainwindow.h"
 #include <QDebug>
-#include <QCheckBox>
-#include <QGroupBox>
 
 //CleanerItems::CleanerItems(QStringList &arglist, QStringList &statuslist, int height, const QString title_text, QWidget *parent)
 //    : QWidget(parent),titleName(title_text)/*, widgetHeight(height)*/

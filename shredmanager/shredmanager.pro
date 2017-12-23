@@ -4,13 +4,15 @@
 #
 #-------------------------------------------------
 
+QT       += core
 isEqual(QT_MAJOR_VERSION, 5) {
     QT += widgets gui
 }
+#greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = shredmanager
 TEMPLATE = lib
-CONFIG += plugin
+CONFIG += plugin c++11
 INCLUDEPATH += ../shredmanager
 DESTDIR = ../libs
 

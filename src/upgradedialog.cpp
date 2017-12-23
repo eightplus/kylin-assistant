@@ -34,6 +34,7 @@ UpgradeDialog::UpgradeDialog(QWidget *parent, /*const QString &version, */QStrin
 
     isBusy = false;
     upgradeOver = false;
+//    cur_version = version;
     cur_version = qApp->applicationVersion();
 
     baseWidget = new QWidget(this);

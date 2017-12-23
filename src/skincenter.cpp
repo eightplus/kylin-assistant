@@ -23,7 +23,6 @@
 #include <QVBoxLayout>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
-#include <QFileDialog>
 
 //20161228
 SkinCenter::SkinCenter(QWidget *parent, QString skin, QString arch, QString os)

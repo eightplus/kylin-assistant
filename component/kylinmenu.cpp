@@ -236,7 +236,7 @@ void KylinMenu::forumHelp()
 void KylinMenu::questionFeedback()
 {
     this->close();
-    QUrl url(QString("https://bugs.launchpad.net/kylin-assistant"));
+    QUrl url(QString("https://bugs.launchpad.net/youker-assistant"));
     QDesktopServices::openUrl(url);
 }
 

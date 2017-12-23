@@ -24,6 +24,7 @@
 #include <QWidget>
 #include <QPixmap>
 #include <QSettings>
+#include <QDesktopWidget>
 
 #include "titlewidget.h"
 #include "actionwidget.h"
@@ -54,12 +55,14 @@ class ShadowWidget;
 #include "autostartwidget.h"
 //#include "cameramanager.h"
 
-class MainWindow : public QDialog
+//class MainWindow : public QDialog
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QString cur_arch = "", int d_count = 0, QWidget *parent = 0);
+//    explicit MainWindow(QString cur_arch = "", int d_count = 0, QWidget *parent = 0);
+    explicit MainWindow(QString cur_arch = "", int d_count = 0, QWidget* parent = 0, Qt::WindowFlags flags = 0);
     ~MainWindow();
     void setTranslator(QTranslator* translator);
     void initConnect();
@@ -77,6 +80,8 @@ public:
     bool deleteFile(QString filename);
     bool CopyFile(QString filename);
     QString accessOSName();
+
+    void createAboutDialog();
 
 protected:
     void mousePressEvent(QMouseEvent *event);

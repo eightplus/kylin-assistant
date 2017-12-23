@@ -43,6 +43,7 @@ HomePage::HomePage(QWidget *parent, QString arch, QString os/*, const QString &v
 //    QPixmap pixmap("://res/scan.png");
 //    scan_button->setIcon(pixmap);
 //    scan_button->setIconSize(pixmap.size());
+    current_version = qApp->applicationVersion();
     version_logo = new QLabel();
     version_title = new QLabel();
     version_tip = new QLabel();
@@ -255,7 +256,7 @@ void HomePage::initConnect()
 
 void HomePage::setLanguage()
 {
-    version_title->setText(tr("Current Version Number") + "    " + qApp->applicationVersion());
+    version_title->setText(tr("Current Version Number") + "    " + current_version);
     version_tip->setText(tr("Update to the lastest version, make it work better"));
     check_btn->setText(tr("updating on the backend"));
     box_title->setText(tr("Common toolbox"));

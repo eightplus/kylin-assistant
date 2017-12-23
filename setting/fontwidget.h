@@ -21,6 +21,8 @@
 #define FONTWIDGET_H
 
 #include <QWidget>
+#include <QDoubleSpinBox>
+#include <QComboBox>
 
 class SessionDispatcher;
 class MainWindow;

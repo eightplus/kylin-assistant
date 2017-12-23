@@ -1,7 +1,8 @@
 kylin-assistant (1.0.0-0ubuntu1) bionic; urgency=low
 
-  * fork youker-assistant(commit:764)
-  * upgrade from Qt4 to Qt5.
-  * add qtsingleapplication.
+  * Fork youker-assistant(commit:764)
+  * Upgrade from Qt4 to Qt5.
+  * Add qtsingleapplication.
+  * Let the child window display normal.
 
  -- lixiang <lixiang@kylinos.cn>  Thu, 21 Dec 2017 14:52:56 +0800

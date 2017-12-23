@@ -21,15 +21,31 @@
 #include <QDebug>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QStackedLayout>
 
+//ProcessManager::ProcessManager(QObject *parent)
+//:QObject(parent), process_dialog(this)
 ProcessManager::ProcessManager(QObject *parent)
-:QObject(parent), process_dialog(this)
+    : QObject(parent)
+//      ,m_view(new QFrame)
 {
+    /*ProcessDialog *process_dialog = new ProcessDialog;
+    QStackedLayout *layout = new QStackedLayout;
+    layout->setSpacing(0);
+    layout->setMargin(0);
 
+    layout->addWidget(process_dialog);
+
+    m_view->setLayout(layout);*/
+    process_dialog = new ProcessDialog;
 }
 
 ProcessManager::~ProcessManager()
 {
+    if (process_dialog) {
+        delete process_dialog;
+        process_dialog = nullptr;
+    }
 }
 
 QString ProcessManager::getGuid()
@@ -52,15 +68,23 @@ QString ProcessManager::getPicture()
     return "processmanager.png";
 }
 
-void  ProcessManager::doAction()
+void ProcessManager::doAction()
 {
     int windowWidth = QApplication::desktop()->width();
     int windowHeight = QApplication::desktop()->height();
-    process_dialog.resetSkin();
-    process_dialog.move((windowWidth - 850) / 2,(windowHeight - 476) / 2);
-    process_dialog.show();
-    process_dialog.raise();
+    process_dialog->resetSkin();
+    process_dialog->move((windowWidth - 850) / 2,(windowHeight - 476) / 2);
+    process_dialog->show();
+    process_dialog->raise();
+
 }
+
+QWidget *ProcessManager::centralWidget()
+{
+//    return m_view;
+    return process_dialog;
+}
+
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 Q_EXPORT_PLUGIN2(ProcessManager, ProcessManager)

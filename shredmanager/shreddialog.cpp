@@ -17,10 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "shreddialog.h"
+#include "filewipe.h"
+//#include "shredmanager.h"
+
 #include <QStringList>
 #include <QCloseEvent>
 #include <QBitmap>
-#include "shredmanager.h"
 #include <QFileDialog>
 #include <QDir>
 #include <QVBoxLayout>
@@ -30,16 +33,17 @@
 #include <QPushButton>
 #include <QComboBox>
 #include <QDebug>
-#include "filewipe.h"
 
-ShredDialog::ShredDialog(ShredManager *plugin, QDialog *parent)
-    :QDialog(parent)
+//ShredDialog::ShredDialog(ShredManager *plugin, QDialog *parent)
+//    :QDialog(parent)
+ShredDialog::ShredDialog(QWidget *parent) :
+    QWidget(parent)
 {
     setWindowFlags(Qt::FramelessWindowHint);
     this->setStyleSheet("QDialog{border: 1px solid white;border-radius:1px;background-color: #ffffff;}");
     this->setWindowIcon(QIcon(":/res/kylin-assistant.png"));
     this->setFixedSize(500, 471);
-    process_plugin = plugin;
+//    process_plugin = plugin;
 
     shredSettings = new QSettings(KYLIN_COMPANY_SETTING, KYLIN_SETTING_FILE_NAME_SETTING);
     shredSettings->setIniCodec("UTF-8");
@@ -206,8 +210,8 @@ void ShredDialog::onSelectButtonClicked()
     QFileDialog* fd = new QFileDialog(this);
 //    fd->setStyleSheet("QFileDialog{background-color:blue;}");
     fd->resize(500, 471);
-    fd->setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
 //    fd->setFilter(tr("Allfile(*)"));
+    fd->setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
 //    fd->setFilter( "Allfile(*.*);;mp3file(*.mp3);;wmafile(*.wma);;wavefile(*.wav)");
     fd->setViewMode(QFileDialog::List);//设置浏览模式，有 列表（list） 模式和 详细信息（detail）两种方式
     if (fd->exec() == QDialog::Accepted)

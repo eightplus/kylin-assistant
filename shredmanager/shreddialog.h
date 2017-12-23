@@ -28,13 +28,15 @@ class QLabel;
 class QPushButton;
 class QLineEdit;
 class QComboBox;
-class ShredManager;
+//class ShredManager;
 
-class ShredDialog : public QDialog
+class ShredDialog : public QWidget
+//class ShredDialog : public QDialog
 {
     Q_OBJECT
 public:
-  ShredDialog(ShredManager *plugin, QDialog *parent = 0);
+//  ShredDialog(ShredManager *plugin, QDialog *parent = 0);
+    explicit ShredDialog(QWidget *parent = 0);
   ~ShredDialog();
   void setLanguage();
   void initConnect();
@@ -54,7 +56,7 @@ public slots:
 //    void onMinButtonClicked();
 
 private:
-    ShredManager *process_plugin;
+//    ShredManager *process_plugin;
     KylinTitleBar *title_bar;
     KylinEditButton *select_btn;
     QLineEdit *select_edit;

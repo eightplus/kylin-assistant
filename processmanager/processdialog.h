@@ -39,19 +39,22 @@
 
 class ProcessManager;
 
-class ProcessDialog : public QDialog
+//class ProcessDialog : public QDialog
+class ProcessDialog : public QWidget
 {
     Q_OBJECT
 public:
-  ProcessDialog(ProcessManager *plugin, QDialog *parent = 0);
-  ~ProcessDialog();
-  void setLanguage();
-  void initConnect();
-  void initTitleBar();
-  void showProList();
-  QString getCurrrentSkinName();
-  void resetSkin();
-  ProcApp *app;
+//    ProcessDialog(ProcessManager *plugin, QDialog *parent = 0);
+    explicit ProcessDialog(QWidget* parent = 0);
+    ~ProcessDialog();
+
+    void setLanguage();
+    void initConnect();
+    void initTitleBar();
+    void showProList();
+    QString getCurrrentSkinName();
+    void resetSkin();
+    ProcApp *app;
 
 protected:
     void closeEvent(QCloseEvent *event);
@@ -64,7 +67,7 @@ private slots:
 //    void onMinButtonClicked();
 
 private:
-  ProcessManager *process_plugin;
+//  ProcessManager *process_plugin;
   QLabel *tip_label;
   QPushButton *kill_btn;
   QTableWidget *tableWidget;

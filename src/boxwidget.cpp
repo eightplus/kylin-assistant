@@ -22,10 +22,13 @@
 #include "../component/plugininterface.h"
 #include "pluginmanager.h"
 #include <QGridLayout>
+#include <QStackedLayout>
 #include "../dbusproxy/youkersessiondbus.h"
 
 BoxWidget::BoxWidget(QWidget *parent, QString arch, QString os, QString path) :
     QWidget(parent), osarch(arch), osname(os), plugin_path(path)
+//  ,m_pluginsLayout(new QStackedLayout)
+//  ,m_pluginsManager(new PluginManager(this))
 {
     this->setFixedSize(900, 403);
     this->setStyleSheet("QWidget{border: none;}");
@@ -64,11 +67,40 @@ BoxWidget::BoxWidget(QWidget *parent, QString arch, QString os, QString path) :
     layout->setMargin(0);
     layout->setContentsMargins(0, 0, 0, 0);
     setLayout(layout);
+
+
+
+    /*m_pluginLayoutWidget = new QWidget;
+    m_pluginLayoutWidget->setLayout(m_pluginsLayout);
+    QVBoxLayout *pluginWidgetLayout = new QVBoxLayout;
+    pluginWidgetLayout->addWidget(m_pluginLayoutWidget);
+    pluginWidgetLayout->setSpacing(0);
+    pluginWidgetLayout->setMargin(0);
+    m_pluginWidget = new QWidget;
+    m_pluginWidget->setLayout(pluginWidgetLayout);
+
+    QVBoxLayout *centralLayout = new QVBoxLayout(this);
+    centralLayout->addWidget(list_view);
+    centralLayout->addWidget(m_pluginWidget);
+    centralLayout->setSpacing(0);
+    centralLayout->setMargin(0);
+
+    connect(m_pluginsManager, &PluginManager::pluginAdded, this, &BoxWidget::pluginAdded, Qt::QueuedConnection);
+    m_pluginsManager->loadPlugin(plugin_path);*/
 }
 
 BoxWidget::~BoxWidget()
 {
 }
+
+//void BoxWidget::pluginAdded(QWidget * const w)
+//{
+//    qDebug() << "BoxWidget::pluginAdded............";
+//    w->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+//    const int idx = m_pluginsLayout->addWidget(w);
+//    m_pluginsLayout->setCurrentIndex(idx);
+//}
+
 
 void BoxWidget::displayBoxHomePage() {
 //    stacked_widget->setCurrentIndex(0);

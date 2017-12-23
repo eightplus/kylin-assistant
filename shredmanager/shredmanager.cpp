@@ -20,18 +20,24 @@
 #include "shredmanager.h"
 #include <QApplication>
 #include <QDesktopWidget>
-#include <sys/types.h>
-#include <unistd.h>
 
+//ShredManager::ShredManager(QObject *parent)
+//:QObject(parent), shred_dialog(this)
+//{
+
+//}
 ShredManager::ShredManager(QObject *parent)
-:QObject(parent), shred_dialog(this)
+    : QObject(parent)
 {
-
+    shred_dialog = new ShredDialog;
 }
 
 ShredManager::~ShredManager()
 {
-
+    if (shred_dialog) {
+        delete shred_dialog;
+        shred_dialog = nullptr;
+    }
 }
 
 QString ShredManager::getGuid()
@@ -58,10 +64,15 @@ void  ShredManager::doAction()
 {
     int windowWidth = QApplication::desktop()->width();
     int windowHeight = QApplication::desktop()->height();
-    shred_dialog.resetSkin();
-    shred_dialog.move((windowWidth - 500) / 2,(windowHeight - 471) / 2);
-    shred_dialog.show();
-    shred_dialog.raise();
+    shred_dialog->resetSkin();
+    shred_dialog->move((windowWidth - 500) / 2,(windowHeight - 471) / 2);
+    shred_dialog->show();
+    shred_dialog->raise();
+}
+
+QWidget *ShredManager::centralWidget()
+{
+    return shred_dialog;
 }
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)

@@ -31,8 +31,10 @@
 //pkg-config --cflags libgtop-2.0
 //pkg-config --libs glib-2.0 libgtop-2.0
 
-ProcessDialog::ProcessDialog(ProcessManager *plugin, QDialog *parent)
-:QDialog(parent)
+//ProcessDialog::ProcessDialog(ProcessManager *plugin, QDialog *parent)
+//:QDialog(parent)
+ProcessDialog::ProcessDialog(QWidget *parent)
+    :QWidget(parent)
 {
     setWindowFlags(Qt::FramelessWindowHint);
     this->setStyleSheet("QDialog{border: 1px solid white;border-radius:1px;background-color: #ffffff;}");
@@ -44,8 +46,8 @@ ProcessDialog::ProcessDialog(ProcessManager *plugin, QDialog *parent)
 
     initTitleBar();
 
-    this->setFixedSize(850, 476);
-    process_plugin = plugin;
+//    this->setFixedSize(850, 476);
+//    process_plugin = plugin;
 
     toolkits = new Toolkits(0, this->width(), this->height());
     tip_label = new QLabel();
