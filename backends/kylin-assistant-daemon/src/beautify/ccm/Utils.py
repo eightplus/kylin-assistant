@@ -25,7 +25,7 @@ import weakref
 
 from gi.repository import GObject, Gtk, Gdk, Pango
 
-from Constants import *
+from .Constants import *
 from cgi import escape as protect_pango_markup
 import operator
 import itertools
@@ -59,7 +59,7 @@ def getDefaultScreen():
     return display.get_default_screen().get_number()
 
 def protect_markup_dict (dict_):
-    return dict((k, protect_pango_markup (v)) for (k, v) in dict_.items())
+    return dict((k, protect_pango_markup (v)) for (k, v) in list(dict_.items()))
 
 class Image (Gtk.Image):
 
@@ -173,7 +173,7 @@ class PrettyButton (Gtk.Button):
     def update_state_out (self, *args):
         state = args[-1]
         self.states[state] = False
-        if True in self.states.values ():
+        if True in list(self.states.values ()):
             self.set_state (Gtk.StateType.PRELIGHT)
         else:
             self.set_state (Gtk.StateType.NORMAL)
@@ -224,7 +224,7 @@ class IdleSettingsParser:
 
         self.Context = context
         self.Main = main
-        self.PluginList = [p for p in self.Context.Plugins.items() if FilterPlugin(p[1])]
+        self.PluginList = [p for p in list(self.Context.Plugins.items()) if FilterPlugin(p[1])]
         nCategories = len (main.MainPage.RightWidget._boxes)
         self.CategoryLoadIconsList = list(range(3, nCategories)) # Skip the first 3
         print('Loading icons...')
@@ -390,9 +390,9 @@ def GetSettings(group, types=None):
                 yield setting
 
     if types:
-        screen = TypeFilter(iter(group.Screen.values()), types)
+        screen = TypeFilter(iter(list(group.Screen.values())), types)
     else:
-        screen = iter(group.Screen.values())
+        screen = iter(list(group.Screen.values()))
 
     return screen
 

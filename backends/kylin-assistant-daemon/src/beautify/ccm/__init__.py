@@ -1,3 +1,3 @@
-from Conflicts import *
-from Constants import *
-from Utils import *
+from .Conflicts import *
+from .Constants import *
+from .Utils import *

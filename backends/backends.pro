@@ -1,7 +1,7 @@
 TEMPLATE = aux
 
 inst1.files += ../backends/kylin-assistant-daemon/src/
-inst1.path = /usr/lib/python2.7/dist-packages/kylin-assistant-daemon/
+inst1.path = /usr/lib/python3/dist-packages/kylin-assistant-daemon/
 inst2.files += ../backends/kylin-assistant-daemon/data/beautify/autostart/
 inst2.path = /var/lib/kylin-assistant-daemon/
 inst3.files += ../backends/kylin-assistant-daemon/data/beautify/plymouth/

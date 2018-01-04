@@ -22,8 +22,8 @@
 
 from gi.repository import Gtk
 
-from Constants import *
-from Utils import *
+from .Constants import *
+from .Utils import *
 
 import locale
 import gettext
@@ -225,7 +225,7 @@ class FeatureRequirement(Conflict):
         self.Feature = feature
 
         self.Found = False
-        for plugin in context.Plugins.values():
+        for plugin in list(context.Plugins.values()):
             if feature in plugin.Features:
                 self.Found = True
                 if not plugin.Enabled:

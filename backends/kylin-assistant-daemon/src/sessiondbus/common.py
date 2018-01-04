@@ -21,11 +21,11 @@
 ### END LICENSE
 
 import os, sys
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import platform
 import re
 import subprocess
-import commands
+import subprocess
 
 BOOL_TYPE = 1
 INT_TYPE = 2
@@ -98,21 +98,21 @@ def get_ip_again():
     ret = ''
     url = "http://members.3322.org/dyndns/getip"
     try:
-        fp = urllib2.urlopen(url, timeout=5)
+        fp = urllib.request.urlopen(url, timeout=5)
         souce = fp.read()
         if not isinstance(souce, str):
             souce = str(souce)
         fp.close()
         ret = souce.replace('\n', '')
     except:
-        print >> sys.stderr, 'get_ip failed!'
+        print('get_ip failed!', file=sys.stderr)
     return ret
 
 def get_ip():
     ret = ''
     url = "http://iframe.ip138.com/ic.asp"
     try:
-        fp = urllib2.urlopen(url, timeout=5)
+        fp = urllib.request.urlopen(url, timeout=5)
         souce = fp.read().decode("GB2312")
         fp.close()
         ret = re.findall("<center>(.*)</center>", souce)[0].encode("UTF-8")
@@ -144,10 +144,10 @@ def run_app(pkgname):
 
 def get_output(cmd):
     '''status =0 : success'''
-    status, output = commands.getstatusoutput(cmd)
+    status, output = subprocess.getstatusoutput(cmd)
     if status: raise
     return output
 
 if __name__ == '__main__':
     ip = get_ip()
-    print ip
+    print(ip)

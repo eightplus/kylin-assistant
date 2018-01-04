@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2010 Canonical
@@ -45,9 +45,9 @@ def utf8(s):
     """
     if s is None:
         return None
-    if isinstance(s, unicode):
+    if isinstance(s, str):
         return s.encode("utf-8", "ignore")
-    return unicode(s, "utf8", "ignore").encode("utf8")
+    return str(s, "utf8", "ignore").encode("utf8")
 
 class LoginBackendDbusSSO(LoginBackend):
 

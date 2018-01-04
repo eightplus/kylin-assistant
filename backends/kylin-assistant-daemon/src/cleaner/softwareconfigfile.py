@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2013 ~ 2014 National University of Defense Technology(NUDT) & Kylin Ltd
@@ -15,9 +15,9 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
-import commands
+import subprocess
 
-import common
+from . import common
 
 class SoftwareConfigfile():
     def __init__(self):
@@ -27,7 +27,7 @@ class SoftwareConfigfile():
         cache = common.get_cache_list()
         final_softwareconfigfile_list = []
 
-        status, output = commands.getstatusoutput('dpkg -l')
+        status, output = subprocess.getstatusoutput('dpkg -l')
         result = [(line.split()[1]).split(':')[0] for line in output.split('\n') if line.startswith('rc')]
         for one in result:
             final_softwareconfigfile_list.append(cache[one])
@@ -36,7 +36,7 @@ class SoftwareConfigfile():
         cache = common.get_cache_list()
         softwareconfigfile_list = []
 
-        status, output = commands.getstatusoutput('dpkg -l')
+        status, output = subprocess.getstatusoutput('dpkg -l')
         result = [(line.split()[1]).split(':')[0] for line in output.split('\n') if line.startswith('rc')]
         for one in result:
             pkg = cache[one]
@@ -47,4 +47,4 @@ class SoftwareConfigfile():
 if __name__ == '__main__':
     obj = SoftwareConfigfile()
     a = obj.scan_configfile_packages()
-    print a
+    print(a)

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2013 ~ 2014 National University of Defense Technology(NUDT) & Kylin Ltd
@@ -20,7 +20,7 @@ import os
 import apt_pkg
 import re
 
-import common
+from . import common
 
 class OldKernel():
     def __init__(self):
@@ -65,5 +65,5 @@ if __name__ == "__main__":
     objo = OldKernel()
     #objo.get_the_kernel()
     aaa = objo.get_old_kernel()
-    print aaa
+    print(aaa)
     

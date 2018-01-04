@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2013 ~ 2014 National University of Defense Technology(NUDT) & Kylin Ltd
@@ -20,22 +20,22 @@ import sys
 import apt
 import apt_pkg
 import shutil
-import commands
+import subprocess
 import threading
 import ctypes
 from apt.progress.base import InstallProgress
 import time
-import historyclean
-import cookiesclean
-import searchsame
-import diskanalyse
-import osslim
-import common
-import cacheclean
-import oldkernel
-import systemhistory
-import dashhistory
-import softwareconfigfile
+from . import historyclean
+from . import cookiesclean
+from . import searchsame
+from . import diskanalyse
+from . import osslim
+from . import common
+from . import cacheclean
+from . import oldkernel
+from . import systemhistory
+from . import dashhistory
+from . import softwareconfigfile
 
 HOMEDIR = ''
 
@@ -150,7 +150,7 @@ class OneKeyClean():
                     sysdaemon.status_for_quick_clean('software_center', caches)
                     objclean.clean_the_file(caches)
                 sysdaemon.status_for_quick_clean('software_center', 'end')
-            except Exception, e:
+            except Exception as e:
                 sysdaemon.clean_error_onekey('ce')
             else:
                 sysdaemon.clean_complete_onekey('c')
@@ -170,7 +170,7 @@ class OneKeyClean():
                     filepathc = "%s/.config/chromium/Default/History" % homedir
                     objca.clean_chromium_all_records(filepathc)
                     sysdaemon.status_for_quick_clean('chromiumhistory', 'end')
-            except Exception, e:
+            except Exception as e:
                 sysdaemon.clean_error_onekey('he')
             else:
                 sysdaemon.clean_complete_onekey('h')
@@ -191,7 +191,7 @@ class OneKeyClean():
                 pamcc = [filepathcc, 'cookies', 'host_key']
                 objcc.clean_all_records(pamcc[0], pamcc[1], pamcc[2])
                 sysdaemon.status_for_quick_clean('chromiumcookies', 'end')
-            except Exception, e:
+            except Exception as e:
                 sysdaemon.clean_error_onekey('ke')
             else:
                 sysdaemon.clean_complete_onekey('k')
@@ -602,7 +602,7 @@ def cancel_mainpage_function(target_tid, exception):
 def get_threadid(thread_obj):
     found = False
     target_tid = 0
-    for tid, tobj in threading._active.items():
+    for tid, tobj in list(threading._active.items()):
         if tobj is thread_obj:
             found = True
             target_tid = tid
@@ -650,8 +650,8 @@ class MainPage():
         thumbnailspath = "%s/.cache/thumbnails" % homedir
         try:
             temp_thumbnails_list = cache_obj.public_scan_cache(thumbnailspath)
-        except Exception, e:
-            print e
+        except Exception as e:
+            print(e)
         if sesdaemon:
             for one in temp_thumbnails_list:
                 self.cache_dic['thumbnail'].append(one)
@@ -661,7 +661,7 @@ class MainPage():
             for one in temp_thumbnails_list:
                 self.cache_dic['thumbnail'].append(one)
         if sesdaemon:
-            for key in self.cache_dic.keys():
+            for key in list(self.cache_dic.keys()):
                 if self.cache_dic[key]:
                     flag = True
                     break
@@ -677,7 +677,7 @@ class MainPage():
     def clean_cache(self, sysdaemon):
         totalsize = 0
         self.get_cache(None)
-        for key in self.cache_dic.keys():
+        for key in list(self.cache_dic.keys()):
             for f in self.cache_dic[key]:
                 totalsize += common.get_size(f)
                 if os.path.isdir(f):

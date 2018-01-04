@@ -1,8 +1,8 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import os, sys, shutil, tempfile
-import commands
+import subprocess
 
 # ensure that single instance of applet is running for each user
 class SingleInstance(object):
@@ -15,7 +15,7 @@ class SingleInstance(object):
             # Make sure it is not a "stale" pidFile
             pid = open(pidPath, 'r').read().strip()
             # Check list of running pids, if not running it is stale so overwrite
-            pidRunning = commands.getoutput('ls -1 /proc | grep ^%s$' % pid)
+            pidRunning = subprocess.getoutput('ls -1 /proc | grep ^%s$' % pid)
             self.lasterror = True if pidRunning else False
         else:
             self.lasterror = False
@@ -24,15 +24,15 @@ class SingleInstance(object):
             # Create a temp file, copy it to pidPath and remove temporary file
             (fp, temp_path) = tempfile.mkstemp()
             try:
-                os.fdopen(fp, "w+b").write(str(os.getpid()))
+                os.fdopen(fp, "w+b").write(bytes(os.getpid()))
                 shutil.copy(temp_path, pidPath)
                 os.unlink(temp_path)
             except Exception as e:
-                print str(e)
+                print(str(e))
 
     def is_already_running(self):
          return self.lasterror
 
     def __del__(self):
-         if not self.lasterror:
+         if not self.lasterror and os.path.exists(self.pidPath):
             os.unlink(self.pidPath)

@@ -1,6 +1,6 @@
 import os
-from common import get_dir_size
-from common import confirm_filesize_unit
+from .common import get_dir_size
+from .common import confirm_filesize_unit
 
 
 class CacheClean():

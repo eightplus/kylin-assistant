@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 
@@ -16,10 +16,15 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
+import sys
+sys.path.append('/usr/lib/python3/dist-packages/PIL') ## add by hb for python3
+
 import os
 import re
 import shutil
 import Image
+
+
 # from _pyio import open
 
 class Others:

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2010 Canonical
@@ -33,17 +33,17 @@ import piston_mini_client.failhandlers
 #from fake_review_settings import FakeReviewSettings, network_delay
 #from spawn_helper import SpawnHelper
 
-from login import get_login_backend
+from .login import get_login_backend
 
-from piston.ubuntusso_pristine import (
+from .piston.ubuntusso_pristine import (
     UbuntuSsoAPI as PristineUbuntuSsoAPI,
 )
 # patch default_service_root to the one we use
-from enums import UBUNTU_KYLIN_SSO_SERVICE
+from .enums import UBUNTU_KYLIN_SSO_SERVICE
 # *Don't* append /api/1.0, as it's already included in UBUNTU_SSO_SERVICE
 PristineUbuntuSsoAPI.default_service_root = UBUNTU_KYLIN_SSO_SERVICE
 
-from enums import (
+from .enums import (
     SOFTWARE_CENTER_NAME_KEYRING,
     SOFTWARE_CENTER_SSO_DESCRIPTION,
 )
@@ -101,7 +101,7 @@ class UbuntuSSO(GObject.GObject):
         try:
             res = api.whoami()
         except piston_mini_client.failhandlers.APIError as e:
-            print "api.whoami failed with APIError: '%s'" % e
+            print("api.whoami failed with APIError: '%s'" % e)
             LOG.exception("api.whoami failed with APIError: '%s'" % e)
         if len(res) == 0:
             self.emit("error")

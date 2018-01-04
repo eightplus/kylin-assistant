@@ -19,7 +19,7 @@
 
 import logging
 
-import ccm
+from . import ccm
 import compizconfig
 
 log = logging.getLogger('CompizSetting')
@@ -65,8 +65,8 @@ class CompizPlugin:
 
     @classmethod
     def is_available(cls, name, setting):
-        return cls.context.Plugins.has_key(name) and \
-               cls.context.Plugins[name].Screen.has_key(setting)
+        return name in cls.context.Plugins and \
+               setting in cls.context.Plugins[name].Screen
 
     def create_setting(self, key, target):
         settings = self._plugin.Screen

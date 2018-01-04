@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2007-2011 Tualatrix Chou <tualatrix@gmail.com>
@@ -27,7 +27,7 @@ from single import SingleInstance
 if __name__ == '__main__':
     myapp = SingleInstance("/tmp/kylin-assistant-sessiondbus-%d.pid" % os.getuid())
     if myapp.is_already_running():
-        print "Another instance of this sessiondbus is already running"
+        print("Another instance of this sessiondbus is already running")
         sys.exit("Another instance of this sessiondbus is already running")
     from sessiondbus.daemon import SessionDaemon
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)

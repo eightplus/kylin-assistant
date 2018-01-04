@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 
@@ -18,7 +18,7 @@
 
 
 import os
-import ConfigParser
+import configparser
 import copy
 import shutil
 from pprint import pprint
@@ -31,10 +31,10 @@ OPTION_O = 'OnlyShowIn'
 OPTION_NOT = 'NotShowIn'
 OPTION_X = 'X-GNOME-Autostart-enabled'
 
-class MyConfigParser(ConfigParser.ConfigParser):
+class MyConfigParser(configparser.ConfigParser):
     
     def __inin__(self, defaults=None):
-        ConfigParser.ConfigParser.__init__(self, defaults=None)
+        configparser.ConfigParser.__init__(self, defaults=None)
     
     def optionxform(self, optionstr):
         return optionstr
@@ -175,7 +175,7 @@ class Desktop_Autostart_Manage():
                     notautostart_1_list = self.dic.get('notautostart', [])
                     if notautostart_1_list:
                         #backup_list = copy.deepcopy(notautostart_list)
-                        new_notautostart_list = filter(lambda x: not x.count(single.split("/")[-1]), notautostart_1_list)
+                        new_notautostart_list = [x for x in notautostart_1_list if not x.count(single.split("/")[-1])]
                         self.dic['notautostart'] = new_notautostart_list
                     self.dic.setdefault(OPTION_H, []).append(single)
 
@@ -187,7 +187,7 @@ class Desktop_Autostart_Manage():
                     notautostart_2_list = self.dic.get('notautostart', [])
                     if notautostart_2_list:
                         #backup_list = copy.deepcopy(notautostart_list)
-                        new_notautostart_2_list = filter(lambda x: not x.count(single.split("/")[-1]), notautostart_2_list)
+                        new_notautostart_2_list = [x for x in notautostart_2_list if not x.count(single.split("/")[-1])]
                         self.dic['notautostart'] = new_notautostart_2_list
                     self.dic.setdefault('autostart', []).append(single)
                 
@@ -199,7 +199,7 @@ class Desktop_Autostart_Manage():
                     notautostart_3_list = self.dic.get('notautostart', [])
                     if notautostart_3_list:
                         #backup_list = copy.deepcopy(notautostart_list)
-                        new_notautostart_3_list = filter(lambda x: not x.count(single.split("/")[-1]), notautostart_3_list)
+                        new_notautostart_3_list = [x for x in notautostart_3_list if not x.count(single.split("/")[-1])]
                         self.dic['notautostart'] = new_notautostart_3_list
                     self.dic.setdefault('notautostart', []).append(single)
 
@@ -344,7 +344,7 @@ def interface_get_status(fobj):
                 down_list.append('Status:' + 'false')
                 fobj.autostartmanage_data_signal(down_list)
 
-    except Exception, e:
+    except Exception as e:
         fobj.autostartmanage_error_signal(str(e))
     else:
         fobj.autostartmanage_status_signal("complete")
@@ -363,7 +363,7 @@ def interface_change_status(fobj, filename):
     try:
         obj = Desktop_Autostart_Manage()
         obj.change_single_status(filename)
-    except Exception, e:
+    except Exception as e:
         fobj.autostartmanage_error_signal(str(e))
 #    else:
 #        fobj.autostartmanage_status_signal("complete")

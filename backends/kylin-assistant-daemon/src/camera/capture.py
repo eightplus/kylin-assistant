@@ -66,7 +66,7 @@ class Capture(threading.Thread):
                 if e.type == QUIT or (e.type == KEYDOWN and e.key == K_ESCAPE):
                     self.cam.stop()
                     pic_name = get_local_format_time() + '.png'
-                    print pic_name
+                    print(pic_name)
                     going = False
             if self.cam.query_image():
                 self.snapshot = self.cam.get_image(self.snapshot)

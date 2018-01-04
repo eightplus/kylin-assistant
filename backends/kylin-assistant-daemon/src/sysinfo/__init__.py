@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 ### BEGIN LICENSE
@@ -194,7 +194,7 @@ class Sysinfo:
                 desktop_name = "N/A"
             return desktop_name
         except Exception as e:
-            print e
+            print(e)
             desktop = os.getenv('DESKTOP_SESSION')
             if desktop in desktop_dict:
                 return desktop_dict[desktop]
@@ -254,6 +254,6 @@ class Sysinfo:
 
 if __name__ == '__main__':
     c = Sysinfo()
-    print(c.get_sys_msg())
+    print((c.get_sys_msg()))
     import getpass
-    print(getpass.getuser())
+    print((getpass.getuser()))

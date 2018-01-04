@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2013 ~ 2014 National University of Defense Technology(NUDT) & Kylin Ltd
@@ -18,7 +18,7 @@
 import os.path
 import sqlite3
 
-from common import get_mozilla_path
+from .common import get_mozilla_path
 
 
 class CookiesClean():

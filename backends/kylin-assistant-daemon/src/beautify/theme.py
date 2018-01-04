@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 
@@ -17,8 +17,8 @@
 ### END LICENSE
 
 import os
-import gsettings
-import utils
+from . import gsettings
+from . import utils
 
 class Theme:
     homedir = ''
@@ -173,7 +173,7 @@ class Theme:
             fd.write('Inherits=' + theme + '\n')
             fd.close()
             return True
-        except  Exception,e :
+        except  Exception as e :
             return False
 
     # get cursor size
@@ -408,9 +408,9 @@ if __name__ == '__main__':
     #print bb
 
     aa = ttt.get_default_schema_value('org.gnome.desktop.interface', 'cursor-size')
-    print aa
+    print(aa)
     bb = ttt.get_cursor_size()
-    print bb
+    print(bb)
     ttt.set_default_schema_value('org.gnome.desktop.interface', 'cursor-size', 'int')
 
     #aa = ttt.get_default_schema_value('org.gnome.desktop.interface', 'font-name')

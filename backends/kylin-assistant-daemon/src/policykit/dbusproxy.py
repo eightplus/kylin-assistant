@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2007-2011 Tualatrix Chou <tualatrix@gmail.com>
@@ -26,7 +26,7 @@ UKPATH = '/com/kylin/assistant/systemdaemon'
 SHOWED = False
 
 def show_message(*args):
-    from dialogs import ErrorDialog
+    from .dialogs import ErrorDialog
     title = 'Daemon start failed'
     message = ('Kylin Assisant systemdaemon didn\'t start correctly.\n'
                 'If you want to help developers debugging, try to run "<b>sudo /usr/lib/python2.7/dist-packages/kylin-assistant-daemon/src/start_systemdbus.py</b>" in a terminal.')
@@ -39,14 +39,14 @@ class DbusProxy:
     try:
         __system_bus = dbus.SystemBus()
         __object = __system_bus.get_object(INTERFACE, UKPATH)
-    except Exception, e:
+    except Exception as e:
         __object = None
 
     def __getattr__(self, name):
         global SHOWED
         try:
             return self.__object.get_dbus_method(name, dbus_interface=self.INTERFACE)
-        except Exception, e:
+        except Exception as e:
             #log.error(e)
             if not SHOWED:
                 SHOWED = True
@@ -68,4 +68,4 @@ def init_dbus(dbus_iface=INTERFACE, dbus_path=UKPATH):
     return proxy
 
 if __name__ == '__main__':
-    print init_dbus()
+    print(init_dbus())

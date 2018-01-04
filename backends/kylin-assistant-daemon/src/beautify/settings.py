@@ -24,7 +24,7 @@
 from gi.repository import Gio as gio
 import os, sys
 import types
-from common import Schema
+from .common import Schema
 
 #http://lazka.github.io/pgi-docs/api/Gio_2.0/classes/Settings.html
 
@@ -44,32 +44,32 @@ class Settings:
         try:
             setting_type = type
             get_func = {
-                types.IntType:     self.db.get_int,
-                types.StringType:  self.db.get_string,
-                types.BooleanType: self.db.get_boolean,
-                types.ListType:    self.db.get_strv,
-                types.DictType:    self.db.get_string,
-                types.NoneType:    self.db.get_value,
+                int:     self.db.get_int,
+                bytes:  self.db.get_string,
+                bool: self.db.get_boolean,
+                list:    self.db.get_strv,
+                dict:    self.db.get_string,
+                type(None):    self.db.get_value,
             }[setting_type]
             return get_func(key)
         except Exception as e:
-            print e
+            print(e)
             return None
 
     def set_value(self, key, type, value):
         try:
             setting_type = type
             set_func = {
-                types.IntType:     self.db.set_int,
-                types.StringType:  self.db.set_string,
-                types.BooleanType: self.db.set_boolean,
-                types.ListType:    self.db.set_strv,
-                types.DictType:    self.db.set_string,
-                types.NoneType:    self.db.set_value,
+                int:     self.db.set_int,
+                bytes:  self.db.set_string,
+                bool: self.db.set_boolean,
+                list:    self.db.set_strv,
+                dict:    self.db.set_string,
+                type(None):    self.db.set_value,
             }[setting_type]
             set_func(key, value)
         except Exception as e:
-            print e
+            print(e)
 
     def get_schema_value(self, schema, key):
         schema_default = Schema.load_schema(schema, key)
@@ -108,8 +108,8 @@ if __name__ == '__main__':
     #print value
 
     default_value = settings.get_schema_value("org.gnome.gedit.preferences.encodings", "auto-detected")
-    print "default_value->"
-    print default_value
+    print("default_value->")
+    print(default_value)
 
 
 

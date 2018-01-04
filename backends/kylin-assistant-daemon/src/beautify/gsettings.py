@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 
@@ -17,7 +17,7 @@
 ### END LICENSE
 
 from gi.repository import Gio as gio
-from common import Schema
+from .common import Schema
 import logging
 
 logger=logging.getLogger('kylin-assistant-daemon')

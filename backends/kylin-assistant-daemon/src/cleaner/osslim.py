@@ -3,7 +3,7 @@ import apt
 import apt_pkg
 from apt.progress.base import InstallProgress
 
-import common
+from . import common
 
 class OsSlim():
     def __init__(self):

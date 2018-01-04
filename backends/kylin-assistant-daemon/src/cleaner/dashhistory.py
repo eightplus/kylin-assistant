@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2013 ~ 2014 National University of Defense Technology(NUDT) & Kylin Ltd
@@ -16,7 +16,7 @@
 ### END LICENSE
 
 import os
-import commands
+import subprocess
 import sqlite3
 
 
@@ -48,7 +48,7 @@ class DashHistory():
         user = tmp_path.split('/')[2]
         os.remove(tmp_path)
         cmd = "su - %s -c 'zeitgeist-daemon --replace & >& /dev/null'" % user
-        (status, output) = commands.getstatusoutput(cmd)
+        (status, output) = subprocess.getstatusoutput(cmd)
         return
 
 

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2013 ~ 2014 National University of Defense Technology(NUDT) & Kylin Ltd
@@ -16,8 +16,6 @@
 ### END LICENSE
 
 import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
 import os
 import glob
 import fcntl
@@ -25,7 +23,6 @@ import shutil
 import logging
 import tempfile
 import subprocess
-import commands
 import re
 from subprocess import PIPE
 import apt
@@ -39,8 +36,8 @@ import platform
 import cleaner
 from autostartmanage import autostartmanage
 #import pywapi
-import urllib2, urllib
-from urllib import urlencode
+import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
+from urllib.parse import urlencode
 from xml.dom.minidom import parseString
 import re
 import json
@@ -67,7 +64,7 @@ from sysinfo import Sysinfo
 #from camera.capture import Capture
 #from weather.weatherinfo import WeatherInfo
 #from weather.yahoo import YahooWeather
-from common import *
+from .common import *
 #from unzip import unzip_resource
 #from piston_mini_client import APIError
 import httplib2
@@ -97,7 +94,7 @@ BATTERY_PATH = "/sys/class/power_supply/BAT0"
 BAT_FILE = "/sys/class/power_supply/BAT0/uevent"
 
 from gi.repository import Gio as gio
-from common import (BOOL_TYPE, INT_TYPE, DOUBLE_TYPE, STRING_TYPE)
+from .common import (BOOL_TYPE, INT_TYPE, DOUBLE_TYPE, STRING_TYPE)
 
 #Depends:gir1.2-gconf-2.0
 #from gi.repository import GConf
@@ -378,7 +375,10 @@ class SessionDaemon(dbus.service.Object):
     def currently_installed_version(self):
         apt_list = []
         cache = apt.Cache()
-        pkg = cache['kylin-assistant']
+        try:
+            pkg = cache['kylin-assistant']
+        except KeyError as e:
+            return [""]
         installed_version = pkg.installed.version
 #        print installed_version
         if ":" in installed_version:
@@ -432,13 +432,13 @@ class SessionDaemon(dbus.service.Object):
     @dbus.service.method(INTERFACE, in_signature='d', out_signature='')
     def adjust_screen_gamma(self, gamma):
         cmd = "xgamma -gamma " + str(gamma)
-        print cmd
+        print(cmd)
         os.system(cmd)
 
     @dbus.service.method(INTERFACE, in_signature='', out_signature='d')
     def get_screen_gamma(self):
 #        p = os.popen("xgamma")
-        status, output = commands.getstatusoutput("xgamma")
+        status, output = subprocess.getstatusoutput("xgamma")
         gamma_list = output.split(" ")
         gamma = gamma_list[len(gamma_list) - 1]
         return float(gamma)
@@ -547,9 +547,9 @@ class SessionDaemon(dbus.service.Object):
             self.sso.find_oauth_token()
         except ImportError:
             print('Initial ubuntu-kylin-sso-client failed, seem it is not installed.')
-        except Exception, e:
+        except Exception as e:
             print('Check user failed.')
-            print e
+            print(e)
 
     @dbus.service.method(INTERFACE, in_signature='', out_signature='')
     def slot_do_login_account(self):
@@ -558,9 +558,9 @@ class SessionDaemon(dbus.service.Object):
             self.sso.get_oauth_token()
         except ImportError:
             print('Initial ubuntu-kylin-sso-client failed, seem it is not installed.')
-        except Exception, e:
+        except Exception as e:
             print('User login failed.')
-            print e
+            print(e)
 
     # user register
     @dbus.service.method(INTERFACE, in_signature='', out_signature='')
@@ -571,9 +571,9 @@ class SessionDaemon(dbus.service.Object):
 
         except ImportError:
             print('Initial ubuntu-kylin-sso-client failed, seem it is not installed.')
-        except Exception, e:
+        except Exception as e:
             print('User register failed.')
-            print e
+            print(e)
 
     @dbus.service.method(INTERFACE, in_signature='', out_signature='')
     def slot_do_logout(self):
@@ -582,31 +582,31 @@ class SessionDaemon(dbus.service.Object):
 
         except ImportError:
             print('Initial ubuntu-kylin-sso-client failed, seem it is not installed.')
-        except Exception, e:
+        except Exception as e:
             print('User logout failed.')
-            print e
+            print(e)
 
     #update user login status
     def slot_whoami_done(self, sso, result):
         self.user = result["username"]
         self.display_name = result["displayname"]
         self.preferred_email = result["preferred_email"]
-        print 'Login success, username: %s' % self.display_name
+        print('Login success, username: %s' % self.display_name)
         self.youkerid_whoami_signal(self.display_name, self.preferred_email)
 
     def slot_logout_successful(self, sso):
         if self.token:
-            print 'User %s has been logout' % self.display_name
+            print('User %s has been logout' % self.display_name)
             self.token = ''
             self.user = ''
             self.display_name = ''
             self.preferred_email = ''
         else:
-            print 'No user has been login'
+            print('No user has been login')
         self.youkerid_logout_signal()
 
     def slot_login_fail(self, sso):
-        print 'Login or logout failed'
+        print('Login or logout failed')
         self.youkerid_login_fail_signal()
 
     @dbus.service.signal(INTERFACE, signature='ss')
@@ -665,7 +665,7 @@ class SessionDaemon(dbus.service.Object):
                 os.mknod(distrowatch_path)
             srcFile = '/var/lib/kylin-assistant-daemon/distrowatch.conf'
             if not os.path.exists(srcFile):
-                print "error with distrowatch file"
+                print("error with distrowatch file")
                 return
             else:
                 open(distrowatch_path, "wb").write(open(srcFile, "rb").read())
@@ -883,7 +883,7 @@ class SessionDaemon(dbus.service.Object):
                     if '=' in eachline:
                         tmp_list = eachline.split('=')
                         bat_dict[tmp_list[0]] = tmp_list[1]
-            except Exception, e:
+            except Exception as e:
                 bat_dict['error'] = 'unknown'
             return bat_dict
 
@@ -2030,10 +2030,10 @@ class SessionDaemon(dbus.service.Object):
         for urllist in source_urllist:
             source_url = '/'.join(urllist)
             try:
-                response = urllib2.urlopen(source_url,timeout=5)
+                response = urllib.request.urlopen(source_url,timeout=5)
                 good_source_urllist.append(source_url)
-            except Exception, e:
-                print e
+            except Exception as e:
+                print(e)
                 bad_source_urllist.append(source_url)
         if good_source_urllist == []:
             self.check_source_list_signal(False)

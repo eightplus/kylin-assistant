@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2013 ~ 2014 National University of Defense Technology(NUDT) & Kylin Ltd
@@ -26,7 +26,7 @@ import struct
 import math
 import binascii
 import platform
-import commands
+import subprocess
 import random
 from pprint import pprint
 
@@ -256,7 +256,7 @@ class DetailInfo:
 #        print platform.uname()
 
     def ctoascii(self,buf):
-        ch = str(buf)
+        ch = bytes(buf.encode('utf-8'))
         asci = binascii.b2a_hex(ch)
         asci = int(asci,16)
         return asci
@@ -272,7 +272,7 @@ class DetailInfo:
             k = len(s)
         i = 0
         while i < len(s):
-            if s[i] < 32:
+            if self.ctoascii(s[i]) < 32:
                 s = s[ :i] + s[i+1: ]
                 i -= 1
             i += 1
@@ -703,10 +703,10 @@ class DetailInfo:
                              cpu_siblings = line.rstrip('\n').split(':')[1]
                         elif line.rstrip('\n').startswith('clflush size'):
                              clflush_size = line.rstrip('\n').split(':')[1]
-                             clflush_size = filter(str.isdigit,clflush_size)
+                             clflush_size = list(filter(str.isdigit,clflush_size))
                         elif line.rstrip('\n').startswith('cache size'):
                              cache_size = line.rstrip('\n').split(':')[1]
-                             cache_size = filter(str.isdigit,cache_size)
+                             cache_size = list(filter(str.isdigit,cache_size))
             Cpu['cpu_cores'],Cpu['cpu_siblings'],Cpu['clflush_size'],Cpu['cache_size'] = cpu_cores,cpu_siblings,clflush_size,cache_size
         return Cpu
 
@@ -924,7 +924,6 @@ class DetailInfo:
                 p = re.compile(r'Output %s connected' % monitor)
                 for m in p.finditer(info):  # p.finditer(info) 返回一个迭代对象，通常只会循环一次 
                     Vga_num += 1
-                    print(monitor)
                     #print info.split("EDID for output %s" % monitor)[1].split("EDID for output")[0]
                     #ret.setdefault("Mon_output", monitor)
                     ret_output += (monitor + "<1_1>")
@@ -964,7 +963,7 @@ class DetailInfo:
 
                     Vga_businfo += "<1_1>"; Vga_product += "<1_1>"; Vga_vendor += "<1_1>"; Vga_Drive += "<1_1>"
 
-        status, output = commands.getstatusoutput('lspci -vvv')
+        status, output = subprocess.getstatusoutput('lspci -vvv')
         if not status:
             for local in output.split("\n\n"):
                 if "VGA compatible controller: " in local:
@@ -976,7 +975,7 @@ class DetailInfo:
 
                     for line in local.split("\n"):
                         if "VGA compatible controller: " in line:
-                            print line
+                            print(line)
                             Vga_product += line.split(":")[2][:-30]
                             Vga_vendor += self.get_url("", line.split(":")[2])
                         if "Kernel driver in use: " in line:
@@ -988,131 +987,6 @@ class DetailInfo:
                 ret_output, ret_vendor, ret_product, ret_year, ret_week, ret_size, ret_in
         ret["Mon_gamma"], ret["Mon_maxmode"] = ret_gamma, ret_maxmode
         ret["Vga_num"], ret['Vga_businfo'],ret['Vga_product'],ret['Vga_vendor'],ret['Vga_Drive'] = self.strip(str(Vga_num)), self.strip(Vga_businfo),self.strip(Vga_product),self.strip(Vga_vendor),self.strip(Vga_Drive)
-        return ret
-
-    def get_monitor_obsolete(self):
-        #Monitor
-#        ret = {'Mon_chip': 'CAICOS',
-#        'Mon_gamma': '2.20',
-#        'Mon_in': '24.1',
-#        'Mon_maxmode': '1920x1200',
-#        'Mon_output': 'HDMI-0',
-#        'Mon_product': 'DELL U2413',
-#        'Mon_size': '51.8cm x 32.4cm',
-#        'Mon_support': "['HDMI-0', 'VGA-0']",
-#        'Mon_vendor': 'DELL',
-#        'Mon_week': '13',
-#        'Mon_year': '2015',
-#        'Vga_Drive': 'radeon',
-#        'Vga_businfo': 'pci@0000:02:00.0',
-#        'Vga_num': '1',
-#        'Vga_product': 'Advanced Micro Devices, Inc. [AMD/ATI] Caicos XT [Radeon HD 7470/8470 / R5 235/310 OEM] (prog-if 00 [VGA controller])',
-#        'Vga_vendor': 'ATI'}
-#        return ret
-        ret = {}
-        with open('/var/log/Xorg.0.log','r') as fp:
-    	    info = fp.read()
-            tmp = re.findall('Monitor name: \s*(\w*)\s*(\w*)', info)
-            if tmp:
-                if tmp[0][1]:
-                    ret["Mon_vendor"] = tmp[0][0]
-                    ret["Mon_product"] = tmp[0][0] + " " + tmp[0][1]
-                else:ret["Mon_product"] = tmp[0][0]
-        
-            tmp = re.findall("Manufacturer:\s*(\w*)\s*Model:\s*(\w*)", info)
-            if tmp:
-                if not ret.get("Mon_product"):
-                    ret["Mon_product"] = tmp[0][0] + " " + tmp[0][1]
-                if not ret.get("Mon_vendor"):
-                    ret["Mon_vendor"] = tmp[0][0]
-
-	    tmp = re.findall("Year:\s*(\w*)\s*Week:\s*(\w*)", info)
-	    if tmp:
-	        ret["Mon_year"] = tmp[0][0]
-	        ret["Mon_week"] = tmp[0][1]
-            tmp = re.findall("Image Size: \s*(\w*) x (\w*)", info)
-	    if tmp:
-                x = float(tmp[0][0])/10
-                y = float(tmp[0][1])/10
-                d = math.sqrt(x**2 + y**2)/2.54
-
-	        ret["Mon_size"] = str(x) + "cm" + " x " + str(y) + "cm"
-                ret["Mon_in"] = "%.1f" %d
-
-	    tmp = re.findall("Gamma: (\S*)", info)
-	    if tmp:
-	        ret["Mon_gamma"] = tmp[0]
-
-	    h = re.findall("h_active: (\d*)", info)
-	    v = re.findall("v_active: (\d*)", info)
-	    if h and v:
-	        ret["Mon_maxmode"] = h[0] + "x" + v[0]
-
-	    tmp = re.findall("EDID for output (.*)", info)
-	    if tmp:
-	        ret["Mon_support"] = str(tmp)
-
-	    tmp = re.findall("Output (.*).* connected", info)
-	    if tmp:
-	        ret["Mon_output"] = tmp[0]
-
-	    tmp = re.findall("Integrated Graphics Chipset: (.*)", info)
-	    if tmp:
-	        ret["Mon_chip"] = tmp[0]
-
-            tmp = re.findall("Chipset: \"(.*)\"", info)
-            if tmp:
-                if not ret.get("Mon_chip"):
-                    ret["Mon_chip"] = tmp[0]
-        n = os.popen('lspci -vvv')
-        vga = n.read()
-        n.close()
-        Vga_num = 0
-        Vga_product,Vga_vendor,Vga_businfo,Vga_Drive = '','','',''
-        if vga :
-            while re.findall('VGA compatible controller: ',vga) :
-                tmp = vga[vga.index('VGA compatible controller: ') - 8:]
-                vga = tmp[30:]
-                if tmp[:8]:
-                    median = 'pci@0000:' + tmp[:8]
-                else:
-                    median = '$'
-                if Vga_businfo:
-                    Vga_businfo += "<1_1>" + median
-                else:
-                    Vga_businfo = median
-                
-                pro = re.findall('VGA compatible controller: (.*)',tmp)
-                if pro:
-                    median = pro[0]
-                    median_2 = self.get_url('',pro[0])
-                else:
-                    median = '$'
-                    median_2 = '$'
-                if Vga_product:
-                    Vga_product += "<1_1>" + median
-                    Vga_vendor += "<1_1>" + median_2
-                else:
-                    Vga_product = median
-                    Vga_vendor = median_2
-
-                Vga_num += 1
-                tmp = re.findall('Kernel driver in use: (.*)',tmp)
-                if tmp:
-                    median = tmp[0]
-                else:
-                    median = '$'
-                if Vga_Drive:
-                    Vga_Drive += "<1_1>" + median
-                else :
-                    Vga_Drive = median
-
-        if (ret.get('Mon_vendor')):
-            if (ret.get('Mon_product')):
-                ret['Mon_vendor'] = self.get_url(ret['Mon_vendor'],ret['Mon_product'])
-            else :  
-                ret['Mon_vendor'] = self.get_url(ret['Mon_vendor'],'')
-        ret['Vga_num'],ret['Vga_businfo'],ret['Vga_product'],ret['Vga_vendor'],ret['Vga_Drive'] = self.strip(str(Vga_num)),self.strip(Vga_businfo),self.strip(Vga_product),self.strip(Vga_vendor),self.strip(Vga_Drive)
         return ret
 
     def get_disk_obsolete(self):
@@ -1210,7 +1084,7 @@ class DetailInfo:
                     ### add by hebing at 2017.01.20
                     ### NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
                     disklist = []
-                    status, output = commands.getstatusoutput("lsblk -ab")
+                    status, output = subprocess.getstatusoutput("lsblk -ab")
                     for line in output.split("\n"):
                         value = line.split()
                         if value[1] == "8:0" and value[5] == "disk":
@@ -1255,7 +1129,7 @@ class DetailInfo:
         DiskProduct,DiskVendor,DiskCapacity,DiskName,DiskFw,DiskSerial = '','','','','',''
         diskdict = {}
         disknum = 0
-        statusfirst, output = commands.getstatusoutput("lsblk -b")
+        statusfirst, output = subprocess.getstatusoutput("lsblk -b")
 
         for line in output.split("\n"):
             value = line.split()
@@ -1266,21 +1140,18 @@ class DetailInfo:
 #                DiskCapacity += ( ((str(int(value[3]) / 10**9) + "G") if not statusfirst else "$") + "<1_1>")
 
                 infodict = {}
-                status, output = commands.getstatusoutput("hdparm -i %s" % ("/dev/" + value[0]))
-                
-                pprint(status)
+                status, output = subprocess.getstatusoutput("hdparm -i %s" % ("/dev/" + value[0]))
+
                 if not status:
                     singleinfolist = [ tmp.strip() for tmp in output.split("\n") if tmp]
-                    pprint(output)
                     for mid in singleinfolist[1].split(","):
                         needinfo = mid.split("=")
                         infodict.setdefault(needinfo[0].strip(), needinfo[1])
-                    for key, va in disk_manufacturers.items():
+                    for key, va in list(disk_manufacturers.items()):
                         if infodict.get("Model", "$").startswith(key):
                             infodict.setdefault("Vendor", va)
                             break
-                            
-                    pprint(infodict)
+
                     DiskProduct += (infodict.get("Model", "$") + "<1_1>")
                     DiskVendor += (infodict.get("Vendor", "$") + "<1_1>")
                     DiskFw += (infodict.get("FwRev", "$") + "<1_1>")
@@ -1292,12 +1163,6 @@ class DetailInfo:
                     DiskFw += ("$" + "<1_1>")
                     DiskSerial += ("$" + "<1_1>")
                 DiskName += (("/dev/" + value[0]) + "<1_1>")
-                pprint(DiskProduct)
-                pprint(DiskVendor)
-                pprint(DiskFw)
-                pprint(DiskSerial)
-                pprint(DiskName)
-                pprint(DiskCapacity)
         dis['DiskNum'],dis['DiskProduct'],dis['DiskVendor'],dis['DiskCapacity'],dis['DiskName'],dis['DiskFw'],dis['DiskSerial'] = str(disknum),DiskProduct.rstrip("<1_1>"),DiskVendor.rstrip("<1_1>"),DiskCapacity.rstrip("<1_1>"),DiskName.rstrip("<1_1>"),DiskFw.rstrip("<1_1>"),DiskSerial.rstrip("<1_1>")
         return dis
 
@@ -1663,8 +1528,8 @@ class DetailInfo:
                 tmp = re.findall('capabilities: (\d*)',network)
                 if tmp:
                     NetCapacity = tmp[0]
-        except Exception, e:
-            print e
+        except Exception as e:
+            print(e)
         WlanProduct,WlanVendor,WlanBusinfo,WlanLogicalname,WlanSerial,WlanIp,WlanDrive = '','','','','','',''
         n = os.popen('lspci -vvv')
         wlan = n.read()
@@ -1891,16 +1756,16 @@ class DetailInfo:
                 "in19": 12,
                 }
 
-        status, output = commands.getstatusoutput("sensors")
+        status, output = subprocess.getstatusoutput("sensors")
         for line in output.split("\n"):
-            for key in opposite.items():
+            for key in list(opposite.items()):
                 if line.split(":")[0] == key[1]:
                     if key[1] in ["in17", "in18", "in19"]:
                         value = (line.split(":")[1]).split("(")[0].strip()
                         origin[key[0]] = value[0:1] + str(float(value[1:-1]) * product[key[1]]) + " V"
                         break
                     if key[1] in ["temp5", "temp6"]:
-                        origin[key[0]] = ((line.split(":")[1]).split("(")[0].strip())[0:5] + u"℃ "
+                        origin[key[0]] = ((line.split(":")[1]).split("(")[0].strip())[0:5] + "℃ "
                         break
                     origin[key[0]] = (line.split(":")[1]).split("(")[0].strip()
                     break

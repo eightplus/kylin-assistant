@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import apt
@@ -68,11 +68,11 @@ class FetchProcess(apb.AcquireProgress):
         self.dbus_service.youker_fetch_signal("down_fetch", kwarg)
 
     def ims_hit(self, item):
-        print 'ims_hit'
+        print('ims_hit')
         pass
 
     def media_change(self, media, drive):
-        print 'media_change'
+        print('media_change')
         pass
 
     def pulse(self, owner):
@@ -106,7 +106,7 @@ class FetchProcess(apb.AcquireProgress):
 
         # cancel the operation
         if self.dbus_service.check_cancel_worker_item(self.appname) is True:
-            print "download_cancel"
+            print("download_cancel")
             self.dbus_service.youker_fetch_signal("down_cancel", kwarg)
             return False
 
@@ -235,19 +235,19 @@ class AptHandler():
 
             try:
                 self.cache.commit(FetchProcess(self.dbus_service, pkgName, AppActions.INSTALLDEPS), AptProcess(self.dbus_service, pkgName, AppActions.INSTALLDEPS))
-            except Exception, e:
-                print e
-                print "install err"
+            except Exception as e:
+                print(e)
+                print("install err")
 
     # install package
     def install(self, pkgName, kwargs=None):
-        print "real install->", pkgName
+        print("real install->", pkgName)
         self.cache.open()
         pkg = self.get_pkg_by_name(pkgName)
-        print pkg.installed.version#1.2.0-0ubuntu1
-        print len(pkg.versions)#2
-        print pkg.versions[0].version#1.3.1-0ubuntu1
-        print pkg.versions[1].version#1.2.0-0ubuntu1
+        print(pkg.installed.version)#1.2.0-0ubuntu1
+        print(len(pkg.versions))#2
+        print(pkg.versions[0].version)#1.3.1-0ubuntu1
+        print(pkg.versions[1].version)#1.2.0-0ubuntu1
 #        if pkg.is_installed:
 #            raise WorkitemError(7, "Package %s  is installed" % pkgName)
         pkg.mark_install()
@@ -306,14 +306,14 @@ class AptHandler():
 
         try:
             if quiet == True:
-                print "quiet=True"
+                print("quiet=True")
                 self.cache.update()
             else:
-                print "quiet=False"
+                print("quiet=False")
                 self.cache.update(fetch_progress=FetchProcess(self.dbus_service, "#update", AppActions.UPDATE))
-        except Exception, e:
-            print e
-            print "update except"
+        except Exception as e:
+            print(e)
+            print("update except")
 
 
 class WorkitemError(Exception):

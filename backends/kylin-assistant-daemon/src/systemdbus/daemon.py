@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 ### BEGIN LICENSE
@@ -34,8 +34,8 @@ from gi.repository import GObject
 #import aptsources.sourceslist
 #import apt_pkg
 import threading
-import thread
-from server import PolicyKitService
+import _thread
+from .server import PolicyKitService
 from policykit import KYLIN_ASSISTANT_ACTION
 import time
 import cleaner
@@ -52,7 +52,7 @@ INTERFACE = 'com.kylin.assistant.systemdaemon'
 UKPATH = '/com/kylin/assistant/systemdaemon'
 
 #------------------------------------apt start----------------------------
-from apt_handler import AppActions, AptHandler, WorkitemError
+from .apt_handler import AppActions, AptHandler, WorkitemError
 #class WorkItem:
 #     def __init__(self, pkgname, action, kwargs):
 #        self.pkgname = pkgname
@@ -170,12 +170,12 @@ class Daemon(PolicyKitService):
     #sudo apt-get install youker-assistant=1.3.1-0ubuntu1
     @dbus.service.method(INTERFACE, in_signature='s', out_signature='b', sender_keyword='sender')
     def install(self, pkgName, sender=None):
-        print "####install: ",pkgName
+        print("####install: ",pkgName)
 #        item = WorkItem(pkgName, AppActions.INSTALL, None)
 #        self.add_worker_item(item)
 #        self.aptHandler.install(pkgName)
-        thread.start_new_thread(self.start_install_uk, (pkgName,))
-        print "####install return"
+        _thread.start_new_thread(self.start_install_uk, (pkgName,))
+        print("####install return")
         return True
 
     def start_update_source_list(self):
@@ -183,7 +183,7 @@ class Daemon(PolicyKitService):
 
     @dbus.service.method(INTERFACE, in_signature='', out_signature='b', sender_keyword='sender')
     def update(self, sender=None):
-        thread.start_new_thread(self.start_update_source_list, ())
+        _thread.start_new_thread(self.start_update_source_list, ())
 #        self.aptHandler.update()
         return True
 
@@ -481,7 +481,7 @@ class Daemon(PolicyKitService):
             t = threading.Thread(target = daemononekey.clean_all_onekey_crufts, args = (self, mode_list))
             t.start()
             #daemononekey.clean_all_onekey_crufts(self, mode_list)
-        except Exception, e:
+        except Exception as e:
             self.clean_error_msg('onekey')
         else:
             self.clean_complete_msg('onekey')
@@ -720,7 +720,7 @@ class Daemon(PolicyKitService):
             return
         else:
             self.quit_clean(True)
-        thread.start_new_thread(self.start_clean_all, (mode_dic,))
+        _thread.start_new_thread(self.start_clean_all, (mode_dic,))
 #    @dbus.service.method(INTERFACE, in_signature='s', out_signature='', sender_keyword='sender')
 #    def remove_file(self, fp):
 #        status = self._check_permission(sender, KYLIN_ASSISTANT_ACTION)

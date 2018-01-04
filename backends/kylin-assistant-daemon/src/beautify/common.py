@@ -19,7 +19,7 @@
 
 import glob
 import logging
-import ConfigParser
+import configparser
 
 from lxml import etree
 
@@ -62,7 +62,7 @@ class RawConfigSetting(object):
         return value
 
     def init_configparser(self):
-        self._configparser = ConfigParser.ConfigParser()
+        self._configparser = configparser.ConfigParser()
         self._configparser.read(self._path)
 
     def sections(self):
@@ -118,7 +118,7 @@ class Schema(object):
                     cls.cached_override[section] = {}
                     for option in cs.options(section):
                         cls.cached_override[section][option] = cs.get_value(section, option)
-            except Exception, e:
+            except Exception as e:
                 log.error('Error while parsing override file: %s' % override)
 
     @classmethod
@@ -163,7 +163,7 @@ class Schema(object):
 
     @classmethod
     def parse_value(cls, key_node):
-        log.debug("Try to get type for value: %s" % key_node.items())
+        log.debug("Try to get type for value: %s" % list(key_node.items()))
         value = key_node.find('default').text
 
         #TODO enum type

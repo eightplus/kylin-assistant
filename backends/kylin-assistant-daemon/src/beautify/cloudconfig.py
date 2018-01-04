@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2013 National University of Defense Technology(NUDT) & Kylin Ltd
@@ -15,16 +15,16 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
-import ConfigParser
+import configparser
 import os, sys
 import threading
-import gsettings
+from . import gsettings
 from shutil import copy
 
 class CloudConfig(threading.Thread):
     def __init__(self, sysdaemon):
         self.sysdaemon = sysdaemon
-        self.conf = ConfigParser.ConfigParser()
+        self.conf = configparser.ConfigParser()
         self.home = os.path.expandvars('$HOME')
         self.youker_path = './'
         self.kuaipan_path = ''
@@ -527,7 +527,7 @@ class CloudConfig(threading.Thread):
     
     # Restore the system configuration
     def use_cloud_configuration(self, file_name):
-        print file_name
+        print(file_name)
         self.conf.read(file_name)
         sections = self.conf.sections()
         for conf_id in sections:
@@ -536,7 +536,7 @@ class CloudConfig(threading.Thread):
 
     # Get kuaipan directory address
     def get_kuaipan_path(self):
-        kpconf = ConfigParser.ConfigParser()
+        kpconf = configparser.ConfigParser()
         kpconf.read(self.home + '/.config/ubuntukylin/kuaipan4uk.conf')
         return kpconf.get('client-info', 'Root')
         

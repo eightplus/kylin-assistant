@@ -21,7 +21,7 @@
 ### END LICENSE
 
 import os
-import gsettings
+from . import gsettings
 
 class FileManager:
 

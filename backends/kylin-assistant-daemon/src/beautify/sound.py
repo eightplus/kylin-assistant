@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 
@@ -18,8 +18,8 @@
 
 import os
 import shutil
-import gsettings
-import utils
+from . import gsettings
+from . import utils
 
 class Sound:
     homedir = ''
@@ -218,5 +218,5 @@ if __name__ == '__main__':
 # 	sss.set_login_music_enable(False)
 #   print sss.get_sound_themes()
 #	print sss.get_sound_theme()
-    print sss.get_sounds()
+    print(sss.get_sounds())
 # sss.set_sound_theme('freedesktop')

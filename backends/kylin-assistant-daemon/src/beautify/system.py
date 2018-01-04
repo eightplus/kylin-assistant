@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 
@@ -17,7 +17,7 @@
 ### END LICENSE
 
 import os
-import gsettings
+from . import gsettings
 import platform
 from gi.repository import Gio as gio
 

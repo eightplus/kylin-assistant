@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 
@@ -17,8 +17,8 @@
 ### END LICENSE
 
 import os
-import gsettings
-from compizsettings import CompizSetting
+from . import gsettings
+#from .compizsettings import CompizSetting
 
 class Unity:
     '''if compiz: key is icon_size; else if gsettins: key is icon-size'''
@@ -33,9 +33,9 @@ class Unity:
     # ---------------launcher---------------
     # -----------------默认值-----------------
     # Get Default Value
-    def get_default_schema_value(self, name, key):
-        compizsetting = CompizSetting("%s.%s" % (name, key))
-        return compizsetting.get_schema_value()
+    #def get_default_schema_value(self, name, key):
+    #    compizsetting = CompizSetting("%s.%s" % (name, key))
+    #    return compizsetting.get_schema_value()
 
     # Set Default Value  min=32, max=64, step=16, key="unityshell.icon_size"
     #def set_default_schema_value(self, key, name, type, value):
@@ -67,7 +67,7 @@ class Unity:
                 return True
             else:
                 return None
-        except Exception, e:
+        except Exception as e:
             return False
 
     # launcher icon size 32-64
@@ -83,7 +83,7 @@ class Unity:
             return gsettings.get('org.compiz.unityshell',
                 '/org/compiz/profiles/unity/plugins/unityshell/',
                 'icon-size', 'int')
-        except Exception, e:
+        except Exception as e:
             return 0
 
     # launcher 'show desktop' icon True/False
@@ -125,7 +125,7 @@ class Unity:
             return gsettings.get('org.compiz.unityshell',
                 '/org/compiz/profiles/unity/plugins/unityshell/',
                 'launcher-opacity', 'double')
-        except Exception, e:
+        except Exception as e:
             return 0.0
 
     # 'min'    : 0.2, # TODO : Check these min max. Most prolly wrong.
@@ -147,7 +147,7 @@ class Unity:
             return gsettings.get('org.compiz.unityshell',
                 '/org/compiz/profiles/unity/plugins/unityshell/',
                 'backlight-mode', 'int')
-        except Exception, e:
+        except Exception as e:
             return 0
 
     # 'map'       : {0:0,1:1,2:2,3:3,4:4}  0:所有程序，1:仅打开的应用程序，2:不着色，3:边缘着色，4:每个工作区交替着色
@@ -178,7 +178,7 @@ class Unity:
             return gsettings.get('org.compiz.unityshell',
                 '/org/compiz/profiles/unity/plugins/unityshell/',
                 'dash-blur-experimental', 'int')
-        except Exception, e:
+        except Exception as e:
             return 0
 
     # 活动模糊smart: 2   静态模糊static:1   非模糊0
@@ -194,7 +194,7 @@ class Unity:
             return gsettings.get('org.compiz.unityshell',
                 '/org/compiz/profiles/unity/plugins/unityshell/',
                 'panel-opacity', 'double')
-        except Exception, e:
+        except Exception as e:
             return 0.0
 
     # 'min'    : 0.2, # TODO : Check these min max. Most prolly wrong.
@@ -421,7 +421,7 @@ if __name__ == '__main__':
     uuu = Unity()
 #    print uuu.get_launcher_icon_colouring()
 #    print uuu.set_launcher_icon_colouring(1)
-    print uuu.get_time_format()
+    print(uuu.get_time_format())
 #    bb = uuu.get_default_schema_value("unityshell", "icon_size")
 #    aa = uuu.get_default_schema_value("unityshell", "launcher_hide_mode")
     #aa = uuu.get_default_schema_value('org.gnome.desktop.media-handling', 'automount')

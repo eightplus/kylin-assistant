@@ -66,13 +66,13 @@ class WizardEventBox(gtk.EventBox):
         # 鼠标事件
         self.connect("button-press-event", self.on_button_press)
         # 幻灯片图片
-        self.slider_pics = map(gtk.gdk.pixbuf_new_from_file, slider_icons)
+        self.slider_pics = list(map(gtk.gdk.pixbuf_new_from_file, slider_icons))
         # 幻灯片总数
         self.icon_num = len(slider_icons)
         # 滑动圆点图片设置
-        self.pointer_pic, self.pointer_pic_active = map(gtk.gdk.pixbuf_new_from_file, pointer_icons)
+        self.pointer_pic, self.pointer_pic_active = list(map(gtk.gdk.pixbuf_new_from_file, pointer_icons))
         # 开始按钮图片设置
-        self.btn_pic, self.btn_pic_press = map(gtk.gdk.pixbuf_new_from_file, button_icons)
+        self.btn_pic, self.btn_pic_press = list(map(gtk.gdk.pixbuf_new_from_file, button_icons))
         button_size = 55
         self.pointer_dict = {}
         self.index = 0
@@ -141,7 +141,7 @@ class WizardEventBox(gtk.EventBox):
 
     def on_motion_notify(self, widget, event):
         self.show_index = None
-        for index, rect in self.pointer_dict.items():
+        for index, rect in list(self.pointer_dict.items()):
             if rect.x <= event.x <= rect.x + rect.width and rect.y <= event.y <= rect.y + rect.height:
                 self.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.HAND2))
                 self.show_index = index
@@ -231,7 +231,7 @@ class Wizard(gtk.Window):
         self.move_window_event(self.event_box)
 
     def destroy_wizard(self, widget):
-        print 'Kylin-Assistant slide show is over!'
+        print('Kylin-Assistant slide show is over!')
         #widget.destory()
 
     def is_left_button(self, event):

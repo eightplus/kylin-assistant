@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 
@@ -124,7 +124,7 @@ if __name__ == "__main__":
     #  	print mmm.get_used_memory("g")
     # 	print mmm.get_total_memory("g")
     # 	mmm.ttestt()
-    print mmm.get_memory_percent()
-    print mmm.get_total_memory()
-    print mmm.get_used_memory()
-    print mmm.get_free_memory()
+    print(mmm.get_memory_percent())
+    print(mmm.get_total_memory())
+    print(mmm.get_used_memory())
+    print(mmm.get_free_memory())

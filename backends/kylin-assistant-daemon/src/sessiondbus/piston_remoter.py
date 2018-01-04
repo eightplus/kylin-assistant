@@ -23,9 +23,7 @@ ratings and reviews API, plus a few helper classes.
 """
 
 import os, sys
-reload(sys)
-sys.setdefaultencoding('utf8')
-from urllib import quote_plus
+from urllib.parse import quote_plus
 from piston_mini_client import (
     PistonAPI,
     PistonResponseObject,

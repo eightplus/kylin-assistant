@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2013 ~ 2014 National University of Defense Technology(NUDT) & Kylin Ltd
@@ -18,7 +18,7 @@
 import os
 import os.path
 
-import common
+from . import common
 
 class DiskAnalyse():
     def __init__(self):

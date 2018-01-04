@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2013 ~ 2014 National University of Defense Technology(NUDT) & Kylin Ltd
@@ -17,8 +17,8 @@
 
 import os.path
 import sqlite3
-from common import process_pid
-from common import get_mozilla_path
+from .common import process_pid
+from .common import get_mozilla_path
 
 
 class HistoryClean():
@@ -37,7 +37,7 @@ class HistoryClean():
 
                 tmp = list(eachvisit)
                 tmp[0], tmp[-1] = str(tmp[0]), str(tmp[-1])
-                if not isinstance(tmp[2], unicode):
+                if not isinstance(tmp[2], str):
                     tmp[2] = str(tmp[2])
                 tmp_str = '<2_2>'.join(tmp)
                 save.append(tmp_str)

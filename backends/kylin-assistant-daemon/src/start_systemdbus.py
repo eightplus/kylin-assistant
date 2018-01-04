@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2013 ~ 2014 National University of Defense Technology(NUDT) & Kylin Ltd
@@ -26,7 +26,7 @@ from single import SingleInstance
 if __name__ == '__main__':
     myapp = SingleInstance("/tmp/kylin-assistant-systemdbus-%d.pid" % os.getuid())
     if myapp.is_already_running():
-        print "Another instance of this systemdbus is already running"
+        print("Another instance of this systemdbus is already running")
         sys.exit("Another instance of this systemdbus is already running")
     os.environ["TERM"] = "xterm"
     os.environ["PATH"] = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/X11R6/bin"

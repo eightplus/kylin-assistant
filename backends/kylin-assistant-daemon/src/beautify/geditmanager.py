@@ -21,7 +21,7 @@
 ### END LICENSE
 
 import os
-from settings import Settings
+from .settings import Settings
 import types
 
 class GeditManager:
@@ -48,16 +48,16 @@ class GeditManager:
     # default = off
     # Get: Auto detect text encoding for Simplified Chinese in Gedit
     def get_detect_chinese_encoding(self):
-        return self.settings.get_value("auto-detected", types.ListType)
+        return self.settings.get_value("auto-detected", list)
 
     # Set: Auto detect text encoding for Simplified Chinese in Gedit
     def set_detect_chinese_encoding(self, flag):
         list_on = ['GB18030', 'UTF-8', 'CURRENT', 'ISO-8859-15', 'UTF-16']
         list_off = ['UTF-8', 'CURRENT', 'ISO-8859-15', 'UTF-16']
         if(flag):
-            self.settings.set_value("auto-detected", types.ListType, list_off)
+            self.settings.set_value("auto-detected", list, list_off)
         else:
-            self.settings.set_value("auto-detected", types.ListType, list_on)
+            self.settings.set_value("auto-detected", list, list_on)
 
 
     # Get Default Value: Auto detect text encoding for Simplified Chinese in Gedit
@@ -89,4 +89,4 @@ if __name__ == '__main__':
 
     #aa = gm.get_default_schema_value("org.gnome.gedit.preferences.encodings", "auto-detected")
     #print aa
-    gm.set_default_schema_value("org.gnome.gedit.preferences.encodings", "auto-detected", types.ListType)
+    gm.set_default_schema_value("org.gnome.gedit.preferences.encodings", "auto-detected", list)

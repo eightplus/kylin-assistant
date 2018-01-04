@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2013 ~ 2014 National University of Defense Technology(NUDT) & Kylin Ltd
@@ -16,7 +16,7 @@
 ### END LICENSE
 
 import os
-import ConfigParser
+import configparser
 import apt
 import apt_pkg
 import psutil
@@ -37,7 +37,7 @@ def confirm_filesize_unit(size):
     return finalsize
 
 def get_dir_size(path):
-    size = 0L
+    size = 0
     for root, dirs, files in os.walk(path):
         size += sum([os.path.getsize(os.path.join(root, name)) for name in files])
     return size
@@ -81,7 +81,7 @@ def analytical_profiles_file(homedir):
     app_path = '%s/.mozilla/firefox' % homedir
     profiles_path = '%s/profiles.ini' % app_path
     if os.path.exists(profiles_path):
-        cfg = ConfigParser.ConfigParser()
+        cfg = configparser.ConfigParser()
         cfg.read(profiles_path)
         complete_section = cfg.sections()
         for section in complete_section:
@@ -90,7 +90,7 @@ def analytical_profiles_file(homedir):
                 complete_option = cfg.options(section)
                 try:
                     cfg.getint(section, 'Default') == 1
-                except Exception, e:
+                except Exception as e:
                     pass
                 else:
                     flag_pro_section = section
@@ -124,7 +124,7 @@ def get_mozilla_path(homedir):
 
     profiles_path = '%s/profiles.ini' % app_path
     if os.path.exists(profiles_path):
-        cfg = ConfigParser.ConfigParser()
+        cfg = configparser.ConfigParser()
         cfg.read(profiles_path)
         complete_section = cfg.sections()
         for section in complete_section:
@@ -133,7 +133,7 @@ def get_mozilla_path(homedir):
                 complete_option = cfg.options(section)
                 try:
                     cfg.getint(section, 'Default') == 1
-                except Exception, e:
+                except Exception as e:
                     pass
                 else:
                     flag_pro_section = section
@@ -156,4 +156,4 @@ def get_mozilla_path(homedir):
     return finalpath
 
 if __name__ == '__main__':
-    print analytical_profiles_file('/home/aya')
+    print(analytical_profiles_file('/home/aya'))

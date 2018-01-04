@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
 # Copyright (C) 2013 ~ 2014 National University of Defense Technology(NUDT) & Kylin Ltd
@@ -50,7 +50,7 @@ class SearchSame():
     def search_by_size(self):
         self.style_dic = self.reduce_the_dic(self.tmp_style_dic)
         size_dic = {}
-        for k in self.style_dic.keys():
+        for k in list(self.style_dic.keys()):
             for abc in self.style_dic[k]:
                 filesize = os.path.getsize(abc)
                 size_dic.setdefault(filesize, []).append(abc)
@@ -59,7 +59,7 @@ class SearchSame():
     def search_by_cmp(self):
         final_dic = {}
         size_dic = self.search_by_size()
-        for k in size_dic.keys():
+        for k in list(size_dic.keys()):
             for content in size_dic[k]:
                 sha1sumva = self.get_file_hash(content)
                 final_dic.setdefault(sha1sumva, []).append(content)
@@ -76,7 +76,7 @@ class SearchSame():
     def adjust_the_dic(self):
         final_list = []
         final_dic = self.search_by_cmp()
-        for key in final_dic.keys():
+        for key in list(final_dic.keys()):
             tmp_str = "<2_2>".join(final_dic[key])
             final_list.append(tmp_str)
         # init 
@@ -85,7 +85,7 @@ class SearchSame():
         return final_list
         
     def reduce_the_dic(self, tmp_dic):
-        for key in tmp_dic.keys():
+        for key in list(tmp_dic.keys()):
             if len(tmp_dic[key]) < 2:
                 del tmp_dic[key]
         return tmp_dic
