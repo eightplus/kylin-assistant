@@ -36,6 +36,7 @@ ToolBar::ToolBar(QSettings *settings, QWidget *parent)
 ToolBar::~ToolBar()
 {
     delete processLabel;
+    delete searchEdit;
     delete processCategory;
     //Segmentation fault
     QLayoutItem *child;
@@ -65,13 +66,13 @@ bool ToolBar::eventFilter(QObject *obj, QEvent *event)
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
             if (keyEvent->key() == Qt::Key_Escape) {
                 searchEdit->clear();
-                emit pressEsc();
+                emit canelSearchEditFocus();
             }
         }
         else if (obj == searchEdit->getLineEdit()) {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
             if (keyEvent->key() == Qt::Key_Tab) {
-                emit pressTab();
+                emit canelSearchEditFocus();
             }
         }
     }
@@ -79,7 +80,7 @@ bool ToolBar::eventFilter(QObject *obj, QEvent *event)
     return QFrame::eventFilter(obj, event);
 }
 
-void ToolBar::focusInput()
+void ToolBar::setSearchEditFocus()
 {
     if (searchEdit->text() != "") {
         searchEdit->getLineEdit()->setFocus();
@@ -165,6 +166,8 @@ void ToolBar::initMiddleContent()
         disksButton->setChecked(false);
         if (!searchEdit->isVisible())
             searchEdit->setVisible(true);
+        if (!processCategory->isVisible())
+            processCategory->setVisible(true);
     });
     connect(resourcesButton, &MyTipImageButton::clicked, this, [=] {
         emit this->changePage(1);
@@ -173,6 +176,10 @@ void ToolBar::initMiddleContent()
         disksButton->setChecked(false);
         if (searchEdit->isVisible())
             searchEdit->setVisible(false);
+        if (processCategory->isVisible())
+            processCategory->setVisible(false);
+        searchEdit->clear();
+        emit canelSearchEditFocus();
     });
     connect(disksButton, &MyTipImageButton::clicked, this, [=] {
         emit this->changePage(2);
@@ -181,6 +188,10 @@ void ToolBar::initMiddleContent()
         disksButton->setChecked(true);
         if (searchEdit->isVisible())
             searchEdit->setVisible(false);
+        if (processCategory->isVisible())
+            processCategory->setVisible(false);
+        searchEdit->clear();
+        emit canelSearchEditFocus();
     });
     processButton->setToolTip(tr("Processes"));
     resourcesButton->setToolTip(tr("Resources"));

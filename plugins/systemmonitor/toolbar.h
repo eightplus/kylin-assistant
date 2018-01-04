@@ -17,7 +17,7 @@ public:
     ToolBar(QSettings *settings, QWidget *parent);
     ~ToolBar();
 
-    void focusInput();
+    void setSearchEditFocus();
     void initLeftContent();
     void initMiddleContent();
     void initRightContent();
@@ -34,8 +34,7 @@ public slots:
 signals:
     void changePage(int index);
     void searchSignal(QString searchContent);
-    void pressEsc();
-    void pressTab();
+    void canelSearchEditFocus();
     void activeWhoseProcessList(int index);
 
 private:

@@ -142,13 +142,13 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>BoxWidget</name>
     <message>
-        <location filename="../boxwidget.cpp" line="116"/>
-        <location filename="../boxwidget.cpp" line="118"/>
+        <location filename="../boxwidget.cpp" line="148"/>
+        <location filename="../boxwidget.cpp" line="150"/>
         <source>Kylin Software Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../boxwidget.cpp" line="128"/>
+        <location filename="../boxwidget.cpp" line="160"/>
         <source>Boot Manager</source>
         <translation type="unfinished"></translation>
     </message>
@@ -455,7 +455,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>CleanerItems</name>
     <message>
-        <location filename="../../cleaner/cleaneritems.cpp" line="177"/>
+        <location filename="../../cleaner/cleaneritems.cpp" line="175"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1429,60 +1429,60 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>FontWidget</name>
     <message>
+        <location filename="../../setting/fontwidget.cpp" line="87"/>
+        <location filename="../../setting/fontwidget.cpp" line="88"/>
         <location filename="../../setting/fontwidget.cpp" line="89"/>
         <location filename="../../setting/fontwidget.cpp" line="90"/>
         <location filename="../../setting/fontwidget.cpp" line="91"/>
-        <location filename="../../setting/fontwidget.cpp" line="92"/>
-        <location filename="../../setting/fontwidget.cpp" line="93"/>
         <source>Click here to change font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="279"/>
+        <location filename="../../setting/fontwidget.cpp" line="277"/>
         <source>Default Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="280"/>
+        <location filename="../../setting/fontwidget.cpp" line="278"/>
         <source>Desktop Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="281"/>
+        <location filename="../../setting/fontwidget.cpp" line="279"/>
         <source>Monospace Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="282"/>
+        <location filename="../../setting/fontwidget.cpp" line="280"/>
         <source>Document Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="283"/>
+        <location filename="../../setting/fontwidget.cpp" line="281"/>
         <source>Titlebar Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="284"/>
+        <location filename="../../setting/fontwidget.cpp" line="282"/>
         <source>Global Font Scaling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="285"/>
+        <location filename="../../setting/fontwidget.cpp" line="283"/>
         <source>Hinting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/fontwidget.cpp" line="286"/>
+        <location filename="../../setting/fontwidget.cpp" line="284"/>
         <source>Antialiasing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../setting/fontwidget.cpp" line="285"/>
+        <location filename="../../setting/fontwidget.cpp" line="286"/>
         <location filename="../../setting/fontwidget.cpp" line="287"/>
         <location filename="../../setting/fontwidget.cpp" line="288"/>
         <location filename="../../setting/fontwidget.cpp" line="289"/>
-        <location filename="../../setting/fontwidget.cpp" line="290"/>
-        <location filename="../../setting/fontwidget.cpp" line="291"/>
         <source>Restore</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1696,47 +1696,47 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>HomePage</name>
     <message>
-        <location filename="../homepage.cpp" line="183"/>
+        <location filename="../homepage.cpp" line="184"/>
         <source>Boot Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="258"/>
+        <location filename="../homepage.cpp" line="259"/>
         <source>Current Version Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="259"/>
+        <location filename="../homepage.cpp" line="260"/>
         <source>Update to the lastest version, make it work better</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="260"/>
+        <location filename="../homepage.cpp" line="261"/>
         <source>updating on the backend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="261"/>
+        <location filename="../homepage.cpp" line="262"/>
         <source>Common toolbox</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="262"/>
+        <location filename="../homepage.cpp" line="263"/>
         <source>Fast and practical, making the system more personalized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="281"/>
+        <location filename="../homepage.cpp" line="282"/>
         <source>Upgrade is complete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="283"/>
+        <location filename="../homepage.cpp" line="284"/>
         <source>Updating on the backend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="183"/>
+        <location filename="../homepage.cpp" line="184"/>
         <source>More</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1948,59 +1948,6 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     </message>
 </context>
 <context>
-    <name>LauncherWidget</name>
-    <message>
-        <location filename="../../setting/launcherwidget.cpp" line="314"/>
-        <source>Launcher icon size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../setting/launcherwidget.cpp" line="315"/>
-        <source>Launcher hide mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../setting/launcherwidget.cpp" line="316"/>
-        <source>Display desktop icon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../setting/launcherwidget.cpp" line="317"/>
-        <source>Launcher Transparency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../setting/launcherwidget.cpp" line="318"/>
-        <source>Icon Background</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../setting/launcherwidget.cpp" line="319"/>
-        <source>Top panel icon size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../setting/launcherwidget.cpp" line="320"/>
-        <source>Top panel auto hide</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../setting/launcherwidget.cpp" line="321"/>
-        <source>Bottom panel icon size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../setting/launcherwidget.cpp" line="322"/>
-        <source>Bottom panel auto hide</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../setting/launcherwidget.cpp" line="323"/>
-        <source>Launcher position</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>LoginWidget</name>
     <message>
         <location filename="../loginwidget.cpp" line="139"/>
@@ -2016,8 +1963,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="56"/>
-        <location filename="../mainwindow.cpp" line="61"/>
+        <location filename="../mainwindow.cpp" line="69"/>
         <source>Kylin Assistant</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2214,10 +2160,223 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     </message>
 </context>
 <context>
+    <name>ProcessDialog</name>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="142"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="145"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="161"/>
+        <source>End process</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="142"/>
+        <source>Ending a process may destroy data, break the session or introduce a security risk. Only unresponsive processes should be ended.
+Are you sure to continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="144"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="150"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="148"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="151"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="163"/>
+        <source>Kill process</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="148"/>
+        <source>Killing a process may destroy data, break the session or introduce a security risk. Only unresponsive processes should be killed.
+Are you sure to continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="157"/>
+        <source>Stop process</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="159"/>
+        <source>Continue process</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="188"/>
+        <source>Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProcessListItem</name>
+    <message>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="54"/>
+        <source>Stopped</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="56"/>
+        <source>Suspend</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="58"/>
+        <source>Zombie</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="60"/>
+        <source>No response</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="63"/>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="65"/>
+        <source>Uninterruptible</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProcessListWidget</name>
+    <message>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="46"/>
+        <source>Process Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="46"/>
+        <source>User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="46"/>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="46"/>
+        <source>CPU</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="46"/>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="46"/>
+        <source>Command Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="46"/>
+        <source>Memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="46"/>
+        <source>Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="658"/>
+        <source>No search result</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProcessManager</name>
+    <message>
+        <location filename="../../plugins/systemmonitor/processmanager.cpp" line="48"/>
+        <source>System Monitor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processmanager.cpp" line="53"/>
+        <source>Help user to kill process</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PropertiesDialog</name>
+    <message>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="58"/>
+        <source>User name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="70"/>
+        <source>Process name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="82"/>
+        <source>Command line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="96"/>
+        <source>CPU Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="109"/>
+        <source>Started Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="130"/>
-        <source>kylin-assistant had already running!</source>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="213"/>
+        <source>Running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="217"/>
+        <source>Stopped</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="221"/>
+        <source>Zombie</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="225"/>
+        <source>Uninterruptible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="229"/>
+        <source>Sleeping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="239"/>
+        <source>Very High</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="241"/>
+        <source>High</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="243"/>
+        <source>Normal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="245"/>
+        <source>Low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="247"/>
+        <source>Very Low</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2429,40 +2588,40 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>ShredDialog</name>
     <message>
-        <location filename="../../shredmanager/shreddialog.cpp" line="109"/>
-        <location filename="../../shredmanager/shreddialog.cpp" line="185"/>
+        <location filename="../../plugins/shredmanager/shreddialog.cpp" line="113"/>
+        <location filename="../../plugins/shredmanager/shreddialog.cpp" line="189"/>
         <source>Shred Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shredmanager/shreddialog.cpp" line="110"/>
-        <location filename="../../shredmanager/shreddialog.cpp" line="239"/>
-        <location filename="../../shredmanager/shreddialog.cpp" line="251"/>
+        <location filename="../../plugins/shredmanager/shreddialog.cpp" line="114"/>
+        <location filename="../../plugins/shredmanager/shreddialog.cpp" line="243"/>
+        <location filename="../../plugins/shredmanager/shreddialog.cpp" line="255"/>
         <source>No select any file which need to be shredded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shredmanager/shreddialog.cpp" line="111"/>
+        <location filename="../../plugins/shredmanager/shreddialog.cpp" line="115"/>
         <source>Shred File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shredmanager/shreddialog.cpp" line="112"/>
+        <location filename="../../plugins/shredmanager/shreddialog.cpp" line="116"/>
         <source>Deselect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shredmanager/shreddialog.cpp" line="227"/>
+        <location filename="../../plugins/shredmanager/shreddialog.cpp" line="231"/>
         <source>Select file!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shredmanager/shreddialog.cpp" line="238"/>
+        <location filename="../../plugins/shredmanager/shreddialog.cpp" line="242"/>
         <source>Shred successfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shredmanager/shreddialog.cpp" line="244"/>
+        <location filename="../../plugins/shredmanager/shreddialog.cpp" line="248"/>
         <source>Shred failed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2470,12 +2629,12 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>ShredManager</name>
     <message>
-        <location filename="../../shredmanager/shredmanager.cpp" line="44"/>
+        <location filename="../../plugins/shredmanager/shredmanager.cpp" line="50"/>
         <source>Shred Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../shredmanager/shredmanager.cpp" line="49"/>
+        <location filename="../../plugins/shredmanager/shredmanager.cpp" line="55"/>
         <source>Delete files makes it unable to recover</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2483,28 +2642,28 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>SkinCenter</name>
     <message>
-        <location filename="../skincenter.cpp" line="38"/>
-        <location filename="../skincenter.cpp" line="67"/>
+        <location filename="../skincenter.cpp" line="37"/>
+        <location filename="../skincenter.cpp" line="66"/>
         <source>Skin Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../skincenter.cpp" line="78"/>
+        <location filename="../skincenter.cpp" line="77"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../skincenter.cpp" line="81"/>
+        <location filename="../skincenter.cpp" line="80"/>
         <source>Custom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../skincenter.cpp" line="504"/>
+        <location filename="../skincenter.cpp" line="503"/>
         <source>Open File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../skincenter.cpp" line="505"/>
+        <location filename="../skincenter.cpp" line="504"/>
         <source>Files(*.png *.jpg)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2546,6 +2705,32 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     <message>
         <location filename="../../component/tipdialog.cpp" line="109"/>
         <source>Tip Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TitleWidget</name>
+    <message>
+        <location filename="../../plugins/systemmonitor/titlewidget.cpp" line="90"/>
+        <source>Kylin System Monitor</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ToolBar</name>
+    <message>
+        <location filename="../../plugins/systemmonitor/toolbar.cpp" line="196"/>
+        <source>Processes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/toolbar.cpp" line="197"/>
+        <source>Resources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/toolbar.cpp" line="198"/>
+        <source>File Systems</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2636,116 +2821,116 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>UpgradeDialog</name>
     <message>
-        <location filename="../upgradedialog.cpp" line="60"/>
+        <location filename="../upgradedialog.cpp" line="61"/>
         <source>check and update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="102"/>
-        <location filename="../upgradedialog.cpp" line="397"/>
+        <location filename="../upgradedialog.cpp" line="103"/>
+        <location filename="../upgradedialog.cpp" line="398"/>
         <source>Current verison:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="138"/>
+        <location filename="../upgradedialog.cpp" line="139"/>
         <source>Official version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="161"/>
+        <location filename="../upgradedialog.cpp" line="162"/>
         <source>An error occurred!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="162"/>
+        <location filename="../upgradedialog.cpp" line="163"/>
         <source>Network or local sources anomaly</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="166"/>
+        <location filename="../upgradedialog.cpp" line="167"/>
         <source>you can visit the&lt;a style=&apos;color: #3f96e4;&apos; href = http://www.ubuntukylin.com&gt; UK official website&lt;/a&gt; to download the lastest deb package</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="171"/>
+        <location filename="../upgradedialog.cpp" line="172"/>
         <source>Retry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="184"/>
+        <location filename="../upgradedialog.cpp" line="185"/>
         <source>Finish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="191"/>
+        <location filename="../upgradedialog.cpp" line="192"/>
         <source>Upgrade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="253"/>
-        <location filename="../upgradedialog.cpp" line="336"/>
+        <location filename="../upgradedialog.cpp" line="254"/>
+        <location filename="../upgradedialog.cpp" line="337"/>
         <source>Start to update the local sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="332"/>
+        <location filename="../upgradedialog.cpp" line="333"/>
         <source>Start to download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="381"/>
+        <location filename="../upgradedialog.cpp" line="382"/>
         <source>Updating local sources...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="409"/>
+        <location filename="../upgradedialog.cpp" line="410"/>
         <source>Start to install</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="343"/>
+        <location filename="../upgradedialog.cpp" line="344"/>
         <source>Download completely</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="354"/>
+        <location filename="../upgradedialog.cpp" line="355"/>
         <source>Local sources updated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="364"/>
+        <location filename="../upgradedialog.cpp" line="365"/>
         <source>Found a new version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="152"/>
+        <location filename="../upgradedialog.cpp" line="153"/>
         <source>New version:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="359"/>
-        <location filename="../upgradedialog.cpp" line="373"/>
+        <location filename="../upgradedialog.cpp" line="360"/>
+        <location filename="../upgradedialog.cpp" line="374"/>
         <source>Not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="163"/>
-        <location filename="../upgradedialog.cpp" line="277"/>
+        <location filename="../upgradedialog.cpp" line="164"/>
+        <location filename="../upgradedialog.cpp" line="278"/>
         <source>Testing network and local sources...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="396"/>
+        <location filename="../upgradedialog.cpp" line="397"/>
         <source>Kylin Assistant is the latest version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="417"/>
+        <location filename="../upgradedialog.cpp" line="418"/>
         <source>Upgrading the main program...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="471"/>
+        <location filename="../upgradedialog.cpp" line="472"/>
         <source>Start to upgrade the main program</source>
         <translation type="unfinished"></translation>
     </message>

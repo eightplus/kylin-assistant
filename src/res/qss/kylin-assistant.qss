@@ -630,6 +630,56 @@ QMenu::indicator {
     height: 13px;
 }
 
+/*---------Monitor--------*/
+QMenu#MonitorMenu{
+    background-color: white;
+    border: 1px solid gray;
+    margin:1px;
+}
+
+QMenu#MonitorMenu::icon {
+     position: absolute;
+     left: 21px;
+}
+
+QMenu#MonitorMenu::item {
+    padding:0px 0px 0px 45px;/*item的文字距离item的上右下左的距离: top  right  bottom  left*/
+    margin-left: 0px;
+    border:1px solid #2e2e2e;
+    height:25px;
+    color: #999999;
+    font-size:12px;
+    font-family:方正黑体_GBK;
+    background-color: transparent;
+    border: 1px solid transparent;
+}
+
+QMenu#MonitorMenu::item:selected:enabled{
+    background: #0da4f6;
+    color: #ffffff;
+}
+
+QMenu#MonitorMenu::item:selected:!enabled{
+    background:transparent;
+}
+
+/*分割线*/
+QMenu#MonitorMenu::separator{
+    height:1px;
+    background: #3b3b3b;
+    margin:2px 0px 2px 0px;
+}
+
+QMenu#MonitorMenu::indicator:exclusive:checked {
+     image: url(:/res/menu_selected.png);
+}
+
+QMenu#MonitorMenu::indicator:non-exclusive:checked{
+     image:url(:/res/ok.png);
+}
+
+
+
 /*-------------------QRadioButton-------------------*/
 QRadioButton {
   spacing: 5px;

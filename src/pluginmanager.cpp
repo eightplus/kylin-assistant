@@ -39,7 +39,8 @@ PluginManager* PluginManager::Instance()
 
 bool PluginManager::loadPlugin(QString plugin_path)
 {
-    QDir pluginsDir(plugin_path/* + "/libs"*/);
+//    qDebug() << "plugin_path="<<plugin_path;
+    QDir pluginsDir(plugin_path);
     foreach (QString fileName, pluginsDir.entryList(QStringList("*.so"),QDir::Files)) {
         QPluginLoader  *pluginLoader = new  QPluginLoader(pluginsDir.absoluteFilePath(fileName));
         QObject *plugin = pluginLoader->instance();
@@ -75,47 +76,3 @@ bool PluginManager::unloadPlugin(QString plugin_guid)
     plugin_map.erase(iter);
     return true;
 }
-
-
-/*PluginManager::PluginManager(QObject *parent)
-    : QObject(parent)
-{
-}
-
-PluginManager::~PluginManager(void)
-{
-}
-
-PluginManager* PluginManager::Instance()
-{
-    static PluginManager PluginMgr;
-    return &PluginMgr;
-}
-
-void PluginManager::loadPlugin(QString plugin_path)
-{
-    QDir pluginsDir(plugin_path + "/libs");
-
-    const QStringList plugins = pluginsDir.entryList(QStringList("*.so"), QDir::Files);
-    for (const QString file : plugins)
-    {
-        if (!QLibrary::isLibrary(file))
-            continue;
-
-        QPluginLoader *pluginLoader = new QPluginLoader(pluginsDir.absoluteFilePath(file), this);
-        PluginInterface *interface = qobject_cast<PluginInterface *>(pluginLoader->instance());
-        if (!interface)
-        {
-            qWarning() << pluginLoader->errorString();
-            pluginLoader->unload();
-            pluginLoader->deleteLater();
-            return;
-        } else {
-            qDebug() << "The plugin interface is: " << interface;
-        }
-
-        QWidget *w = interface->centralWidget();
-        w->setVisible(false);
-        emit pluginAdded(w);
-    }
-}*/

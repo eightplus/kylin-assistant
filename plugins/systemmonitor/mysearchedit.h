@@ -17,36 +17,25 @@ public:
     ~MySearchEdit();
 
     void initInsideFrame();
-
     QSize sizeHint() const {return m_size;}
     QSize minimumSizeHint() const {return m_size;}
     const QString text() const;
-
-    void mousePressEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
-    bool eventFilter(QObject *o, QEvent *e);
-
-    inline void setAniDuration(const int duration) {m_animation->setDuration(duration);}
-    inline void setAniShowCurve(const QEasingCurve curve) {m_showCurve = curve;}
-    inline void setAniHideCurve(const QEasingCurve curve) {m_hideCurve = curve;}
-
     QLineEdit *getLineEdit() const;
 
 public slots:
-    void toEditMode();
+    void setEditFocus();
     void setText(const QString & text) {if (m_edit) m_edit->setText(text);}
     inline void clear() {m_edit->clear();}
 
 signals:
     void textChanged();
-    void returnPressed();
-    void editingFinished();
-    void focusOut();
-    void focusIn();
 
 protected:
-    void resizeEvent(QResizeEvent *e);
-    bool event(QEvent *e);
+    void resizeEvent(QResizeEvent *event);
+    bool event(QEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    bool eventFilter(QObject *object, QEvent *event);
 
 private:
     QSize m_size;

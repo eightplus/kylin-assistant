@@ -691,7 +691,7 @@ inline QString getPluginsDirectory() {
     if (isRunningInstalled()) {
         return QString("/usr/lib/kylin-assistant/plugins/");
     } else {
-        return QString(QCoreApplication::applicationDirPath() + "plugins/");
+        return QString(QCoreApplication::applicationDirPath() + "/plugins/");
     }
 }
 
@@ -923,20 +923,20 @@ void MainWindow::reViewTheOrgSkin()
 }
 
 void MainWindow::showMainMenu() {
-    if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin")
-    {
+//    if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin")
+//    {
         QPoint p = rect().topRight();
         p.setX(p.x() - 180);
         p.setY(p.y() + 22);
         main_menu->exec(this->mapToGlobal(p));
-    }
-    else
-    {
-        QPoint p = rect().topLeft();
-        p.setX(p.x() + 107);//104
-        p.setY(p.y() + 22);
-        main_menu->exec(this->mapToGlobal(p));
-    }
+//    }
+//    else
+//    {
+//        QPoint p = rect().topLeft();
+//        p.setX(p.x() + 107);//104
+//        p.setY(p.y() + 22);
+//        main_menu->exec(this->mapToGlobal(p));
+//    }
 
 //    //向上弹出menu
 //    QPoint pos;
@@ -985,7 +985,7 @@ void MainWindow::setCurrentPageIndex(int index)
     }
     else if(index == 1)
     {
-        if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin")
+//        if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin")
 //            login_widget->hide();
         if (status == HOMEPAGE) {
             statusFlag = true;
@@ -1020,7 +1020,7 @@ void MainWindow::setCurrentPageIndex(int index)
     }
     else if(index == 2)
     {
-        if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin" )
+//        if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin" )
 //            login_widget->hide();
         if (status == HOMEPAGE) {
             statusFlag = true;
@@ -1059,30 +1059,30 @@ void MainWindow::setCurrentPageIndex(int index)
             statusFlag = true;
         else
             statusFlag = false;
-        if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin" )
-        {
+//        if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin" )
+//        {
 //            login_widget->hide();
-            if (status != BOXPAGE && statusFlag) {
-                shadow_widget->show();
-                tool_widget->hide();
-                if(title_widget->isVisible())
-                    title_widget->hide();
-    //            topStack->setCurrentIndex(3);
-    //            bottomStack->setCurrentIndex(3);
-                topStack->setCurrentWidget(box_action_widget);
-                bottomStack->setCurrentWidget(box_widget);
-                spreadGroup->start();
-                status = BOXPAGE;
-            }
-            else {
-    //            topStack->setCurrentIndex(3);
-    //            bottomStack->setCurrentIndex(3);
-                topStack->setCurrentWidget(box_action_widget);
-                bottomStack->setCurrentWidget(box_widget);
-            }
-        }
-        else
-        {
+//            if (status != BOXPAGE && statusFlag) {
+//                shadow_widget->show();
+//                tool_widget->hide();
+//                if(title_widget->isVisible())
+//                    title_widget->hide();
+//    //            topStack->setCurrentIndex(3);
+//    //            bottomStack->setCurrentIndex(3);
+//                topStack->setCurrentWidget(box_action_widget);
+//                bottomStack->setCurrentWidget(box_widget);
+//                spreadGroup->start();
+//                status = BOXPAGE;
+//            }
+//            else {
+//    //            topStack->setCurrentIndex(3);
+//    //            bottomStack->setCurrentIndex(3);
+//                topStack->setCurrentWidget(box_action_widget);
+//                bottomStack->setCurrentWidget(box_widget);
+//            }
+//        }
+//        else
+//        {
             if (status != SETTINGPAGE && statusFlag) {
                 shadow_widget->show();
                 tool_widget->hide();
@@ -1107,12 +1107,12 @@ void MainWindow::setCurrentPageIndex(int index)
                 topStack->setCurrentWidget(setting_action_widget);
                 bottomStack->setCurrentWidget(setting_widget);
             }
-        }
+//        }
     }
     else if(index == 4)
     {
-        if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin")
-        {
+//        if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin")
+//        {
             if (status == HOMEPAGE)
                 statusFlag = true;
             else
@@ -1141,7 +1141,7 @@ void MainWindow::setCurrentPageIndex(int index)
                 topStack->setCurrentWidget(box_action_widget);
                 bottomStack->setCurrentWidget(box_widget);
             }
-        }
+//        }
     }
 }
 
@@ -1360,8 +1360,22 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
-//void MainWindow::paintEvent(QPaintEvent *event)
-//{
+/*void MainWindow::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setOpacity(0.05);
+
+    int penWidth = 1;
+    QPainterPath framePath;
+    framePath.addRoundedRect(QRect(rect().x() + penWidth, rect().y() + penWidth, rect().width() - penWidth * 2, rect().height() - penWidth * 2), 4, 4);//背景弧度
+    painter.setClipPath(framePath);
+
+    QPen framePen;
+    framePen.setColor(QColor("#F5F5F5"));
+    painter.setOpacity(0.2);
+    painter.drawPath(framePath);
 //    QPainterPath path;
 //    path.setFillRule(Qt::WindingFill);
 //    path.addRect(10, 10, this->width()-20, this->height()-20);
@@ -1380,4 +1394,4 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 //        painter.setPen(color);
 //        painter.drawPath(path);
 //    }
-//}
+}*/

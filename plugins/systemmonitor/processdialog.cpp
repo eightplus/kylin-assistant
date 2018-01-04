@@ -163,27 +163,27 @@ ProcessDialog::ProcessDialog(QList<bool> columnShowOrHideFlags, int sortIndex, b
     m_killAction = new QAction(tr("Kill process"), this);
     connect(m_killAction, &QAction::triggered, this, &ProcessDialog::showKillProcessDialog);
 
-    priorityGroup = new MyActionGroup(this);
-    veryHighAction = new MyActionGroupItem(this, priorityGroup, "very_high_action", -20);
-    highAction = new MyActionGroupItem(this, priorityGroup, "high_action", -5);
-    normalAction = new MyActionGroupItem(this, priorityGroup, "normal_action", 0);
-    lowAction = new MyActionGroupItem(this, priorityGroup, "low_action", 5);
-    veryLowAction = new MyActionGroupItem(this, priorityGroup, "very_low_action", 19);
-    customAction = new MyActionGroupItem(this, priorityGroup, "custom_action", 32);
-    {
-        QAction *sep = new QAction(priorityGroup);
-        sep->setSeparator(true);
-    }
-    veryHighAction->change(tr("Very High"));
-    highAction->change(tr("High"));
-    normalAction->change(tr("Normal"));
-    lowAction->change(tr("Low"));
-    veryLowAction->change(tr("Very Low"));
-    customAction->change(tr("Custom"));
-    connect(priorityGroup, SIGNAL(activated(int)), this, SLOT(changeProcPriority(int)));
-    m_priorityMenu = new QMenu();
-    m_priorityMenu->addActions(priorityGroup->actions());
-    m_priorityMenu->menuAction()->setText(tr("Change Priority"));
+//    priorityGroup = new MyActionGroup(this);
+//    veryHighAction = new MyActionGroupItem(this, priorityGroup, "very_high_action", -20);
+//    highAction = new MyActionGroupItem(this, priorityGroup, "high_action", -5);
+//    normalAction = new MyActionGroupItem(this, priorityGroup, "normal_action", 0);
+//    lowAction = new MyActionGroupItem(this, priorityGroup, "low_action", 5);
+//    veryLowAction = new MyActionGroupItem(this, priorityGroup, "very_low_action", 19);
+//    customAction = new MyActionGroupItem(this, priorityGroup, "custom_action", 32);
+//    {
+//        QAction *sep = new QAction(priorityGroup);
+//        sep->setSeparator(true);
+//    }
+//    veryHighAction->change(tr("Very High"));
+//    highAction->change(tr("High"));
+//    normalAction->change(tr("Normal"));
+//    lowAction->change(tr("Low"));
+//    veryLowAction->change(tr("Very Low"));
+//    customAction->change(tr("Custom"));
+//    connect(priorityGroup, SIGNAL(activated(int)), this, SLOT(changeProcPriority(int)));
+//    m_priorityMenu = new QMenu();
+//    m_priorityMenu->addActions(priorityGroup->actions());
+//    m_priorityMenu->menuAction()->setText(tr("Change Priority"));
 
     m_propertiyAction = new QAction(tr("Properties"), this);
     connect(m_propertiyAction, &QAction::triggered, this, &ProcessDialog::showPropertiesDialog);
@@ -192,8 +192,8 @@ ProcessDialog::ProcessDialog(QList<bool> columnShowOrHideFlags, int sortIndex, b
     m_menu->addAction(m_continueAction);//继续进程
     m_menu->addAction(m_endAction);//结束
     m_menu->addAction(m_killAction);//杀死
-    m_menu->addSeparator();
-    m_menu->addMenu(m_priorityMenu);
+//    m_menu->addSeparator();
+//    m_menu->addMenu(m_priorityMenu);
     m_menu->addSeparator();
     m_menu->addAction(m_propertiyAction);
 
@@ -229,13 +229,13 @@ ProcessDialog::~ProcessDialog()
     delete m_continueAction;
     delete m_endAction;
     delete m_killAction;
-    delete veryHighAction;
-    delete highAction;
-    delete normalAction;
-    delete lowAction;
-    delete veryLowAction;
-    delete customAction;
-    delete m_priorityMenu;
+//    delete veryHighAction;
+//    delete highAction;
+//    delete normalAction;
+//    delete lowAction;
+//    delete veryLowAction;
+//    delete customAction;
+//    delete m_priorityMenu;
     delete m_propertiyAction;
     delete m_menu;
     delete actionPids;
@@ -776,7 +776,7 @@ void ProcessDialog::popupMenu(QPoint pos, QList<ProcessListItem*> items)
 //        qDebug() << "HAHAHAH===========" << cur_pid;
         actionPids->append(cur_pid);
     }
-    if (count == 1) {
+    /*if (count == 1) {
         ProcessWorker *info = ProcessWorker::find(cur_pid);
         if (!info) {
             priorityGroup->setActionsEnabled(false);
@@ -800,7 +800,7 @@ void ProcessDialog::popupMenu(QPoint pos, QList<ProcessListItem*> items)
     }
     else {
         priorityGroup->setActionsEnabled(false);
-    }
+    }*/
     m_menu->exec(pos);
 }
 

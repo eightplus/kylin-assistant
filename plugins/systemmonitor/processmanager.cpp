@@ -45,7 +45,7 @@ QString ProcessManager::getGuid()
 
  QString ProcessManager::getName()
 {
-    return tr("Process Manager");
+    return tr("System Monitor");
 }
 
 QString ProcessManager::getDescribe()

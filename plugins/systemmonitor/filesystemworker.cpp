@@ -6,6 +6,7 @@
 #include <glibtop/fsusage.h>
 /*For PRIu64*/
 #include <inttypes.h>
+//#include <gio/gio.h>
 
 typedef struct _DISK_INFO
 {
@@ -78,12 +79,19 @@ DISK_INFO add_disk(const glibtop_mountentry *entry, gboolean show_all_fs)
     return disk;
 }
 
+//void hello(gpointer data)
+//{
+//    g_print ("Hello World\n");
+//}
 
 FileSystemWorker::FileSystemWorker(DiskModel *diskList, QObject *parent)
     : QObject(parent),
       m_diskModel(diskList)
 {
     onFileSystemListChanged();
+//    GVolumeMonitor * monitor;
+//    monitor = g_volume_monitor_get();
+//    g_signal_connect(monitor, "mount-added", G_CALLBACK(hello), NULL);
 }
 
 void FileSystemWorker::onFileSystemListChanged()

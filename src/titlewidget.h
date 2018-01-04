@@ -41,6 +41,9 @@ public:
     void setParentWindow(MainWindow* window) { p_mainwindow = window;}
     void initConnect();
 
+//protected:
+//    virtual void paintEvent(QPaintEvent *event);
+
 signals:
     void closeApp();
 

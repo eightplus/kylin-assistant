@@ -24,10 +24,9 @@ PropertiesDialog::PropertiesDialog(QWidget *parent, pid_t processId) : QDialog(p
 
     this->setMaximumSize(480, 600);
     this->setMinimumWidth(320);
-    this->resize(380, 120);
+//    this->resize(380, 120);
 
     pid = processId;
-
 
     layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -83,6 +82,8 @@ PropertiesDialog::PropertiesDialog(QWidget *parent, pid_t processId) : QDialog(p
     cmdlineTitleLabel->setStyleSheet("QLabel { background-color : transparent; color : #666666; }");
     cmdlineTitleLabel->setFixedWidth(100);
     cmdlineTitleLabel->setAlignment(Qt::AlignRight);
+//    cmdlineTitleLabel->setWordWrap(true);
+//    cmdlineTitleLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
     cmdlineLabel = new QLabel();
     cmdlineLabel->setStyleSheet("QLabel { background-color : transparent; color : #000000; }");

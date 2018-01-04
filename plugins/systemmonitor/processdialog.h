@@ -94,14 +94,14 @@ private:
   QAction *m_continueAction;//继续进程
   QAction *m_endAction;//结束
   QAction *m_killAction;//杀死
-  QMenu *m_priorityMenu;
-  MyActionGroup * priorityGroup;
-  MyAction *veryHighAction;
-  MyAction *highAction;
-  MyAction *normalAction;
-  MyAction *lowAction;
-  MyAction *veryLowAction;
-  MyAction *customAction;
+//  QMenu *m_priorityMenu;
+//  MyActionGroup * priorityGroup;
+//  MyAction *veryHighAction;
+//  MyAction *highAction;
+//  MyAction *normalAction;
+//  MyAction *lowAction;
+//  MyAction *veryLowAction;
+//  MyAction *customAction;
   QList<pid_t> *actionPids;
   QMenu *m_menu;
   QString whose_processes;

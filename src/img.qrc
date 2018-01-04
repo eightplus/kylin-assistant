@@ -216,6 +216,8 @@
         <file>res/tool/close_press.png</file>
         <file>res/arrow_right.png</file>
         <file>res/search.png</file>
+        <file>res/ok.png</file>
+        <file>res/menu_selected.png</file>
     </qresource>
     <qresource prefix="/sys">
         <file>res/sysBtn/close_button.png</file>

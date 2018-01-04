@@ -407,6 +407,7 @@ void ProcessListWidget::mousePressEvent(QMouseEvent *mouseEvent)
         } else if (mouseEvent->button() == Qt::RightButton) {
             if (m_columnVisibles.count() == this->columnTitles.count()) {
                 QMenu *menu = new QMenu();
+                menu->setObjectName("MonitorMenu");
                 for (int i = 0; i < m_columnVisibles.count(); i++) {
                     if (i != 0) {//让第一行总是显示，不可以设置显示或者不显示，其他行可以设置
                         QAction *action = new QAction(menu);
@@ -424,6 +425,7 @@ void ProcessListWidget::mousePressEvent(QMouseEvent *mouseEvent)
                 }
 
                 menu->exec(this->mapToGlobal(mouseEvent->pos()));
+                delete menu;
             }
         }
     }
@@ -643,6 +645,18 @@ void ProcessListWidget::paintEvent(QPaintEvent *)
         rowCounter++;
     }
     painter.setClipPath(framePath);
+
+    //没有搜索结果时绘制提示文字
+    if (this->m_searchText != "" && this->m_searchedItems->size() == 0) {
+        painter.setOpacity(1);
+        painter.setPen(QPen(QColor("#666666")));
+
+        QFont font = painter.font() ;
+        font.setPointSize(22);
+        painter.setFont(font);
+
+        painter.drawText(QRect(rect().x(), rect().y() + this->m_titleHeight, rect().width(), rect().height() - this->m_titleHeight), Qt::AlignCenter, tr("No search result"));
+    }
 
     //背景
     QPen framePen;

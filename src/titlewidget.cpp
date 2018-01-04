@@ -97,3 +97,21 @@ void TitleWidget::initConnect() {
     connect(skin_button, SIGNAL(clicked()), p_mainwindow, SLOT(openSkinCenter()));
     connect(main_menu_button, SIGNAL(clicked()), p_mainwindow, SLOT(showMainMenu()));
 }
+
+/*void TitleWidget::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setOpacity(0.05);
+
+    int penWidth = 1;
+    QPainterPath framePath;
+    framePath.addRoundedRect(QRect(rect().x() + penWidth, rect().y() + penWidth, rect().width() - penWidth * 2, rect().height() - penWidth * 2), 4, 4);//背景弧度
+    painter.setClipPath(framePath);
+
+    QPen framePen;
+    framePen.setColor(QColor("#F5F5F5"));
+    painter.setOpacity(0.2);
+    painter.drawPath(framePath);
+}*/

@@ -201,8 +201,7 @@ void SystemMonitor::initToolBar()
 void SystemMonitor::initConnections()
 {
     connect(m_toolBar, SIGNAL(changePage(int)), this, SLOT(onChangePage(int)));
-    connect(m_toolBar, SIGNAL(pressEsc()), process_dialog, SLOT(focusProcessView()));
-    connect(m_toolBar, SIGNAL(pressTab()), process_dialog, SLOT(focusProcessView()));
+    connect(m_toolBar, SIGNAL(canelSearchEditFocus()), process_dialog, SLOT(focusProcessView()));
     connect(m_toolBar, SIGNAL(searchSignal(QString)), process_dialog, SLOT(onSearch(QString)), Qt::QueuedConnection);
 }
 
@@ -323,7 +322,7 @@ bool SystemMonitor::eventFilter(QObject *object, QEvent *event)
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
         if (keyEvent->key() == Qt::Key_F) {
             if (keyEvent->modifiers() == Qt::ControlModifier) {
-                m_toolBar->focusInput();
+                m_toolBar->setSearchEditFocus();
                 return false;
             }
         }

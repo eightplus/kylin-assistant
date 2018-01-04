@@ -87,7 +87,7 @@ void TitleWidget::initLeftContent()
 
     QLabel *titleLabel = new QLabel;
     titleLabel->setStyleSheet("QLabel{background-color:transparent;color:#ffffff; font-size:12px;}");
-    titleLabel->setText("Kyliln System Monitor");
+    titleLabel->setText(tr("Kylin System Monitor"));
     m_lLayout->addSpacing(5);
     m_lLayout->addWidget(titleLabel);
 

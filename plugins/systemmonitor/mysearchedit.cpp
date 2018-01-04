@@ -50,8 +50,6 @@ MySearchEdit::MySearchEdit(QWidget *parent)
     connect(m_clearBtn, &MyImageButton::clicked, this, &MySearchEdit::clear);
     connect(m_edit, &QLineEdit::textChanged, [this] {m_clearBtn->setVisible(!m_edit->text().isEmpty());});
     connect(m_edit, &QLineEdit::textChanged, this, &MySearchEdit::textChanged, Qt::DirectConnection);
-    connect(m_edit, &QLineEdit::editingFinished, this, &MySearchEdit::editingFinished, Qt::DirectConnection);
-    connect(m_edit, &QLineEdit::returnPressed, this, &MySearchEdit::returnPressed, Qt::DirectConnection);
 }
 
 MySearchEdit::~MySearchEdit()
@@ -64,26 +62,26 @@ const QString MySearchEdit::text() const
     return m_edit->text();
 }
 
-void MySearchEdit::mousePressEvent(QMouseEvent *e)
+void MySearchEdit::mousePressEvent(QMouseEvent *event)
 {
-    if (e->button() != Qt::LeftButton)
-        return QFrame::mousePressEvent(e);
+    if (event->button() != Qt::LeftButton)
+        return QFrame::mousePressEvent(event);
 
-    toEditMode();
+    setEditFocus();
 
-    e->accept();
+    event->accept();
 }
 
-void MySearchEdit::mouseReleaseEvent(QMouseEvent *e)
+void MySearchEdit::mouseReleaseEvent(QMouseEvent *event)
 {
-    e->accept();
+    event->accept();
 }
 
-bool MySearchEdit::eventFilter(QObject *o, QEvent *e)
+bool MySearchEdit::eventFilter(QObject *object, QEvent *event)
 {
-    if (o == m_edit && e->type() == QEvent::FocusOut && m_edit->text().isEmpty()) {
-        auto fe = dynamic_cast<QFocusEvent *>(e);
-        if (fe && fe->reason() != Qt::PopupFocusReason) {
+    if (object == m_edit && event->type() == QEvent::FocusOut && m_edit->text().isEmpty()) {
+        auto focusEvent = dynamic_cast<QFocusEvent *>(event);
+        if (focusEvent && focusEvent->reason() != Qt::PopupFocusReason) {
             m_animation->stop();
             m_animation->setStartValue(m_edit->width());
             m_animation->setEndValue(0);
@@ -92,17 +90,7 @@ bool MySearchEdit::eventFilter(QObject *o, QEvent *e)
         }
     }
 
-    if (o == m_edit) {
-        if (e->type() == QEvent::FocusOut) {
-            emit focusOut();
-        }
-
-        if (e->type() == QEvent::FocusIn) {
-            emit focusIn();
-        }
-    }
-
-    return QFrame::eventFilter(o, e);
+    return QFrame::eventFilter(object, event);
 }
 
 QLineEdit *MySearchEdit::getLineEdit() const
@@ -110,7 +98,7 @@ QLineEdit *MySearchEdit::getLineEdit() const
     return m_edit;
 }
 
-void MySearchEdit::toEditMode()
+void MySearchEdit::setEditFocus()
 {
     m_animation->stop();
     m_animation->setStartValue(0);
@@ -132,24 +120,24 @@ void MySearchEdit::initInsideFrame()
     insideLayout->addWidget(m_insideFrame);
 }
 
-void MySearchEdit::resizeEvent(QResizeEvent *e)
+void MySearchEdit::resizeEvent(QResizeEvent *event)
 {
-    m_size = e->size();
+    m_size = event->size();
     m_edit->setFixedHeight(m_size.height());
 }
 
-bool MySearchEdit::event(QEvent *e)
+bool MySearchEdit::event(QEvent *event)
 {
-    if (e->type() == QEvent::FocusIn) {
-        const QFocusEvent *event = static_cast<QFocusEvent*>(e);
+    if (event->type() == QEvent::FocusIn) {
+        const QFocusEvent *ev = static_cast<QFocusEvent*>(event);
 
-        if (event->reason() == Qt::TabFocusReason
-                || event->reason() == Qt::BacktabFocusReason
-                || event->reason() == Qt::OtherFocusReason
-                || event->reason() == Qt::ShortcutFocusReason) {
-            toEditMode();
+        if (ev->reason() == Qt::TabFocusReason
+                || ev->reason() == Qt::BacktabFocusReason
+                || ev->reason() == Qt::OtherFocusReason
+                || ev->reason() == Qt::ShortcutFocusReason) {
+            setEditFocus();
         }
     }
 
-    return QFrame::event(e);
+    return QFrame::event(event);
 }
