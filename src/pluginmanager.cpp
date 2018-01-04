@@ -39,7 +39,7 @@ PluginManager* PluginManager::Instance()
 
 bool PluginManager::loadPlugin(QString plugin_path)
 {
-    QDir pluginsDir(plugin_path + "/libs");
+    QDir pluginsDir(plugin_path/* + "/libs"*/);
     foreach (QString fileName, pluginsDir.entryList(QStringList("*.so"),QDir::Files)) {
         QPluginLoader  *pluginLoader = new  QPluginLoader(pluginsDir.absoluteFilePath(fileName));
         QObject *plugin = pluginLoader->instance();
@@ -48,9 +48,16 @@ bool PluginManager::loadPlugin(QString plugin_path)
             if (interface) {
                 QString guid = interface->getGuid();
                 plugin_map.insert(guid, pluginLoader);
+                qDebug() << "The plugin interface is: " << interface;
+            }
+            else {
+                qWarning() << pluginLoader->errorString();
+                pluginLoader->unload();
+                pluginLoader->deleteLater();
             }
         }
         else {
+            qDebug() << "The plugin is invalid===" << pluginLoader->errorString();
             delete pluginLoader;
         }
     }

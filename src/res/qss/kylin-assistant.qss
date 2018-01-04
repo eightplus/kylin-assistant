@@ -692,3 +692,92 @@ QCheckBox::indicator:checked:hover {
 QCheckBox::indicator:checked:pressed {
     image: url(://res/checkbox-checked.png);
 }
+
+QLabel#TooltipLabel {
+    background-color: rgba(255, 255, 255, .9);
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-radius: 3px;
+    padding: 4px 7px 4px 7px;
+    color: #303030;
+    font-size: 12px;
+    font-weight: light;
+}
+
+MyImageButton#ClearIcon {
+    background-color:transparent;
+    qproperty-normalPic: url(:/res/delete.png);
+    qproperty-hoverPic: url(:/res/delete.png);
+    qproperty-pressPic: url(:/res/delete.png);
+}
+
+MyImageButton#DiskDetailButton {
+    qproperty-normalPic: url(:/res/tool/arrow_right.png);
+    qproperty-hoverPic: url(:/res/tool/arrow_right.png);
+    qproperty-pressPic: url(:/res/tool/arrow_right.png);
+}
+
+MyImageButton#CloseButton {
+    qproperty-normalPic: url(:/res/tool/close_normal.png);
+    qproperty-hoverPic: url(:/res/tool/close_hover.png);
+    qproperty-pressPic: url(:/res/tool/close_press.png);
+}
+
+MyImageButton#MinButton {
+    qproperty-normalPic: url(:/res/tool/min_normal.png);
+    qproperty-hoverPic: url(:/res/tool/min_hover.png);
+    qproperty-pressPic: url(:/res/tool/min_press.png);
+}
+
+MyImageButton#MaxButton {
+    qproperty-normalPic: url(:/res/tool/max_normal.png);
+    qproperty-hoverPic: url(:/res/tool/max_hover.png);
+    qproperty-pressPic: url(:/res/tool/max_press.png);
+}
+
+MyImageButton#UnMaxButton {
+    qproperty-normalPic: url(:/res/tool/unmax_normal.png);
+    qproperty-hoverPic: url(:/res/tool/unmax_hover.png);
+    qproperty-pressPic: url(:/res/tool/unmax_press.png);
+}
+
+MyTipImageButton#ProcessBtn {
+    qproperty-normalPic: url(:/res/browser_logo_gray.png);
+    qproperty-hoverPic: url(:/res/browser_logo.png);
+    qproperty-pressPic: url(:/res/browser_logo.png);
+    qproperty-checkedPic: url(:/res/browser_logo.png);
+}
+
+MyTipImageButton#ResourcesBtn {
+    qproperty-normalPic: url(:/res/cache_logo_gray.png);
+    qproperty-hoverPic: url(:/res/cache_logo.png);
+    qproperty-pressPic: url(:/res/cache_logo.png);
+    qproperty-checkedPic: url(:/res/cache_logo.png);
+}
+
+MyTipImageButton#DisksBtn {
+    qproperty-normalPic: url(:/res/cookie_logo_gray.png);
+    qproperty-hoverPic: url(:/res/cookie_logo.png);
+    qproperty-pressPic: url(:/res/cookie_logo.png);
+    qproperty-checkedPic: url(:/res/cookie_logo.png);
+}
+
+MyImageButton#ActiveProcessBtn {
+    qproperty-normalPic: url(:/res/browser_logo_gray.png);
+    qproperty-hoverPic: url(:/res/browser_logo.png);
+    qproperty-pressPic: url(:/res/browser_logo.png);
+    qproperty-checkedPic: url(:/res/browser_logo.png);
+}
+
+MyImageButton#UserProcessBtn {
+    qproperty-normalPic: url(:/res/cache_logo_gray.png);
+    qproperty-hoverPic: url(:/res/cache_logo.png);
+    qproperty-pressPic: url(:/res/cache_logo.png);
+    qproperty-checkedPic: url(:/res/cache_logo.png);
+}
+
+MyImageButton#AllProcessBtn {
+    qproperty-normalPic: url(:/res/cookie_logo_gray.png);
+    qproperty-hoverPic: url(:/res/cookie_logo.png);
+    qproperty-pressPic: url(:/res/cookie_logo.png);
+    qproperty-checkedPic: url(:/res/cookie_logo.png);
+}
