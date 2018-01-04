@@ -688,11 +688,11 @@ inline bool isRunningInstalled() {
     return installed;
 }
 
-inline QString getAppDirectory() {
+inline QString getPluginsDirectory() {
     if (isRunningInstalled()) {
-        return QString("/var/lib/kylin-assistant-daemon/");
+        return QString("/usr/lib/kylin-assistant/plugins/");
     } else {
-        return QString(QCoreApplication::applicationDirPath());
+        return QString(QCoreApplication::applicationDirPath() + "plugins/");
     }
 }
 
@@ -799,7 +799,7 @@ void MainWindow::initOtherPages()
     bottomStack->addWidget(setting_widget);
 
     if(box_widget == NULL)
-        box_widget = new BoxWidget(this, this->arch, this->osName, getAppDirectory());
+        box_widget = new BoxWidget(this, this->arch, this->osName, getPluginsDirectory());
     box_widget->setSessionDbusProxy(sessioninterface);
     connect(box_widget, SIGNAL(sendSubIndex(int)), this, SLOT(displaySubPage(int)));
     bottomStack->addWidget(box_widget);

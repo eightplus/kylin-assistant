@@ -35,7 +35,7 @@
 #include "../setting/mousewidget.h"
 #include "../setting/voicewidget.h"
 //#include "../setting/animationwidget.h"
-#include "../setting/launcherwidget.h"
+//#include "../setting/launcherwidget.h"
 #include "../setting/panelwidget.h"
 #include "../setting/windowwidget.h"
 #include "../setting/fontwidget.h"
@@ -89,7 +89,7 @@ private:
     MouseWidget *mouse_widget;
     VoiceWidget *voice_widget;
 //    AnimationWidget *animation_widget;
-    LauncherWidget *launcher_widget;
+//    LauncherWidget *launcher_widget;
     PanelWidget *panel_widget;
     WindowWidget *window_widget;
     FontWidget *font_widget;

@@ -12,56 +12,6 @@ CONFIG += release
 CONFIG += link_pkgconfig
 
 QT += core dbus network
-#QT       += core dbus network
-
-##greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-#isEqual(QT_MAJOR_VERSION, 5) {
-#    QT += widgets gui
-#}
-
-#TARGET = kylin-assistant
-#DESTDIR = ../
-#TEMPLATE = app
-#CONFIG += qt \
-#    warn_on \
-#    release \
-#    link_pkgconfig
-#INCLUDEPATH += .
-
-#include(../qtsingleapplication/src/qtsingleapplication.pri)
-
-#QMAKE_CFLAGS_DEBUG  = -g
-
-##指定uic命令将.ui文件转化成ui_*.h文件的存放的目录
-#UI_DIR += $$PWD/../tmp/
-
-##指定rcc命令将.qrc文件转换成qrc_*.h文件的存放目录
-#RCC_DIR += $$PWD/../tmp/
-
-##指定moc命令将含Q_OBJECT的头文件转换成标准.h文件的存放目录
-#MOC_DIR += $$PWD/../tmp/
-
-##指定目标文件(obj)的存放目录
-##OBJECTS_DIR += $$PWD/../tmp/
-
-#CONFIG(debug,debug|release){
-#    message(debug)
-
-#    DEFINES += _DEBUG
-
-##    DESTDIR = $$PWD/../bin/Debug
-#    OBJECTS_DIR = $$PWD/../obj/Debug
-#}
-
-#CONFIG(release,debug|release){
-#    message(release)
-
-##    DESTDIR = $$PWD/../bin/Release
-#    OBJECTS_DIR = $$PWD/../obj/Release
-
-#    QMAKE_CFLAGS    += -Os -s
-#    QMAKE_CXXFLAGS  += -Os -s
-#}
 
 inst1.files += res/kylin-assistant.png
 inst1.path = /usr/share/pixmaps
@@ -142,7 +92,7 @@ SOURCES += main.cpp\
     ../setting/mousewidget.cpp \
     ../setting/voicewidget.cpp \
 #    ../setting/animationwidget.cpp \
-    ../setting/launcherwidget.cpp \
+#    ../setting/launcherwidget.cpp \
     ../setting/panelwidget.cpp \
     ../setting/windowwidget.cpp \
     ../setting/fontwidget.cpp \
@@ -235,7 +185,7 @@ HEADERS  += mainwindow.h \
     ../setting/mousewidget.h \
     ../setting/voicewidget.h \
 #    ../setting/animationwidget.h \
-    ../setting/launcherwidget.h \
+#    ../setting/launcherwidget.h \
     ../setting/panelwidget.h \
     ../setting/windowwidget.h \
     ../setting/fontwidget.h \

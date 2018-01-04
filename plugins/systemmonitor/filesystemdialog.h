@@ -17,26 +17,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLUGININTERFACE_H
-#define PLUGININTERFACE_H
+#include <QWidget>
 
-#include <QtCore/QtPlugin>
-#include <QString>
+class DiskItemList;
+class DiskModel;
+class DiskInfo;
+class FileSystemWorker;
+class QVBoxLayout;
 
-class PluginInterface
+class FileSystemDialog : public QWidget
 {
+    Q_OBJECT
+
 public:
-    virtual ~PluginInterface() {}
-    virtual QString getGuid()  = 0;
-    virtual QString getName() = 0;
-    virtual QString getDescribe() = 0;
-    virtual QString getPicture() = 0;
-    virtual void doAction() = 0;
-    virtual QWidget *centralWidget() = 0;
+    explicit FileSystemDialog(QWidget* parent = 0);
+    ~FileSystemDialog();
+
+public slots:
+    void addDiskInfoItem(DiskInfo *info);
+    void removeDiskInfoItemByDevName(DiskInfo *info);
+
+private:
+    bool event(QEvent *event);
+
+private:
+    QVBoxLayout *m_centralLayout = nullptr;
+    DiskItemList *m_diskItemList;
+    DiskModel *m_diskModelList;
+    FileSystemWorker *m_fileSystemWorker;
 };
-
-//Q_DECLARE_INTERFACE定义在在qobject.h中，用来告诉Qt meta-object system 这个接口名称
-Q_DECLARE_INTERFACE(PluginInterface, "com.kylin.Plugin.PluginInterface")
-
-#endif // PLUGININTERFACE_H
-

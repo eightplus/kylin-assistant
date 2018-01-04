@@ -17,26 +17,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLUGININTERFACE_H
-#define PLUGININTERFACE_H
-
-#include <QtCore/QtPlugin>
+#include <QObject>
 #include <QString>
+#include "../../component/plugininterface.h"
+#include "systemmonitor.h"
 
-class PluginInterface
+//插件入口
+class ProcessManager : public QObject , PluginInterface
 {
+  Q_OBJECT
+  Q_INTERFACES(PluginInterface)
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    Q_PLUGIN_METADATA(IID "com.kylin.Plugin.PluginInterface" FILE "systemmonitor.json")//指定IID和.json文件
+#endif
+
 public:
-    virtual ~PluginInterface() {}
-    virtual QString getGuid()  = 0;
-    virtual QString getName() = 0;
-    virtual QString getDescribe() = 0;
-    virtual QString getPicture() = 0;
-    virtual void doAction() = 0;
-    virtual QWidget *centralWidget() = 0;
+    explicit ProcessManager(QObject* parent = 0);
+    virtual ~ProcessManager();
+    QWidget *centralWidget();
+
+public:
+    virtual QString getGuid();
+    virtual QString getName();
+    virtual QString getDescribe();
+    virtual QString getPicture();
+    virtual void doAction();
+
+private:
+    SystemMonitor *process_dialog = nullptr;
 };
-
-//Q_DECLARE_INTERFACE定义在在qobject.h中，用来告诉Qt meta-object system 这个接口名称
-Q_DECLARE_INTERFACE(PluginInterface, "com.kylin.Plugin.PluginInterface")
-
-#endif // PLUGININTERFACE_H
-
