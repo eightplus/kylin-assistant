@@ -4,5 +4,6 @@ kylin-assistant (1.0.0-0ubuntu1) bionic; urgency=low
   * Upgrade from Qt4 to Qt5.
   * Add qtsingleapplication.
   * Let the child window display normal.
+  * Add PingBack.
 
  -- lixiang <lixiang@kylinos.cn>  Thu, 21 Dec 2017 14:52:56 +0800

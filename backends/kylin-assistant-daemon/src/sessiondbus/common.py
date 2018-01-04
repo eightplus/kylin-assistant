@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 ### BEGIN LICENSE
@@ -60,6 +60,7 @@ distrowatch = 'http://distrowatch.com/'
 
 def get_distro_info():
     ufpath = '/etc/ubuntukylin-release'
+    lsbpath = '/etc/lsb-release'
     if(os.path.exists(ufpath) and os.path.isfile(ufpath)):
         uf = open(ufpath)
         lines = uf.readlines()
@@ -73,6 +74,20 @@ def get_distro_info():
                 v = kv[1]
                 rtn.append(v[:-1])
         uf.close()
+        return rtn
+    elif(os.path.exists(lsbpath) and os.path.isfile(lsbpath)):
+        lsbf = open(lsbpath)
+        lines = lsbf.readlines()
+        rtn = []
+        for line in lines:
+            kv = line.split('=')
+            if (kv[0] == 'DISTRIB_ID'):
+                v = kv[1]
+                rtn.append(v[:-1])
+            if (kv[0] == 'DISTRIB_RELEASE'):
+                v = kv[1]
+                rtn.append(v[:-1])
+        lsbf.close()
         return rtn
     else:
         dist = platform.dist()

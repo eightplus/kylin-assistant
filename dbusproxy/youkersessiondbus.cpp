@@ -59,6 +59,9 @@ SessionDispatcher::SessionDispatcher(QObject *parent)
     QObject::connect(sessioniface, SIGNAL(notify_string(QString, QString)), this, SLOT(handler_notify_string(QString, QString)));
 
     QObject::connect(sessioniface, SIGNAL(check_source_list_signal(bool)), this, SIGNAL(receive_source_list_signal(bool)));
+
+    //pingback
+    this->submit_uk_pingback();
 }
 
 SessionDispatcher::~SessionDispatcher() {
@@ -103,6 +106,11 @@ void SessionDispatcher::exit_qt() {
 QString SessionDispatcher::get_os_release_qt()
 {
     QDBusReply<QString> reply = sessioniface->call("get_os_release");
+    return reply.value();
+}
+
+bool SessionDispatcher::submit_uk_pingback() {
+    QDBusReply<bool> reply = sessioniface->call("submit_uk_pingback", qApp->applicationVersion());
     return reply.value();
 }
 
@@ -239,24 +247,24 @@ void SessionDispatcher::open_folder_qt(QString path) {
 }
 
 void SessionDispatcher::check_user_qt() {
-    sessioniface->call("check_user");
+//    sessioniface->call("check_user");
 }
 
 //弹出登录框
 void SessionDispatcher::popup_login_dialog() {
     //add ubuntukylin sso
-    sessioniface->call("slot_do_login_account");
+//    sessioniface->call("slot_do_login_account");
 }
 
 void SessionDispatcher::popup_register_dialog() {
     //add ubuntukylin sso
-    sessioniface->call("slot_do_register");
+//    sessioniface->call("slot_do_register");
 }
 
 //退出登录
 void SessionDispatcher::logout_ubuntukylin_account() {
     //add ubuntukylin sso
-    sessioniface->call("slot_do_logout");
+//    sessioniface->call("slot_do_logout");
 }
 
 void SessionDispatcher::handlerYoukerID(QString displayName, QString emailAddress) {

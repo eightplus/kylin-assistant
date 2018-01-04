@@ -72,17 +72,17 @@ import httplib2
 #MySever = ("http://service.ubuntukylin.com:8001/weather/api/1.0/")
 #WeatherPistonAPI.default_service_root = MySever
 
-#from piston_remoter import PingBackPistonAPI
+from .piston_remoter import PingBackPistonAPI
 #PingBackSever = ("http://servicPingBackPistonAPIe.ubuntukylin.com:8001/youker-assistant/")
 #PingBackPistonAPI.default_service_root = PingBackSever
-#PINGBACK_SERVER = "http://service.ubuntukylin.com:8001/youker-assistant/"
+PINGBACK_SERVER = "http://service.ubuntukylin.com:8001/youker-assistant/"
 
 #from piston_remoter import ServerPingBackAPI
 #WEATHER_SERVER = "http://service.ubuntukylin.com:8001/weather/"
 
 #from appcollections.monitorball.monitor_ball import MonitorBall
 
-from sso.ubuntusso import get_ubuntu_sso_backend
+#from sso.ubuntusso import get_ubuntu_sso_backend
 
 log = logging.getLogger('SessionDaemon')
 #from slider.wizard import Wizard
@@ -119,7 +119,7 @@ class SessionDaemon(dbus.service.Object):
         self.fileconf = FileManager()
 #        self.yahooconf = YahooWeather(self)
 #        self.server = WeatherPistonAPI(service_root=MySever)
-#        self.premoter = PingBackPistonAPI(service_root=PINGBACK_SERVER)
+        self.premoter = PingBackPistonAPI(service_root=PINGBACK_SERVER)
 #        self.weatherping = ServerPingBackAPI(service_root=WEATHER_SERVER)
 #        self.daemonsame = cleaner.SearchTheSame()
 #        self.daemonlarge = cleaner.ManageTheLarge()
@@ -536,55 +536,55 @@ class SessionDaemon(dbus.service.Object):
         self.systemconf.set_current_sleep_timeout_ac(value)
 
 
-    @dbus.service.method(INTERFACE, in_signature='', out_signature='')
-    def check_user(self):
-        try:
-            self.sso = get_ubuntu_sso_backend()
-            self.sso.connect("whoami", self.slot_whoami_done)
-            self.sso.connect("logout", self.slot_logout_successful)
-            self.sso.connect("fail",self.slot_login_fail)
-            # try backend login
-            self.sso.find_oauth_token()
-        except ImportError:
-            print('Initial ubuntu-kylin-sso-client failed, seem it is not installed.')
-        except Exception as e:
-            print('Check user failed.')
-            print(e)
+#    @dbus.service.method(INTERFACE, in_signature='', out_signature='')
+#    def check_user(self):
+#        try:
+#            self.sso = get_ubuntu_sso_backend()
+#            self.sso.connect("whoami", self.slot_whoami_done)
+#            self.sso.connect("logout", self.slot_logout_successful)
+#            self.sso.connect("fail",self.slot_login_fail)
+#            # try backend login
+#            self.sso.find_oauth_token()
+#        except ImportError:
+#            print('Initial ubuntu-kylin-sso-client failed, seem it is not installed.')
+#        except Exception as e:
+#            print('Check user failed.')
+#            print(e)
 
-    @dbus.service.method(INTERFACE, in_signature='', out_signature='')
-    def slot_do_login_account(self):
-        try:
-            self.sso.set_show_register(False)
-            self.sso.get_oauth_token()
-        except ImportError:
-            print('Initial ubuntu-kylin-sso-client failed, seem it is not installed.')
-        except Exception as e:
-            print('User login failed.')
-            print(e)
+#    @dbus.service.method(INTERFACE, in_signature='', out_signature='')
+#    def slot_do_login_account(self):
+#        try:
+#            self.sso.set_show_register(False)
+#            self.sso.get_oauth_token()
+#        except ImportError:
+#            print('Initial ubuntu-kylin-sso-client failed, seem it is not installed.')
+#        except Exception as e:
+#            print('User login failed.')
+#            print(e)
 
     # user register
-    @dbus.service.method(INTERFACE, in_signature='', out_signature='')
-    def slot_do_register(self):
-        try:
-            self.sso.set_show_register(True)
-            self.sso.get_oauth_token()
+#    @dbus.service.method(INTERFACE, in_signature='', out_signature='')
+#    def slot_do_register(self):
+#        try:
+#            self.sso.set_show_register(True)
+#            self.sso.get_oauth_token()
 
-        except ImportError:
-            print('Initial ubuntu-kylin-sso-client failed, seem it is not installed.')
-        except Exception as e:
-            print('User register failed.')
-            print(e)
+#        except ImportError:
+#            print('Initial ubuntu-kylin-sso-client failed, seem it is not installed.')
+#        except Exception as e:
+#            print('User register failed.')
+#            print(e)
 
-    @dbus.service.method(INTERFACE, in_signature='', out_signature='')
-    def slot_do_logout(self):
-        try:
-            self.sso.clear_token()
+#    @dbus.service.method(INTERFACE, in_signature='', out_signature='')
+#    def slot_do_logout(self):
+#        try:
+#            self.sso.clear_token()
 
-        except ImportError:
-            print('Initial ubuntu-kylin-sso-client failed, seem it is not installed.')
-        except Exception as e:
-            print('User logout failed.')
-            print(e)
+#        except ImportError:
+#            print('Initial ubuntu-kylin-sso-client failed, seem it is not installed.')
+#        except Exception as e:
+#            print('User logout failed.')
+#            print(e)
 
     #update user login status
     def slot_whoami_done(self, sso, result):
@@ -2120,7 +2120,7 @@ class SessionDaemon(dbus.service.Object):
     # -------------------------pingback-------------------------
     def get_last_time(self):
         time_text = None
-        usrPath = os.path.join(HOME, '.config/ubuntukylin/kylin-assistant/pingback.time')
+        usrPath = os.path.join(HOME, '.config/kylin/kylin-assistant/pingback.time')
         if os.path.exists(usrPath):
             fp = open(usrPath)
             try:
@@ -2130,7 +2130,7 @@ class SessionDaemon(dbus.service.Object):
         return time_text
 
     def set_last_time(self, time_text):
-        abs_path = os.path.join(HOME, '.config/ubuntukylin/kylin-assistant')
+        abs_path = os.path.join(HOME, '.config/kylin/kylin-assistant')
         if not os.path.isdir(abs_path):
             os.makedirs(abs_path)
         usrPath = os.path.join(abs_path, 'pingback.time')
@@ -2155,38 +2155,42 @@ class SessionDaemon(dbus.service.Object):
 
 #    @dbus.service.method(INTERFACE, in_signature='s', out_signature='b')
 #    def submit_uk_pingback(self, cityname):
-#        last_time = self.get_last_time()
-#        now_time = datetime.datetime.now()
-#        if last_time in (None, ''):
+    @dbus.service.method(INTERFACE, in_signature='s', out_signature='b')
+    def submit_uk_pingback(self, appVersion):
+        last_time = self.get_last_time()
+        now_time = datetime.datetime.now()
+        if last_time in (None, ''):
 #            version_youker_assistant = get_uk_version()
-#            distro, version_os  = get_distro_info()
-#            try:
+            distro, version_os  = get_distro_info()
+            try:
+                pingback = self.premoter.submit_pingback_main(distro, version_os, appVersion, '')
 #                pingback = self.premoter.submit_pingback_main(distro, version_os, version_youker_assistant, cityname)
-#            except Exception as e:
-#                print 'pingback failed...'
-#                print e
-#            if pingback:
-#                self. set_last_time(now_time.strftime('%Y-%m-%d'))#'%Y-%m-%d %H:%M:%S'
-#            return pingback
-#        else:
-#            last_time = datetime.datetime.strptime(last_time, '%Y-%m-%d')
-#            now_time = now_time.strftime('%Y-%m-%d')
-#            now_time = datetime.datetime.strptime(now_time, '%Y-%m-%d')
-##            myseconds = (now_time - last_time).seconds
-#            delta = now_time - last_time#两个日期相隔的天数
-#            if (delta.days > 0):
+            except Exception as e:
+                print('pingback failed...')
+                print(e)
+            if pingback:
+                self. set_last_time(now_time.strftime('%Y-%m-%d'))#'%Y-%m-%d %H:%M:%S'
+            return pingback
+        else:
+            last_time = datetime.datetime.strptime(last_time, '%Y-%m-%d')
+            now_time = now_time.strftime('%Y-%m-%d')
+            now_time = datetime.datetime.strptime(now_time, '%Y-%m-%d')
+#            myseconds = (now_time - last_time).seconds
+            delta = now_time - last_time#两个日期相隔的天数
+            if (delta.days > 0):
 #                version_youker_assistant = get_uk_version()
-#                distro, version_os  = get_distro_info()
-#                try:
+                distro, version_os  = get_distro_info()
+                try:
+                    pingback = self.premoter.submit_pingback_main(distro, version_os, appVersion, '')
 #                    pingback = self.premoter.submit_pingback_main(distro, version_os, version_youker_assistant, cityname)
-#                except Exception as e:
-#                    print 'pingback failed...'
-#                    print e
-#                if pingback:
-#                    self. set_last_time(now_time.strftime('%Y-%m-%d'))
-#                return pingback
-#            else:
-#                return False
+                except Exception as e:
+                    print('pingback failed...')
+                    print(e)
+                if pingback:
+                    self. set_last_time(now_time.strftime('%Y-%m-%d'))
+                return pingback
+            else:
+                return False
 
 #    def real_get_current_weather(self, cityId):
 #        self.weather_data = self.server.get_cma_observe_weather(cityId)

@@ -49,6 +49,8 @@ public:
 
     QString get_os_release_qt();
 
+    bool submit_uk_pingback();
+
     //弹出登录框
     void popup_login_dialog();
     void popup_register_dialog();

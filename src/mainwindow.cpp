@@ -180,22 +180,21 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
     tool_widget->initConnect();
 
     title_widget = new TitleWidget(this, this->arch, this->osName);
-    if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin")
-        title_widget->move(756, 0);
-    else {
-        title_widget->move(0, 0);
-    }
+//    if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin")
+    title_widget->move(756, 0);
+//    else {
+//        title_widget->move(0, 0);
+//    }
     connect(title_widget, SIGNAL(closeApp()), this, SLOT(closeYoukerAssistant()));
     title_widget->setParentWindow(this);
     title_widget->initConnect();
 
-//
-    login_widget = new LoginWidget(this);
-    if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin")
-        login_widget->hide();
-    else {
-        login_widget->move(585, 0);//900 - login_widget(220) - right_align(15) = 665
-    }
+//    login_widget = new LoginWidget(this);
+//    if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin")
+//        login_widget->hide();
+//    else {
+//        login_widget->move(585, 0);//900 - login_widget(220) - right_align(15) = 665
+//    }
 
     default_content_widget = new ContentWidget(this);
     default_content_widget->setGeometry(QRect(0, 274, 900, 326));
@@ -558,15 +557,15 @@ void MainWindow::upAnimFinished()
     shadow_widget->hide();
     if(title_widget->isHidden())
         title_widget->show();
-    if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin")
-    {
-        if(status == BOXPAGE && login_widget->isHidden()) {
-            login_widget->show();
-        }
-        else {
-            login_widget->hide();
-        }
-    }
+//    if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin")
+//    {
+//        if(status == BOXPAGE && login_widget->isHidden()) {
+//            login_widget->show();
+//        }
+//        else {
+//            login_widget->hide();
+//        }
+//    }
 }
 
 void MainWindow::closeAnimFinished()
@@ -574,10 +573,10 @@ void MainWindow::closeAnimFinished()
     tool_widget->show();
     if(title_widget->isHidden())
         title_widget->show();
-    if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isHidden())
-    {
-        login_widget->show();
-    }
+//    if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isHidden())
+//    {
+//        login_widget->show();
+//    }
     shadow_widget->hide();
 }
 
@@ -629,11 +628,11 @@ void MainWindow::displayMainWindow(/*int count*/)
 {
     this->battery = sessioninterface->judge_power_is_exists_qt();
     this->sensor = systeminterface->judge_sensors_exists_qt();
-    login_widget->setSessionDbusProxy(sessioninterface);
-    if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin")
-        sessioninterface->check_user_qt();
-    connect(sessioninterface, SIGNAL(ssoSuccessSignal(QString, QString)), login_widget, SLOT(showLoginInfo(QString,QString)));
-    connect(sessioninterface, SIGNAL(ssoLoginLogoutSignal(bool)), login_widget, SLOT(showLoginAndLogoutStatus(bool)));
+//    login_widget->setSessionDbusProxy(sessioninterface);
+//    if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin")
+//        sessioninterface->check_user_qt();
+//    connect(sessioninterface, SIGNAL(ssoSuccessSignal(QString, QString)), login_widget, SLOT(showLoginInfo(QString,QString)));
+//    connect(sessioninterface, SIGNAL(ssoLoginLogoutSignal(bool)), login_widget, SLOT(showLoginAndLogoutStatus(bool)));
     home_action_widget->setSessionDbusProxy(sessioninterface);
     home_action_widget->setSystemDbusProxy(systeminterface);
     home_action_widget->enableSanButton();
@@ -966,18 +965,18 @@ void MainWindow::setCurrentPageIndex(int index)
 {
     if(index == 0)
     {
-        if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin")
-            login_widget->hide();
+//        if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin")
+//            login_widget->hide();
         if (status != HOMEPAGE) {
             statusFlag = true;
             shadow_widget->show();
             tool_widget->hide();
             if(title_widget->isVisible())
                 title_widget->hide();
-            if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible())
-            {
-                login_widget->hide();
-            }
+//            if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible())
+//            {
+//                login_widget->hide();
+//            }
             gatherGroup->start();
             status = HOMEPAGE;
         }
@@ -987,7 +986,7 @@ void MainWindow::setCurrentPageIndex(int index)
     else if(index == 1)
     {
         if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin")
-            login_widget->hide();
+//            login_widget->hide();
         if (status == HOMEPAGE) {
             statusFlag = true;
         }
@@ -999,9 +998,9 @@ void MainWindow::setCurrentPageIndex(int index)
             tool_widget->hide();
             if(title_widget->isVisible())
                 title_widget->hide();
-            if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
-                login_widget->hide();
-            }
+//            if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
+//                login_widget->hide();
+//            }
 //            topStack->setCurrentIndex(0);
 //            bottomStack->setCurrentIndex(0);
             topStack->setCurrentWidget(cleaner_action_widget);
@@ -1010,9 +1009,9 @@ void MainWindow::setCurrentPageIndex(int index)
             status = CLEANPAGE;
         }
         else {
-            if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
-                login_widget->hide();
-            }
+//            if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
+//                login_widget->hide();
+//            }
 //            topStack->setCurrentIndex(0);
 //            bottomStack->setCurrentIndex(0);
             topStack->setCurrentWidget(cleaner_action_widget);
@@ -1022,7 +1021,7 @@ void MainWindow::setCurrentPageIndex(int index)
     else if(index == 2)
     {
         if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin" )
-            login_widget->hide();
+//            login_widget->hide();
         if (status == HOMEPAGE) {
             statusFlag = true;
         }
@@ -1034,9 +1033,9 @@ void MainWindow::setCurrentPageIndex(int index)
             tool_widget->hide();
             if(title_widget->isVisible())
                 title_widget->hide();
-            if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
-                login_widget->hide();
-            }
+//            if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
+//                login_widget->hide();
+//            }
 //            topStack->setCurrentIndex(1);
 //            bottomStack->setCurrentIndex(1);
             topStack->setCurrentWidget(info_action_widget);
@@ -1045,9 +1044,9 @@ void MainWindow::setCurrentPageIndex(int index)
             status = INFOPAGE;
         }
         else {
-            if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
-                login_widget->hide();
-            }
+//            if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
+//                login_widget->hide();
+//            }
 //            topStack->setCurrentIndex(1);
 //            bottomStack->setCurrentIndex(1);
             topStack->setCurrentWidget(info_action_widget);
@@ -1062,7 +1061,7 @@ void MainWindow::setCurrentPageIndex(int index)
             statusFlag = false;
         if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin" )
         {
-            login_widget->hide();
+//            login_widget->hide();
             if (status != BOXPAGE && statusFlag) {
                 shadow_widget->show();
                 tool_widget->hide();
@@ -1089,9 +1088,9 @@ void MainWindow::setCurrentPageIndex(int index)
                 tool_widget->hide();
                 if(title_widget->isVisible())
                     title_widget->hide();
-                if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
-                    login_widget->hide();
-                }
+//                if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
+//                    login_widget->hide();
+//                }
     //            topStack->setCurrentIndex(2);
     //            bottomStack->setCurrentIndex(2);
                 topStack->setCurrentWidget(setting_action_widget);
@@ -1100,9 +1099,9 @@ void MainWindow::setCurrentPageIndex(int index)
                 status = SETTINGPAGE;
             }
             else {
-                if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
-                    login_widget->hide();
-                }
+//                if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
+//                    login_widget->hide();
+//                }
     //            topStack->setCurrentIndex(2);
     //            bottomStack->setCurrentIndex(2);
                 topStack->setCurrentWidget(setting_action_widget);
@@ -1123,9 +1122,9 @@ void MainWindow::setCurrentPageIndex(int index)
                 tool_widget->hide();
                 if(title_widget->isVisible())
                     title_widget->hide();
-                if (login_widget->isVisible()) {
-                    login_widget->hide();
-                }
+//                if (login_widget->isVisible()) {
+//                    login_widget->hide();
+//                }
     //            topStack->setCurrentIndex(3);
     //            bottomStack->setCurrentIndex(3);
                 topStack->setCurrentWidget(box_action_widget);
@@ -1134,9 +1133,9 @@ void MainWindow::setCurrentPageIndex(int index)
                 status = BOXPAGE;
             }
             else {
-                if (login_widget->isHidden()) {
-                    login_widget->show();
-                }
+//                if (login_widget->isHidden()) {
+//                    login_widget->show();
+//                }
     //            topStack->setCurrentIndex(3);
     //            bottomStack->setCurrentIndex(3);
                 topStack->setCurrentWidget(box_action_widget);

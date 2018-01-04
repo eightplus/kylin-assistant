@@ -29,7 +29,7 @@
 #include "titlewidget.h"
 #include "actionwidget.h"
 #include "toolwidget.h"
-#include "loginwidget.h"
+//#include "loginwidget.h"
 #include "contentwidget.h"
 #include "homepage.h"
 #include "infowidget.h"
@@ -120,7 +120,7 @@ private:
     ActionWidget *default_action_widget;
     ActionWidget *other_action_widget;
     ToolWidget *tool_widget;
-    LoginWidget *login_widget;
+//    LoginWidget *login_widget;
     ContentWidget *default_content_widget;
     ContentWidget *other_content_widget;
     HomePage *home_page;
