@@ -33,6 +33,8 @@
 #include <QPushButton>
 #include <QComboBox>
 #include <QDebug>
+#include <QApplication>
+#include <QScreen>
 
 //ShredDialog::ShredDialog(ShredManager *plugin, QDialog *parent)
 //    :QDialog(parent)
@@ -96,6 +98,8 @@ ShredDialog::ShredDialog(QWidget *parent) :
 
     this->setLanguage();
     this->initConnect();
+
+    this->moveCenter();
 }
 
 ShredDialog::~ShredDialog()
@@ -259,4 +263,22 @@ void ShredDialog::closeEvent(QCloseEvent *event)
 {
     event->accept();
 //  emit SignalClose();
+}
+
+void ShredDialog::moveCenter()
+{
+    QPoint pos = QCursor::pos();
+    QRect primaryGeometry;
+    for (QScreen *screen : qApp->screens()) {
+        if (screen->geometry().contains(pos)) {
+            primaryGeometry = screen->geometry();
+        }
+    }
+
+    if (primaryGeometry.isEmpty()) {
+        primaryGeometry = qApp->primaryScreen()->geometry();
+    }
+
+    this->move(primaryGeometry.x() + (primaryGeometry.width() - this->width())/2,
+               primaryGeometry.y() + (primaryGeometry.height() - this->height())/2);
 }

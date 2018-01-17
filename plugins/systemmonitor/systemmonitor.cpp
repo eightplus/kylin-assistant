@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2013 ~ 2018 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ *
+ * Authors:
+ *  Kobe Lee    xiangli@ubuntukylin.com/kobe24_lixiang@126.com
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "systemmonitor.h"
 
 #include "util.h"
@@ -11,15 +30,9 @@
 #include <QApplication>
 #include <QScreen>
 
-namespace {
-const int MAINWIDGET_MINIMUN_HEIGHT = 480;
-const int MAINWIDGET_MINIMUN_WIDTH = 640;
-}
-
 SystemMonitor::SystemMonitor(QWidget *parent)
     : QFrame(parent)
-    , drag_state(NOT_PDRAGGING)
-    , start_drag(QPoint(0,0))
+    , mousePressed(false)
 {
     /*this->setAutoFillBackground(true);
     QPalette palette;
@@ -28,13 +41,18 @@ SystemMonitor::SystemMonitor(QWidget *parent)
 
 //    this->setStyleSheet("QFrame{border: 1px solid #121212;border-radius:1px;background-color:#1f1f1f;}");
 //    this->setAttribute(Qt::WA_DeleteOnClose);
-    this->setWindowFlags(Qt::FramelessWindowHint);
+
+
+    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);//去掉边框
+    this->setAttribute(Qt::WA_TranslucentBackground);//背景透明
+
+//    this->setWindowFlags(Qt::FramelessWindowHint);
     this->setAutoFillBackground(true);
     this->setMouseTracking(true);
-    installEventFilter(this);
+//    installEventFilter(this);
 
     this->resize(900, 600);
-    setMinimumSize(MAINWIDGET_MINIMUN_WIDTH, MAINWIDGET_MINIMUN_HEIGHT);
+    setMinimumSize(640, 480);
 
     proSettings = new QSettings(KYLIN_COMPANY_SETTING, KYLIN_SETTING_FILE_NAME_SETTING);
     proSettings->setIniCodec("UTF-8");
@@ -54,6 +72,7 @@ SystemMonitor::~SystemMonitor()
             QWidget *widget = static_cast<QWidget *>(child);
             widget->deleteLater();
         }
+        delete m_sysMonitorStack;
     }
     if (m_titleWidget) {
         delete m_titleWidget;
@@ -209,6 +228,14 @@ void SystemMonitor::onChangePage(int index)
 {
     if (m_sysMonitorStack) {
         m_sysMonitorStack->setCurrentIndex(index);
+        if (index == 1) {
+            //start time
+            resources_dialog->startCpuTimer();
+        }
+        else {
+            //stop time
+            resources_dialog->stopCpuTimer();
+        }
     }
 }
 
@@ -284,117 +311,6 @@ void SystemMonitor::closeEvent(QCloseEvent *event)
     event->accept();
 }
 
-void SystemMonitor::moveDialog(QPoint diff)
-{
-#if QT_VERSION >= 0x050000
-    // Move the window with some delay.
-    // Seems to work better with Qt 5
-
-    static QPoint d;
-    static int count = 0;
-
-    d += diff;
-    count++;
-
-    if (count > 3) {
-        QPoint new_pos = pos() + d;
-        if (new_pos.y() < 0) new_pos.setY(0);
-        if (new_pos.x() < 0) new_pos.setX(0);
-        move(new_pos);
-        count = 0;
-        d = QPoint(0,0);
-    }
-#else
-    move(pos() + diff);
-#endif
-}
-
-bool SystemMonitor::eventFilter(QObject *object, QEvent *event)
-{
-    if (object->objectName() == "SystemMonitorStack") {//让滚动条可以鼠标拖动
-        drag_state = NOT_PDRAGGING;
-        return false;
-    }
-
-    QEvent::Type type = event->type();
-
-    if (type == QEvent::KeyPress) {
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-        if (keyEvent->key() == Qt::Key_F) {
-            if (keyEvent->modifiers() == Qt::ControlModifier) {
-                m_toolBar->setSearchEditFocus();
-                return false;
-            }
-        }
-    }
-
-    if (type != QEvent::MouseButtonPress
-        && type != QEvent::MouseButtonRelease
-        && type != QEvent::MouseMove)
-        return false;
-
-    QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent*>(event);
-    if (!mouseEvent) {
-        return false;
-    }
-
-    if (mouseEvent->modifiers() != Qt::NoModifier) {
-        drag_state = NOT_PDRAGGING;
-        return false;
-    }
-
-    if (type == QEvent::MouseButtonPress) {
-        if (mouseEvent->button() != Qt::LeftButton) {
-            drag_state = NOT_PDRAGGING;
-            return false;
-        }
-
-        drag_state = START_PDRAGGING;
-        start_drag = mouseEvent->globalPos();
-        // Don't filter, so others can have a look at it too
-        return false;
-    }
-
-    if (type == QEvent::MouseButtonRelease) {
-        if (drag_state != PDRAGGING || mouseEvent->button() != Qt::LeftButton) {
-            drag_state = NOT_PDRAGGING;
-            return false;
-        }
-
-        // Stop dragging and eat event
-        drag_state = NOT_PDRAGGING;
-        event->accept();
-        return true;
-    }
-
-    // type == QEvent::MouseMove
-    if (drag_state == NOT_PDRAGGING)
-        return false;
-
-    // buttons() note the s
-    if (mouseEvent->buttons() != Qt::LeftButton) {
-        drag_state = NOT_PDRAGGING;
-        return false;
-    }
-
-    QPoint pos = mouseEvent->globalPos();
-    QPoint diff = pos - start_drag;
-    if (drag_state == START_PDRAGGING) {
-        // Don't start dragging before moving at least DRAG_THRESHOLD pixels
-        if (abs(diff.x()) < 4 && abs(diff.y()) < 4)
-            return false;
-
-        drag_state = PDRAGGING;
-    }
-
-    this->moveDialog(diff);
-
-    start_drag = pos;
-    event->accept();
-
-    return true;
-}
-
 void SystemMonitor::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
@@ -403,4 +319,31 @@ void SystemMonitor::paintEvent(QPaintEvent *)
     path.addRect(QRectF(rect()));
     painter.setOpacity(1);
     painter.fillPath(path, QColor("#FFFFFF"));
+}
+
+void SystemMonitor::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        this->dragPosition = event->globalPos() - frameGeometry().topLeft();
+        this->mousePressed = true;
+    }
+    QFrame::mousePressEvent(event);
+}
+
+void SystemMonitor::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        this->mousePressed = false;
+    }
+
+    QFrame::mouseReleaseEvent(event);
+}
+
+void SystemMonitor::mouseMoveEvent(QMouseEvent *event)
+{
+    if (this->mousePressed) {
+        move(event->globalPos() - this->dragPosition);
+    }
+
+    QFrame::mouseMoveEvent(event);
 }

@@ -100,7 +100,7 @@ signals:
     void get_fetch_signal(QString msg_type, QStringList msg);
     void get_apt_signal(QString msg_type, QStringList msg);
 
-    void dbusInitFinished();
+//    void dbusInitFinished();
 
 public slots:
     void handler_interrupt_clean(bool status);

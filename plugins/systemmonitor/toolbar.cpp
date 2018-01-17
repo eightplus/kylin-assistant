@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2013 ~ 2018 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ *
+ * Authors:
+ *  Kobe Lee    xiangli@ubuntukylin.com/kobe24_lixiang@126.com
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "toolbar.h"
 #include "myimagebutton.h"
 #include "mytipimagebutton.h"
@@ -8,6 +27,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QHBoxLayout>
+#include <QPushButton>
 #include <QPainter>
 #include <QResizeEvent>
 #include <QStyleFactory>
@@ -26,9 +46,9 @@ ToolBar::ToolBar(QSettings *settings, QWidget *parent)
 //    palette.setColor(QPalette::Background, QColor("#0d87ca"));
 //    this->setPalette(palette);
 
-    searchTimer = new QTimer(this);
-    searchTimer->setSingleShot(true);
-    connect(searchTimer, SIGNAL(timeout()), this, SLOT(onRefreshSearchResult()));
+    m_searchTimer = new QTimer(this);
+    m_searchTimer->setSingleShot(true);
+    connect(m_searchTimer, SIGNAL(timeout()), this, SLOT(onRefreshSearchResult()));
 
     initWidgets();
 }
@@ -36,8 +56,19 @@ ToolBar::ToolBar(QSettings *settings, QWidget *parent)
 ToolBar::~ToolBar()
 {
     delete processLabel;
-    delete searchEdit;
+    delete m_searchEdit;
+    delete m_cancelSearchBtn;
     delete processCategory;
+
+    if (m_searchTimer) {
+        disconnect(m_searchTimer, SIGNAL(timeout()), this, SLOT(onRefreshSearchResult()));
+        if(m_searchTimer->isActive()) {
+            m_searchTimer->stop();
+        }
+        delete m_searchTimer;
+        m_searchTimer = nullptr;
+    }
+
     //Segmentation fault
     QLayoutItem *child;
     while ((child = m_lLayout->takeAt(0)) != 0) {
@@ -65,11 +96,11 @@ bool ToolBar::eventFilter(QObject *obj, QEvent *event)
         if (obj == this) {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
             if (keyEvent->key() == Qt::Key_Escape) {
-                searchEdit->clear();
+                m_searchEdit->clear();
                 emit canelSearchEditFocus();
             }
         }
-        else if (obj == searchEdit->getLineEdit()) {
+        else if (obj == m_searchEdit->getLineEdit()) {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
             if (keyEvent->key() == Qt::Key_Tab) {
                 emit canelSearchEditFocus();
@@ -82,28 +113,37 @@ bool ToolBar::eventFilter(QObject *obj, QEvent *event)
 
 void ToolBar::setSearchEditFocus()
 {
-    if (searchEdit->text() != "") {
-        searchEdit->getLineEdit()->setFocus();
+    if (m_searchEdit->text() != "") {
+        m_searchEdit->getLineEdit()->setFocus();
     } else {
-        searchEdit->setFocus();
+        m_searchEdit->setFocus();
     }
 }
 
 void ToolBar::onRefreshSearchResult()
 {
-    if (searchEdit->text() == searchTextCache) {
+    if (m_searchEdit->text() == searchTextCache) {
         emit this->searchSignal(searchTextCache);
     }
 }
 
 void ToolBar::handleSearchTextChanged()
 {
-    searchTextCache = searchEdit->text();
+    searchTextCache = m_searchEdit->text();
 
-    if (searchTimer->isActive()) {
-        searchTimer->stop();
+    this->m_cancelSearchBtn->setVisible(!searchTextCache.isEmpty());
+
+    if (m_searchTimer->isActive()) {
+        m_searchTimer->stop();
     }
-    searchTimer->start(300);
+    m_searchTimer->start(300);
+}
+
+void ToolBar::onCancelSearchBtnClicked(bool b)
+{
+    this->m_cancelSearchBtn->setVisible(false);
+    m_searchEdit->clear();
+    emit canelSearchEditFocus();
 }
 
 void ToolBar::paintEvent(QPaintEvent *e)
@@ -164,8 +204,8 @@ void ToolBar::initMiddleContent()
         processButton->setChecked(true);
         resourcesButton->setChecked(false);
         disksButton->setChecked(false);
-        if (!searchEdit->isVisible())
-            searchEdit->setVisible(true);
+        if (!m_searchEdit->isVisible())
+            m_searchEdit->setVisible(true);
         if (!processCategory->isVisible())
             processCategory->setVisible(true);
     });
@@ -174,11 +214,11 @@ void ToolBar::initMiddleContent()
         processButton->setChecked(false);
         resourcesButton->setChecked(true);
         disksButton->setChecked(false);
-        if (searchEdit->isVisible())
-            searchEdit->setVisible(false);
+        if (m_searchEdit->isVisible())
+            m_searchEdit->setVisible(false);
         if (processCategory->isVisible())
             processCategory->setVisible(false);
-        searchEdit->clear();
+        m_searchEdit->clear();
         emit canelSearchEditFocus();
     });
     connect(disksButton, &MyTipImageButton::clicked, this, [=] {
@@ -186,11 +226,11 @@ void ToolBar::initMiddleContent()
         processButton->setChecked(false);
         resourcesButton->setChecked(false);
         disksButton->setChecked(true);
-        if (searchEdit->isVisible())
-            searchEdit->setVisible(false);
+        if (m_searchEdit->isVisible())
+            m_searchEdit->setVisible(false);
         if (processCategory->isVisible())
             processCategory->setVisible(false);
-        searchEdit->clear();
+        m_searchEdit->clear();
         emit canelSearchEditFocus();
     });
     processButton->setToolTip(tr("Processes"));
@@ -213,10 +253,19 @@ void ToolBar::initRightContent()
     QWidget *w = new QWidget;
     m_rLayout = new QHBoxLayout(w);
     m_rLayout->setContentsMargins(0, 3, 6, 3);
-    m_rLayout->setSpacing(0);
+    m_rLayout->setSpacing(5);
 
-    connect(searchEdit, &MySearchEdit::textChanged, this, &ToolBar::handleSearchTextChanged, Qt::QueuedConnection);
-    m_rLayout->addWidget(searchEdit);
+    m_cancelSearchBtn = new QPushButton;
+    m_cancelSearchBtn->setObjectName("blackButton");
+    m_cancelSearchBtn->setText(tr("Cancel"));
+    m_cancelSearchBtn->setFocusPolicy(Qt::NoFocus);
+    m_cancelSearchBtn->setFixedSize(46, 25);
+    m_cancelSearchBtn->setVisible(false);
+    connect(m_cancelSearchBtn, SIGNAL(clicked(bool)), SLOT(onCancelSearchBtnClicked(bool)));
+
+    connect(m_searchEdit, &MySearchEdit::textChanged, this, &ToolBar::handleSearchTextChanged, Qt::QueuedConnection);
+    m_rLayout->addWidget(m_searchEdit);
+    m_rLayout->addWidget(m_cancelSearchBtn);
 
     QString whose_processes = "user";
     proSettings->beginGroup("PROCESS");
@@ -246,9 +295,9 @@ void ToolBar::initWidgets()
     m_layout->setSpacing(0);
     this->setLayout(m_layout);
 
-    searchEdit = new MySearchEdit();
-    searchEdit->setFixedWidth(222);
-    searchEdit->getLineEdit()->installEventFilter(this);
+    m_searchEdit = new MySearchEdit();
+    m_searchEdit->setFixedWidth(222);
+    m_searchEdit->getLineEdit()->installEventFilter(this);
 
     initLeftContent();
     initMiddleContent();

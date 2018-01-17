@@ -15,6 +15,7 @@
 
 MyDialog::MyDialog(const QString &title, const QString &message, QWidget *parent) :
     QDialog(parent)
+   , mousePressed(false)
 {
     this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);
 

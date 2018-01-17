@@ -64,7 +64,7 @@ class Desktop_Autostart_Manage():
             else:
                 if OPTION_N in all_options and config.getboolean(SECTION, OPTION_N):
                     self.dic.setdefault(OPTION_N, []).append(filename)
-                else: 
+                else:
                     #OPTION_O in all_options or OPTION_NOT in all_options or OPTION_X in all_options:
                     if (OPTION_O in all_options and current_desktop_env not in config.get(SECTION, OPTION_O)) or (OPTION_NOT in all_options and current_desktop_env in config.get(SECTION, OPTION_NOT)):
                         self.dic.setdefault('*showin', []).append(filename)

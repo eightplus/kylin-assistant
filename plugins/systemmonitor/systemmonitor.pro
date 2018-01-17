@@ -4,30 +4,21 @@
 #
 #-------------------------------------------------
 
+QT += core
+
 isEqual(QT_MAJOR_VERSION, 5) {
-    QT += widgets gui
+    QT += widgets gui svg
 }
 
 TARGET = systemmonitor
 TEMPLATE = lib
-#INCLUDEPATH += ../systemmonitor
-#DESTDIR = ../libs
 DESTDIR = $$_PRO_FILE_PWD_/../
 CONFIG += plugin c++11 link_pkgconfig
 PKGCONFIG += libgtop-2.0 libsystemd
 
-
-
-#target.source += $$TARGET
-#target.path = /var/lib/kylin-assistant-daemon/libs/
 target.path = $${PREFIX}/lib/kylin-assistant/plugins/
 INSTALLS += target
-#LIBS += -lprocps
 
-#UI_DIR += $$PWD/../tmp/systemmonitor/
-#RCC_DIR += $$PWD/../tmp/systemmonitor/
-#MOC_DIR += $$PWD/../tmp/systemmonitor/
-#OBJECTS_DIR = $$PWD/../obj/systemmonitor
 unix {
     UI_DIR = .ui
     MOC_DIR = .moc
@@ -62,8 +53,11 @@ HEADERS += \
     filesystemworker.h \
     diskmodel.h \
     diskinfo.h \
-    mysearchedit.h
-
+    mysearchedit.h \
+    networkflow.h \
+    cpuoccupancyrate.h \
+    cpuballwidget.h \
+    smoothcurvegenerator.h
 
 SOURCES += \
     systemmonitor.cpp \
@@ -90,10 +84,14 @@ SOURCES += \
     filesystemworker.cpp \
     diskmodel.cpp \
     diskinfo.cpp \
-    mysearchedit.cpp
+    mysearchedit.cpp \
+    networkflow.cpp \
+    cpuoccupancyrate.cpp \
+    cpuballwidget.cpp \
+    smoothcurvegenerator.cpp
 
 OTHER_FILES += \
     systemmonitor.json
 
 RESOURCES += \
-    ../../src/img.qrc
+    res.qrc

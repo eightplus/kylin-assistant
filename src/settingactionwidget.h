@@ -40,7 +40,7 @@ public:
 
 public slots:
     void displayActionMainPage();
-    void displayActionSubPage(int index);
+    void displayActionSubPage(QString moduleName);//void displayActionSubPage(SettingAction::SettingModuleID moduleId);
 
 signals:
     void notifyContentPageToMain();
@@ -49,7 +49,8 @@ private:
     QLabel *img_label;
     QLabel *title_label;
     QStackedWidget *stacked_widget;
-    QWidget *main_acion;
+    QWidget *main_action;
+//    SettingAction *main_action;
     SettingAction *theme_action;
     SettingAction *icon_action;
     SettingAction *mouse_action;
@@ -60,7 +61,7 @@ private:
     SettingAction *window_action;
     SettingAction *font_action;
     SettingAction *touchpad_action;
-    SettingAction *deadpixel_action;
+//    SettingAction *deadpixel_action;
     SettingAction *conserve_aciton;
     SettingAction *nautilus_action;
 

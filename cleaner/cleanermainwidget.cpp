@@ -22,8 +22,8 @@
 #include "../src/mainwindow.h"
 #include "../component/cleangroup.h"
 
-CleanerMainWidget::CleanerMainWidget(QWidget *parent, SessionDispatcher *seroxy, MainWindow *window, Toolkits *kits, QString skin)
-    : QWidget(parent), sessionproxy(seroxy), parentWindow(window), toolKits(kits)
+CleanerMainWidget::CleanerMainWidget(QWidget *parent, /*SessionDispatcher *seroxy, */MainWindow *window, Toolkits *kits, QString skin)
+    : QWidget(parent), /*sessionproxy(seroxy), */parentWindow(window), toolKits(kits)
 {
     this->setFixedSize(900, 403);
     this->setObjectName("transparentWidget");
@@ -156,7 +156,8 @@ void CleanerMainWidget::receiveScanSignal()
     {
 //        qDebug() << "args is.........." << argsMap;
         emit this->showActionAnimaiton();
-        sessionproxy->scanSystemCleanerItems(argsMap);
+        emit this->startScanSystem(argsMap);
+//        sessionproxy->scanSystemCleanerItems(argsMap);
     }
 }
 

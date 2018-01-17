@@ -24,8 +24,8 @@
 #include <QDebug>
 #include <QBoxLayout>
 
-CleanerDetailWidget::CleanerDetailWidget(QWidget *parent, SessionDispatcher *seroxy, SystemDispatcher *syproxy, MainWindow *window, Toolkits *kits, QString skin)
-    : QWidget(parent), sessionproxy(seroxy), systemproxy(syproxy), parentWindow(window), toolKits(kits),cur_skin(skin),
+CleanerDetailWidget::CleanerDetailWidget(QWidget *parent, /*SessionDispatcher *seroxy, SystemDispatcher *syproxy, */MainWindow *window, Toolkits *kits, QString skin)
+    : QWidget(parent), /*sessionproxy(seroxy), systemproxy(syproxy), */parentWindow(window), toolKits(kits),cur_skin(skin),
     ui(new Ui::CleanerDetailWidget)
 {
     ui->setupUi(this);
@@ -1150,8 +1150,9 @@ void CleanerDetailWidget::receiveCleanSignal()
     else
     {
 //        qDebug() << "args is.........." << argsData;
-        systemproxy->set_user_homedir_qt();
-        systemproxy->cleanAllSelectItems(argsData);
+        emit this->startCleanSystem(argsData);
+//        systemproxy->set_user_homedir_qt();
+//        systemproxy->cleanAllSelectItems(argsData);
     }
 }
 

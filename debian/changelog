@@ -5,5 +5,10 @@ kylin-assistant (1.0.0-0ubuntu1) bionic; urgency=low
   * Add qtsingleapplication.
   * Let the child window display normal.
   * Add PingBack.
+  * Rewrite systeminfo frame.
+  * Rewrite setting frame.
+  * Separate data and graphics.
+  * Add Cpu.
+  * Add Network.
 
  -- lixiang <lixiang@kylinos.cn>  Thu, 21 Dec 2017 14:52:56 +0800

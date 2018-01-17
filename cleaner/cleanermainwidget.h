@@ -33,7 +33,7 @@ class CleanerMainWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CleanerMainWidget(QWidget *parent = 0, SessionDispatcher *seroxy = 0, MainWindow *window = 0, Toolkits *kits = 0, QString skin = ":/background/res/skin/1.png");
+    explicit CleanerMainWidget(QWidget *parent = 0, /*SessionDispatcher *seroxy = 0, */MainWindow *window = 0, Toolkits *kits = 0, QString skin = ":/background/res/skin/1.png");
     ~CleanerMainWidget();
     void setLanguage();
     void getAllScanSelectedItems();
@@ -45,6 +45,7 @@ public slots:
 
 signals:
     void showActionAnimaiton();
+    void startScanSystem(QMap<QString, QVariant> itemsMap);
 
 private:
     MainWindow *parentWindow;
@@ -60,7 +61,7 @@ private:
     CleanerItems *trace_items;
 
     QMap<QString, QVariant> argsMap;
-    SessionDispatcher *sessionproxy;
+//    SessionDispatcher *sessionproxy;
     Toolkits *toolKits;
 };
 

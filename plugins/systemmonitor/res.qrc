@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/wave-front.png</file>
+        <file>res/wave-back.png</file>
+        <file>../../src/res/kylin-assistant.png</file>
+        <file>res/upload.svg</file>
+        <file>res/download.svg</file>
+    </qresource>
+</RCC>

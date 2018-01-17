@@ -29,7 +29,10 @@ public:
     ~ThreadPool();
 
     static ThreadPool *Instance();
-    QThread *createNewThread();
+//    QThread *createNewThread();
+    QThread *newThread();
+    void moveToNewThread(QObject *obj);
+
     void exitAllThreads();
 
 private:

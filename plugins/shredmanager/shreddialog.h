@@ -44,6 +44,8 @@ public:
   QString getCurrrentSkinName();
   void resetSkin();
 
+  void moveCenter();
+
 protected:
     void closeEvent(QCloseEvent *event);
 

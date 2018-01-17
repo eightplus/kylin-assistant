@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2015 National University of Defense Technology(NUDT) & Kylin Ltd.
+ * Copyright (C) 2013 ~ 2018 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    xiangli@ubuntukylin.com/kobe24_lixiang@126.com
@@ -38,6 +38,7 @@
 #include <QProcess>
 #include <QStyleFactory>
 #include <QToolTip>
+#include <QProcess>
 
 #include <unistd.h>
 #include <systemd/sd-login.h>
@@ -92,8 +93,8 @@ ProcessDialog::ProcessDialog(QList<bool> columnShowOrHideFlags, int sortIndex, b
     ,frequency(0U)
     ,proSettings(settings)
 {
-    setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Preferred);
-    setAcceptDrops(true);
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+//    setAcceptDrops(true);
     setAttribute(Qt::WA_NoMousePropagation);
 
     this->setObjectName("ProcessDialog");
@@ -294,6 +295,17 @@ void ProcessDialog::clearOriginProcList()
     ProcessWorker::all.clear();
 }
 
+QString rootCommand(QString command, int value, pid_t pid)
+{
+    return QString("gksu \"%1 %1 %1\"").arg(command, value, pid);
+}
+
+void startRenice(QString command, int value, pid_t pid)
+{
+    QProcess::startDetached(rootCommand(command, value, pid));
+}
+
+
 void ProcessDialog::changeProcPriority(int nice)
 {
     if (nice == 32) {
@@ -328,6 +340,10 @@ void ProcessDialog::changeProcPriority(int nice)
             //need to be root
             if(errno == EPERM || errno == EACCES) {
                 qDebug() << "Change priority need to be root!!!";
+
+                //kobe test
+                //startRenice("renice", nice, cur_pid);
+
                 bool success = false;
                 QString command = QString("renice %1 %1").arg(nice).arg(cur_pid);
                 QFile file("/usr/bin/pkexec");

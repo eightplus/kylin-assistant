@@ -29,6 +29,9 @@ SessionDispatcher::SessionDispatcher(QObject *parent)
                                QDBusConnection::sessionBus());
 
 //    QObject::connect(sessioniface, SIGNAL(autostartmanage_data_signal(QVariantMap)), this, SLOT(handlerAutoManageData(QVariantMap)));
+
+
+
     QObject::connect(sessioniface, SIGNAL(autostartmanage_data_signal(QStringList)), this, SLOT(handlerAutoManageData(QStringList)));
     QObject::connect(sessioniface, SIGNAL(autostartmanage_status_signal(QString)), this, SLOT(handlerAutoManageStatus(QString)));
     QObject::connect(sessioniface, SIGNAL(autostartmanage_error_signal(QString)), this, SLOT(handlerAutoManageError(QString)));
@@ -496,11 +499,13 @@ bool SessionDispatcher::get_show_devices_qt() {
 bool SessionDispatcher::set_launcher_autohide_qt(bool flag) {
     QDBusReply<bool> reply = sessioniface->call("set_launcher_autohide", flag);
     return reply.value();
+//    return true;
 }
 
 bool SessionDispatcher::get_launcher_autohide_qt() {
     QDBusReply<bool> reply = sessioniface->call("get_launcher_autohide");
     return reply.value();
+//    return true;
 }
 
 bool SessionDispatcher::set_launcher_icon_size_qt(int num) {
@@ -511,15 +516,18 @@ bool SessionDispatcher::set_launcher_icon_size_qt(int num) {
 int SessionDispatcher::get_launcher_icon_size_qt() {
     QDBusReply<int> reply = sessioniface->call("get_launcher_icon_size");
     return reply.value();
+//    return 32;
 }
 bool SessionDispatcher::set_launcher_have_showdesktopicon_qt(bool flag) {
     QDBusReply<bool> reply = sessioniface->call("set_launcher_have_showdesktopicon", flag);
     return reply.value();
+//    return true;
 }
 
 bool SessionDispatcher::get_launcher_have_showdesktopicon_qt() {
     QDBusReply<bool> reply = sessioniface->call("get_launcher_have_showdesktopicon");
     return reply.value();
+//    return true;
 }
 
 //-----------------------------------------------mate----------------------------------------------
@@ -551,6 +559,7 @@ int SessionDispatcher::get_mate_panel_icon_size_qt(QString positon)
 double SessionDispatcher::get_launcher_transparency_qt() {
     QDBusReply<double> reply = sessioniface->call("get_launcher_transparency");
     return reply.value();
+//    return 0.0;
 }
 
 bool SessionDispatcher::set_launcher_transparency_qt(double opacity) {
@@ -562,14 +571,17 @@ bool SessionDispatcher::set_launcher_transparency_qt(double opacity) {
 QStringList SessionDispatcher::get_all_launcher_icon_colourings_qt() {
     QDBusReply<QStringList> reply = sessioniface->call("get_all_launcher_icon_colourings");
     return reply.value();
+//    return QStringList();
 }
 
 int SessionDispatcher::get_launcher_icon_colouring_qt() {
     QDBusReply<int> reply = sessioniface->call("get_launcher_icon_colouring");
     return reply.value();
+//    return 0;
 }
 
 bool SessionDispatcher::set_launcher_icon_colouring_qt(int colouring) {
+    qDebug() << "WWWWWWWWWWWWWWW set_launcher_icon_colouring_qt colouring===="<<colouring;
     QDBusReply<bool> reply = sessioniface->call("set_launcher_icon_colouring", colouring);
     return reply.value();
 }
@@ -1266,7 +1278,6 @@ void SessionDispatcher::set_current_lid_battery_qt(QString value)
     sessioniface->call("set_current_lid_battery", value);
 }
 
-
 QString SessionDispatcher::get_current_lid_ac_qt()
 {
     QDBusReply<QString> reply = sessioniface->call("get_current_lid_ac");
@@ -1277,7 +1288,6 @@ void SessionDispatcher::set_current_lid_ac_qt(QString value)
 {
     sessioniface->call("set_current_lid_ac", value);
 }
-
 
 QString SessionDispatcher::get_current_sleep_timeout_display_battery_qt()
 {
@@ -1300,7 +1310,6 @@ void SessionDispatcher::set_current_sleep_timeout_display_ac_qt(int value)
 {
     sessioniface->call("set_current_sleep_timeout_display_ac", value);
 }
-
 
 QString SessionDispatcher::get_current_sleep_timeout_battery_qt()
 {
@@ -1328,12 +1337,14 @@ QString SessionDispatcher::get_current_launcher_position_qt()
 {
     QDBusReply<QString> reply = sessioniface->call("get_current_launcher_position");
     return reply.value();
+//    return QString();
 }
 
 QStringList SessionDispatcher::get_all_launcher_position_qt()
 {
     QDBusReply<QStringList> reply = sessioniface->call("get_all_launcher_position");
     return reply.value();
+//    return QStringList();
 }
 
 bool SessionDispatcher::set_launcher_position_qt(QString position)
@@ -1356,6 +1367,7 @@ void SessionDispatcher::handler_notify_boolean(QString key, bool value)
 
 void SessionDispatcher::handler_notify_int(QString key, int value)
 {
+    qDebug() << "SessionDispatcher::handler_notify_int===============";
     emit int_value_notify(key, value);
 }
 

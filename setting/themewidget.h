@@ -24,30 +24,39 @@
 #include "../component/normalwidget.h"
 #include "../component/normalcard.h"
 
-class SessionDispatcher;
 class QLabel;
 class QPushButton;
 class QListWidget;
 class QListWidgetItem;
 
-class ThemeWidget : public QWidget
+#include "settingmodulelpage.h"
+
+//class ThemeWidget : public QWidget
+class ThemeWidget : public SettingModulePage
 {
     Q_OBJECT
 public:
-    explicit ThemeWidget(QWidget *parent = 0, SessionDispatcher *proxy = 0);
+    explicit ThemeWidget(QWidget *parent = 0/*, SessionDispatcher *proxy = 0*/);
     ~ThemeWidget();
     void initConnect();
-    void initData();
-    bool getStatus();
+
+    void resetUI();
+
+    void initSettingData() Q_DECL_OVERRIDE;
+    QString settingModuleName() Q_DECL_OVERRIDE;
 
 public slots:
     void themewidget_notify_string(QString key, QString value);
     void switchUsingLogo(QString index);
     void changeTheme(QString name);
 
+    void onReceiveThemeList(const QString &currentTheme, const QStringList &themeList);
+
+signals:
+    void requestThemeData();
+    void changeSystemTheme(const QString &name);
+
 private:
-    SessionDispatcher *sessionproxy;
-    bool dataOK;
     QStringList syslist;
     NormalWidget *list_widget;
     QList<NormalCard *> card_list;

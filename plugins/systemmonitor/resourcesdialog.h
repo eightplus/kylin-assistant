@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2015 National University of Defense Technology(NUDT) & Kylin Ltd.
+ * Copyright (C) 2013 ~ 2018 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    xiangli@ubuntukylin.com/kobe24_lixiang@126.com
@@ -17,7 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include <QWidget>
+#include <QVBoxLayout>
+
+class CpuOccupancyRate;
+class NetworkFlow;
 
 class ResouresDialog : public QWidget
 {
@@ -26,4 +31,32 @@ class ResouresDialog : public QWidget
 public:
     explicit ResouresDialog(QWidget* parent = 0);
     ~ResouresDialog();
+
+    void startCpuTimer();
+    void stopCpuTimer();
+
+public slots:
+    void updateResourceStatus();
+
+signals:
+    void updateCpuStatus(double percent);
+    void updateNetworkStatus(long recvTotalBytes, long sentTotalBytes, long recvRateBytes, long sentRateBytes);
+
+private:
+    //cpu
+    unsigned long long m_prevCpuTotalTime;
+    unsigned long long m_prevCpuWorkTime;
+    unsigned long long m_cpuTotalTime;
+    unsigned long long m_cpuworkTime;
+
+    //network
+    unsigned long long int totalRecvBytes;
+    unsigned long long int totalSentBytes;
+    unsigned long long int rateRecvBytes;
+    unsigned long long int rateSentBytes;
+
+    QTimer *updateStatusTimer = nullptr;
+    QVBoxLayout *m_vlayout = nullptr;
+    CpuOccupancyRate *m_cpuWidget = nullptr;
+    NetworkFlow *m_networkWidget = nullptr;
 };

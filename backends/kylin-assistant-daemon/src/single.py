@@ -11,6 +11,7 @@ class SingleInstance(object):
     def __init__(self,pidPath):
 
         self.pidPath = pidPath
+        self.lasterror = False
         if os.path.exists(pidPath):
             # Make sure it is not a "stale" pidFile
             pid = open(pidPath, 'r').read().strip()

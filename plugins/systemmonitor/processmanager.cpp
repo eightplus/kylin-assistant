@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2015 National University of Defense Technology(NUDT) & Kylin Ltd.
+ * Copyright (C) 2013 ~ 2018 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    xiangli@ubuntukylin.com/kobe24_lixiang@126.com
@@ -60,13 +60,13 @@ QString ProcessManager::getPicture()
 
 void ProcessManager::doAction()
 {
-    int windowWidth = QApplication::desktop()->width();
-    int windowHeight = QApplication::desktop()->height();
+//    int windowWidth = QApplication::desktop()->width();
+//    int windowHeight = QApplication::desktop()->height();
 //    process_dialog->resetSkin();
-    process_dialog->move((windowWidth - 850) / 2,(windowHeight - 476) / 2);
+//    process_dialog->move((windowWidth - 850) / 2,(windowHeight - 476) / 2);
     process_dialog->show();
     process_dialog->raise();
-
+    process_dialog->setFocus();
 }
 
 QWidget *ProcessManager::centralWidget()

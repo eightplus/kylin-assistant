@@ -58,7 +58,7 @@ SOURCES += main.cpp\
     settingactionwidget.cpp \
     boxactionwidget.cpp \
     toolwidget.cpp \
-    contentwidget.cpp \
+    bottomcontentwidget.cpp \
     infowidget.cpp \
     cleanerwidget.cpp \
     settingwidget.cpp \
@@ -73,33 +73,26 @@ SOURCES += main.cpp\
     ../component/kylintitlebar.cpp \
     ../component/threadpool.cpp \
     homepage.cpp \
-    ../info/systemwidget.cpp \
-    ../info/desktopwidget.cpp \
-    ../info/cpuwidget.cpp \
-    ../info/memorywidget.cpp \
-    ../info/boardwidget.cpp \
-    ../info/hdwidget.cpp \
-    ../info/nicwidget.cpp \
-    ../info/monitorwidget.cpp \
-    ../info/audiowidget.cpp \
-    ../info/cdrowwidget.cpp \
-    ../info/batterywidget.cpp \
-    ../info/driverwidget.cpp \
-    ../info/sensorwidget.cpp \
-    ../info/computerpage.cpp \
+    ../info/infounitwidget.cpp \
+    ../info/infogui.cpp \
+    ../info/infoitemline.cpp \
+    ../info/infoitemsgroup.cpp \
+    ../setting/settinglistview.cpp \
+    ../setting/settingmodel.cpp \
+    ../setting/settingdelegate.cpp \
     ../setting/themewidget.cpp \
     ../setting/iconwidget.cpp \
     ../setting/mousewidget.cpp \
-    ../setting/voicewidget.cpp \
+    ../setting/soundwidget.cpp \
 #    ../setting/animationwidget.cpp \
-#    ../setting/launcherwidget.cpp \
+    ../setting/menuwidget.cpp \
     ../setting/panelwidget.cpp \
     ../setting/windowwidget.cpp \
     ../setting/fontwidget.cpp \
     ../setting/touchpadwidget.cpp \
 #    ../setting/deadpixelwidget.cpp \
-    ../setting/conservewidget.cpp \
-    ../setting/nautiluswidget.cpp \
+    ../setting/energywidget.cpp \
+    ../setting/filemanagerwidget.cpp \
     ../component/scrollwidget.cpp \
     ../component/agentlistitem.cpp \
     ../component/quibo.cpp \
@@ -135,7 +128,8 @@ SOURCES += main.cpp\
     ../component/normalwidget.cpp \
     ../component/normalcard.cpp \
     shadowwidget.cpp \
-    ../component/basewidget.cpp
+    ../component/basewidget.cpp \
+    dataworker.cpp
 
 HEADERS  += mainwindow.h \
     kpplication.h \
@@ -148,7 +142,7 @@ HEADERS  += mainwindow.h \
     boxactionwidget.h \
     toolwidget.h \
     loginwidget.h \
-    contentwidget.h \
+    bottomcontentwidget.h \
     infowidget.h \
     cleanerwidget.h \
     settingwidget.h \
@@ -166,33 +160,27 @@ HEADERS  += mainwindow.h \
     ../component/kylintitlebar.h \
     ../component/threadpool.h \
     homepage.h \
-    ../info/systemwidget.h \
-    ../info/desktopwidget.h \
-    ../info/cpuwidget.h \
-    ../info/memorywidget.h \
-    ../info/boardwidget.h \
-    ../info/hdwidget.h \
-    ../info/nicwidget.h \
-    ../info/monitorwidget.h \
-    ../info/audiowidget.h \
-    ../info/cdrowwidget.h \
-    ../info/batterywidget.h \
-    ../info/driverwidget.h \
-    ../info/sensorwidget.h \
-    ../info/computerpage.h \
+    ../info/infounitwidget.h \
+    ../info/infogui.h \
+    ../info/infoitemline.h \
+    ../info/infoitemsgroup.h \
+    ../setting/settingmodulelpage.h \
+    ../setting/settinglistview.h \
+    ../setting/settingmodel.h \
+    ../setting/settingdelegate.h \
     ../setting/themewidget.h \
     ../setting/iconwidget.h \
     ../setting/mousewidget.h \
-    ../setting/voicewidget.h \
+    ../setting/soundwidget.h \
 #    ../setting/animationwidget.h \
-#    ../setting/launcherwidget.h \
+    ../setting/menuwidget.h \
     ../setting/panelwidget.h \
     ../setting/windowwidget.h \
     ../setting/fontwidget.h \
     ../setting/touchpadwidget.h \
 #    ../setting/deadpixelwidget.h \
-    ../setting/conservewidget.h \
-    ../setting/nautiluswidget.h \
+    ../setting/energywidget.h \
+    ../setting/filemanagerwidget.h \
     ../component/scrollwidget.h \
     ../component/agentlistitem.h \
     ../component/quibo.h \
@@ -228,7 +216,8 @@ HEADERS  += mainwindow.h \
     ../component/normalwidget.h \
     ../component/normalcard.h \
     shadowwidget.h \
-    ../component/basewidget.h
+    ../component/basewidget.h \
+    dataworker.h
 
 FORMS    += \
     ../component/quibo.ui \

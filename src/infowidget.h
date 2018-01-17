@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2015 National University of Defense Technology(NUDT) & Kylin Ltd.
+ * Copyright (C) 2013 ~ 2018 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    xiangli@ubuntukylin.com/kobe24_lixiang@126.com
@@ -34,26 +34,10 @@
 #include <QListWidgetItem>
 #include <QList>
 #include <QStackedWidget>
-//#include "infotype.h"
-#include "../info/systemwidget.h"
-#include "../info/desktopwidget.h"
-#include "../info/cpuwidget.h"
-#include "../info/memorywidget.h"
-#include "../info/boardwidget.h"
-#include "../info/hdwidget.h"
-#include "../info/nicwidget.h"
-#include "../info/monitorwidget.h"
-#include "../info/audiowidget.h"
-#include "../info/cdrowwidget.h"
-#include "../info/batterywidget.h"
-#include "../info/driverwidget.h"
-#include "../info/sensorwidget.h"
 #include <QScrollArea>
-//#include "../dbusproxy/youkersystemdbus.h"
-class SessionDispatcher;
-class SystemDispatcher;
 
-#include "../component/workthread.h"
+class TestWidget;
+class InfoGui;
 
 class InfoWidget : public QWidget
 {
@@ -61,51 +45,102 @@ class InfoWidget : public QWidget
 public:
     explicit InfoWidget(QString machine = "", QWidget *parent = 0);
     ~InfoWidget();
-    void setSessionDbusProxy(SessionDispatcher *dispatcher) { sessionProxy = dispatcher;}
-    void setSystemDbusProxy(SystemDispatcher *dispatcher) { systemProxy = dispatcher;}
+
     void initUI(bool has_battery, bool has_sensor);
-
-
-    void startThread();
 
 public slots:
     void changeInfoPage(QListWidgetItem* item);
-    void handleResults(QMap<QString, QVariant> value);
-    void threadFinish();
+
+    void onSendSystemInfo(QMap<QString, QVariant> tmpMap);
+//    void onSendSystemRunnedTime(int time_value);
+    void onSendDesktopInfo(QMap<QString, QVariant> tmpMap);
+    void onSendCpuInfo(QMap<QString, QVariant> tmpMap);
+    void onSendMemoryInfo(QMap<QString, QVariant> tmpMap);
+    void onSendBoardInfo(QMap<QString, QVariant> tmpMap);
+    void onSendHDInfo(QMap<QString, QVariant> tmpMap);
+    void onSendNicInfo(QMap<QString, QVariant> tmpMap);
+    void onSendMonitorInfo(QMap<QString, QVariant> tmpMap);
+    void onSendAudioInfo(QMap<QString, QVariant> tmpMap);
+    void onSendBatteryInfo(QMap<QString, QVariant> tmpMap);
+    void onSendSensorInfo(QMap<QString, QVariant> tmpMap);
+//    void updateTimeValue();
 
 signals:
     void emit_network_info(QMap<QString, QVariant> info);
 
+    //system info
+    void requestupdateSystemRunnedTime();
+    void requestRefreshSystemInfo();
+//    void sendSystemRunnedTime(int time_value);
+//    void sendSystemInfo(QMap<QString, QVariant> tmpMap);
+
+    //desktop info
+    void requestDesktopInfo();
+//    void sendDesktopInfo(QMap<QString, QVariant> tmpMap);
+
+    //cpu info
+    void requestCpuInfo();
+//    void sendCpuInfo(QMap<QString, QVariant> tmpMap);
+
+    //memory info
+    void requestMemoryInfo();
+//    void sendMemoryInfo(QMap<QString, QVariant> tmpMap);
+
+    //board info
+    void requestBoardInfo();
+//    void sendBoardInfo(QMap<QString, QVariant> tmpMap);
+
+    //hd info
+    void requestHDInfo();
+//    void sendHDInfo(QMap<QString, QVariant> tmpMap);
+
+    //nic info
+    void requestNicInfo();
+//    void sendNicInfo(QMap<QString, QVariant> tmpMap);
+
+    //monitor info
+    void requestMonitorInfo();
+//    void sendMonitorInfo(QMap<QString, QVariant> tmpMap);
+
+    //audio info
+    void requestAudioInfo();
+//    void sendAudioInfo(QMap<QString, QVariant> tmpMap);
+
+    //battery info
+    void requestBatteryInfo();
+//    void sendBatteryInfo(QMap<QString, QVariant> tmpMap);
+
+    //sensor info
+    void requestSensorInfo();
+//    void sendSensorInfo(QMap<QString, QVariant> tmpMap);
+
+    //driver info
+
 private:
-    QSplitter *splitter;
-    QListWidget *category_widget;
+    QSplitter *splitter = nullptr;
+    QListWidget *category_widget = nullptr;
     QStringList type_list;
     QStringList icon_list;
-    QStackedWidget *stacked_widget;
-    SystemWidget *system_widget;
-    DesktopWidget *desktop_widget;
-    CpuWidget *cpu_widget;
-    MemoryWidget *memory_widget;
-    BoardWidget *board_widget;
-    HDWidget *hd_widget;
-    NicWidget *nic_widget;
-    MonitorWidget *monitor_widget;
-    AudioWidget *audio_widget;
-    CDRowWidget *cdrom_widget;
-    BatteryWidget *battery_widget;
-    DriverWidget *driver_widget;
-    SensorWieget *sensor_widget;
-    QString current_tip;
-//    QList<InfoType> *categoryList;
-    QString serverOrDesktop;
-    QString arch;
-//    QWidget *device_content;
-//    QWidget *logo_view;
-//    SystemDispatcher systemproxy;
-    SessionDispatcher *sessionProxy;
-    SystemDispatcher *systemProxy;
+    QStackedWidget *stacked_widget = nullptr;
 
-    WorkerThread m_workerThread;
+    InfoGui *system_widget = nullptr;
+//    QList<InfoGui *> m_pageList;
+
+//    InfoGui *desktop_widget = nullptr;
+//    InfoGui *cpu_widget = nullptr;
+//    InfoGui *memory_widget = nullptr;
+//    InfoGui *board_widget = nullptr;
+//    InfoGui *hd_widget = nullptr;
+//    InfoGui *nic_widget = nullptr;
+//    InfoGui *monitor_widget = nullptr;
+//    InfoGui *audio_widget = nullptr;
+//    InfoGui *battery_widget = nullptr;
+//    InfoGui *driver_widget = nullptr;
+//    InfoGui *sensor_widget = nullptr;
+//    InfoGui *m_testWidget = nullptr;
+
+    QString current_tip;
+    QString arch;
 };
 
 #endif // INFOWIDGET_H

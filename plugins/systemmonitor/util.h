@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2015 National University of Defense Technology(NUDT) & Kylin Ltd.
+ * Copyright (C) 2013 ~ 2018 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    xiangli@ubuntukylin.com/kobe24_lixiang@126.com
@@ -32,17 +32,7 @@ std::string getDesktopFileFromName(int pid, QString procName, QString cmdline);
 QPixmap getDesktopFileIcon(std::string desktopFile, int iconSize = 24);
 QString getDisplayNameFromName(QString procName, std::string desktopFile);
 QString getImagePath(QString imageName);
-
-inline string make_string(char *c_str)
-{
-    if (!c_str) {
-        return string();
-    }
-    string s(c_str);
-    g_free(c_str);
-    return s;
-}
-
+std::string make_string(char *c_str);
 QString formatProcessState(guint state);
 QString getNiceLevel(int nice);
 QString formatUnitSize(double v, const char** orders, int nb_orders);

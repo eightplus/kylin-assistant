@@ -27,6 +27,7 @@
 #include "../component/utils.h"
 //#include "cameramanager.h"
 #include "../component/threadpool.h"
+#include "dataworker.h"
 
 QString GlobalData::globalarch = ""; // add by hebing, just for transmit var
 
@@ -37,7 +38,6 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
     ,arch(cur_arch)
     ,display_count(d_count)
 {
-
     GlobalData::globalarch = this->arch;
 
     this->osName = accessOSName();
@@ -69,9 +69,12 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
     this->setWindowTitle(tr("Kylin Assistant"));
     this->setMouseTracking(true);
     this->setAutoFillBackground(true);
-    QWidget::setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-    this->setMinimumSize(900, 600);
-    this->resize(900, 600);
+//    QWidget::setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);//去掉边框
+//    this->setAttribute(Qt::WA_TranslucentBackground);//背景透明
+//    this->setMinimumSize(900, 600);
+//    this->resize(900, 600);
+    this->setFixedSize(900, 600);
 
 //    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowSystemMenuHint);
 ////    this->setAttribute(Qt::WA_TranslucentBackground, true);
@@ -92,8 +95,8 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
     shadow_effect->setOffset(1.0);//shadow_effect->setOffset(-5, 5);
     this->setGraphicsEffect(shadow_effect);*/
 
-    sessioninterface = NULL;
-    systeminterface = NULL;
+//    sessioninterface = NULL;
+//    systeminterface = NULL;
 
     mSettings = new QSettings(KYLIN_COMPANY_SETTING, KYLIN_SETTING_FILE_NAME_SETTING);
     mSettings->setIniCodec("UTF-8");
@@ -196,10 +199,10 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
 //        login_widget->move(585, 0);//900 - login_widget(220) - right_align(15) = 665
 //    }
 
-    default_content_widget = new ContentWidget(this);
+    default_content_widget = new BottomContentWidget(this);
     default_content_widget->setGeometry(QRect(0, 274, 900, 326));
     default_content_widget->setFixedHeight(326);
-    other_content_widget = new ContentWidget(this);
+    other_content_widget = new BottomContentWidget(this);
     other_content_widget->setGeometry(QRect(0, 600, 900, 403));
     other_content_widget->setFixedHeight(403);
     bottomStack = new QStackedWidget(other_content_widget);
@@ -216,10 +219,23 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
 
     this->hide();
     this->startDbusDaemon();
+
+    // 添加阴影
+    /*auto effect = new QGraphicsDropShadowEffect(bottomStack);
+    effect->setOffset(0, 3);
+    effect->setColor(QColor(178, 34, 34, 127));
+    effect->setBlurRadius(10);//阴影的大小
+    bottomStack->setGraphicsEffect(effect);*/
 }
 
 MainWindow::~MainWindow()
 {
+    if (m_dataWorker) {
+        m_dataWorker->deleteLater();
+    }
+    ThreadPool::Instance()->deleteLater();
+
+
     if (home_page != NULL)
     {
         delete home_page;
@@ -260,13 +276,13 @@ MainWindow::~MainWindow()
 //        delete systeminterface;
 //        systeminterface = NULL;
 //    }
-    if (sessioninterface) {
-        sessioninterface->deleteLater();
-    }
-    if (systeminterface) {
-        systeminterface->deleteLater();
-    }
-    ThreadPool::Instance()->deleteLater();
+//    if (sessioninterface) {//20180101
+//        sessioninterface->deleteLater();
+//    }
+//    if (systeminterface) {
+//        systeminterface->deleteLater();
+//    }
+//    ThreadPool::Instance()->deleteLater();
     if (aboutDlg != NULL)
     {
         delete aboutDlg;
@@ -304,6 +320,192 @@ MainWindow::~MainWindow()
         delete upgrade_dialog;
         upgrade_dialog = NULL;
     }
+}
+
+void MainWindow::onDataPrepared()
+{
+    qDebug() << "TRACE:" << "data prepared";
+
+    this->battery = m_dataWorker->isBatteryExist();
+    this->sensor = m_dataWorker->isSensorExist();
+
+    this->displayMainWindow();
+
+
+    //bind setting notify signal
+//    connect(m_dataWorker, SIGNAL(string_value_notify(QString,QString)), setting_widget, SIGNAL(string_value_notify(QString,QString)));
+//    connect(m_dataWorker, SIGNAL(bool_value_notify(QString,bool)), setting_widget, SIGNAL(bool_value_notify(QString,bool)));
+//    connect(m_dataWorker, SIGNAL(int_value_notify(QString,int)), setting_widget, SIGNAL(int_value_notify(QString,int)));
+//    connect(m_dataWorker, SIGNAL(double_value_notify(QString,double)), setting_widget, SIGNAL(double_value_notify(QString,double)));
+
+    //TODO:WTF??????
+    /*connect(m_dataWorker, SIGNAL(string_value_notify(QString,QString)), setting_widget, SLOT(on_string_value_notify(QString,QString)));
+    connect(m_dataWorker, SIGNAL(bool_value_notify(QString,bool)), setting_widget, SLOT(on_bool_value_notify(QString,bool)));
+    connect(m_dataWorker, SIGNAL(int_value_notify(QString,int)), setting_widget, SLOT(on_int_value_notify(QString,int)));
+    connect(m_dataWorker, SIGNAL(double_value_notify(QString,double)), setting_widget, SLOT(on_double_value_notify(QString,double)));
+*/
+
+    connect(m_dataWorker, SIGNAL(isScanning(QString)), home_action_widget, SLOT(getScanResult(QString)));
+    connect(m_dataWorker, SIGNAL(finishScanWork(QString)), home_action_widget, SLOT(finishScanResult(QString)));
+    connect(m_dataWorker, SIGNAL(tellScanResult(QString,QString)) ,home_action_widget, SLOT(getScanAllResult(QString,QString)));
+    connect(m_dataWorker, SIGNAL(finishCleanWorkMain(QString)), home_action_widget, SLOT(getCleanResult(QString)));
+    connect(m_dataWorker, SIGNAL(finishCleanWorkMainError(QString)), home_action_widget, SLOT(finishCleanError(QString)));
+    connect(m_dataWorker, SIGNAL(quickCleanProcess(QString,QString)), home_action_widget, SLOT(getCleaningMessage(QString,QString)));
+
+
+
+    //theme
+    connect(setting_widget, SIGNAL(changeSystemTheme(QString)), m_dataWorker, SLOT(onChangeSystemTheme(QString)));
+    connect(setting_widget, SIGNAL(requestThemeData()), m_dataWorker, SLOT(onRequestThemeData()));
+    connect(m_dataWorker, SIGNAL(sendThemeList(QString,QStringList)), setting_widget, SIGNAL(sendThemeList(QString,QStringList)));
+
+    //icon
+    connect(setting_widget, SIGNAL(requestIconData()), m_dataWorker, SLOT(onRequestIconData()));
+    connect(m_dataWorker, SIGNAL(sendIconThemeList(QString,QStringList)), setting_widget, SIGNAL(sendIconThemeList(QString,QStringList)));
+    connect(m_dataWorker, SIGNAL(sendDisplayIconValue(bool,bool,bool,bool,bool)), setting_widget, SIGNAL(sendDisplayIconValue(bool,bool,bool,bool,bool)));
+    connect(setting_widget, SIGNAL(resetIconTheme(QString)), m_dataWorker, SLOT(onResetIconTheme(QString)));
+    connect(setting_widget, SIGNAL(displayComputerIcon(bool)), m_dataWorker, SLOT(onDisplayComputerIcon(bool)));
+    connect(setting_widget, SIGNAL(displayFolderIcon(bool)), m_dataWorker, SLOT(onDisplayFolderIcon(bool)));
+    connect(setting_widget, SIGNAL(displayNetworkIcon(bool)), m_dataWorker, SLOT(onDisplayNetworkIcon(bool)));
+    connect(setting_widget, SIGNAL(displayRecycleBinIcon(bool)), m_dataWorker, SLOT(onDisplayRecycleBinIcon(bool)));
+    connect(setting_widget, SIGNAL(displayDiskIcon(bool)), m_dataWorker, SLOT(onDisplayDiskIcon(bool)));
+
+
+    //mouse
+    connect(setting_widget, SIGNAL(requestMouseData()), m_dataWorker, SLOT(onRequestMouseData()));
+    connect(m_dataWorker, SIGNAL(sendMouseThemeAndCusorSize(QString,QStringList,int)), setting_widget, SIGNAL(sendMouseThemeAndCusorSize(QString,QStringList,int)));
+    connect(setting_widget, SIGNAL(resetMouseCursorTheme(QString)), m_dataWorker, SLOT(onResetMouseCursorTheme(QString)));
+    connect(setting_widget, SIGNAL(resetMouseCursorSize(int)), m_dataWorker, SLOT(onResetMouseCursorSize(int)));
+
+    //voice
+    connect(setting_widget, SIGNAL(requestSoundData()), m_dataWorker, SLOT(onRequestSoundData()));
+    connect(m_dataWorker, SIGNAL(sendSoundList(QString,QStringList)), setting_widget, SIGNAL(sendSoundList(QString,QStringList)));
+    connect(m_dataWorker, SIGNAL(sendEnableSoundValue(bool,bool,bool)), setting_widget, SIGNAL(sendEnableSoundValue(bool,bool,bool)));
+    connect(setting_widget, SIGNAL(resetVoiceTheme(QString)), m_dataWorker, SLOT(onResetVoiceTheme(QString)));
+    connect(setting_widget, SIGNAL(resetLoginTipVoice(bool)), m_dataWorker, SLOT(onResetLoginTipVoice(bool)));
+    connect(setting_widget, SIGNAL(resetEventVoice(bool)), m_dataWorker, SLOT(onResetEventVoice(bool)));
+    connect(setting_widget, SIGNAL(resetInputFeedbackVoice(bool)), m_dataWorker, SLOT(onResetInputFeedbackVoice(bool)));
+
+    //panel
+    connect(setting_widget, SIGNAL(requestMateOrUnityPanelData(bool)), m_dataWorker, SLOT(onRequestMateOrUnityPanelData(bool)));
+    connect(m_dataWorker, SIGNAL(sendMatePanelValue(bool,bool,bool,bool)), setting_widget, SIGNAL(sendMatePanelValue(bool,bool,bool,bool)));
+    connect(m_dataWorker, SIGNAL(sendUnityBlurAndTransparencyValue(int,double)), setting_widget, SIGNAL(sendUnityBlurAndTransparencyValue(int,double)));
+    connect(m_dataWorker, SIGNAL(sendUnityTimeValue(QString,QStringList,bool,bool,bool)), setting_widget, SIGNAL(sendUnityTimeValue(QString,QStringList,bool,bool,bool)));
+    connect(m_dataWorker, SIGNAL(sendUnityPanelPowerValue(QString,QStringList,bool,bool)), setting_widget, SIGNAL(sendUnityPanelPowerValue(QString,QStringList,bool,bool)));
+    connect(setting_widget, SIGNAL(resetPanelTransparencyValue(double)), m_dataWorker, SLOT(onResetPanelTransparencyValue(double)));
+    connect(setting_widget, SIGNAL(resetDateFormat(QString)), m_dataWorker, SLOT(onResetDateFormat(QString)));
+    connect(setting_widget, SIGNAL(resetShowBatteryIcon(QString)), m_dataWorker, SLOT(onResetShowBatteryIcon(QString)));
+    connect(setting_widget, SIGNAL(resetDashBlurExperimental(int)), m_dataWorker, SLOT(onResetDashBlurExperimental(int)));
+    connect(setting_widget, SIGNAL(resetDisplaySeconds(bool)), m_dataWorker, SLOT(onResetDisplaySeconds(bool)));
+    connect(setting_widget, SIGNAL(resetDisplayWeek(bool)), m_dataWorker, SLOT(onResetDisplayWeek(bool)));
+    connect(setting_widget, SIGNAL(resetDisplayDate(bool)), m_dataWorker, SLOT(onResetDisplayDate(bool)));
+    connect(setting_widget, SIGNAL(resetDisplayBatteryPercentage(bool)), m_dataWorker, SLOT(onResetDisplayBatteryPercentage(bool)));
+    connect(setting_widget, SIGNAL(resetDisplayBatteryTime(bool)), m_dataWorker, SLOT(onResetDisplayBatteryTime(bool)));
+    connect(setting_widget, SIGNAL(resetShowApplications(bool)), m_dataWorker, SLOT(onResetShowApplications(bool)));
+    connect(setting_widget, SIGNAL(resetShowDesktop(bool)), m_dataWorker, SLOT(onResetShowDesktop(bool)));
+    connect(setting_widget, SIGNAL(resetShowIcon(bool)), m_dataWorker, SLOT(onResetShowIcon(bool)));
+    connect(setting_widget, SIGNAL(resetShowPlaces(bool)), m_dataWorker, SLOT(onResetShowPlaces(bool)));
+
+
+    //launcher menu
+    connect(setting_widget, SIGNAL(requestMateOrUnityMenuData(bool)), m_dataWorker, SLOT(onRequestMateOrUnityMenuData(bool)));
+    connect(m_dataWorker, SIGNAL(sendMatePanelIconValue(int,int,bool,bool)), setting_widget, SIGNAL(sendMatePanelIconValue(int,int,bool,bool)));
+    connect(m_dataWorker, SIGNAL(sendUnityIconValue(int,bool,bool,double,int,QStringList)), setting_widget, SIGNAL(sendUnityIconValue(int,bool,bool,double,int,QStringList)));
+    connect(m_dataWorker, SIGNAL(sendUnityLauncherPosition(QString,QStringList)), setting_widget, SIGNAL(sendUnityLauncherPosition(QString,QStringList)));
+
+    connect(setting_widget, SIGNAL(resetIconSizeValue(int)), m_dataWorker, SLOT(onResetIconSizeValue(int)));
+    connect(setting_widget, SIGNAL(resetTransparencyValue(int)), m_dataWorker, SLOT(onResetTransparencyValue(int)));
+    connect(setting_widget, SIGNAL(resetIconColouring(int)), m_dataWorker, SLOT(onResetIconColouring(int)));
+    connect(setting_widget, SIGNAL(resetAutoHide(bool)), m_dataWorker, SLOT(onResetAutoHide(bool)));
+    connect(setting_widget, SIGNAL(resetDisplayDesktopIcon(bool)), m_dataWorker, SLOT(onResetDisplayDesktopIcon(bool)));
+    connect(setting_widget, SIGNAL(resetTopIconSizeValue(int)), m_dataWorker, SLOT(onResetTopIconSizeValue(int)));
+    connect(setting_widget, SIGNAL(resetBottomIconSizeValue(int)), m_dataWorker, SLOT(onResetBottomIconSizeValue(int)));
+    connect(setting_widget, SIGNAL(resetTopAutoHide(bool)), m_dataWorker, SLOT(onResetTopAutoHide(bool)));
+    connect(setting_widget, SIGNAL(resetBottomAutoHide(bool)), m_dataWorker, SLOT(onResetBottomAutoHide(bool)));
+    connect(setting_widget, SIGNAL(resetLauncherPosition(QString)), m_dataWorker, SLOT(onResetLauncherPosition(QString)));
+
+    //window
+    connect(setting_widget, SIGNAL(requesetWindowButtonAlign()), m_dataWorker, SLOT(onRequesetWindowButtonAlign()));
+    connect(setting_widget, SIGNAL(requesetMenusHaveIcons()), m_dataWorker, SLOT(onRequesetMenusHaveIcons()));
+    connect(setting_widget, SIGNAL(requesetWindowTitileTags()), m_dataWorker, SLOT(onRequesetWindowTitileTags()));
+
+    connect(m_dataWorker, SIGNAL(sendWindowButtonAlign(QString)), setting_widget, SIGNAL(sendWindowButtonAlign(QString)));
+    connect(m_dataWorker, SIGNAL(sendMenusHaveIcons(bool)), setting_widget, SIGNAL(sendMenusHaveIcons(bool)));
+    connect(m_dataWorker, SIGNAL(sendWindowTitileTags(QString,QStringList,QStringList,QString,QString,QString)), setting_widget, SIGNAL(sendWindowTitileTags(QString,QStringList,QStringList,QString,QString,QString)));
+
+    connect(setting_widget, SIGNAL(resetMenusHaveIcon(bool)), m_dataWorker, SLOT(onResetMenusHaveIcon(bool)));
+    connect(setting_widget, SIGNAL(resetTitlebarWheel(QString)), m_dataWorker, SLOT(onResetTitlebarWheel(QString)));
+    connect(setting_widget, SIGNAL(resetTitlebarDoubleClick(QString)), m_dataWorker, SLOT(onResetTitlebarDoubleClick(QString)));
+    connect(setting_widget, SIGNAL(resetMouseMiddleClick(QString)), m_dataWorker, SLOT(onResetMouseMiddleClick(QString)));
+    connect(setting_widget, SIGNAL(resetMouseRightClick(QString)), m_dataWorker, SLOT(onResetMouseRightClick(QString)));
+    connect(setting_widget, SIGNAL(resetWindowButtonLeftOrRightAlign(bool)), m_dataWorker, SLOT(onResetWindowButtonLeftOrRightAlign(bool)));
+
+
+    //font
+    connect(setting_widget, SIGNAL(requestFontData()), m_dataWorker, SLOT(onRequestFontData()));
+    connect(m_dataWorker, SIGNAL(sendFontValue(QString)), setting_widget, SIGNAL(sendFontValue(QString)));
+    connect(m_dataWorker, SIGNAL(sendDesktopFontValue(QString)), setting_widget, SIGNAL(sendDesktopFontValue(QString)));
+    connect(m_dataWorker, SIGNAL(sendMonospaceFontValue(QString)), setting_widget, SIGNAL(sendMonospaceFontValue(QString)));
+    connect(m_dataWorker, SIGNAL(sendDocumentFontValue(QString)), setting_widget, SIGNAL(sendDocumentFontValue(QString)));
+    connect(m_dataWorker, SIGNAL(sendTitlebarFontValue(QString)), setting_widget, SIGNAL(sendTitlebarFontValue(QString)));
+    connect(m_dataWorker, SIGNAL(sendFontSmoothAndAntialiasingValue(double,QString,QStringList,QString,QStringList)), setting_widget, SIGNAL(sendFontSmoothAndAntialiasingValue(double,QString,QStringList,QString,QStringList)));
+
+    connect(setting_widget, SIGNAL(setDefaultFontByName(QString)), m_dataWorker, SLOT(onSetDefaultFontByName(QString)));
+    connect(setting_widget, SIGNAL(setDesktopFontByName(QString)), m_dataWorker, SLOT(onSetDesktopFontByName(QString)));
+    connect(setting_widget, SIGNAL(setMonospaceFontByName(QString)), m_dataWorker, SLOT(onSetMonospaceFontByName(QString)));
+    connect(setting_widget, SIGNAL(setDocumentFontByName(QString)), m_dataWorker, SLOT(onSetDocumentFontByName(QString)));
+    connect(setting_widget, SIGNAL(setTitlebarFontByName(QString)), m_dataWorker, SLOT(onSetTitlebarFontByName(QString)));
+    connect(setting_widget, SIGNAL(resetFontZoomScalingValue(double)), m_dataWorker, SLOT(onResetFontZoomScalingValue(double)));
+    connect(setting_widget, SIGNAL(resetFontHinting(QString)), m_dataWorker, SLOT(onResetFontHinting(QString)));
+    connect(setting_widget, SIGNAL(resetFontAntialiasing(QString)), m_dataWorker, SLOT(onResetFontAntialiasing(QString)));
+    connect(setting_widget, SIGNAL(restoreDefaultFont(bool)), m_dataWorker, SLOT(onRestoreDefaultFont(bool)));
+    connect(setting_widget, SIGNAL(restoreDesktopDefaultFont(bool)), m_dataWorker, SLOT(onRestoreDesktopDefaultFont(bool)));
+    connect(setting_widget, SIGNAL(restoreMonospaceDefaultFont(bool)), m_dataWorker, SLOT(onRestoreMonospaceDefaultFont(bool)));
+    connect(setting_widget, SIGNAL(restoreDocumentDefaultFont(bool)), m_dataWorker, SLOT(onRestoreDocumentDefaultFont(bool)));
+    connect(setting_widget, SIGNAL(restoreTitlebarDefaultFont(bool)), m_dataWorker, SLOT(onRestoreTitlebarDefaultFont(bool)));
+
+
+    //touchpad
+    connect(setting_widget, SIGNAL(requestMateOrUnityTouchpadData(bool)), m_dataWorker, SLOT(onRequestMateOrUnityTouchpadData(bool)));
+    connect(m_dataWorker, SIGNAL(sendTouchPadValue(bool,bool,QString,int,QString)), setting_widget, SIGNAL(sendTouchPadValue(bool,bool,QString,int,QString)));
+    connect(setting_widget, SIGNAL(resetTouchpad(bool)), m_dataWorker, SLOT(onResetTouchpad(bool)));
+    connect(setting_widget, SIGNAL(resetHorizontalScrolling(bool)), m_dataWorker, SLOT(onResetHorizontalScrolling(bool)));
+    connect(setting_widget, SIGNAL(setScrollbarOverlayOrLegacyMode(bool)), m_dataWorker, SLOT(onSetScrollbarOverlayOrLegacyMode(bool)));
+    connect(setting_widget, SIGNAL(setMateTouchscrollingMode(int)), m_dataWorker, SLOT(onSetMateTouchscrollingMode(int)));
+    connect(setting_widget, SIGNAL(setUnityTouchscrollingMode(int)), m_dataWorker, SLOT(onSetUnityTouchscrollingMode(int)));
+
+
+
+    //ac and battery
+    connect(setting_widget, SIGNAL(requestPowerAndBatteryData()), m_dataWorker, SLOT(onRequestPowerAndBatteryData()));
+    connect(m_dataWorker, SIGNAL(sendIdleAndGammaData(double,QStringList,int,QString,QString,QString,QStringList)), setting_widget, SIGNAL(sendIdleAndGammaData(double,QStringList,int,QString,QString,QString,QStringList)));
+    connect(m_dataWorker, SIGNAL(sendLockAndSleepData(bool,QString,QStringList,QString,QString,QString,QString,QStringList,QString)), setting_widget, SIGNAL(sendLockAndSleepData(bool,QString,QStringList,QString,QString,QString,QString,QStringList,QString)));
+
+    connect(setting_widget, SIGNAL(resetScreenGammaValue(double)), m_dataWorker, SLOT(onResetScreenGammaValue(double)));
+    connect(setting_widget, SIGNAL(resetBrightnessValue(int)), m_dataWorker, SLOT(onResetBrightnessValue(int)));
+    connect(setting_widget, SIGNAL(resetIdleDelay(int,int)), m_dataWorker, SLOT(onResetIdleDelay(int,int)));
+    connect(setting_widget, SIGNAL(resetLockEnabled(bool)), m_dataWorker, SLOT(onResetLockEnabled(bool)));
+    connect(setting_widget, SIGNAL(resetLockDelay(int,int)), m_dataWorker, SLOT(onResetLockDelay(int,int)));
+    connect(setting_widget, SIGNAL(setCurrentCriticalLow(QString)), m_dataWorker, SLOT(onSetCurrentCriticalLow(QString)));
+    connect(setting_widget, SIGNAL(setCurrentLidBattery(QString)), m_dataWorker, SLOT(onSetCurrentLidBattery(QString)));
+    connect(setting_widget, SIGNAL(setCurrentLidAC(QString)), m_dataWorker, SLOT(onSetCurrentLidAC(QString)));
+    connect(setting_widget, SIGNAL(resetSleepTimeoutBattery(int,int)), m_dataWorker, SLOT(onResetSleepTimeoutBattery(int,int)));
+    connect(setting_widget, SIGNAL(resetSleepTimeoutAC(int,int)), m_dataWorker, SLOT(onResetSleepTimeoutAC(int,int)));
+    connect(setting_widget, SIGNAL(resetSleepTimeoutDisplayBattery(int,int)), m_dataWorker, SLOT(onResetSleepTimeoutDisplayBattery(int,int)));
+    connect(setting_widget, SIGNAL(resetSleepTimeoutDisplayAC(int,int)), m_dataWorker, SLOT(onResetSleepTimeoutDisplayAC(int,int)));
+
+
+    //file manager
+    connect(setting_widget, SIGNAL(requestFileManagerData()), m_dataWorker, SLOT(onRequestFileManagerData()));
+    connect(m_dataWorker, SIGNAL(sendFileManagerData(bool,bool,bool,bool,int,int,int)), setting_widget, SIGNAL(sendFileManagerData(bool,bool,bool,bool,int,int,int)));
+
+    connect(setting_widget, SIGNAL(resetLocationReplacePathbar(bool)), m_dataWorker, SLOT(onResetLocationReplacePathbar(bool)));
+    connect(setting_widget, SIGNAL(resetAutoMountMedia(bool)), m_dataWorker, SLOT(onResetAutoMountMedia(bool)));
+    connect(setting_widget, SIGNAL(resetAutoOpenFolder(bool)), m_dataWorker, SLOT(onResetAutoOpenFolder(bool)));
+    connect(setting_widget, SIGNAL(resetPromptAutorunPrograms(bool)), m_dataWorker, SLOT(onResetPromptAutorunPrograms(bool)));
+    connect(setting_widget, SIGNAL(resetThumbnailIconSize(int)), m_dataWorker, SLOT(onResetThumbnailIconSize(int)));
+    connect(setting_widget, SIGNAL(resetThumbnailCacheTime(int)), m_dataWorker, SLOT(onResetThumbnailCacheTime(int)));
+    connect(setting_widget, SIGNAL(resetThumbnailCacheSize(int)), m_dataWorker, SLOT(onResetThumbnailCacheSize(int)));
 }
 
 QString MainWindow::accessOSName()
@@ -393,14 +595,16 @@ QString MainWindow::accessOSName()
 
 bool MainWindow::deleteFile(QString filename)
 {
-    bool result = systeminterface->delete_file_qt(filename);
-    return result;
+    return m_dataWorker->deleteAppointedFile(filename);
+//    bool result = systeminterface->delete_file_qt(filename);
+//    return result;
 }
 
 bool MainWindow::CopyFile(QString filename)
 {
-    bool result = systeminterface->copy_file_qt(filename);
-    return result;
+    return m_dataWorker->copyAppointedFile(filename);
+//    bool result = systeminterface->copy_file_qt(filename);
+//    return result;
 }
 
 QStringList MainWindow::filterSkin()
@@ -626,25 +830,32 @@ void MainWindow::changeLanguage(LANGUAGE language)
 
 void MainWindow::displayMainWindow(/*int count*/)
 {
+    //20180101
+    /*
     this->battery = sessioninterface->judge_power_is_exists_qt();
     this->sensor = systeminterface->judge_sensors_exists_qt();
+
 //    login_widget->setSessionDbusProxy(sessioninterface);
 //    if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin")
 //        sessioninterface->check_user_qt();
 //    connect(sessioninterface, SIGNAL(ssoSuccessSignal(QString, QString)), login_widget, SLOT(showLoginInfo(QString,QString)));
-//    connect(sessioninterface, SIGNAL(ssoLoginLogoutSignal(bool)), login_widget, SLOT(showLoginAndLogoutStatus(bool)));
-    home_action_widget->setSessionDbusProxy(sessioninterface);
-    home_action_widget->setSystemDbusProxy(systeminterface);
+//    connect(sessioninterface, SIGNAL(ssoLoginLogoutSignal(bool)), login_widget, SLOT(showLoginAndLogoutStatus(bool)));*/
+//    home_action_widget->setSessionDbusProxy(sessioninterface);
+//    home_action_widget->setSystemDbusProxy(systeminterface);
     home_action_widget->enableSanButton();
-    connect(sessioninterface, SIGNAL(isScanning(QString)), home_action_widget, SLOT(getScanResult(QString)));
+
+    //20180101
+    /*connect(sessioninterface, SIGNAL(isScanning(QString)), home_action_widget, SLOT(getScanResult(QString)));
     connect(sessioninterface, SIGNAL(finishScanWork(QString)), home_action_widget, SLOT(finishScanResult(QString)));
     connect(sessioninterface, SIGNAL(tellScanResult(QString,QString)) ,home_action_widget, SLOT(getScanAllResult(QString,QString)));
-    connect(systeminterface, SIGNAL(finishCleanWorkMain(QString/*, QString*/)), home_action_widget, SLOT(getCleanResult(QString/*, QString*/)));
+    connect(systeminterface, SIGNAL(finishCleanWorkMain(QString)), home_action_widget, SLOT(getCleanResult(QString)));
     connect(systeminterface, SIGNAL(finishCleanWorkMainError(QString)), home_action_widget, SLOT(finishCleanError(QString)));
     connect(systeminterface, SIGNAL(quickCleanProcess(QString,QString)), home_action_widget, SLOT(getCleaningMessage(QString,QString)));
     home_page->setSessionDbusProxy(sessioninterface);
-    home_page->setSystemDbusProxy(systeminterface);
+    home_page->setSystemDbusProxy(systeminterface);*/
+
     this->initOtherPages();
+
 
 //    if (this->isHidden()) {
     int windowWidth, windowHeight = 0;
@@ -697,7 +908,8 @@ inline QString getPluginsDirectory() {
 
 void MainWindow::startDbusDaemon()
 {
-    sessioninterface = new SessionDispatcher;
+    //20180101
+    /*sessioninterface = new SessionDispatcher;
     systeminterface = new SystemDispatcher;
     QThread *sessionThread = ThreadPool::Instance()->createNewThread();
     sessioninterface->moveToThread(sessionThread);
@@ -705,11 +917,17 @@ void MainWindow::startDbusDaemon()
     QThread *systemThread = ThreadPool::Instance()->createNewThread();
     systeminterface->moveToThread(systemThread);
     connect(systemThread, SIGNAL(started()), systeminterface, SLOT(initData()));
-
-//    connect(systeminterface, &SystemDispatcher::dbusInitFinished, this, [=] {dlg.close();this->displayMainWindow();
-//    });
     connect(systeminterface, SIGNAL(dbusInitFinished()), this, SLOT(displayMainWindow()));//数据获取完毕后，告诉界面去更新数据后显示界面
-    systemThread->start();
+    systemThread->start();*/
+
+//    systeminterface = new SystemDispatcher;
+
+    m_dataWorker = new DataWorker(this->desktop);
+    QThread *presenterWork = ThreadPool::Instance()->newThread();
+    m_dataWorker->moveToThread(presenterWork);
+    connect(presenterWork, SIGNAL(started()), m_dataWorker, SLOT(doWork()));
+    connect(m_dataWorker, SIGNAL(dataLoadFinished()), this, SLOT(onDataPrepared()));//数据获取完毕后，告诉界面去更新数据后显示界面
+    presenterWork->start();
 
 
     /*sessioninterface = new SessionDispatcher(this);
@@ -755,24 +973,47 @@ void MainWindow::initOtherPages()
 
     if(cleaner_widget == NULL)
         cleaner_widget = new CleanerWidget();
-    cleaner_widget->setSessionDbusProxy(sessioninterface);
-    cleaner_widget->setSystemDbusProxy(systeminterface);
+//    cleaner_widget->setSessionDbusProxy(sessioninterface);
+//    cleaner_widget->setSystemDbusProxy(systeminterface);
     cleaner_widget->setToolKits(toolKits);
     cleaner_widget->setParentWindow(this);
     cleaner_widget->initUI(last_skin_path);
     connect(cleaner_action_widget, SIGNAL(showDetailData()),cleaner_widget, SLOT(displayDetailPage()));
     connect(cleaner_action_widget, SIGNAL(showMainData()),cleaner_widget, SLOT(displayMainPage()));
     connect(cleaner_action_widget, SIGNAL(sendCleanSignal()),cleaner_widget, SIGNAL(transCleanSignal()));
-    connect(systeminterface, SIGNAL(sendCleanOverSignal()), cleaner_widget, SLOT(displayMainPage()));
+
+    connect(m_dataWorker, SIGNAL(tellCleanerDetailData(QStringList)), cleaner_widget, SIGNAL(tellCleanerDetailData(QStringList)));
+    connect(m_dataWorker, SIGNAL(tellCleanerDetailStatus(QString)), cleaner_widget, SIGNAL(tellCleanerDetailStatus(QString)));
+
+    connect(m_dataWorker, SIGNAL(tellCleanerDetailStatus(QString)), cleaner_action_widget, SLOT(showCleanReciveStatus(QString)));
+    connect(m_dataWorker, SIGNAL(tellCleanerDetailError(QString)), cleaner_action_widget, SLOT(showCleanReciveError(QString)));
+
+    connect(m_dataWorker, SIGNAL(sendCleanOverSignal()), cleaner_widget, SLOT(displayMainPage()));
+    connect(m_dataWorker, SIGNAL(sendCleanOverSignal()), cleaner_action_widget, SLOT(displayOrgPage()));
+    connect(m_dataWorker, SIGNAL(sendCleanOverSignal()), cleaner_action_widget, SLOT(showCleanOverStatus()));
+    connect(m_dataWorker, SIGNAL(policykitCleanSignal(bool)), cleaner_action_widget, SLOT(receivePolicyKitSignal(bool)));
+    connect(m_dataWorker, SIGNAL(tellCleanerMainData(QStringList)), cleaner_action_widget, SLOT(showCleanerData(QStringList)));
+    connect(m_dataWorker, SIGNAL(tellCleanerMainStatus(QString, QString)), cleaner_action_widget, SLOT(showCleanerStatus(QString, QString)));
+    connect(m_dataWorker, SIGNAL(sendCleanErrorSignal(QString)), cleaner_action_widget, SLOT(showCleanerError(QString)));
+
+
+    connect(cleaner_widget, SIGNAL(startScanSystem(QMap<QString,QVariant>)), m_dataWorker, SLOT(onStartScanSystem(QMap<QString,QVariant>)));
+    connect(cleaner_widget, SIGNAL(startCleanSystem(QMap<QString,QVariant>)), m_dataWorker, SLOT(onStartCleanSystem(QMap<QString,QVariant>)));
+
+
+
+    //20180101
+    /*connect(systeminterface, SIGNAL(sendCleanOverSignal()), cleaner_widget, SLOT(displayMainPage()));
     connect(systeminterface, SIGNAL(sendCleanOverSignal()), cleaner_action_widget, SLOT(displayOrgPage()));
     //kobe
     connect(systeminterface, SIGNAL(policykitCleanSignal(bool)), cleaner_action_widget, SLOT(receivePolicyKitSignal(bool)));
     connect(systeminterface, SIGNAL(sendCleanOverSignal()), cleaner_action_widget, SLOT(showCleanOverStatus()));
     connect(systeminterface, SIGNAL(tellCleanerMainData(QStringList)), cleaner_action_widget, SLOT(showCleanerData(QStringList)));
     connect(systeminterface, SIGNAL(tellCleanerMainStatus(QString, QString)), cleaner_action_widget, SLOT(showCleanerStatus(QString, QString)));
-    connect(systeminterface, SIGNAL(sendCleanErrorSignal(QString)), cleaner_action_widget, SLOT(showCleanerError(QString)));
-    connect(sessioninterface, SIGNAL(tellCleanerDetailStatus(QString)), cleaner_action_widget, SLOT(showCleanReciveStatus(QString)));
-    connect(sessioninterface, SIGNAL(tellCleanerDetailError(QString)), cleaner_action_widget, SLOT(showCleanReciveError(QString)));
+    connect(systeminterface, SIGNAL(sendCleanErrorSignal(QString)), cleaner_action_widget, SLOT(showCleanerError(QString)));*/
+    //20180101
+//    connect(sessioninterface, SIGNAL(tellCleanerDetailStatus(QString)), cleaner_action_widget, SLOT(showCleanReciveStatus(QString)));
+//    connect(sessioninterface, SIGNAL(tellCleanerDetailError(QString)), cleaner_action_widget, SLOT(showCleanReciveError(QString)));
 
 
     connect(cleaner_action_widget, SIGNAL(sendScanSignal()),cleaner_widget, SIGNAL(transScanSignal()));
@@ -782,24 +1023,87 @@ void MainWindow::initOtherPages()
 
     if(info_widget == NULL)
         info_widget = new InfoWidget(this->arch);
-    info_widget->setSessionDbusProxy(sessioninterface);
-    info_widget->setSystemDbusProxy(systeminterface);
-    info_widget->initUI(this->battery, this->sensor);
+//    info_widget->setSessionDbusProxy(sessioninterface);
+//    info_widget->setSystemDbusProxy(systeminterface);
+    //system info
+    connect(info_widget, SIGNAL(requestupdateSystemRunnedTime()), m_dataWorker, SLOT(onUpdateSystemRunnedTime()));
+    connect(info_widget, SIGNAL(requestRefreshSystemInfo()), m_dataWorker, SLOT(onRequestRefreshSystemInfo()));
+//    connect(m_dataWorker, SIGNAL(sendSystemRunnedTime(int)), info_widget, SIGNAL(sendSystemRunnedTime(int)));
+//    connect(m_dataWorker, SIGNAL(sendSystemInfo(QMap<QString,QVariant>)), info_widget, SIGNAL(sendSystemInfo(QMap<QString,QVariant>)));
+    connect(m_dataWorker, SIGNAL(sendSystemInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendSystemInfo(QMap<QString,QVariant>)));
+//    connect(m_dataWorker, SIGNAL(sendSystemRunnedTime(int)), info_widget, SLOT(onSendSystemRunnedTime(int)));
+
+    info_widget->initUI(this->battery, this->sensor);//20180101
     bottomStack->addWidget(info_widget);
 
+    //desktop info
+    connect(info_widget, SIGNAL(requestDesktopInfo()), m_dataWorker, SLOT(onRequestDesktopInfo()));
+//    connect(m_dataWorker, SIGNAL(sendDesktopInfo(QMap<QString,QVariant>)), info_widget, SIGNAL(sendDesktopInfo(QMap<QString,QVariant>)));
+    connect(m_dataWorker, SIGNAL(sendDesktopInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendDesktopInfo(QMap<QString,QVariant>)));
+
+    //cpu info
+    connect(info_widget, SIGNAL(requestCpuInfo()), m_dataWorker, SLOT(onRequestCpuInfo()));
+//    connect(m_dataWorker, SIGNAL(sendCpuInfo(QMap<QString,QVariant>)), info_widget, SIGNAL(sendCpuInfo(QMap<QString,QVariant>)));
+    connect(m_dataWorker, SIGNAL(sendCpuInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendCpuInfo(QMap<QString,QVariant>)));
+
+    //memory info
+    connect(info_widget, SIGNAL(requestMemoryInfo()), m_dataWorker, SLOT(onRequestMemoryInfo()));
+//    connect(m_dataWorker, SIGNAL(sendMemoryInfo(QMap<QString,QVariant>)), info_widget, SIGNAL(sendMemoryInfo(QMap<QString,QVariant>)));
+    connect(m_dataWorker, SIGNAL(sendMemoryInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendMemoryInfo(QMap<QString,QVariant>)));
+
+    //board info
+    connect(info_widget, SIGNAL(requestBoardInfo()), m_dataWorker, SLOT(onRequestBoardInfo()));
+//    connect(m_dataWorker, SIGNAL(sendBoardInfo(QMap<QString,QVariant>)), info_widget, SIGNAL(sendBoardInfo(QMap<QString,QVariant>)));
+    connect(m_dataWorker, SIGNAL(sendBoardInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendBoardInfo(QMap<QString,QVariant>)));
+
+    //hd info
+    connect(info_widget, SIGNAL(requestHDInfo()), m_dataWorker, SLOT(onRequestHDInfo()));
+//    connect(m_dataWorker, SIGNAL(sendHDInfo(QMap<QString,QVariant>)), info_widget, SIGNAL(sendHDInfo(QMap<QString,QVariant>)));
+    connect(m_dataWorker, SIGNAL(sendHDInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendHDInfo(QMap<QString,QVariant>)));
+
+    //nic info
+    connect(info_widget, SIGNAL(requestNicInfo()), m_dataWorker, SLOT(onRequestNicInfo()));
+//    connect(m_dataWorker, SIGNAL(sendNicInfo(QMap<QString,QVariant>)), info_widget, SIGNAL(sendNicInfo(QMap<QString,QVariant>)));
+    connect(m_dataWorker, SIGNAL(sendNicInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendNicInfo(QMap<QString,QVariant>)));
+
+    //monitor info
+    connect(info_widget, SIGNAL(requestMonitorInfo()), m_dataWorker, SLOT(onRequestMonitorInfo()));
+//    connect(m_dataWorker, SIGNAL(sendMonitorInfo(QMap<QString,QVariant>)), info_widget, SIGNAL(sendMonitorInfo(QMap<QString,QVariant>)));
+    connect(m_dataWorker, SIGNAL(sendMonitorInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendMonitorInfo(QMap<QString,QVariant>)));
+
+    //audio info
+    connect(info_widget, SIGNAL(requestAudioInfo()), m_dataWorker, SLOT(onRequestAudioInfo()));
+//    connect(m_dataWorker, SIGNAL(sendAudioInfo(QMap<QString,QVariant>)), info_widget, SIGNAL(sendAudioInfo(QMap<QString,QVariant>)));
+    connect(m_dataWorker, SIGNAL(sendAudioInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendAudioInfo(QMap<QString,QVariant>)));
+
+    //battery info
+    connect(info_widget, SIGNAL(requestBatteryInfo()), m_dataWorker, SLOT(onRequestBatteryInfo()));
+//    connect(m_dataWorker, SIGNAL(sendBatteryInfo(QMap<QString,QVariant>)), info_widget, SIGNAL(sendBatteryInfo(QMap<QString,QVariant>)));
+    connect(m_dataWorker, SIGNAL(sendBatteryInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendBatteryInfo(QMap<QString,QVariant>)));
+
+    //sensor info
+    connect(info_widget, SIGNAL(requestSensorInfo()), m_dataWorker, SLOT(onRequestSensorInfo()));
+//    connect(m_dataWorker, SIGNAL(sendSensorInfo(QMap<QString,QVariant>)), info_widget, SIGNAL(sendSensorInfo(QMap<QString,QVariant>)));
+    connect(m_dataWorker, SIGNAL(sendSensorInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendSensorInfo(QMap<QString,QVariant>)));
+
+
+    //driver info
+
+
+
     if(setting_widget == NULL)
-        setting_widget = new SettingWidget(this->desktop, this->battery);
+        setting_widget = new SettingWidget(this->desktop, this->battery);//20180101
     setting_widget->setParentWindow(this);
-    setting_widget->setSessionDbusProxy(sessioninterface);
-    setting_widget->setSystemDbusProxy(systeminterface);
-    setting_widget->initUI(last_skin_path);
-    connect(setting_widget, SIGNAL(changeActionPage(int)), setting_action_widget, SLOT(displayActionSubPage(int)));
+//    setting_widget->setSessionDbusProxy(sessioninterface);
+//    setting_widget->setSystemDbusProxy(systeminterface);
+//    setting_widget->initUI(last_skin_path);
+    connect(setting_widget, SIGNAL(changeActionPage(QString)), setting_action_widget, SLOT(displayActionSubPage(QString)));
     connect(setting_action_widget, SIGNAL(notifyContentPageToMain()), setting_widget, SLOT(displaySettingHomePage()));
     bottomStack->addWidget(setting_widget);
 
     if(box_widget == NULL)
         box_widget = new BoxWidget(this, this->arch, this->osName, getPluginsDirectory());
-    box_widget->setSessionDbusProxy(sessioninterface);
+//    box_widget->setSessionDbusProxy(sessioninterface);
     connect(box_widget, SIGNAL(sendSubIndex(int)), this, SLOT(displaySubPage(int)));
     bottomStack->addWidget(box_widget);
 }
@@ -1199,20 +1503,20 @@ void MainWindow::openSkinCenter() {
 
 void MainWindow::openUpgradePage(/*QStringList version_list*/)
 {
-    int w_x = this->frameGeometry().topLeft().x() + (900 / 2) - (334  / 2);
+    /*int w_x = this->frameGeometry().topLeft().x() + (900 / 2) - (334  / 2);
     int w_y = this->frameGeometry().topLeft().y() + (600 /2) - (470  / 2);
     if(upgrade_dialog == NULL)
     {
 //        upgrade_dialog = new UpgradeDialog(0, version_list.at(2), last_skin_path);
-        upgrade_dialog = new UpgradeDialog(0, /*this->version, */last_skin_path, this->arch, this->osName);//20161228
+        upgrade_dialog = new UpgradeDialog(0, last_skin_path, this->arch, this->osName);//20161228
         upgrade_dialog->setSystemDbusProxy(systeminterface);
-        upgrade_dialog->setSessionDbusProxy(sessioninterface);
+//        upgrade_dialog->setSessionDbusProxy(sessioninterface);
         connect(home_page, SIGNAL(sendOpenUpgrade()), this, SLOT(openUpgradePageAgain()));
         connect(upgrade_dialog, SIGNAL(showBackendBtnSignal(bool)), home_page, SLOT(displayBackedBtn(bool)));
         connect(upgrade_dialog,SIGNAL(close_signal()), this, SLOT(closeYoukerAssistant()));
         connect(systeminterface,SIGNAL(get_fetch_signal(QString, QStringList)),upgrade_dialog,SLOT(receiveFetchSignal(QString, QStringList)));
         connect(systeminterface,SIGNAL(get_apt_signal(QString, QStringList)),upgrade_dialog,SLOT(receiveAptSignal(QString, QStringList)));
-        connect(sessioninterface,SIGNAL(receive_source_list_signal(bool)),upgrade_dialog,SLOT(receiveCheckResultSignal(bool)));
+//        connect(sessioninterface,SIGNAL(receive_source_list_signal(bool)),upgrade_dialog,SLOT(receiveCheckResultSignal(bool)));
         upgrade_dialog->move(w_x, w_y);
         upgrade_dialog->show();
         upgrade_dialog->raise();
@@ -1225,7 +1529,7 @@ void MainWindow::openUpgradePage(/*QStringList version_list*/)
         upgrade_dialog->raise();
         home_page->hideBackedBtn();
 //        upgrade_dialog->startAccessData();
-    }
+    }*/
 }
 
 void MainWindow::openUpgradePageAgain()
@@ -1239,7 +1543,7 @@ void MainWindow::openUpgradePageAgain()
 
 void MainWindow::displaySubPage(int index)
 {
-    if(index == 0)
+    /*if(index == 0)
     {
         if(auto_start == NULL) {
             auto_start = new AutoStartWidget(0, sessioninterface, last_skin_path);
@@ -1281,7 +1585,7 @@ void MainWindow::displaySubPage(int index)
 //            camera_manager->move(w_x, w_y);
 //            camera_manager->exec();
 //        }
-    }
+    }*/
 }
 
 void MainWindow::newFeatures()

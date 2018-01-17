@@ -30,7 +30,7 @@
 #include "actionwidget.h"
 #include "toolwidget.h"
 //#include "loginwidget.h"
-#include "contentwidget.h"
+#include "bottomcontentwidget.h"
 #include "homepage.h"
 #include "infowidget.h"
 #include "settingwidget.h"
@@ -54,6 +54,8 @@ class SystemDispatcher;
 class ShadowWidget;
 #include "autostartwidget.h"
 //#include "cameramanager.h"
+
+class DataWorker;
 
 //class MainWindow : public QDialog
 class MainWindow : public QMainWindow
@@ -108,6 +110,9 @@ public slots:
 
     void displayMainWindow(/*int display*/);
 
+
+    void onDataPrepared();
+
 signals:
     void chanegBoxToolStatus();
 
@@ -121,8 +126,8 @@ private:
     ActionWidget *other_action_widget;
     ToolWidget *tool_widget;
 //    LoginWidget *login_widget;
-    ContentWidget *default_content_widget;
-    ContentWidget *other_content_widget;
+    BottomContentWidget *default_content_widget;
+    BottomContentWidget *other_content_widget;
     HomePage *home_page;
     InfoWidget *info_widget;
     CleanerWidget *cleaner_widget;
@@ -143,8 +148,8 @@ private:
     QPixmap main_skin_pixmap;
     QString last_skin_path;
     QPixmap review_skin_pixmap;
-    SystemDispatcher *systeminterface;
-    SessionDispatcher *sessioninterface;
+//    SystemDispatcher *systeminterface;
+//    SessionDispatcher *sessioninterface;
     Toolkits *toolKits;
     AboutDialog *aboutDlg;
     QSettings *mSettings;
@@ -164,6 +169,10 @@ private:
 //    QStringList skinlist;
     ShadowWidget *shadow_widget;
     int display_count;
+
+
+
+    DataWorker *m_dataWorker;
 };
 
 class GlobalData // define by hebing,just for transmit var

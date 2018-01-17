@@ -23,6 +23,7 @@
 
 KylinTitleBar::KylinTitleBar(QWidget *parent) :
     QWidget(parent)
+  , left_btn_pressed(false)
 {
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setFixedHeight(32);

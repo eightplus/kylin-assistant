@@ -29,6 +29,8 @@ SystemDispatcher::SystemDispatcher(QObject *parent)
 
     //kobe
     clean_thread = new KThread(this);
+
+    this->initData();
 }
 
 SystemDispatcher::~SystemDispatcher() {
@@ -77,7 +79,10 @@ void SystemDispatcher::initData()
     QObject::connect(systemiface,SIGNAL(youker_apt_signal(QString, QStringList)),this,SIGNAL(get_apt_signal(QString, QStringList)));
 //    QObject::connect(systemiface,SIGNAL(youker_fetch_signal(QString, QStringList)),this,SLOT(handlerFetchSignal(QString, QStringList)));
 //    QObject::connect(systemiface,SIGNAL(youker_apt_signal(QString, QStringList)),this,SLOT(handlerAptSignal(QString, QStringList)));
-    emit this->dbusInitFinished();
+
+
+
+//    emit this->dbusInitFinished();
 }
 
 //void SystemDispatcher::handlerFetchSignal(QString msg_type, QStringList msg)

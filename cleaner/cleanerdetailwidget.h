@@ -44,7 +44,7 @@ class CleanerDetailWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit CleanerDetailWidget(QWidget *parent = 0, SessionDispatcher *seroxy = 0, SystemDispatcher *syproxy = 0, MainWindow *window = 0, Toolkits *kits = 0, QString skin = ":/background/res/skin/1.png");
+    explicit CleanerDetailWidget(QWidget *parent = 0, /*SessionDispatcher *seroxy = 0, SystemDispatcher *syproxy = 0, */MainWindow *window = 0, Toolkits *kits = 0, QString skin = ":/background/res/skin/1.png");
     ~CleanerDetailWidget();
     void setUIData();
     void setLanguage();
@@ -64,6 +64,7 @@ signals:
     void notifyMainCheckBox(int status);
 //    void showActionAnimaiton();
     void sendScanOverStatus(bool status);
+    void startCleanSystem(QMap<QString, QVariant> itemsMap);
 
 private:
     void initTitleBar();
@@ -71,8 +72,8 @@ private:
 private:
     Ui::CleanerDetailWidget *ui;
     MainWindow *parentWindow;
-    SessionDispatcher *sessionproxy;
-    SystemDispatcher *systemproxy;
+//    SessionDispatcher *sessionproxy;
+//    SystemDispatcher *systemproxy;
     Toolkits *toolKits;
     QMap<QString, QVariant> argsData;
     CleanListWidget *cache_apt_items ;

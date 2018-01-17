@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2015 National University of Defense Technology(NUDT) & Kylin Ltd.
+ * Copyright (C) 2013 ~ 2018 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    xiangli@ubuntukylin.com/kobe24_lixiang@126.com
@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include <QApplication>
 #include <QIcon>
 #include <glib/gi18n.h>
@@ -27,6 +28,15 @@
 #include <sstream>
 #include <qdiriterator.h>
 
+std::string make_string(char *c_str)
+{
+    if (!c_str) {
+        return string();
+    }
+    string s(c_str);
+    g_free(c_str);
+    return s;
+}
 
 static inline unsigned divide(unsigned *q, unsigned *r, unsigned d)
 {

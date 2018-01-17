@@ -36,8 +36,8 @@ CleanerWidget::CleanerWidget(QWidget *parent) :
 
     statked_widget = new QStackedWidget(this);
     p_mainwindow = NULL;
-    systemProxy = NULL;
-    sessionProxy = NULL;
+//    systemProxy = NULL;
+//    sessionProxy = NULL;
     main_widget = NULL;
     detail_widget = NULL;
 }
@@ -49,8 +49,9 @@ CleanerWidget::~CleanerWidget()
 
 void CleanerWidget::initUI(QString skin)
 {
-    main_widget = new CleanerMainWidget(this, sessionProxy, p_mainwindow, toolKits, skin);
-    detail_widget = new CleanerDetailWidget(this, sessionProxy, systemProxy, p_mainwindow, toolKits ,skin);
+    //20180101
+    main_widget = new CleanerMainWidget(this, /*sessionProxy, */p_mainwindow, toolKits, skin);
+    detail_widget = new CleanerDetailWidget(this, /*sessionProxy, systemProxy, */p_mainwindow, toolKits ,skin);
     connect(this, SIGNAL(transCleanSignal()), detail_widget, SLOT(receiveCleanSignal()));
 
     connect(this, SIGNAL(transScanSignal()), main_widget, SLOT(receiveScanSignal()));
@@ -59,8 +60,11 @@ void CleanerWidget::initUI(QString skin)
     connect(detail_widget, SIGNAL(sendScanOverStatus(bool)), this, SIGNAL(tranScanOverSignal(bool)));
 
     connect(this, SIGNAL(clearDetailPage()), detail_widget, SLOT(CleanUIAndData()));
-    connect(sessionProxy, SIGNAL(tellCleanerDetailData(QStringList)), detail_widget, SLOT(showReciveData(QStringList)));
-    connect(sessionProxy, SIGNAL(tellCleanerDetailStatus(QString)), detail_widget, SLOT(showReciveStatus(QString)));
+    //20180101
+//    connect(sessionProxy, SIGNAL(tellCleanerDetailData(QStringList)), detail_widget, SLOT(showReciveData(QStringList)));
+//    connect(sessionProxy, SIGNAL(tellCleanerDetailStatus(QString)), detail_widget, SLOT(showReciveStatus(QString)));
+
+
     statked_widget->addWidget(main_widget);
     statked_widget->addWidget(detail_widget);
     QVBoxLayout *layout1 = new QVBoxLayout();
@@ -70,10 +74,16 @@ void CleanerWidget::initUI(QString skin)
     layout1->setContentsMargins(0, 0, 0, 0);
 
     setLayout(layout1);
+
+    connect(main_widget, SIGNAL(startScanSystem(QMap<QString,QVariant>)), this, SIGNAL(startScanSystem(QMap<QString,QVariant>)));
+    connect(detail_widget, SIGNAL(startCleanSystem(QMap<QString,QVariant>)), this, SIGNAL(startCleanSystem(QMap<QString,QVariant>)));
+    connect(this, SIGNAL(tellCleanerDetailData(QStringList)), detail_widget, SLOT(showReciveData(QStringList)));
+    connect(this, SIGNAL(tellCleanerDetailStatus(QString)), detail_widget, SLOT(showReciveStatus(QString)));
 }
 
 void CleanerWidget::resetSkin(QString skin)
 {
+    //20180101
     if(main_widget != NULL)
         main_widget->resetCurrentSkin(skin);
     if(detail_widget != NULL)

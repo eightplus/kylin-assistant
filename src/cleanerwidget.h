@@ -38,8 +38,8 @@ public:
     explicit CleanerWidget(QWidget *parent = 0);
     ~CleanerWidget();
     void setParentWindow(MainWindow* window) { p_mainwindow = window;}
-    void setSessionDbusProxy(SessionDispatcher* dispatcher) { sessionProxy = dispatcher;}
-    void setSystemDbusProxy(SystemDispatcher* dispatcher) { systemProxy = dispatcher;}
+//    void setSessionDbusProxy(SessionDispatcher* dispatcher) { sessionProxy = dispatcher;}
+//    void setSystemDbusProxy(SystemDispatcher* dispatcher) { systemProxy = dispatcher;}
     void setToolKits(Toolkits* kits) { toolKits = kits;}
     void initUI(QString skin);
     void resetSkin(QString skin);
@@ -56,13 +56,20 @@ signals:
 //    void tranCleanActionAnimaitonSignal();
     void tranScanOverSignal(bool status);
 
+    void tellCleanerDetailData(const QStringList &data);
+    void tellCleanerDetailStatus(const QString &status);
+
+    void startScanSystem(QMap<QString, QVariant> itemsMap);
+    void startCleanSystem(QMap<QString, QVariant> itemsMap);
+
+
 private:
     QStackedWidget *statked_widget;
     CleanerMainWidget *main_widget;
     CleanerDetailWidget *detail_widget;
     MainWindow *p_mainwindow;
-    SystemDispatcher *systemProxy;
-    SessionDispatcher *sessionProxy;
+//    SystemDispatcher *systemProxy;
+//    SessionDispatcher *sessionProxy;
     Toolkits *toolKits;
 };
 
