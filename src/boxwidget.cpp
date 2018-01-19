@@ -152,22 +152,22 @@ void BoxWidget::initPluginWidget()
     //set icon
     pluginModel.setData(qindex,QIcon(QPixmap("://res/ubuntukylin-software-center.png")),Qt::DecorationRole);
 
-    QStringList icon_list;
-    //icon_list<<"://res/boot"<<"://res/camera";
-    icon_list<<"://res/boot";
-    QStringList text_list;
-    //text_list << tr("Boot Manager") << tr("Camera");
-    text_list << tr("Boot Manager");
-    for (int index = 0;index < 1;++index)
-    {
-        pluginModel.insertRows(index + 1,1,QModelIndex());
-        qindex = pluginModel.index(index + 1,0,QModelIndex());
-        pluginModel.setData(qindex, text_list.at(index));
-        //set icon
-        pluginModel.setData(qindex,QIcon(QPixmap(icon_list.at(index))),Qt::DecorationRole);
-        //set tooltip
-        pluginModel.setData(qindex, text_list.at(index),Qt::WhatsThisRole);
-    }
+//    QStringList icon_list;
+//    //icon_list<<"://res/boot"<<"://res/camera";
+//    icon_list<<"://res/boot";
+//    QStringList text_list;
+//    //text_list << tr("Boot Manager") << tr("Camera");
+//    text_list << tr("Boot Manager");
+//    for (int index = 0;index < 1;++index)
+//    {
+//        pluginModel.insertRows(index + 1,1,QModelIndex());
+//        qindex = pluginModel.index(index + 1,0,QModelIndex());
+//        pluginModel.setData(qindex, text_list.at(index));
+//        //set icon
+//        pluginModel.setData(qindex,QIcon(QPixmap(icon_list.at(index))),Qt::DecorationRole);
+//        //set tooltip
+//        pluginModel.setData(qindex, text_list.at(index),Qt::WhatsThisRole);
+//    }
 
     int count = PluginManager::Instance()->count();
     for (int i = 0;i < count;++i)
@@ -178,8 +178,8 @@ void BoxWidget::initPluginWidget()
         pluginModel.setGuid(ICommon->getGuid());
 //        pluginModel.insertRows(i + 1,1,QModelIndex());
 //        qindex = pluginModel.index(i + 1,0,QModelIndex());
-        pluginModel.insertRows(i + 2,1,QModelIndex());
-        qindex = pluginModel.index(i + 2,0,QModelIndex());
+        pluginModel.insertRows(i + 1,1,QModelIndex());
+        qindex = pluginModel.index(i + 1,0,QModelIndex());
         pluginModel.setData(qindex,ICommon->getName());
         pluginModel.setData(qindex,QIcon(QPixmap(pacture_path)),Qt::DecorationRole);
         pluginModel.setData(qindex,ICommon->getName(),Qt::WhatsThisRole);
@@ -188,26 +188,24 @@ void BoxWidget::initPluginWidget()
 
 void BoxWidget::OnClickListView(const QModelIndex & index)
 {
-    if(index.row() == 0)
-    {
+    if(index.row() == 0) {
         if(this->osarch == "aarch64" || this->osname == "Kylin" || this->osname == "YHKylin")
             sessionProxy->runApp("kylin-software-center");
         else
             sessionProxy->runApp("ubuntu-kylin-software-center");
     }
-    else if(index.row() == 1) {
-        emit this->sendSubIndex(0);
-    }
-    else if(index.row() == -1) {
-        if(this->osarch == "aarch64" || this->osname == "Kylin" || this->osname == "YHKylin")
-            sessionProxy->runApp("cheese");
-        else
-            emit this->sendSubIndex(1);
-    }
-    else
-    {
+//    else if(index.row() == 1) {
+//        emit this->sendSubIndex(0);
+//    }
+//    else if(index.row() == -1) {
+//        if(this->osarch == "aarch64" || this->osname == "Kylin" || this->osname == "YHKylin")
+//            sessionProxy->runApp("cheese");
+//        else
+//            emit this->sendSubIndex(1);
+//    }
+    else {
 //        QString guid = pluginModel.getGuid(index.row() - 1);
-        QString guid = pluginModel.getGuid(index.row() - 2);
+        QString guid = pluginModel.getGuid(index.row() - 1);
         PluginInterface* interface = PluginManager::Instance()->getInterfaceByGuid<PluginInterface>(guid);
         interface->doAction();
     }

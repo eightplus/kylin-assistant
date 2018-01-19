@@ -218,6 +218,10 @@
         <file>res/search.png</file>
         <file>res/ok.png</file>
         <file>res/menu_selected.png</file>
+        <file>res/download.svg</file>
+        <file>res/upload.svg</file>
+        <file>res/wave-back.png</file>
+        <file>res/wave-front.png</file>
     </qresource>
     <qresource prefix="/sys">
         <file>res/sysBtn/close_button.png</file>
@@ -570,5 +574,6 @@
     <qresource prefix="/model">
         <file>res/plugin/processmanager.png</file>
         <file>res/plugin/shredder.png</file>
+        <file>res/plugin/startupmanager.png</file>
     </qresource>
 </RCC>

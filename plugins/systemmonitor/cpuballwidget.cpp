@@ -29,8 +29,8 @@ CpuBallWidget::CpuBallWidget(QWidget *parent) : QWidget(parent)
 {
     this->setFixedSize(100, 100);
 
-    m_frontImagePath = ":/res/wave-front.png";
-    m_backimagePath = ":/res/wave-back.png";
+    m_frontImagePath = "://res/wave-front.png";
+    m_backimagePath = "://res/wave-back.png";
 
     m_xFrontOffset = 0;
     m_xBackOffset = this->width();

@@ -1104,7 +1104,7 @@ void MainWindow::initOtherPages()
     if(box_widget == NULL)
         box_widget = new BoxWidget(this, this->arch, this->osName, getPluginsDirectory());
 //    box_widget->setSessionDbusProxy(sessioninterface);
-    connect(box_widget, SIGNAL(sendSubIndex(int)), this, SLOT(displaySubPage(int)));
+//    connect(box_widget, SIGNAL(sendSubIndex(int)), this, SLOT(displaySubPage(int)));
     bottomStack->addWidget(box_widget);
 }
 

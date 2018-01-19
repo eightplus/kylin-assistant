@@ -93,7 +93,6 @@ SOURCES += main.cpp\
 #    ../setting/deadpixelwidget.cpp \
     ../setting/energywidget.cpp \
     ../setting/filemanagerwidget.cpp \
-    ../component/scrollwidget.cpp \
     ../component/agentlistitem.cpp \
     ../component/quibo.cpp \
     ../component/kylinfontdialog.cpp \
@@ -181,7 +180,6 @@ HEADERS  += mainwindow.h \
 #    ../setting/deadpixelwidget.h \
     ../setting/energywidget.h \
     ../setting/filemanagerwidget.h \
-    ../component/scrollwidget.h \
     ../component/agentlistitem.h \
     ../component/quibo.h \
     ../component/kylinfontdialog.h \

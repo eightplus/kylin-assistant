@@ -1,4 +1,5 @@
 TEMPLATE = subdirs
 SUBDIRS = \
     shredmanager \
-    systemmonitor
+    systemmonitor \
+    startupmanager

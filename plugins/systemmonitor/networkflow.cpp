@@ -256,7 +256,7 @@ void NetworkFlow::paintEvent(QPaintEvent *)
 
     //download
     painter.setOpacity(1);
-    QSvgRenderer uploadRender(QString(":/res/download.svg"));
+    QSvgRenderer uploadRender(QString("://res/download.svg"));
     QImage uploadimage(20, 20, QImage::Format_ARGB32);
     uploadimage.fill(QColor("#1E90FF"));
     QPainter uploadPainter(&uploadimage);
@@ -273,7 +273,7 @@ void NetworkFlow::paintEvent(QPaintEvent *)
     painter.drawText(QRect(rect().x() + 20 + rateW + 14, rect().y() + 40, fm.width(downloadContent), rect().height()), Qt::AlignLeft | Qt::AlignTop, downloadContent);
 
     //upload
-    QSvgRenderer downloadRender(QString(":/res/upload.svg"));
+    QSvgRenderer downloadRender(QString("://res/upload.svg"));
     QImage downloadimage(20, 20, QImage::Format_ARGB32);
     downloadimage.fill(QColor("#FF0000"));
     QPainter downloadPainter(&downloadimage);

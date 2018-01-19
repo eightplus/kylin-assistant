@@ -94,4 +94,4 @@ OTHER_FILES += \
     systemmonitor.json
 
 RESOURCES += \
-    res.qrc
+    ../../src/img.qrc
