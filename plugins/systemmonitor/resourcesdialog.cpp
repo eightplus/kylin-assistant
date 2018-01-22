@@ -19,6 +19,7 @@
 
 #include "resourcesdialog.h"
 #include "cpuoccupancyrate.h"
+#include "memorywidget.h"
 #include "networkflow.h"
 
 #include <glibtop/netload.h>
@@ -138,14 +139,17 @@ ResouresDialog::ResouresDialog(QWidget *parent)
     m_prevCpuWorkTime = 0;
 
     m_vlayout = new QVBoxLayout(this);
+    m_vlayout->setSpacing(2);
 
     m_cpuWidget = new CpuOccupancyRate();
+    m_memoryWidget = new MemoryWidget();
     m_networkWidget = new NetworkFlow();
-    m_vlayout->addSpacing(100);
     m_vlayout->addWidget(m_cpuWidget, 0, Qt::AlignHCenter);
+    m_vlayout->addWidget(m_memoryWidget, 0, Qt::AlignHCenter);
     m_vlayout->addWidget(m_networkWidget, 0, Qt::AlignHCenter);
 
     connect(this, SIGNAL(updateNetworkStatus(long,long,long,long)), m_networkWidget, SLOT(onUpdateNetworkStatus(long,long,long,long)), Qt::QueuedConnection);
+    connect(this, SIGNAL(updateMemoryStatus()), m_memoryWidget, SLOT(onUpdateMemoryStatus()));
     connect(this, SIGNAL(updateCpuStatus(double)), m_cpuWidget, SLOT(onUpdateCpuPercent(double)), Qt::QueuedConnection);
 
     updateStatusTimer = new QTimer(this);
@@ -192,7 +196,10 @@ void ResouresDialog::updateResourceStatus()
         emit updateCpuStatus(0);
     }
 
+    //memory
+    emit this->updateMemoryStatus();
+
     //network
-    getNetworkBytesData(totalRecvBytes, totalSentBytes, rateRecvBytes, rateSentBytes);
-    emit this->updateNetworkStatus(totalRecvBytes, totalSentBytes, rateRecvBytes, rateSentBytes);
+    getNetworkBytesData(m_totalRecvBytes, m_totalSentBytes, m_rateRecvBytes, m_rateSentBytes);
+    emit this->updateNetworkStatus(m_totalRecvBytes, m_totalSentBytes, m_rateRecvBytes, m_rateSentBytes);
 }

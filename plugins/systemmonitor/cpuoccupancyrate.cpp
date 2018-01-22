@@ -26,7 +26,7 @@
 
 CpuOccupancyRate::CpuOccupancyRate(QWidget *parent) : QWidget(parent)
 {
-    this->setFixedSize(302, 160);
+    this->setFixedSize(302, 140);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -44,9 +44,7 @@ CpuOccupancyRate::CpuOccupancyRate(QWidget *parent) : QWidget(parent)
     m_cpuBall->setFixedSize(100, 100);
 
     mainLayout->addWidget(m_title, 0, Qt::AlignLeft);
-    mainLayout->addSpacing(2);
     mainLayout->addWidget(m_cpuBall, 0, Qt::AlignCenter);
-    mainLayout->addStretch();
 
     m_cpuBall->startTimer();
 }

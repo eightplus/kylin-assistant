@@ -22,6 +22,7 @@
 #include <QVBoxLayout>
 
 class CpuOccupancyRate;
+class MemoryWidget;
 class NetworkFlow;
 
 class ResouresDialog : public QWidget
@@ -40,6 +41,7 @@ public slots:
 
 signals:
     void updateCpuStatus(double percent);
+    void updateMemoryStatus();
     void updateNetworkStatus(long recvTotalBytes, long sentTotalBytes, long recvRateBytes, long sentRateBytes);
 
 private:
@@ -50,13 +52,14 @@ private:
     unsigned long long m_cpuworkTime;
 
     //network
-    unsigned long long int totalRecvBytes;
-    unsigned long long int totalSentBytes;
-    unsigned long long int rateRecvBytes;
-    unsigned long long int rateSentBytes;
+    unsigned long long int m_totalRecvBytes;
+    unsigned long long int m_totalSentBytes;
+    unsigned long long int m_rateRecvBytes;
+    unsigned long long int m_rateSentBytes;
 
     QTimer *updateStatusTimer = nullptr;
     QVBoxLayout *m_vlayout = nullptr;
     CpuOccupancyRate *m_cpuWidget = nullptr;
+    MemoryWidget *m_memoryWidget = nullptr;
     NetworkFlow *m_networkWidget = nullptr;
 };

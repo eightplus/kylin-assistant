@@ -238,7 +238,7 @@ void NetworkFlow::paintEvent(QPaintEvent *)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);//反走样,绘制出来的线条会出现锯齿
 
-    QFont font = painter.font() ;
+    QFont font = painter.font();
     font.setPointSize(22);
     font.setWeight(QFont::Light);
     painter.setFont(font);
