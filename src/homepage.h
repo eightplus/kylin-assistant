@@ -82,7 +82,7 @@ private:
     QString current_version;
     QString osname;
     QString osarch;
-    QList<ToolButton *> item_list;
+//    QList<ToolButton *> item_list;
 };
 
 #endif // HOMEPAGE_H

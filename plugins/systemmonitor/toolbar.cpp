@@ -18,10 +18,10 @@
  */
 
 #include "toolbar.h"
-#include "myimagebutton.h"
-#include "mytipimagebutton.h"
+#include "../widgets/myimagebutton.h"
+#include "../widgets/mytipimagebutton.h"
 #include "processcategory.h"
-#include "mysearchedit.h"
+#include "../widgets/mysearchedit.h"
 #include "util.h"
 
 #include <QApplication>

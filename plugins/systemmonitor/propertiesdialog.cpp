@@ -19,7 +19,7 @@
 
 #include "propertiesdialog.h"
 #include "processworker.h"
-#include "myimagebutton.h"
+#include "../widgets/myimagebutton.h"
 #include "util.h"
 
 #include <QApplication>
@@ -91,11 +91,11 @@ PropertiesDialog::PropertiesDialog(QWidget *parent, pid_t processId) : QDialog(p
     nameTitleLabel->setFixedWidth(100);
     nameTitleLabel->setAlignment(Qt::AlignRight);
 
-    nameLabel = new QLabel();
-    nameLabel->setStyleSheet("QLabel { background-color : transparent; color : #000000; }");
+    m_appNameLabel = new QLabel();
+    m_appNameLabel->setStyleSheet("QLabel { background-color : transparent; color : #000000; }");
 
     nameLayout->addWidget(nameTitleLabel);
-    nameLayout->addWidget(nameLabel);
+    nameLayout->addWidget(m_appNameLabel);
     nameLayout->addSpacing(20);
 
     cmdlineTitleLabel = new QLabel(QString("%1:").arg(tr("Command line")));
@@ -178,7 +178,7 @@ PropertiesDialog::~PropertiesDialog()
     delete userTitleLabel;
     delete userLabel;
     delete nameTitleLabel;
-    delete nameLabel;
+    delete m_appNameLabel;
     delete titleLabel;
     delete cmdlineTitleLabel;
     delete cpuDurationLabel;
@@ -227,7 +227,7 @@ void PropertiesDialog::initProcproperties()
         iconLabel->setPixmap(icon_pixmap);
         titleLabel->setText(displayName);
         userLabel->setText(username);
-        nameLabel->setText(QString(info->name));
+        m_appNameLabel->setText(QString(info->name));
         cmdlineLabel->setText(QString(info->arguments));
         startTimeLabel->setText(QFileInfo(QString("/proc/%1").arg(pid)).created().toString("yyyy-MM-dd hh:mm:ss"));
         cpuDurationLabel->setText(formatDurationForDisplay(100 * info->cpu_time / info->frequency));

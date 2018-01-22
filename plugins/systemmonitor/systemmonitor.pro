@@ -35,17 +35,17 @@ HEADERS += \
     processworker.h \
     util.h \
     ../../component/utils.h \
-    mydialog.h \
-    myimagebutton.h \
+    ../widgets/mydialog.h \
+    ../widgets/myimagebutton.h \
     propertiesdialog.h \
     processcategory.h \
     processdata.h \
-    myactiongroup.h \
-    myactiongroupitem.h \
-    myaction.h \
-    titlewidget.h \
+    ../widgets/myactiongroup.h \
+    ../widgets/myactiongroupitem.h \
+    ../widgets/myaction.h \
+    monitortitlewidget.h \
     toolbar.h \
-    mytipimagebutton.h \
+    ../widgets/mytipimagebutton.h \
     resourcesdialog.h \
     filesystemdialog.h \
     diskitemlist.h \
@@ -53,7 +53,7 @@ HEADERS += \
     filesystemworker.h \
     diskmodel.h \
     diskinfo.h \
-    mysearchedit.h \
+    ../widgets/mysearchedit.h \
     networkflow.h \
     cpuoccupancyrate.h \
     cpuballwidget.h \
@@ -67,16 +67,16 @@ SOURCES += \
     processlistitem.cpp \
     processworker.cpp \
     util.cpp \
-    mydialog.cpp \
-    myimagebutton.cpp \
+    ../widgets/mydialog.cpp \
+    ../widgets/myimagebutton.cpp \
     propertiesdialog.cpp \
     processcategory.cpp \
-    myactiongroup.cpp \
-    myactiongroupitem.cpp \
-    myaction.cpp \
-    titlewidget.cpp \
+    ../widgets/myactiongroup.cpp \
+    ../widgets/myactiongroupitem.cpp \
+    ../widgets/myaction.cpp \
+    monitortitlewidget.cpp \
     toolbar.cpp \
-    mytipimagebutton.cpp \
+    ../widgets/mytipimagebutton.cpp \
     resourcesdialog.cpp \
     filesystemdialog.cpp \
     diskitemlist.cpp \
@@ -84,7 +84,7 @@ SOURCES += \
     filesystemworker.cpp \
     diskmodel.cpp \
     diskinfo.cpp \
-    mysearchedit.cpp \
+    ../widgets/mysearchedit.cpp \
     networkflow.cpp \
     cpuoccupancyrate.cpp \
     cpuballwidget.cpp \

@@ -54,11 +54,11 @@ UpgradeDialog::UpgradeDialog(QWidget *parent, /*const QString &version, */QStrin
         close_btn->move(0, 0);
     }
 
-    nameLabel = new QLabel(baseWidget);
-    nameLabel->setGeometry(QRect(37, 0, 260, 30));
-    nameLabel->setStyleSheet("QLabel{color:#ffffff;font-family: 方正黑体_GBK;font-size: 12px;text-align: center;font-weight:bold;}");
-    nameLabel->setAlignment(Qt::AlignCenter);
-    nameLabel->setText(tr("check and update"));
+    m_appNameLabel = new QLabel(baseWidget);
+    m_appNameLabel->setGeometry(QRect(37, 0, 260, 30));
+    m_appNameLabel->setStyleSheet("QLabel{color:#ffffff;font-family: 方正黑体_GBK;font-size: 12px;text-align: center;font-weight:bold;}");
+    m_appNameLabel->setAlignment(Qt::AlignCenter);
+    m_appNameLabel->setText(tr("check and update"));
 
 //    msg_label = new QLabel(baseWidget);
 //    msg_label->setGeometry(QRect(10, 40, 324, 20));

@@ -20,11 +20,11 @@
 
 #include "processworker.h"
 #include "../../component/utils.h"
-#include "mydialog.h"
+#include "../widgets/mydialog.h"
 #include "processlistitem.h"
-#include "myactiongroup.h"
-#include "myactiongroupitem.h"
-#include "myaction.h"
+#include "../widgets/myactiongroup.h"
+#include "../widgets/myactiongroupitem.h"
+#include "../widgets/myaction.h"
 #include "processlistwidget.h"
 
 #include <QLabel>

@@ -139,7 +139,7 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
     box_widget = NULL;
     aboutDlg = NULL;
 
-    auto_start = NULL;
+//    auto_start = NULL;
     upgrade_dialog = NULL;
 //    camera_manager = NULL;
 
@@ -300,11 +300,11 @@ MainWindow::~MainWindow()
         mSettings = NULL;
     }
 
-    if(auto_start != NULL)
-    {
-        delete auto_start;
-        auto_start = NULL;
-    }
+//    if(auto_start != NULL)
+//    {
+//        delete auto_start;
+//        auto_start = NULL;
+//    }
 //    if(camera_manager != NULL)
 //    {
 //        delete camera_manager;
@@ -1180,9 +1180,9 @@ void MainWindow::changeSkin(QString pciture)
     mSettings->endGroup();
     mSettings->sync();
 
-    if(auto_start != NULL) {
-        auto_start->resetTitleSkin(last_skin_path);
-    }
+//    if(auto_start != NULL) {
+//        auto_start->resetTitleSkin(last_skin_path);
+//    }
 //    if(camera_manager != NULL) {
 //        camera_manager->resetTitleSkin(last_skin_path);
 //    }

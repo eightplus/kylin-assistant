@@ -205,7 +205,7 @@ void SystemMonitor::initPanelStack()
 
 void SystemMonitor::initTitleWidget()
 {
-    m_titleWidget = new TitleWidget(this);
+    m_titleWidget = new MonitorTitleWidget(this);
     m_titleWidget->resize(width(), TOP_TITLE_WIDGET_HEIGHT);
     m_titleWidget->move(0, 0);
 }

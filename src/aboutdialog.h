@@ -65,7 +65,7 @@ private:
     QTextBrowser *aboutEdit;
     QTextEdit *contributorEdit;
     QLabel *iconLabel;
-    QLabel *nameLabel;
+    QLabel *m_appNameLabel;
     QPushButton *okBtn;
 //    QLabel *versionLabel;
 //    QLabel *linkLabel;

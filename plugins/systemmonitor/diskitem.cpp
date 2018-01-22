@@ -18,7 +18,7 @@
  */
 
 #include "diskitem.h"
-#include "myimagebutton.h"
+#include "../widgets/myimagebutton.h"
 
 #include <QHBoxLayout>
 #include <QMouseEvent>

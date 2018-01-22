@@ -18,7 +18,7 @@
  */
 
 #include "processcategory.h"
-#include "myimagebutton.h"
+#include "../widgets/myimagebutton.h"
 
 ProcessCategory::ProcessCategory(int tabIndex, QWidget *parent)
     : QWidget(parent)

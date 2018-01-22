@@ -80,7 +80,7 @@ private:
     QLabel *ok_icon_label;
     LoadingLabel *work_loading_label;
     LoadingLabel *upgrade_loading_label;
-    QLabel *nameLabel;
+    QLabel *m_appNameLabel;
     QLabel *doing_label;
     QLabel *error_label;
     QLabel *tip_label;

@@ -69,7 +69,7 @@ private:
     QLabel *userLabel;
     QLabel *userTitleLabel;
     QLabel *iconLabel;
-    QLabel *nameLabel;
+    QLabel *m_appNameLabel;
     QLabel *nameTitleLabel;
     QLabel *cpuDurationLabel;
     QLabel *cpuDurationTitleLabel;

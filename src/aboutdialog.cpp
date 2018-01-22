@@ -59,8 +59,8 @@ AboutDialog::AboutDialog(QWidget *parent, /*const QString &version, */QString sk
     iconLabel = new QLabel(baseWidget);
     //iconLabel->setGeometry(QRect(380, 20, 44, 44));
     iconLabel->setGeometry(QRect(360, 36, 44, 44));//20161228
-    nameLabel = new QLabel(baseWidget);
-    nameLabel->setGeometry(QRect(71, 0, 300, 30));
+    m_appNameLabel = new QLabel(baseWidget);
+    m_appNameLabel->setGeometry(QRect(71, 0, 300, 30));
 //    linkLabel = new QLabel();
 //    iconLabel->setStyleSheet("QLabel{background-image:url(':/res/kylin-assistant.png')}");
 
@@ -68,19 +68,19 @@ AboutDialog::AboutDialog(QWidget *parent, /*const QString &version, */QString sk
     image = image.scaled(QSize(44, 44), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     iconLabel->setPixmap(QPixmap::fromImage(image));
 
-    nameLabel->setStyleSheet("QLabel{color:#ffffff;font-family: 方正黑体_GBK;font-size: 12px;text-align: center;font-weight:bold;}");
-    nameLabel->setAlignment(Qt::AlignCenter);
+    m_appNameLabel->setStyleSheet("QLabel{color:#ffffff;font-family: 方正黑体_GBK;font-size: 12px;text-align: center;font-weight:bold;}");
+    m_appNameLabel->setAlignment(Qt::AlignCenter);
 //    if (arch == "aarch64" || os == "Kylin" || os == "YHKylin") {//20161228
 //        close_btn->move(442-36, 0);
-//        nameLabel->setText(tr("Kylin Assisant") + " " + VERSION);
+//        m_appNameLabel->setText(tr("Kylin Assisant") + " " + VERSION);
 //    }
 //    else {
 //        close_btn->move(0, 0);
-//        nameLabel->setText(tr("Youker Assisant") + " " + VERSION);
+//        m_appNameLabel->setText(tr("Youker Assisant") + " " + VERSION);
 //    }
 
     close_btn->move(442-36, 0);
-    nameLabel->setText(tr("Kylin Assistant") + " " + qApp->applicationVersion());
+    m_appNameLabel->setText(tr("Kylin Assistant") + " " + qApp->applicationVersion());
 
 //    linkLabel->setAlignment(Qt::AlignRight);
 //    linkLabel->setText(QString::fromLocal8Bit("<a style='color: green;' href = https://launchpad.net/youker-assistant> home page</a>"));

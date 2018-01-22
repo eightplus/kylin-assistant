@@ -163,7 +163,7 @@ private:
     QParallelAnimationGroup *gatherGroup;
     PAGESTATUS status;
     bool statusFlag;
-    AutoStartWidget *auto_start;
+//    AutoStartWidget *auto_start;
 //    CameraManager *camera_manager;
     UpgradeDialog *upgrade_dialog;
 //    QStringList skinlist;

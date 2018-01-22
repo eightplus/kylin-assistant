@@ -129,13 +129,13 @@ HomePage::~HomePage()
         delete box_tip;
         box_tip = NULL;
     }
-    for(int i=0; i<item_list.count(); i++)
-    {
-        ToolButton *btn = item_list.at(i);
-        delete btn;
-        btn = NULL;
-    }
-    item_list.clear();
+//    for(int i=0; i<item_list.count(); i++)
+//    {
+//        ToolButton *btn = item_list.at(i);
+//        delete btn;
+//        btn = NULL;
+//    }
+//    item_list.clear();
 }
 
 void HomePage::initUI()
@@ -176,7 +176,7 @@ void HomePage::initUI()
 
 
 
-    QStringList icon_list;
+    /*QStringList icon_list;
 //    icon_list<<"://res/ubuntukylin-software-center"<<"://res/boot"<<"://res/camera";
     icon_list<<"://res/boot" << "://res/more.png";
     QStringList text_list;
@@ -194,10 +194,9 @@ void HomePage::initUI()
         signal_mapper->setMapping(tool_button, QString::number(i, 10));
         button_layout->addWidget(tool_button);
         item_list.append(tool_button);
-
     }
     connect(signal_mapper, SIGNAL(mapped(QString)), this, SLOT(switchPageIndex(QString)));
-
+*/
 
 //    more_btn->setFocusPolicy(Qt::NoFocus);
 //    QPixmap pixmap("://res/more.png");
@@ -224,7 +223,7 @@ void HomePage::initUI()
     layout5->addWidget(box_logo);
     layout5->addLayout(layout4);
     layout5->addStretch();
-    layout5->addLayout(button_layout);
+//    layout5->addLayout(button_layout);
     layout5->setMargin(0);
     layout5->setSpacing(5);
     layout5->setContentsMargins(0,0,0,0);
