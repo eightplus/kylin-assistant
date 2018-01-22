@@ -10,5 +10,6 @@ kylin-assistant (1.0.0-0ubuntu1) bionic; urgency=low
   * Separate data and graphics.
   * Add Cpu.
   * Add Network.
+  * Add memory rate.
 
  -- lixiang <lixiang@kylinos.cn>  Thu, 21 Dec 2017 14:52:56 +0800

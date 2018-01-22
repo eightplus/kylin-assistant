@@ -308,9 +308,9 @@ void DataWorker::onResetMouseCursorSize(int cursorSize)
 void DataWorker::onRequestSoundData()
 {
     QString current_sound = sessioninterface->get_sound_theme_qt();
-//    QStringList soundlist  = sessioninterface->get_sound_themes_qt();
+    QStringList soundlist  = systeminterface->get_sound_themes_qt();
 
-    emit this->sendSoundList(current_sound, QStringList());
+    emit this->sendSoundList(current_sound, soundlist);
 
     bool login_music = sessioninterface->get_login_music_enable_qt();
     bool sound_event = sessioninterface->get_sound_event_enable_qt();
@@ -453,7 +453,6 @@ void DataWorker::onRequestMateOrUnityMenuData(bool isMate)
         int iconColourIndex = sessioninterface->get_launcher_icon_colouring_qt();
         QStringList colourlist = sessioninterface->get_all_launcher_icon_colourings_qt();
 
-        qDebug() <<"launcherTransparency="<<launcherTransparency;
         emit this->sendUnityIconValue(iconSize, iconHide, desktopIconShowed, launcherTransparency, iconColourIndex, colourlist);
 
         QString current_position = sessioninterface->get_current_launcher_position_qt();
@@ -728,7 +727,6 @@ void DataWorker::onRequestMateOrUnityTouchpadData(bool isMate)
     else
         scroll_string_value = sessioninterface->get_touchscrolling_mode_qt();
 
-    qDebug() << "touchpadEnable="<<touchpadEnable<<", mode_value="<<mode_value << ",scroll_string_value="<<scroll_string_value;
     emit sendTouchPadValue(touchpadEnable, touchscrollingHorizontal, mode_value, scroll_int_value, scroll_string_value);
 }
 

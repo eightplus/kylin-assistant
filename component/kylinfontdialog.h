@@ -45,6 +45,7 @@ public:
     void initTitleBar(QString skin);
     void updateSampleFont();
     void resetTitleSkin(QString skin);
+    void moveCenter();
 
 public slots:
     void onCacelButtonClicked();

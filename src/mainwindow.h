@@ -111,7 +111,7 @@ public slots:
     void displayMainWindow(/*int display*/);
 
 
-    void onDataPrepared();
+    void onInitDataFinished();
 
 signals:
     void chanegBoxToolStatus();

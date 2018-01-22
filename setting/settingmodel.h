@@ -41,7 +41,8 @@ public slots:
     QVariant data(const QModelIndex &index, int role) const;
 
 private:
-    QStringList m_nameList;
+    QStringList m_moduleList;
+//    QStringList m_nameList;
     QModelIndex m_currentIndex;
 };
 

@@ -272,7 +272,6 @@ void TouchpadWidget::initSettingData()
 
 void TouchpadWidget::onSendTouchPadValue(bool touchpadEnable, bool touchscrollingHorizontal, const QString &mode_value, int scroll_int_value, const QString &scroll_string_value)
 {
-    qDebug() << "------------------mode_value="<<mode_value;
     touchpad_switcher->switchedOn = touchpadEnable;
     horizontal_scrolling_switcher->switchedOn = touchscrollingHorizontal;
     if(mode_value == "overlay-auto") {

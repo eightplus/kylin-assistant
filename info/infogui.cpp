@@ -35,6 +35,9 @@ InfoGui::InfoGui(QWidget *parent)
 //    palette.setColor(QPalette::Background, QColor("#0d87ca"));
 //    this->setPalette(palette);
 //    setFixedSize(750, 403);
+//    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    this->setStyleSheet("QWidget {background-color: rgba(255, 255, 255, 0.1);border:none;}");
+    this->resize(750, parent->size().height());
     m_infoGuiName = "";
 
     m_vLayout = new QVBoxLayout,
@@ -47,7 +50,7 @@ InfoGui::InfoGui(QWidget *parent)
     m_vLayout->setMargin(0);
     m_widget->setLayout(m_vLayout);
 
-    m_widget->setFixedWidth(m_scrollArea->width());
+    m_widget->setFixedWidth(750);//m_scrollArea->width()
     m_scrollArea->setWidget(m_widget);
 
     QVBoxLayout *layout = new QVBoxLayout;//QHBoxLayout *mainLayout = static_cast<QHBoxLayout *>(layout());
@@ -99,7 +102,7 @@ void InfoGui::clearWidget()
 
 void InfoGui::loadOnePage(int index, const QString &title, QMap<QString, QVariant> infoMap)
 {
-    InfoUnitWidget *m_testWidget = new InfoUnitWidget(title);
+    InfoUnitWidget *w = new InfoUnitWidget(title, this);
     QMap<QString,QVariant>::iterator it; //遍历map
 
     for (it = infoMap.begin(); it != infoMap.end(); ++it) {
@@ -108,11 +111,35 @@ void InfoGui::loadOnePage(int index, const QString &title, QMap<QString, QVarian
             //do nothing
         }
         else if (it.key().length() > 0 && valueStr.length() > 0) {
-            m_testWidget->addInfoItem(it.key(), valueStr);
+            if (it.key() == "MemVendor") {
+                w->setInfoVendor(":/vendor/res/manufacturer/" + valueStr.toUpper() + ".jpg");
+            }
+            else if (it.key() == "BoaVendor") {
+                w->setInfoVendor(":/vendor/res/manufacturer/" + valueStr.toUpper() + ".jpg");
+            }
+            else if (it.key() == "DiskVendor") {
+                w->setInfoVendor(":/vendor/res/manufacturer/" + valueStr.toUpper() + ".jpg");
+            }
+            else if (it.key() == "Vga_vendor") {
+                w->setInfoVendor(":/vendor/res/manufacturer/" + valueStr.toUpper() + ".jpg");
+            }
+            else if (it.key() == "MulVendor") {
+                w->setInfoVendor(":/vendor/res/manufacturer/" + valueStr.toUpper() + ".jpg");
+            }
+            else if (it.key() == "POWER_SUPPLY_MANUFACTURER") {
+                w->setInfoVendor(":/vendor/res/manufacturer/" + valueStr.toUpper() + ".jpg");
+            }
+            else {
+                if (it.key().contains("INTEL"))
+                    w->setInfoVendor(":/vendor/res/manufacturer/INTEL.jpg");
+                else if (it.key().contains("REALTEK"))
+                    w->setInfoVendor(":/vendor/res/manufacturer/REALTEK.jpg");
+            }
+            w->addInfoItem(it.key(), valueStr);
         }
     }
-    m_vLayout->addWidget(m_testWidget, 0, Qt::AlignTop);//m_vLayout->insertWidget(index, m_testWidget);
-    m_pageList.append(m_testWidget);
+    m_vLayout->addWidget(w, 0, Qt::AlignTop);//m_vLayout->insertWidget(index, w);
+    m_pageList.append(w);
 }
 
 void InfoGui::updatePageData(const QString &title, QMap<QString, QVariant> infoMap)

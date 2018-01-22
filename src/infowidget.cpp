@@ -75,7 +75,7 @@ void InfoWidget::initUI(bool has_battery, bool has_sensor)
 
     type_list << tr("Computer");
     icon_list << "computer";
-    InfoGui *system_widget = new InfoGui;//该页面永远存在，且在列表的第一个位置，为默认显示项
+    InfoGui *system_widget = new InfoGui(this);//该页面永远存在，且在列表的第一个位置，为默认显示项
     system_widget->setInfoGuiName("computer");
     stacked_widget->addWidget(system_widget);
     stacked_widget->setCurrentWidget(system_widget);
@@ -85,58 +85,58 @@ void InfoWidget::initUI(bool has_battery, bool has_sensor)
 
     type_list << tr("Desktop");
     icon_list << "unity";
-    InfoGui *desktop_widget = new InfoGui;
+    InfoGui *desktop_widget = new InfoGui(this);
     desktop_widget->setInfoGuiName("unity");
     stacked_widget->addWidget(desktop_widget);
 
     type_list << tr("CPU");
     icon_list << "cpu";
-    InfoGui *cpu_widget = new InfoGui;
+    InfoGui *cpu_widget = new InfoGui(this);
     cpu_widget->setInfoGuiName("cpu");
     stacked_widget->addWidget(cpu_widget);
 
     type_list << tr("Memory");
     icon_list << "memory";
-    InfoGui *memory_widget = new InfoGui;
+    InfoGui *memory_widget = new InfoGui(this);
     memory_widget->setInfoGuiName("memory");
     stacked_widget->addWidget(memory_widget);
 
     type_list << tr("Motherboard");
     icon_list << "board";
-    InfoGui *board_widget = new InfoGui;
+    InfoGui *board_widget = new InfoGui(this);
     board_widget->setInfoGuiName("board");
     stacked_widget->addWidget(board_widget);
 
     type_list << tr("HD");
     icon_list << "harddisk";
-    InfoGui *hd_widget = new InfoGui;
+    InfoGui *hd_widget = new InfoGui(this);
     hd_widget->setInfoGuiName("harddisk");
     stacked_widget->addWidget(hd_widget);
 
 
     type_list << tr("NIC");
     icon_list << "network";
-    InfoGui *nic_widget = new InfoGui;
+    InfoGui *nic_widget = new InfoGui(this);
     nic_widget->setInfoGuiName("network");
     stacked_widget->addWidget(nic_widget);
 
     type_list << tr("VGA");
     icon_list << "monitor";
-    InfoGui *monitor_widget = new InfoGui;
+    InfoGui *monitor_widget = new InfoGui(this);
     monitor_widget->setInfoGuiName("monitor");
     stacked_widget->addWidget(monitor_widget);
 
 
     type_list << tr("Audio");
     icon_list << "audio";
-    InfoGui *audio_widget = new InfoGui;
+    InfoGui *audio_widget = new InfoGui(this);
     audio_widget->setInfoGuiName("audio");
     stacked_widget->addWidget(audio_widget);
 
     if (has_battery) {
         type_list << tr("Battery");
         icon_list << "battery";
-        InfoGui *battery_widget = new InfoGui;
+        InfoGui *battery_widget = new InfoGui(this);
         battery_widget->setInfoGuiName("battery");
         stacked_widget->addWidget(battery_widget);
     }
@@ -144,14 +144,14 @@ void InfoWidget::initUI(bool has_battery, bool has_sensor)
     if (has_sensor) {
         type_list << tr("Sensor");
         icon_list << "sensor";
-        InfoGui *sensor_widget = new InfoGui;
+        InfoGui *sensor_widget = new InfoGui(this);
         sensor_widget->setInfoGuiName("sensor");
         stacked_widget->addWidget(sensor_widget);
     }
 
     type_list << tr("Device Driver");
     icon_list << "drive";
-    InfoGui *driver_widget = new InfoGui;
+    InfoGui *driver_widget = new InfoGui(this);
     driver_widget->setInfoGuiName("drive");
     stacked_widget->addWidget(driver_widget);
 
@@ -206,7 +206,7 @@ void InfoWidget::onSendSystemInfo(QMap<QString, QVariant> tmpMap)
         QMap<QString, QVariant> sys_info_map;
         QMap<QString,QVariant>::iterator it;
         for (it = tmpMap.begin(); it != tmpMap.end(); ++it) {
-            if (it.value().toString().length() > 0) {
+            if (it.key() != "uptime" && it.value().toString().length() > 0) {
                 sys_info_map.insert(it.key(), it.value());
             }
         }
@@ -220,7 +220,7 @@ void InfoWidget::onSendSystemInfo(QMap<QString, QVariant> tmpMap)
                         continue;
                     if (page->infoGuiName() == "computer") {
                         page->clearWidget();
-                        page->loadOnePage(0, "Computer Info", sys_info_map);
+                        page->loadOnePage(0, tr("Computer Info"), sys_info_map);
                         break;
                     }
                 }
@@ -274,7 +274,7 @@ void InfoWidget::onSendDesktopInfo(QMap<QString, QVariant> tmpMap)
                         continue;
                     if (page->infoGuiName() == "unity") {
                         page->clearWidget();
-                        page->loadOnePage(0, "Dekstop Info", desktop_info_map);
+                        page->loadOnePage(0, tr("Dekstop Info"), desktop_info_map);
                         break;
                     }
                 }
@@ -309,7 +309,7 @@ void InfoWidget::onSendCpuInfo(QMap<QString, QVariant> tmpMap)
                         continue;
                     if (page->infoGuiName() == "cpu") {
                         page->clearWidget();
-                        page->loadOnePage(0, "CPU Info", cpu_info_map);
+                        page->loadOnePage(0, tr("CPU Info"), cpu_info_map);
                         break;
                     }
                 }
@@ -350,7 +350,7 @@ void InfoWidget::onSendMemoryInfo(QMap<QString, QVariant> tmpMap)
                             continue;
                         if (page->infoGuiName() == "memory") {
                             page->clearWidget();
-                            page->loadOnePage(0, "Memory Info", memory_info_map);
+                            page->loadOnePage(0, tr("Memory Info"), memory_info_map);
                             break;
                         }
                     }
@@ -423,7 +423,7 @@ void InfoWidget::onSendBoardInfo(QMap<QString, QVariant> tmpMap)
                         continue;
                     if (page->infoGuiName() == "board") {
                         page->clearWidget();
-                        page->loadOnePage(0, "Board Info", board_info_map);
+                        page->loadOnePage(0, tr("Board Info"), board_info_map);
                         break;
                     }
                 }
@@ -468,7 +468,7 @@ void InfoWidget::onSendHDInfo(QMap<QString, QVariant> tmpMap)
                             continue;
                         if (page->infoGuiName() == "harddisk") {
                             page->clearWidget();
-                            page->loadOnePage(0, "HardWare Info", hd_info_map);
+                            page->loadOnePage(0, tr("HardWare Info"), hd_info_map);
                             break;
                         }
                     }
@@ -563,7 +563,7 @@ void InfoWidget::onSendNicInfo(QMap<QString, QVariant> tmpMap)
                             continue;
                         if (page->infoGuiName() == "network") {
                             page->clearWidget();
-                            page->loadOnePage(0, "NIC Info", wire_info_map);
+                            page->loadOnePage(0, tr("NIC Info"), wire_info_map);
                             break;
                         }
                     }
@@ -653,7 +653,7 @@ void InfoWidget::onSendMonitorInfo(QMap<QString, QVariant> tmpMap)
                             continue;
                         if (page->infoGuiName() == "monitor") {
                             page->clearWidget();
-                            page->loadOnePage(0, "Monitor Info", monitor_info_map);
+                            page->loadOnePage(0, tr("Monitor Info"), monitor_info_map);
                             break;
                         }
                     }
@@ -737,7 +737,7 @@ void InfoWidget::onSendAudioInfo(QMap<QString, QVariant> tmpMap)
                             continue;
                         if (page->infoGuiName() == "audio") {
                             page->clearWidget();
-                            page->loadOnePage(0, "Audio Info", audio_info_map);
+                            page->loadOnePage(0, tr("Audio Info"), audio_info_map);
                             break;
                         }
                     }
@@ -818,6 +818,7 @@ void InfoWidget::onSendBatteryInfo(QMap<QString, QVariant> tmpMap)
         if(battery_info_map.isEmpty() || battery_info_map.count() <= 0) {
             return;
         }
+
         //vendor:battery_info_map.value("POWER_SUPPLY_MANUFACTURER").toString().toUpper()
         for (int i = 0; i < stacked_widget->count(); i++) {
             if (InfoGui *page = static_cast<InfoGui *>(stacked_widget->widget(i))) {
@@ -825,7 +826,7 @@ void InfoWidget::onSendBatteryInfo(QMap<QString, QVariant> tmpMap)
                     continue;
                 if (page->infoGuiName() == "battery") {
                     page->clearWidget();
-                    page->loadOnePage(0, "Battery Info", battery_info_map);
+                    page->loadOnePage(0, tr("Battery Info"), battery_info_map);
                     break;
                 }
             }
@@ -874,7 +875,7 @@ void InfoWidget::changeInfoPage(QListWidgetItem *item) {
     if (m_currentGuiName.isEmpty() || m_currentGuiName.isNull())
         return;
 
-    qDebug() << "InfoWidget changeInfoPage" << m_currentGuiName;
+//    qDebug() << "InfoWidget changeInfoPage" << m_currentGuiName;
 
     for (int i = 0; i < stacked_widget->count(); i++) {
         if (InfoGui *page = static_cast<InfoGui *>(stacked_widget->widget(i))) {
@@ -952,7 +953,7 @@ void InfoWidget::changeInfoPage(QListWidgetItem *item) {
                                     continue;
                                 if (page->infoGuiName() == "drive") {
                                     page->clearWidget();
-                                    page->loadOnePage(0, "Driver Info", driver_info_map);
+                                    page->loadOnePage(0, tr("Driver Info"), driver_info_map);
                                     break;
                                 }
                             }

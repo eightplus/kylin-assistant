@@ -322,10 +322,8 @@ MainWindow::~MainWindow()
     }
 }
 
-void MainWindow::onDataPrepared()
+void MainWindow::onInitDataFinished()
 {
-    qDebug() << "TRACE:" << "data prepared";
-
     this->battery = m_dataWorker->isBatteryExist();
     this->sensor = m_dataWorker->isSensorExist();
 
@@ -923,11 +921,11 @@ void MainWindow::startDbusDaemon()
 //    systeminterface = new SystemDispatcher;
 
     m_dataWorker = new DataWorker(this->desktop);
-    QThread *presenterWork = ThreadPool::Instance()->newThread();
-    m_dataWorker->moveToThread(presenterWork);
-    connect(presenterWork, SIGNAL(started()), m_dataWorker, SLOT(doWork()));
-    connect(m_dataWorker, SIGNAL(dataLoadFinished()), this, SLOT(onDataPrepared()));//数据获取完毕后，告诉界面去更新数据后显示界面
-    presenterWork->start();
+    QThread *w_thread = ThreadPool::Instance()->newThread();
+    m_dataWorker->moveToThread(w_thread);
+    connect(w_thread, SIGNAL(started()), m_dataWorker, SLOT(doWork()));
+    connect(m_dataWorker, SIGNAL(dataLoadFinished()), this, SLOT(onInitDataFinished()));
+    w_thread->start();
 
 
     /*sessioninterface = new SessionDispatcher(this);

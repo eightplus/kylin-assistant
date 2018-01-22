@@ -24,6 +24,46 @@
 #include <QDebug>
 #include <QImageReader>
 
+inline const QString covertModuleName(const QString &module)
+{
+    if (module == "ThemePage") {
+        return QString(QObject::tr("ThemeSetting"));
+    }
+    else if (module == "IconPage") {
+        return QString(QObject::tr("IconSetting"));
+    }
+    else if (module == "MousePage") {
+        return QString(QObject::tr("MousePointer"));
+    }
+    else if (module == "SoundPage") {
+        return QString(QObject::tr("SoundEffect"));
+    }
+    else if (module == "PanelPage") {
+        return QString(QObject::tr("Panel"));
+    }
+    else if (module == "MenuPage") {
+        return QString(QObject::tr("StartMenu"));
+    }
+    else if (module == "WindowPage") {
+        return QString(QObject::tr("Window"));
+    }
+    else if (module == "FontPage") {
+        return QString(QObject::tr("FontSetting"));
+    }
+    else if (module == "TouchPadPage") {
+        return QString(QObject::tr("Touchpad"));
+    }
+    else if (module == "EnergyPage") {
+        return QString(QObject::tr("Energy saving"));
+    }
+    else if (module == "FMPage") {
+        return QString(QObject::tr("File manager"));
+    }
+    else {
+        return module;
+    }
+}
+
 SettingDelegate::SettingDelegate(QObject *parent)
     : QItemDelegate(parent)
 {
@@ -70,7 +110,9 @@ void SettingDelegate::paint(QPainter *painter, const QStyleOptionViewItem &optio
         painter->setFont(font);
         painter->setPen(QPen(QColor("#363636"), 1));
     }
-    painter->drawText(option.rect, Qt::AlignCenter, module);
+
+    const QString name = covertModuleName(module);
+    painter->drawText(option.rect, Qt::AlignCenter, name);
 }
 
 QSize SettingDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const

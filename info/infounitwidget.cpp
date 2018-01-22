@@ -29,6 +29,9 @@ InfoUnitWidget::InfoUnitWidget(QString title, QWidget *parent)
     : QWidget(parent)
     , m_currentRunningTimeUIIndex(-1)
 {
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    this->setStyleSheet("QWidget {background-color: rgba(255, 255, 255, 0.1);border-radius: 2px;}");
+
     //kobe: QHBoxLayout *mainLayout = static_cast<QHBoxLayout *>(layout());
     m_titleLabel = new QLabel;
     m_titleLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
@@ -38,30 +41,28 @@ InfoUnitWidget::InfoUnitWidget(QString title, QWidget *parent)
     m_vendorLabel->setFixedSize(48, 48);
 
     this->setInfoTitle(title);
-    this->setInfoVendor(":/vendor/res/manufacturer/ACER.jpg");
 
     QHBoxLayout *headerLayout = new QHBoxLayout;
-    headerLayout->setContentsMargins(10, 0, 0, 0);
+    headerLayout->setContentsMargins(10, 0, 30, 0);
     headerLayout->addWidget(m_titleLabel);
     headerLayout->addStretch();
     headerLayout->addWidget(m_vendorLabel);
     headerLayout->setAlignment(m_vendorLabel, Qt::AlignCenter);
 
     QFrame *headerWidget = new QFrame;
-    headerWidget->setStyleSheet("QFrame {padding: 5px 0;} QFrame:hover {background-color: rgba(255, 255, 255, 0.1);border-radius: 4px;}");
+    headerWidget->setStyleSheet("QFrame {padding: 5px 0;} QFrame:hover {background-color: rgba(253, 245, 230, 0.1);border-radius: 4px;}");
     headerWidget->setLayout(headerLayout);
 
     m_infoLayout = new QVBoxLayout;
     m_infoLayout->addWidget(headerWidget);
     m_infoLayout->setSpacing(5);
     m_infoLayout->setMargin(0);
+    m_infoLayout->setContentsMargins(0,0,0,0);
 
     m_infoItemsGroup = new InfoItemsGroup;
     m_infoLayout->addWidget(m_infoItemsGroup);
 
     setLayout(m_infoLayout);
-
-
 //    m_infoItemsGroup->getInfoItem()
 }
 

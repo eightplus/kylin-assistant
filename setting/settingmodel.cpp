@@ -31,8 +31,8 @@ SettingModel::SettingModel(QObject *parent)
 
 void SettingModel::addItem(const QString &moduleName)
 {
-    if (!m_nameList.contains(moduleName))
-        m_nameList.append(moduleName);
+    if (!m_moduleList.contains(moduleName))
+        m_moduleList.append(moduleName);
 }
 
 void SettingModel::setCurrentItem(const QModelIndex &index)
@@ -48,7 +48,7 @@ int SettingModel::rowCount(const QModelIndex &index) const
 {
     Q_UNUSED(index);
 
-    const int itemCount = m_nameList.size();
+    const int itemCount = m_moduleList.size();
     const int rowCount = itemCount % 6;//按每行6个来计算
 
     return itemCount + (rowCount ? 6 - rowCount : rowCount);
@@ -61,8 +61,8 @@ QVariant SettingModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole:
     {
         const int order = index.row();
-        if (m_nameList.size() > order)
-            return m_nameList[order];
+        if (m_moduleList.size() > order)
+            return m_moduleList[order];
         else
             return QVariant();
     }

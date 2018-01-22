@@ -173,9 +173,7 @@ void SoundWidget::initSettingData()
 void SoundWidget::onSendSoundList(const QString &currentSound, const QStringList &soundList)
 {
     m_soundlist.clear();
-    m_soundlist.append(currentSound);//test
-//    m_soundlist = soundList;
-//    m_soundlist  = systemproxy->get_sound_themes_qt();
+    m_soundlist = soundList;
     theme_combo->clear();
     theme_combo->clearEditText();
     theme_combo->addItems(m_soundlist);

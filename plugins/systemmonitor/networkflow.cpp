@@ -47,15 +47,15 @@ inline QString formatNetworkBrandWidth(guint64 size, bool isTotal)
     if (size < factorList.at(K_INDEX)) {
         if ((guint) size > 1) {
             if (isTotal)
-                return QString("%1 %2").arg((guint) size).arg(QObject::tr("bits"));
+                return QString("%1 %2").arg((guint) size).arg(QObject::tr("byte"));
             else
-                return QString("%1 %2").arg((guint) size).arg(QObject::tr("bits/s"));
+                return QString("%1 %2").arg((guint) size).arg(QObject::tr("byte/s"));
         }
         else {
             if (isTotal)
-                return QString("%1 %2").arg((guint) size).arg(QObject::tr("bit"));
+                return QString("%1 %2").arg((guint) size).arg(QObject::tr("bytes"));
             else
-                return QString("%1 %2").arg((guint) size).arg(QObject::tr("bit/s"));
+                return QString("%1 %2").arg((guint) size).arg(QObject::tr("bytes/s"));
         }
     } else {
         guint64 factor;
@@ -247,10 +247,10 @@ void NetworkFlow::paintEvent(QPaintEvent *)
 
     setFontSize(painter, 9);
     QFontMetrics fm = painter.fontMetrics();
-    QString downloadTitle = QString("%1 %2").arg(tr("正在接收")).arg(formatNetworkRate(m_recvRateBytes));
-    QString downloadContent = QString("%1 %2").arg(tr("总计已接收")).arg(formatNetwork(m_recvTotalBytes));//接收
-    QString uploadTitle = QString("%1 %2").arg(tr("正在发送")).arg(formatNetworkRate(m_sentRateBytes));
-    QString uploadContent = QString("%1 %2").arg(tr("总计已发送")).arg(formatNetwork(m_sentTotalBytes));//发送
+    QString downloadTitle = QString("%1 %2").arg(tr("Receiving")).arg(formatNetworkRate(m_recvRateBytes));
+    QString downloadContent = QString("%1 %2").arg(tr("Total Received")).arg(formatNetwork(m_recvTotalBytes));//接收
+    QString uploadTitle = QString("%1 %2").arg(tr("Sending")).arg(formatNetworkRate(m_sentRateBytes));
+    QString uploadContent = QString("%1 %2").arg(tr("Total Sent")).arg(formatNetwork(m_sentTotalBytes));//发送
 
     int rateW = std::max(fm.width(downloadTitle), fm.width(uploadTitle));
 

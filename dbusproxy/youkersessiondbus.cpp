@@ -580,8 +580,8 @@ int SessionDispatcher::get_launcher_icon_colouring_qt() {
 //    return 0;
 }
 
-bool SessionDispatcher::set_launcher_icon_colouring_qt(int colouring) {
-    qDebug() << "WWWWWWWWWWWWWWW set_launcher_icon_colouring_qt colouring===="<<colouring;
+bool SessionDispatcher::set_launcher_icon_colouring_qt(int colouring)
+{
     QDBusReply<bool> reply = sessioniface->call("set_launcher_icon_colouring", colouring);
     return reply.value();
 }
@@ -1367,7 +1367,6 @@ void SessionDispatcher::handler_notify_boolean(QString key, bool value)
 
 void SessionDispatcher::handler_notify_int(QString key, int value)
 {
-    qDebug() << "SessionDispatcher::handler_notify_int===============";
     emit int_value_notify(key, value);
 }
 

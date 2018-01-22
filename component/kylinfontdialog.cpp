@@ -18,6 +18,8 @@
  */
 
 #include "kylinfontdialog.h"
+#include <QApplication>
+#include <QScreen>
 #include <QMouseEvent>
 #include <QListView>
 #include <QStringListModel>
@@ -150,6 +152,7 @@ KylinFontDialog::KylinFontDialog(/*QSettings *mSettings, QString flag, */QString
     this->initDialog();//初始化字体对话框
     this->setLanguage();
     this->initConnect();
+    this->moveCenter();
 }
 
 KylinFontDialog::~KylinFontDialog()
@@ -230,6 +233,24 @@ KylinFontDialog::~KylinFontDialog()
         delete cacel_btn;
         cacel_btn = NULL;
     }
+}
+
+void KylinFontDialog::moveCenter()
+{
+    QPoint pos = QCursor::pos();
+    QRect primaryGeometry;
+    for (QScreen *screen : qApp->screens()) {
+        if (screen->geometry().contains(pos)) {
+            primaryGeometry = screen->geometry();
+        }
+    }
+
+    if (primaryGeometry.isEmpty()) {
+        primaryGeometry = qApp->primaryScreen()->geometry();
+    }
+
+    this->move(primaryGeometry.x() + (primaryGeometry.width() - this->width())/2,
+               primaryGeometry.y() + (primaryGeometry.height() - this->height())/2);
 }
 
 void KylinFontDialog::setLanguage()
