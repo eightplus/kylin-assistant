@@ -131,7 +131,7 @@ void SettingWidget::initUI(/*QString skin*/)
     theme_widget = new ThemeWidget(this);
     icon_widget = new IconWidget(this, desktop);
     mouse_widget = new MouseWidget(this, desktop);
-    voice_widget = new SoundWidget(this, desktop);
+    sound_widget = new SoundWidget(this, desktop);
 //    animation_widget = new AnimationWidget(this, systemProxy, p_mainwindow);
     launcher_widget = new MenuWidget(this, desktop);
     panel_widget = new PanelWidget(this, desktop, battery);
@@ -145,7 +145,7 @@ void SettingWidget::initUI(/*QString skin*/)
     stacked_widget->addWidget(theme_widget);
     stacked_widget->addWidget(icon_widget);
     stacked_widget->addWidget(mouse_widget);
-    stacked_widget->addWidget(voice_widget);
+    stacked_widget->addWidget(sound_widget);
 //    stacked_widget->addWidget(animation_widget);
     stacked_widget->addWidget(launcher_widget);
     stacked_widget->addWidget(panel_widget);
@@ -184,15 +184,15 @@ void SettingWidget::initUI(/*QString skin*/)
 
 
     //voice
-//    connect(this, SIGNAL(string_value_notify(QString,QString)), voice_widget, SLOT(voicewidget_notify_string(QString,QString)));
-//    connect(this, SIGNAL(bool_value_notify(QString,bool)), voice_widget, SLOT(voicewidget_notify_bool(QString,bool)));
-    connect(voice_widget, SIGNAL(requestSoundData()), this, SIGNAL(requestSoundData()));
-    connect(this, SIGNAL(sendSoundList(QString,QStringList)), voice_widget, SLOT(onSendSoundList(QString,QStringList)));
-    connect(this, SIGNAL(sendEnableSoundValue(bool,bool,bool)), voice_widget, SLOT(onSendEnableSoundValue(bool,bool,bool)));
-    connect(voice_widget, SIGNAL(resetVoiceTheme(QString)), this, SIGNAL(resetVoiceTheme(QString)));
-    connect(voice_widget, SIGNAL(resetLoginTipVoice(bool)), this, SIGNAL(resetLoginTipVoice(bool)));
-    connect(voice_widget, SIGNAL(resetEventVoice(bool)), this, SIGNAL(resetEventVoice(bool)));
-    connect(voice_widget, SIGNAL(resetInputFeedbackVoice(bool)), this, SIGNAL(resetInputFeedbackVoice(bool)));
+//    connect(this, SIGNAL(string_value_notify(QString,QString)), sound_widget, SLOT(voicewidget_notify_string(QString,QString)));
+//    connect(this, SIGNAL(bool_value_notify(QString,bool)), sound_widget, SLOT(voicewidget_notify_bool(QString,bool)));
+    connect(sound_widget, SIGNAL(requestSoundData()), this, SIGNAL(requestSoundData()));
+    connect(this, SIGNAL(sendSoundList(QString,QStringList)), sound_widget, SLOT(onSendSoundList(QString,QStringList)));
+    connect(this, SIGNAL(sendEnableSoundValue(bool,bool,bool)), sound_widget, SLOT(onSendEnableSoundValue(bool,bool,bool)));
+    connect(sound_widget, SIGNAL(resetVoiceTheme(QString)), this, SIGNAL(resetVoiceTheme(QString)));
+    connect(sound_widget, SIGNAL(resetLoginTipVoice(bool)), this, SIGNAL(resetLoginTipVoice(bool)));
+    connect(sound_widget, SIGNAL(resetEventVoice(bool)), this, SIGNAL(resetEventVoice(bool)));
+    connect(sound_widget, SIGNAL(resetInputFeedbackVoice(bool)), this, SIGNAL(resetInputFeedbackVoice(bool)));
 
 
     //panel

@@ -812,22 +812,22 @@ MyTipImageButton#DisksBtn {
 }
 
 MyImageButton#ActiveProcessBtn {
-    qproperty-normalPic: url(:/res/browser_logo_gray.png);
-    qproperty-hoverPic: url(:/res/browser_logo.png);
-    qproperty-pressPic: url(:/res/browser_logo.png);
-    qproperty-checkedPic: url(:/res/browser_logo.png);
+    qproperty-normalPic: url(:/res/active_proc.png);
+    qproperty-hoverPic: url(:/res/active_proc.png);
+    qproperty-pressPic: url(:/res/active_proc.png);
+    qproperty-checkedPic: url(:/res/active_proc.png);
 }
 
 MyImageButton#UserProcessBtn {
-    qproperty-normalPic: url(:/res/cache_logo_gray.png);
-    qproperty-hoverPic: url(:/res/cache_logo.png);
-    qproperty-pressPic: url(:/res/cache_logo.png);
-    qproperty-checkedPic: url(:/res/cache_logo.png);
+    qproperty-normalPic: url(:/res/user_proc.png);
+    qproperty-hoverPic: url(:/res/user_proc.png);
+    qproperty-pressPic: url(:/res/user_proc.png);
+    qproperty-checkedPic: url(:/res/user_proc.png);
 }
 
 MyImageButton#AllProcessBtn {
-    qproperty-normalPic: url(:/res/cookie_logo_gray.png);
-    qproperty-hoverPic: url(:/res/cookie_logo.png);
-    qproperty-pressPic: url(:/res/cookie_logo.png);
-    qproperty-checkedPic: url(:/res/cookie_logo.png);
+    qproperty-normalPic: url(:/res/all_proc.png);
+    qproperty-hoverPic: url(:/res/all_proc.png);
+    qproperty-pressPic: url(:/res/all_proc.png);
+    qproperty-checkedPic: url(:/res/all_proc.png);
 }

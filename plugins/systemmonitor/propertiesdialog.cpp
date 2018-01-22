@@ -39,12 +39,10 @@ PropertiesDialog::PropertiesDialog(QWidget *parent, pid_t processId) : QDialog(p
     this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);
 
     this->setAttribute(Qt::WA_TranslucentBackground);
-//    this->setAttribute(Qt::WA_DeleteOnClose, false);
     this->setAttribute(Qt::WA_Resized, false);
 
     this->setMaximumSize(480, 600);
     this->setMinimumWidth(320);
-//    this->resize(380, 120);
 
     pid = processId;
 
@@ -320,11 +318,3 @@ void PropertiesDialog::paintEvent(QPaintEvent *event)
 
     QDialog::paintEvent(event);
 }
-
-/*void PropertiesDialog::resizeEvent(QResizeEvent *event)
-{
-    if (event->size().width() >= maximumWidth()) {
-        setFixedWidth(maximumWidth());
-    }
-    QDialog::resizeEvent(event);
-}*/

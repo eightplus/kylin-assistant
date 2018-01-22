@@ -1,6 +1,51 @@
 #include "memorywidget.h"
+#include "util.h"
 
 #include <QDebug>
+#include <QObject>
+
+inline QString formatMemory(guint64 size)
+{
+    enum {
+        K_INDEX,
+        M_INDEX,
+        G_INDEX,
+        T_INDEX
+    };
+
+    QList<guint64> factorList;
+    factorList.append(G_GUINT64_CONSTANT(1) << 10);//KiB
+    factorList.append(G_GUINT64_CONSTANT(1) << 20);//MiB
+    factorList.append(G_GUINT64_CONSTANT(1) << 30);//GiB
+    factorList.append(G_GUINT64_CONSTANT(1) << 40);//TiB
+
+    if (size < factorList.at(K_INDEX)) {
+        if ((guint) size > 1) {
+            return QString("%1 %2").arg((guint) size).arg(QObject::tr("byte"));
+        }
+        else {
+            return QString("%1 %2").arg((guint) size).arg(QObject::tr("bytes"));
+        }
+    } else {
+        guint64 factor;
+        QString format;
+        if (size < factorList.at(M_INDEX)) {
+            factor = factorList.at(K_INDEX);
+                format = QObject::tr("KiB");
+        }else if (size < factorList.at(G_INDEX)) {
+            factor = factorList.at(M_INDEX);
+                format = QObject::tr("MiB");
+        } else if (size < factorList.at(T_INDEX)) {
+            factor = factorList.at(G_INDEX);
+                format = QObject::tr("GiB");
+        } else {
+            factor = factorList.at(T_INDEX);
+                format = QObject::tr("TiB");
+        }
+        std::string formatted_result(make_string(g_strdup_printf("%.1f", size / (double)factor)));
+        return QString::fromStdString(formatted_result) + format;
+    }
+}
 
 MemoryWidget::MemoryWidget(QWidget *parent)
     : QWidget(parent)
@@ -129,9 +174,9 @@ void MemoryWidget::drawText(QPainter *painter)
     QRectF swapstatusRect(swapstatustopLeft, swapstatusbottomRight);
 
     //内存状态内容
-    QString statusStr = tr("Used %1(%2), Total %3").arg(mi.user).arg(mi.percent).arg(mi.total);
+    QString statusStr = tr("Used %1(%2%), Total %3").arg(formatMemory(mi.user)).arg(QString::number(mi.percent, 'f', 1)).arg(formatMemory(mi.total));
     //SWAP状态内容
-    QString swapstatusStr = tr("Used %1(%2), Total %3").arg(mi.swapused).arg(mi.swappercent).arg(mi.swaptotal);
+    QString swapstatusStr = tr("Used %1(%2%), Total %3").arg(formatMemory(mi.swapused)).arg(QString::number(mi.swappercent, 'f', 1)).arg(formatMemory(mi.swaptotal));
 
     painter->save();
 
@@ -176,11 +221,11 @@ void MemoryWidget::onUpdateMemoryStatus()
     mi.swappercent = swappercent * 100;
 
     //初始单位为字节，需要修正
-    mi.user = mem.user / 1024 / 1024 /1024;
-    mi.total = mem.total / 1024 / 1024 / 1024;
+    mi.user = mem.user;
+    mi.total = mem.total;
 
-    mi.swapused = swap.used / 1024 / 1024 /1024;
-    mi.swaptotal = swap.total / 1024 /1024 / 1024;
+    mi.swapused = swap.used;
+    mi.swaptotal = swap.total;
 
     repaint();
 }

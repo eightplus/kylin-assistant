@@ -29,38 +29,34 @@
 #include <QtMath>
 #include <QPen>
 
-ProcessListWidget::ProcessListWidget(QList<bool> columnShowOrHideFlags, QWidget *parent) : QWidget(parent)
+ProcessListWidget::ProcessListWidget(QList<bool> toBeDisplayedColumns, QWidget *parent) : QWidget(parent)
   ,m_titlePadding(10)
-  ,m_arrowPadding(2)
   ,m_titleHeight(36)
   ,m_rowHeight(36)
   ,m_offSet(0)
+  ,m_origOffset(0)
+  ,m_scrollbarWidth(10)
+  ,m_titleHoverColumn(-1)
+  ,m_titlePressColumn(-1)
+  ,m_mouseAtScrollArea(false)
+  ,m_mouseDragScrollbar(false)
 {
     this->m_searchFunc = NULL;
     this->m_searchText = "";
-    this->m_titleHoverColumn = -1;
-    this->m_titlePressColumn = -1;
-
-    this->upArrowNormalPixmap = QPixmap(":/res/arrow_up_normal.png");
-    this->upArrowHoverPixmap = QPixmap(":/res/arrow_up_hover.png");
-    this->upArrowPressPixmap = QPixmap(":/res/arrow_up_press.png");
-    this->downArrowNormalPixmap = QPixmap(":/res/arrow_down_normal.png");
-    this->downArrowHoverPixmap = QPixmap(":/res/arrow_down_hover.png");
-    this->downArrowPressPixmap = QPixmap(":/res/arrow_down_press.png");
-
+    this->m_lastItem = NULL;
     this->m_listItems = new QList<ProcessListItem*>();
     this->m_searchedItems = new QList<ProcessListItem*>();
     this->m_selectedItems = new QList<ProcessListItem*>();
-    this->lastSelectItem = NULL;
-
-    this->m_mouseAtScrollArea = false;
-    this->m_mouseDragScrollbar = false;
-    this->m_scrollbarDragW = 10;
-    this->m_scrollbarMinH = 30;
-    this->m_origOffset = 0;
 
     this->m_sortFuncList = new QList<SortFunction>();
-    this->m_sortOrderes = new QList<bool>();
+    this->m_isSortList = new QList<bool>();
+
+    this->m_upArrowNormalPixmap = QPixmap(":/res/arrow_up_normal.png");
+    this->m_upArrowHoverPixmap = QPixmap(":/res/arrow_up_hover.png");
+    this->m_upArrowPressPixmap = QPixmap(":/res/arrow_up_press.png");
+    this->m_downArrowNormalPixmap = QPixmap(":/res/arrow_down_normal.png");
+    this->m_downArrowHoverPixmap = QPixmap(":/res/arrow_down_hover.png");
+    this->m_downArrowPressPixmap = QPixmap(":/res/arrow_down_press.png");
 
     this->columnTitles << tr("Process Name") << tr("User") << tr("Status") << tr("CPU") << tr("ID") << tr("Command Line") << tr("Memory") << tr("Priority");
     QList<int> widths;
@@ -75,39 +71,39 @@ ProcessListWidget::ProcessListWidget(QList<bool> columnShowOrHideFlags, QWidget 
         if (widths[i] == -1) {
             this->m_columnWidths << widths[i];
         } else {//-1时让改行填充所有剩余空间
-            int maxWidth = fm.width(this->columnTitles[i]) + this->m_titlePadding + upArrowNormalPixmap.width() / upArrowNormalPixmap.devicePixelRatio() + this->m_arrowPadding * 2;
+            int maxWidth = fm.width(this->columnTitles[i]) + this->m_titlePadding + m_upArrowNormalPixmap.width() / m_upArrowNormalPixmap.devicePixelRatio() + 2 * 2;
             this->m_columnWidths << std::max(widths[i], maxWidth);
         }
     }
 
     this->m_columnVisibles.clear();
-    for (int i = 0; i < columnShowOrHideFlags.count(); i++) {
-        this->m_columnVisibles.append(columnShowOrHideFlags[i]);
+    for (int i = 0; i < toBeDisplayedColumns.count(); i++) {
+        this->m_columnVisibles.append(toBeDisplayedColumns[i]);
     }
 
-    QTimer::singleShot(0, this, SLOT(setFocus()));
+    this->setFocus();
 }
 
 ProcessListWidget::~ProcessListWidget()
 {
-    delete this->lastSelectItem;
+    delete this->m_lastItem;
     delete this->m_listItems;
     delete this->m_searchedItems;
     delete this->m_selectedItems;
     delete this->m_sortFuncList;
-    delete this->m_sortOrderes;
+    delete this->m_isSortList;
     delete this->m_hideScrollbarTimer;
 }
 
-void ProcessListWidget::setColumnSortingAlgorithms(QList<SortFunction> *list, int sortColumn, bool sortOrder)
+void ProcessListWidget::setProcessSortFunctions(QList<SortFunction> *list, int currentSortIndex, bool isSort)
 {
     this->m_sortFuncList = list;
 
     for (int i = 0; i < this->m_sortFuncList->count(); i++) {
-        this->m_sortOrderes->append(false);
+        this->m_isSortList->append(false);
     }
-    this->m_defaultSortColumn = sortColumn;
-    this->m_defaultSortOrder = sortOrder;
+    this->m_currentSortIndex = currentSortIndex;
+    this->m_isSort = isSort;
 }
 
 void ProcessListWidget::setSearchFunction(SearchFunction func)
@@ -120,8 +116,8 @@ void ProcessListWidget::addItems(QList<ProcessListItem*> items)
     this->m_listItems->append(items);
     QList<ProcessListItem*> s_items = this->getSearchedItems(items);
     this->m_searchedItems->append(s_items);
-    if (this->m_defaultSortColumn != -1) {
-        this->sortItemsByColumn(this->m_defaultSortColumn, this->m_defaultSortOrder);
+    if (this->m_currentSortIndex != -1) {
+        this->sortItemsByColumn(this->m_currentSortIndex, this->m_isSort);
     }
 }
 
@@ -132,40 +128,40 @@ void ProcessListWidget::clearItems()
     this->m_searchedItems->clear();
 }
 
-void ProcessListWidget::addSelectedItems(QList<ProcessListItem*> items, bool recordLastSelection)
+void ProcessListWidget::addSelectedItems(QList<ProcessListItem*> items, bool recordLastItem)
 {
     this->m_selectedItems->append(items);
 
-    if (recordLastSelection && this->m_selectedItems->count() > 0) {
-        this->lastSelectItem = this->m_selectedItems->last();
+    if (recordLastItem && this->m_selectedItems->count() > 0) {
+        this->m_lastItem = this->m_selectedItems->last();
     }
 }
 
-void ProcessListWidget::clearSelectedItems(bool clearTheLast)
+void ProcessListWidget::clearSelectedItems(bool clearLast)
 {
     this->m_selectedItems->clear();
-    if (clearTheLast) {
-        this->lastSelectItem = NULL;
+    if (clearLast) {
+        this->m_lastItem = NULL;
     }
 }
 
 void ProcessListWidget::refreshItems(QList<ProcessListItem*> items)
 {
-    QList<ProcessListItem*> *newSelection = new QList<ProcessListItem*>();
-    ProcessListItem *newLastSelectionItem = NULL;
+    QList<ProcessListItem*> *allItems = new QList<ProcessListItem*>();
+    ProcessListItem *newLastItem = NULL;
 
     for (ProcessListItem *item:items) {
         for (ProcessListItem *selectionItem:*this->m_selectedItems) {
             if (item->isSameItem(selectionItem)) {
-                newSelection->append(item);
+                allItems->append(item);
                 break;
             }
         }
     }
-    if (this->lastSelectItem != NULL) {
+    if (this->m_lastItem != NULL) {
         for (ProcessListItem *item:items) {
-            if (item->isSameItem(this->lastSelectItem)) {
-                newLastSelectionItem = item;
+            if (item->isSameItem(this->m_lastItem)) {
+                newLastItem = item;
                 break;
             }
         }
@@ -176,14 +172,16 @@ void ProcessListWidget::refreshItems(QList<ProcessListItem*> items)
     QList<ProcessListItem*> s_items = this->getSearchedItems(items);
     this->m_searchedItems->append(s_items);
 
-    if (this->m_defaultSortColumn != -1) {
-        this->sortItemsByColumn(this->m_defaultSortColumn, this->m_defaultSortOrder);
+    if (this->m_currentSortIndex != -1) {
+        this->sortItemsByColumn(this->m_currentSortIndex, this->m_isSort);
     }
 
     clearSelectedItems();
-    addSelectedItems(*newSelection, false);
-    this->lastSelectItem = newLastSelectionItem;
+    addSelectedItems(*allItems, false);
+
+    this->m_lastItem = newLastItem;
     this->m_offSet = setOffset(this->m_offSet);
+
     repaint();
 }
 
@@ -191,7 +189,6 @@ void ProcessListWidget::doSearch(QString text)
 {
     if (text == "" && this->m_searchText != text) {
         this->m_searchText = text;
-
         this->m_searchedItems->clear();
         this->m_searchedItems->append(*this->m_listItems);
     } else {
@@ -204,19 +201,7 @@ void ProcessListWidget::doSearch(QString text)
     repaint();
 }
 
-void ProcessListWidget::selectAllItems()
-{
-    this->m_origOffset = this->m_offSet;
-
-    clearSelectedItems();
-    addSelectedItems(*this->m_searchedItems);
-
-    this->m_offSet = this->getTopOffset();
-
-    repaint();
-}
-
-void ProcessListWidget::selectFirstItem()
+void ProcessListWidget::selectTheFirstItem()
 {
     this->m_origOffset = this->m_offSet;
 
@@ -226,12 +211,12 @@ void ProcessListWidget::selectFirstItem()
     items << this->m_searchedItems->first();
     addSelectedItems(items);
 
-    this->m_offSet = this->getTopOffset();
+    this->m_offSet = 0;
 
     repaint();
 }
 
-void ProcessListWidget::selectLastItem()
+void ProcessListWidget::selectTheLastItem()
 {
     this->m_origOffset = this->m_offSet;
 
@@ -246,35 +231,199 @@ void ProcessListWidget::selectLastItem()
     repaint();
 }
 
-void ProcessListWidget::shiftSelectToEnd()
+void ProcessListWidget::selectThePrevItem(int offset)
+{
+    this->m_origOffset = this->m_offSet;
+
+    if (this->m_selectedItems->empty()) {
+        selectTheFirstItem();
+    } else {
+        int firstIndex = this->m_searchedItems->count();
+        for (ProcessListItem *item:*this->m_selectedItems) {
+            int index = this->m_searchedItems->indexOf(item);
+            if (index < firstIndex) {
+                firstIndex = index;
+            }
+        }
+
+        if (firstIndex != -1) {
+            firstIndex = std::max(0, firstIndex - offset);
+            clearSelectedItems();
+            QList<ProcessListItem*> items = QList<ProcessListItem*>();
+            items << (*this->m_searchedItems)[firstIndex];
+            addSelectedItems(items);
+            int itemIndex = firstIndex - 1;
+            int itemOffset = setOffset(itemIndex * this->m_rowHeight + this->m_titleHeight);
+            if ((this->m_offSet / this->m_rowHeight) > itemIndex) {
+                this->m_offSet = itemOffset;
+            }
+            repaint();
+        }
+    }
+}
+
+void ProcessListWidget::selectTheNextItem(int offset)
+{
+    this->m_origOffset = this->m_offSet;
+
+    if (this->m_selectedItems->empty()) {
+        selectTheFirstItem();
+    } else {
+        int lastIndex = 0;
+        for (ProcessListItem *item:*this->m_selectedItems) {
+            int index = this->m_searchedItems->indexOf(item);
+            if (index > lastIndex) {
+                lastIndex = index;
+            }
+        }
+
+        if (lastIndex != -1) {
+            lastIndex = std::min(this->m_searchedItems->count() - 1, lastIndex + offset);
+
+            clearSelectedItems(false);
+
+            QList<ProcessListItem*> items = QList<ProcessListItem*>();
+            items << (*this->m_searchedItems)[lastIndex];
+
+            addSelectedItems(items);
+
+            int itemIndex = lastIndex + 1;
+            int itemOffset = setOffset(itemIndex * this->m_rowHeight - rect().height() + this->m_titleHeight);
+            if (((this->m_offSet + getTheScrollAreaHeight()) / this->m_rowHeight) < itemIndex) {
+                this->m_offSet = itemOffset;
+            }
+
+            repaint();
+        }
+    }
+}
+
+void ProcessListWidget::shiftToHomeItem()
 {
     if (this->m_selectedItems->empty()) {
-        selectLastItem();
+        selectTheFirstItem();
     }
     else {
-        int lastSelectionIndex = this->m_searchedItems->indexOf(this->lastSelectItem);
-        shiftSelectItemsWithBound(lastSelectionIndex, this->m_searchedItems->count() - 1);
+        int lastSelectionIndex = this->m_searchedItems->indexOf(this->m_lastItem);
+        shiftToSelectedItems(0, lastSelectionIndex);
+        this->m_offSet = 0;
+        repaint();
+    }
+}
+
+void ProcessListWidget::shiftToEndItem()
+{
+    if (this->m_selectedItems->empty()) {
+        selectTheLastItem();
+    }
+    else {
+        shiftToSelectedItems(this->m_searchedItems->indexOf(this->m_lastItem), this->m_searchedItems->count() - 1);
         this->m_offSet = getBottomOffset();
         repaint();
     }
 }
 
-void ProcessListWidget::shiftSelectToHome()
+void ProcessListWidget::shiftToPrevItem(int offset)
 {
+    this->m_origOffset = this->m_offSet;
     if (this->m_selectedItems->empty()) {
-        selectFirstItem();
+        selectTheFirstItem();
     }
     else {
-        int lastSelectionIndex = this->m_searchedItems->indexOf(this->lastSelectItem);
-        shiftSelectItemsWithBound(0, lastSelectionIndex);
-        this->m_offSet = this->getTopOffset();
-        repaint();
+        int firstIndex = this->m_searchedItems->count();
+        int lastIndex = 0;
+        for (ProcessListItem *item : *this->m_selectedItems) {
+            int index = this->m_searchedItems->indexOf(item);
+            if (index < firstIndex) {
+                firstIndex = index;
+            }
+            if (index > lastIndex) {
+                lastIndex = index;
+            }
+        }
+
+        if (firstIndex != -1) {
+            int lastSelectionIndex = this->m_searchedItems->indexOf(this->m_lastItem);
+            int selectionStartIndex, selectionEndIndex;
+            if (lastIndex == lastSelectionIndex) {
+                selectionStartIndex = std::max(0, firstIndex - offset);
+                selectionEndIndex = lastSelectionIndex;
+            } else {
+                selectionStartIndex = firstIndex;
+                selectionEndIndex = std::max(0, lastIndex - offset);
+            }
+            shiftToSelectedItems(selectionStartIndex, selectionEndIndex);
+            if (this->m_offSet / this->m_rowHeight >= selectionStartIndex) {
+                this->m_offSet = setOffset((selectionStartIndex - 1) * this->m_rowHeight + this->m_titleHeight);
+            }
+            repaint();
+        }
     }
 }
 
-void ProcessListWidget::leaveEvent(QEvent * event){
-    hideScrollbar();
+void ProcessListWidget::shiftToNextItem(int offset)
+{
+    this->m_origOffset = this->m_offSet;
 
+    if (this->m_selectedItems->empty()) {
+        selectTheFirstItem();
+    } else {
+        int firstIndex = this->m_searchedItems->count();
+        int lastIndex = 0;
+        for (ProcessListItem *item:*this->m_selectedItems) {
+            int index = this->m_searchedItems->indexOf(item);
+
+            if (index < firstIndex) {
+                firstIndex = index;
+            }
+
+            if (index > lastIndex) {
+                lastIndex = index;
+            }
+        }
+
+        if (firstIndex != -1) {
+            int lastSelectionIndex = this->m_searchedItems->indexOf(this->m_lastItem);
+            int selectionStartIndex, selectionEndIndex;
+
+            if (firstIndex == lastSelectionIndex) {
+                selectionStartIndex = firstIndex;
+                selectionEndIndex = std::min(this->m_searchedItems->count() - 1, lastIndex + offset);
+            } else {
+                selectionStartIndex = std::min(this->m_searchedItems->count() - 1, firstIndex + offset);
+                selectionEndIndex = lastIndex;
+            }
+
+            shiftToSelectedItems(selectionStartIndex, selectionEndIndex);
+
+            if ((this->m_offSet + rect().height()) / this->m_rowHeight <= selectionEndIndex + 1) {
+                this->m_offSet = setOffset((selectionEndIndex + 1) * this->m_rowHeight + this->m_titleHeight - rect().height());
+            }
+
+
+            repaint();
+        }
+    }
+}
+
+void ProcessListWidget::shiftToSelectedItems(int start, int end)
+{
+    clearSelectedItems(false);
+    QList<ProcessListItem*> items = QList<ProcessListItem*>();
+    int index = 0;
+    for (ProcessListItem *item:*this->m_searchedItems) {
+        if (index >= start && index <= end) {
+            items << item;
+        }
+
+        index++;
+    }
+    addSelectedItems(items, false);
+}
+
+void ProcessListWidget::leaveEvent(QEvent * event)
+{
+    hideScrollbar();
     QWidget::leaveEvent(event);
 }
 
@@ -288,57 +437,63 @@ void ProcessListWidget::hideScrollbar()
 
 void ProcessListWidget::keyPressEvent(QKeyEvent *keyEvent)
 {
-    if (keyEvent->key() == Qt::Key_Home) {
+    if (keyEvent->key() == Qt::Key_Up) {
+        if (keyEvent->modifiers() == Qt::ShiftModifier)
+            shiftToPrevItem(1);
+        else
+            selectThePrevItem(1);
+    }
+    else if (keyEvent->key() == Qt::Key_Down) {
+        if (keyEvent->modifiers() == Qt::ShiftModifier)
+            shiftToNextItem(1);
+        else
+            selectTheNextItem(1);
+    }
+    else if (keyEvent->key() == Qt::Key_Home) {
         if (keyEvent->modifiers() == Qt::ControlModifier) {
-            this->m_offSet = this->getTopOffset();
+            this->m_offSet = 0;
             repaint();
-        } else if (keyEvent->modifiers() == Qt::ShiftModifier) {
-            shiftSelectToHome();
-        }else {
-            selectFirstItem();
+        }
+        else if (keyEvent->modifiers() == Qt::ShiftModifier) {
+            shiftToHomeItem();
+        }
+        else {
+            selectTheFirstItem();
         }
     } else if (keyEvent->key() == Qt::Key_End) {
         if (keyEvent->modifiers() == Qt::ControlModifier) {
             this->m_offSet = getBottomOffset();
             repaint();
-        } else if (keyEvent->modifiers() == Qt::ShiftModifier) {
-            shiftSelectToEnd();
-        } else {
-            selectLastItem();
         }
-    } else if (keyEvent->key() == Qt::Key_Up) {
-        if (keyEvent->modifiers() == Qt::ShiftModifier) {
-            shiftSelectPrevItem(1);
-        } else {
-            selectPrevItem(1);
+        else if (keyEvent->modifiers() == Qt::ShiftModifier) {
+            shiftToEndItem();
         }
-    } else if (keyEvent->key() == Qt::Key_Down) {
-        if (keyEvent->modifiers() == Qt::ShiftModifier) {
-            shiftSelectNextItem(1);
-        } else {
-            selectNextItem(1);
+        else {
+            selectTheLastItem();
         }
-    } else if (keyEvent->key() == Qt::Key_PageUp) {
+    }
+    else if (keyEvent->key() == Qt::Key_PageUp) {
         if (keyEvent->modifiers() == Qt::ControlModifier) {
-            this->m_offSet = setOffset(this->m_offSet - getScrollAreaH());
+            this->m_offSet = setOffset(this->m_offSet - getTheScrollAreaHeight());
             repaint();
-        } else if (keyEvent->modifiers() == Qt::ShiftModifier) {
-            shiftSelectPrevItem(getScrollAreaH() / this->m_rowHeight);
-        } else {
-            selectPrevItem(getScrollAreaH() / this->m_rowHeight);
         }
-    } else if (keyEvent->key() == Qt::Key_PageDown) {
+        else if (keyEvent->modifiers() == Qt::ShiftModifier) {
+            shiftToPrevItem(getTheScrollAreaHeight() / this->m_rowHeight);
+        }
+        else {
+            selectThePrevItem(getTheScrollAreaHeight() / this->m_rowHeight);
+        }
+    }
+    else if (keyEvent->key() == Qt::Key_PageDown) {
         if (keyEvent->modifiers() == Qt::ControlModifier) {
-            this->m_offSet = setOffset(this->m_offSet + getScrollAreaH());
+            this->m_offSet = setOffset(this->m_offSet + getTheScrollAreaHeight());
             repaint();
-        } else if (keyEvent->modifiers() == Qt::ShiftModifier) {
-            shiftSelectNextItem(getScrollAreaH() / this->m_rowHeight);
-        } else {
-            selectNextItem(getScrollAreaH() / this->m_rowHeight);
         }
-    } else if (keyEvent->key() == Qt::Key_A) {
-        if (keyEvent->modifiers() == Qt::ControlModifier) {
-            selectAllItems();
+        else if (keyEvent->modifiers() == Qt::ShiftModifier) {
+            shiftToNextItem(getTheScrollAreaHeight() / this->m_rowHeight);
+        }
+        else {
+            selectTheNextItem(getTheScrollAreaHeight() / this->m_rowHeight);
         }
     }
 }
@@ -346,8 +501,7 @@ void ProcessListWidget::keyPressEvent(QKeyEvent *keyEvent)
 void ProcessListWidget::mouseMoveEvent(QMouseEvent *mouseEvent)
 {
     if (this->m_mouseDragScrollbar) {
-        int barHeight = getScrollbarH();
-        this->m_offSet = setOffset((mouseEvent->y() - barHeight / 2 - this->m_titleHeight) / (getScrollAreaH() * 1.0) * this->getItemsTotalHeight());
+        this->m_offSet = setOffset((mouseEvent->y() - getScrollbarHeight() / 2 - this->m_titleHeight) / (getTheScrollAreaHeight()) * this->getItemsTotalHeight());
         repaint();
     }
     else if (mouseAtScrollArea(mouseEvent->x()) != this->m_mouseAtScrollArea) {
@@ -357,25 +511,24 @@ void ProcessListWidget::mouseMoveEvent(QMouseEvent *mouseEvent)
     else {
         bool isTitleArea = mouseAtTitleArea(mouseEvent->y());
         if (isTitleArea) {
-            int hoverColumn = -1;
-            if (this->m_sortFuncList->count() != 0 && this->m_sortFuncList->count() == this->columnTitles.count() && this->m_sortOrderes->count() == this->columnTitles.count()) {
+            int currentHoverIndex = -1;
+            if (this->m_sortFuncList->count() != 0 && this->m_sortFuncList->count() == this->columnTitles.count() && this->m_isSortList->count() == this->columnTitles.count()) {
                 QList<int> titleItemsWidths = getTitleItemsWidths();
-
-                int columnCounter = 0;
-                int columnX = 0;
-                for (int titleItemWidth:titleItemsWidths) {
-                    if (titleItemWidth > 0) {
-                        if (mouseEvent->x() > columnX && mouseEvent->x() < columnX + titleItemWidth) {
-                            hoverColumn = columnCounter;
+                int counter = 0;
+                int pos_X = 0;
+                for (int t_width : titleItemsWidths) {
+                    if (t_width > 0) {
+                        if (mouseEvent->x() > pos_X && mouseEvent->x() < pos_X + t_width) {
+                            currentHoverIndex = counter;
                             break;
                         }
-                        columnX += titleItemWidth;
+                        pos_X += t_width;
                     }
-                    columnCounter++;
+                    counter++;
                 }
             }
-            if (hoverColumn != this->m_titleHoverColumn) {
-                this->m_titleHoverColumn = hoverColumn;
+            if (currentHoverIndex != this->m_titleHoverColumn) {
+                this->m_titleHoverColumn = currentHoverIndex;
                 repaint();
             }
         }
@@ -391,39 +544,36 @@ void ProcessListWidget::mousePressEvent(QMouseEvent *mouseEvent)
 
     if (isTitleArea) {//点击列表的标题栏区域
         if (mouseEvent->button() == Qt::LeftButton) {
-            if (this->m_sortFuncList->count() != 0 && this->m_sortFuncList->count() == this->columnTitles.count() && this->m_sortOrderes->count() == this->columnTitles.count()) {
+            if (this->m_sortFuncList->count() != 0 && this->m_sortFuncList->count() == this->columnTitles.count() && this->m_isSortList->count() == this->columnTitles.count()) {
                 QList<int> titleItemsWidths = getTitleItemsWidths();
-                int columnCounter = 0;
-                int columnX = 0;
-                for (int titleItemWidth : titleItemsWidths) {
-                    if (titleItemWidth > 0) {
-                        if (mouseEvent->x() > columnX && mouseEvent->x() < columnX + titleItemWidth) {
-                            if (columnCounter != this->m_defaultSortColumn) {
-                                (*this->m_sortOrderes)[columnCounter] = true;
+                int counter = 0;
+                int posX = 0;
+                for (int t_width : titleItemsWidths) {
+                    if (t_width > 0) {
+                        if (mouseEvent->x() > posX && mouseEvent->x() < posX + t_width) {
+                            if (counter != this->m_currentSortIndex) {
+                                (*this->m_isSortList)[counter] = true;
                             }
                             else {
-                                (*this->m_sortOrderes)[columnCounter] = !(*this->m_sortOrderes)[columnCounter];
+                                (*this->m_isSortList)[counter] = !(*this->m_isSortList)[counter];
                             }
-
-                            this->m_defaultSortColumn = columnCounter;
-                            this->m_defaultSortOrder = (*this->m_sortOrderes)[columnCounter];
-
-                            emit this->changeSortStatus(this->m_defaultSortColumn, this->m_defaultSortOrder);
-
-                            this->sortItemsByColumn(columnCounter, (*this->m_sortOrderes)[columnCounter]);
-
-                            if (columnCounter != this->m_titlePressColumn) {
-                                this->m_titlePressColumn = columnCounter;
+                            this->m_currentSortIndex = counter;
+                            this->m_isSort = (*this->m_isSortList)[counter];
+                            emit this->changeSortStatus(this->m_currentSortIndex, this->m_isSort);
+                            this->sortItemsByColumn(counter, (*this->m_isSortList)[counter]);
+                            if (counter != this->m_titlePressColumn) {
+                                this->m_titlePressColumn = counter;
                             }
                             repaint();
                             break;
                         }
-                        columnX += titleItemWidth;
+                        posX += t_width;
                     }
-                    columnCounter++;
+                    counter++;
                 }
             }
-        } else if (mouseEvent->button() == Qt::RightButton) {
+        }
+        else if (mouseEvent->button() == Qt::RightButton) {
             if (m_columnVisibles.count() == this->columnTitles.count()) {
                 QMenu *menu = new QMenu();
                 menu->setObjectName("MonitorMenu");
@@ -431,7 +581,6 @@ void ProcessListWidget::mousePressEvent(QMouseEvent *mouseEvent)
                     if (i != 0) {//让第一行总是显示，不可以设置显示或者不显示，其他行可以设置
                         QAction *action = new QAction(menu);
                         action->setText(this->columnTitles[i]);
-
                         action->setCheckable(true);
                         action->setChecked(m_columnVisibles[i]);
                         connect(action, &QAction::triggered, this, [this, action, i] {
@@ -442,36 +591,33 @@ void ProcessListWidget::mousePressEvent(QMouseEvent *mouseEvent)
                         menu->addAction(action);
                     }
                 }
-
                 menu->exec(this->mapToGlobal(mouseEvent->pos()));
                 delete menu;
             }
         }
     }
     else if (isScrollArea) {//点击滚动条区域
-        int barHeight = getScrollbarH();
+        int barHeight = getScrollbarHeight();
         int barY = getScrollbarY();
-
         if (mouseEvent->y() > barY && mouseEvent->y() < barY + barHeight) {
             this->m_mouseDragScrollbar = true;
         }
         else {
-            this->m_offSet = setOffset((mouseEvent->y() - barHeight / 2 - this->m_titleHeight) / (getScrollAreaH() * 1.0) * this->getItemsTotalHeight());
+            this->m_offSet = setOffset((mouseEvent->y() - barHeight / 2 - this->m_titleHeight) / (getTheScrollAreaHeight()) * this->getItemsTotalHeight());
             repaint();
         }
     }
     else {
-        int pressItemIndex = (this->m_offSet + mouseEvent->y() - this->m_titleHeight) / this->m_rowHeight;
-        if (pressItemIndex >= this->m_searchedItems->count()) {
+        int pressedItemIndex = (this->m_offSet + mouseEvent->y() - this->m_titleHeight) / this->m_rowHeight;
+        if (pressedItemIndex >= this->m_searchedItems->count()) {
             clearSelectedItems();
 
             repaint();
         } else {
             if (mouseEvent->button() == Qt::LeftButton) {
-                if (pressItemIndex < this->m_searchedItems->count()) {
+                if (pressedItemIndex < this->m_searchedItems->count()) {
                     if (mouseEvent->modifiers() == Qt::ControlModifier) {
-                        ProcessListItem *item = (*this->m_searchedItems)[pressItemIndex];
-
+                        ProcessListItem *item = (*this->m_searchedItems)[pressedItemIndex];
                         if (this->m_selectedItems->contains(item)) {
                             this->m_selectedItems->removeOne(item);
                         } else {
@@ -481,23 +627,22 @@ void ProcessListWidget::mousePressEvent(QMouseEvent *mouseEvent)
                         }
                     }
                     else if ((mouseEvent->modifiers() == Qt::ShiftModifier) && !this->m_selectedItems->empty()) {
-                        int lastSelectionIndex = this->m_searchedItems->indexOf(this->lastSelectItem);
-                        int selectionStartIndex = std::min(pressItemIndex, lastSelectionIndex);
-                        int selectionEndIndex = std::max(pressItemIndex, lastSelectionIndex);
-
-                        shiftSelectItemsWithBound(selectionStartIndex, selectionEndIndex);
+                        int lastSelectionIndex = this->m_searchedItems->indexOf(this->m_lastItem);
+                        int selectionStartIndex = std::min(pressedItemIndex, lastSelectionIndex);
+                        int selectionEndIndex = std::max(pressedItemIndex, lastSelectionIndex);
+                        shiftToSelectedItems(selectionStartIndex, selectionEndIndex);
                     }
                     else {
                         clearSelectedItems();
 
                         QList<ProcessListItem*> items = QList<ProcessListItem*>();
-                        items << (*this->m_searchedItems)[pressItemIndex];
+                        items << (*this->m_searchedItems)[pressedItemIndex];
                         addSelectedItems(items);
                     }
                     repaint();
                 }
             } else if (mouseEvent->button() == Qt::RightButton) {
-                ProcessListItem *pressItem = (*this->m_searchedItems)[pressItemIndex];
+                ProcessListItem *pressItem = (*this->m_searchedItems)[pressedItemIndex];
                 bool pressInSelectionArea = false;
                 for (ProcessListItem *item : *this->m_selectedItems) {
                     if (item == pressItem) {
@@ -505,15 +650,15 @@ void ProcessListWidget::mousePressEvent(QMouseEvent *mouseEvent)
                         break;
                     }
                 }
-                if (!pressInSelectionArea && pressItemIndex < this->m_searchedItems->length()) {
+                if (!pressInSelectionArea && pressedItemIndex < this->m_searchedItems->length()) {
                     clearSelectedItems();
                     QList<ProcessListItem*> items = QList<ProcessListItem*>();
-                    items << (*this->m_searchedItems)[pressItemIndex];
+                    items << (*this->m_searchedItems)[pressedItemIndex];
                     addSelectedItems(items);
                     repaint();
                 }
                 if (this->m_selectedItems->length() > 0) {
-                    emit this->rightBtnClickedItems(this->mapToGlobal(mouseEvent->pos()), *this->m_selectedItems);
+                    emit this->rightMouseClickedItems(this->mapToGlobal(mouseEvent->pos()), *this->m_selectedItems);
                 }
             }
         }
@@ -525,7 +670,8 @@ void ProcessListWidget::mouseReleaseEvent(QMouseEvent *)
     if (this->m_mouseDragScrollbar) {
         this->m_mouseDragScrollbar = false;
         repaint();
-    } else {
+    }
+    else {
         if (this->m_titlePressColumn != -1) {
             this->m_titlePressColumn = -1;
             repaint();
@@ -537,11 +683,10 @@ void ProcessListWidget::wheelEvent(QWheelEvent *event)
 {
     if (event->orientation() == Qt::Vertical) {
         this->m_origOffset = this->m_offSet;
-        qreal scrollStep = event->angleDelta().y() / 120.0;
+        qreal scrollStep = event->angleDelta().y() / 100.0;
         this->m_offSet = setOffset(this->m_offSet - scrollStep * this->m_rowHeight);
         repaint();
     }
-
     event->accept();
 }
 
@@ -552,7 +697,6 @@ void ProcessListWidget::paintEvent(QPaintEvent *)
 
     QList<int> titleItemsWidths = getTitleItemsWidths();
 
-    painter.setRenderHint(QPainter::Antialiasing, true);
     painter.setOpacity(0.05);
 
     int penWidth = 1;
@@ -571,8 +715,8 @@ void ProcessListWidget::paintEvent(QPaintEvent *)
     int title_Y = 0;
     int title_Height = 0;
     if (this->m_titleHeight > 0) {
-        int columnCounter = 0;
-        int columnX = 0;
+        int counter = 0;
+        int posX = 0;
         for (int itemWidth:titleItemsWidths) {
             if (itemWidth > 0) {
                 painter.setOpacity(1);
@@ -581,47 +725,46 @@ void ProcessListWidget::paintEvent(QPaintEvent *)
                 painter.setFont(font);
                 //标题文字
                 painter.setPen(QPen(QColor("#000000")));
-                painter.drawText(QRect(columnX + this->m_titlePadding, 0, itemWidth, this->m_titleHeight), Qt::AlignVCenter | Qt::AlignLeft, this->columnTitles[columnCounter]);
-                columnX += itemWidth;
-                if (columnCounter < titleItemsWidths.size() - 1) {//垂直分割线
+                painter.drawText(QRect(posX + this->m_titlePadding, 0, itemWidth, this->m_titleHeight), Qt::AlignVCenter | Qt::AlignLeft, this->columnTitles[counter]);
+                posX += itemWidth;
+                if (counter < titleItemsWidths.size() - 1) {//垂直分割线
                     painter.setOpacity(0.1);
                     QPainterPath separatorPath;
-                    separatorPath.addRect(QRectF(rect().x() + columnX - 1, rect().y() + 5, 1, this->m_titleHeight - 5*2));
+                    separatorPath.addRect(QRectF(rect().x() + posX - 1, rect().y() + 5, 1, this->m_titleHeight - 5*2));
                     painter.fillPath(separatorPath, QColor("#000000"));
                 }
 
                 //标题文字右侧的排序箭头图标
-                if (this->m_defaultSortColumn == columnCounter) {
+                if (this->m_currentSortIndex == counter) {
                     painter.setOpacity(1);
-                    int arrowX = rect().x() + columnX - this->m_arrowPadding - upArrowNormalPixmap.width() / upArrowNormalPixmap.devicePixelRatio();
-                    int arrowY = rect().y() + (this->m_titleHeight - downArrowNormalPixmap.height() / upArrowNormalPixmap.devicePixelRatio()) / 2;
+                    int arrowX = rect().x() + posX - 2 - m_upArrowNormalPixmap.width() / m_upArrowNormalPixmap.devicePixelRatio();
+                    int arrowY = rect().y() + (this->m_titleHeight - m_downArrowNormalPixmap.height() / m_upArrowNormalPixmap.devicePixelRatio()) / 2;
 
-                    if (this->m_defaultSortOrder) {
-                        if (this->m_titlePressColumn == this->m_defaultSortColumn) {
-                            painter.drawPixmap(QPoint(arrowX, arrowY), downArrowPressPixmap);
-                        } else if (this->m_titleHoverColumn == this->m_defaultSortColumn) {
-                            painter.drawPixmap(QPoint(arrowX, arrowY), downArrowHoverPixmap);
+                    if (this->m_isSort) {
+                        if (this->m_titlePressColumn == this->m_currentSortIndex) {
+                            painter.drawPixmap(QPoint(arrowX, arrowY), m_downArrowPressPixmap);
+                        } else if (this->m_titleHoverColumn == this->m_currentSortIndex) {
+                            painter.drawPixmap(QPoint(arrowX, arrowY), m_downArrowHoverPixmap);
                         } else {
-                            painter.drawPixmap(QPoint(arrowX, arrowY), downArrowNormalPixmap);
+                            painter.drawPixmap(QPoint(arrowX, arrowY), m_downArrowNormalPixmap);
                         }
                     } else {
-                        if (this->m_titlePressColumn == this->m_defaultSortColumn) {
-                            painter.drawPixmap(QPoint(arrowX, arrowY), upArrowPressPixmap);
-                        } else if (this->m_titleHoverColumn == this->m_defaultSortColumn) {
-                            painter.drawPixmap(QPoint(arrowX, arrowY), upArrowHoverPixmap);
+                        if (this->m_titlePressColumn == this->m_currentSortIndex) {
+                            painter.drawPixmap(QPoint(arrowX, arrowY), m_upArrowPressPixmap);
+                        } else if (this->m_titleHoverColumn == this->m_currentSortIndex) {
+                            painter.drawPixmap(QPoint(arrowX, arrowY), m_upArrowHoverPixmap);
                         } else {
-                            painter.drawPixmap(QPoint(arrowX, arrowY), upArrowNormalPixmap);
+                            painter.drawPixmap(QPoint(arrowX, arrowY), m_upArrowNormalPixmap);
                         }
                     }
                 }
             }
-            columnCounter++;
+            counter++;
         }
 
         title_Y += this->m_titleHeight;
         title_Height += this->m_titleHeight;
     }
-
 
     //去掉列表标题栏后的列表显示区域的背景
     painter.setOpacity(0.05);
@@ -631,7 +774,7 @@ void ProcessListWidget::paintEvent(QPaintEvent *)
 
     //进程信息
     QPainterPath scrollAreaPath;
-    scrollAreaPath.addRect(QRectF(rect().x(), rect().y() + this->m_titleHeight, rect().width(), getScrollAreaH()));
+    scrollAreaPath.addRect(QRectF(rect().x(), rect().y() + this->m_titleHeight, rect().width(), getTheScrollAreaHeight()));
 
     int rowCounter = 0;
     for (ProcessListItem *item:*this->m_searchedItems) {
@@ -669,11 +812,9 @@ void ProcessListWidget::paintEvent(QPaintEvent *)
     if (this->m_searchText != "" && this->m_searchedItems->size() == 0) {
         painter.setOpacity(1);
         painter.setPen(QPen(QColor("#666666")));
-
         QFont font = painter.font() ;
         font.setPointSize(22);
         painter.setFont(font);
-
         painter.drawText(QRect(rect().x(), rect().y() + this->m_titleHeight, rect().width(), rect().height() - this->m_titleHeight), Qt::AlignCenter, tr("No search result"));
     }
 
@@ -695,223 +836,36 @@ void ProcessListWidget::paintEvent(QPaintEvent *)
 
 void ProcessListWidget::paintScrollbar(QPainter *painter)
 {
-    if (this->getItemsTotalHeight() > getScrollAreaH()) {
-        qreal barOpacitry = 0;
-        qreal barFrameOpacitry = 0;
-
-        // Press.
+    if (this->getItemsTotalHeight() > getTheScrollAreaHeight()) {
+        qreal opacitry = 0;
         if (this->m_mouseDragScrollbar) {
-            barOpacitry = 0.8;
-            barFrameOpacitry = 0;
-        } else {
-            // Hover.
-            if (this->m_mouseAtScrollArea) {
-                barOpacitry = 0.7;
-                barFrameOpacitry = 0;
-            }
-            // Normal.
-            else {
-                barOpacitry = 0.5;
-                barFrameOpacitry = 0;
-            }
+            opacitry = 0.8;
+        }
+        else {
+            if (this->m_mouseAtScrollArea)
+                opacitry = 0.7;
+            else
+                opacitry = 0.5;
         }
 
-        int barWidth = (this->m_mouseAtScrollArea || this->m_mouseDragScrollbar) ? this->m_scrollbarDragW : 6;
-        int barRadius = 3;
-
+        int barWidth = (this->m_mouseAtScrollArea || this->m_mouseDragScrollbar) ? this->m_scrollbarWidth : 6;
         int barY = getScrollbarY();
-        int barHeight = getScrollbarH();
-
-        painter->setOpacity(barOpacitry);
+        int barHeight = getScrollbarHeight();
+        painter->setOpacity(opacitry);
         QPainterPath path;
         path.addRoundedRect(
             QRectF(rect().x() + rect().width() - barWidth - 4,
-                   barY + barRadius,
+                   barY + 2,
                    barWidth,
-                   barHeight - barRadius * 2), barRadius, barRadius);
+                   barHeight - 2 * 2), 2, 2);
         painter->fillPath(path, QColor("#0B95D7"));
 
         QPen pen;
         pen.setColor(QColor("#0B95D7"));
         pen.setWidth(1);
-        painter->setOpacity(barFrameOpacitry);
+        painter->setOpacity(0);
         painter->setPen(pen);
         painter->drawPath(path);
-    }
-}
-
-void ProcessListWidget::selectNextItem(int offset)
-{
-    this->m_origOffset = this->m_offSet;
-
-    if (this->m_selectedItems->empty()) {
-        selectFirstItem();
-    } else {
-        int lastIndex = 0;
-        for (ProcessListItem *item:*this->m_selectedItems) {
-            int index = this->m_searchedItems->indexOf(item);
-            if (index > lastIndex) {
-                lastIndex = index;
-            }
-        }
-
-        if (lastIndex != -1) {
-            lastIndex = std::min(this->m_searchedItems->count() - 1, lastIndex + offset);
-
-            clearSelectedItems(false);
-
-            QList<ProcessListItem*> items = QList<ProcessListItem*>();
-            items << (*this->m_searchedItems)[lastIndex];
-
-            addSelectedItems(items);
-
-            int itemIndex = lastIndex + 1;
-            int itemOffset = setOffset(itemIndex * this->m_rowHeight - rect().height() + this->m_titleHeight);
-            if (((this->m_offSet + getScrollAreaH()) / this->m_rowHeight) < itemIndex) {
-                this->m_offSet = itemOffset;
-            }
-
-            repaint();
-        }
-    }
-}
-
-void ProcessListWidget::selectPrevItem(int offset)
-{
-    this->m_origOffset = this->m_offSet;
-
-    if (this->m_selectedItems->empty()) {
-        selectFirstItem();
-    } else {
-        int firstIndex = this->m_searchedItems->count();
-        for (ProcessListItem *item:*this->m_selectedItems) {
-            int index = this->m_searchedItems->indexOf(item);
-            if (index < firstIndex) {
-                firstIndex = index;
-            }
-        }
-
-        if (firstIndex != -1) {
-            firstIndex = std::max(0, firstIndex - offset);
-
-            clearSelectedItems();
-
-            QList<ProcessListItem*> items = QList<ProcessListItem*>();
-            items << (*this->m_searchedItems)[firstIndex];
-
-            addSelectedItems(items);
-
-            int itemIndex = firstIndex - 1;
-            int itemOffset = setOffset(itemIndex * this->m_rowHeight + this->m_titleHeight);
-            if ((this->m_offSet / this->m_rowHeight) > itemIndex) {
-                this->m_offSet = itemOffset;
-            }
-            repaint();
-        }
-    }
-}
-
-void ProcessListWidget::shiftSelectItemsWithBound(int startIndex, int endIndex)
-{
-    clearSelectedItems(false);
-    QList<ProcessListItem*> items = QList<ProcessListItem*>();
-    int index = 0;
-    for (ProcessListItem *item:*this->m_searchedItems) {
-        if (index >= startIndex && index <= endIndex) {
-            items << item;
-        }
-
-        index++;
-    }
-    addSelectedItems(items, false);
-}
-
-void ProcessListWidget::shiftSelectPrevItem(int offset)
-{
-    this->m_origOffset = this->m_offSet;
-
-    if (this->m_selectedItems->empty()) {
-        selectFirstItem();
-    } else {
-        int firstIndex = this->m_searchedItems->count();
-        int lastIndex = 0;
-        for (ProcessListItem *item:*this->m_selectedItems) {
-            int index = this->m_searchedItems->indexOf(item);
-
-            if (index < firstIndex) {
-                firstIndex = index;
-            }
-
-            if (index > lastIndex) {
-                lastIndex = index;
-            }
-        }
-
-        if (firstIndex != -1) {
-            int lastSelectionIndex = this->m_searchedItems->indexOf(this->lastSelectItem);
-            int selectionStartIndex, selectionEndIndex;
-
-            if (lastIndex == lastSelectionIndex) {
-                selectionStartIndex = std::max(0, firstIndex - offset);
-                selectionEndIndex = lastSelectionIndex;
-            } else {
-                selectionStartIndex = firstIndex;
-                selectionEndIndex = std::max(0, lastIndex - offset);
-            }
-
-            shiftSelectItemsWithBound(selectionStartIndex, selectionEndIndex);
-
-            if (this->m_offSet / this->m_rowHeight >= selectionStartIndex) {
-                this->m_offSet = setOffset((selectionStartIndex - 1) * this->m_rowHeight + this->m_titleHeight);
-            }
-
-            repaint();
-        }
-    }
-}
-
-void ProcessListWidget::shiftSelectNextItem(int offset)
-{
-    this->m_origOffset = this->m_offSet;
-
-    if (this->m_selectedItems->empty()) {
-        selectFirstItem();
-    } else {
-        int firstIndex = this->m_searchedItems->count();
-        int lastIndex = 0;
-        for (ProcessListItem *item:*this->m_selectedItems) {
-            int index = this->m_searchedItems->indexOf(item);
-
-            if (index < firstIndex) {
-                firstIndex = index;
-            }
-
-            if (index > lastIndex) {
-                lastIndex = index;
-            }
-        }
-
-        if (firstIndex != -1) {
-            int lastSelectionIndex = this->m_searchedItems->indexOf(this->lastSelectItem);
-            int selectionStartIndex, selectionEndIndex;
-
-            if (firstIndex == lastSelectionIndex) {
-                selectionStartIndex = firstIndex;
-                selectionEndIndex = std::min(this->m_searchedItems->count() - 1, lastIndex + offset);
-            } else {
-                selectionStartIndex = std::min(this->m_searchedItems->count() - 1, firstIndex + offset);
-                selectionEndIndex = lastIndex;
-            }
-
-            shiftSelectItemsWithBound(selectionStartIndex, selectionEndIndex);
-
-            if ((this->m_offSet + rect().height()) / this->m_rowHeight <= selectionEndIndex + 1) {
-                this->m_offSet = setOffset((selectionEndIndex + 1) * this->m_rowHeight + this->m_titleHeight - rect().height());
-            }
-
-
-            repaint();
-        }
     }
 }
 
@@ -929,16 +883,15 @@ QList<int> ProcessListWidget::getTitleItemsWidths()
                     }
                 } else {
                     if (m_columnVisibles[i]) {
-                        int totalWidthOfOtherColumns = 0;
-
+                        int totalWidth = 0;
                         for (int j = 0; j < this->m_columnWidths.count(); j++) {
                             if (this->m_columnWidths[j] != -1 && m_columnVisibles[j]) {
-                                totalWidthOfOtherColumns += this->m_columnWidths[j];
+                                totalWidth += this->m_columnWidths[j];
                             }
                         }
-
-                        titleItemsWidths << rect().width() - totalWidthOfOtherColumns;
-                    } else {
+                        titleItemsWidths << rect().width() - totalWidth;
+                    }
+                    else {
                         titleItemsWidths << 0;
                     }
                 }
@@ -947,7 +900,8 @@ QList<int> ProcessListWidget::getTitleItemsWidths()
             for (int i = 0; i < this->m_columnWidths.count(); i++) {
                 if (m_columnVisibles[i]) {
                     titleItemsWidths << this->m_columnWidths[i];
-                } else {
+                }
+                else {
                     titleItemsWidths << 0;
                 }
             }
@@ -962,7 +916,7 @@ QList<int> ProcessListWidget::getTitleItemsWidths()
 
 bool ProcessListWidget::mouseAtScrollArea(int x)
 {
-    return (x > rect().x() + rect().width() - this->m_scrollbarDragW) && (x < rect().x() + rect().width());
+    return (x > rect().x() + rect().width() - this->m_scrollbarWidth) && (x < rect().x() + rect().width());
 }
 
 bool ProcessListWidget::mouseAtTitleArea(int y)
@@ -980,24 +934,19 @@ int ProcessListWidget::getItemsTotalHeight()
     return m_searchedItems->count() * m_rowHeight;
 }
 
-int ProcessListWidget::getScrollAreaH()
+int ProcessListWidget::getTheScrollAreaHeight()
 {
-    return rect().height() - this->m_titleHeight;
+    return this->rect().height() - this->m_titleHeight;
 }
 
 int ProcessListWidget::getScrollbarY()
 {
-    return static_cast<int>((this->m_offSet / (this->getItemsTotalHeight() * 1.0)) * getScrollAreaH() + this->m_titleHeight);
+    return static_cast<int>((this->m_offSet / (this->getItemsTotalHeight())) * getTheScrollAreaHeight() + this->m_titleHeight);
 }
 
-int ProcessListWidget::getScrollbarH()
+int ProcessListWidget::getScrollbarHeight()
 {
-    return std::max(static_cast<int>(getScrollAreaH() / (this->getItemsTotalHeight() * 1.0) * rect().height()), this->m_scrollbarMinH);
-}
-
-int ProcessListWidget::getTopOffset()
-{
-    return 0;
+    return std::max(static_cast<int>(getTheScrollAreaHeight() / (this->getItemsTotalHeight()) * rect().height()), this->m_rowHeight);
 }
 
 QList<ProcessListItem*> ProcessListWidget::getSearchedItems(QList<ProcessListItem*> items)
@@ -1026,11 +975,11 @@ int ProcessListWidget::getBottomOffset()
     }
 }
 
-void ProcessListWidget::sortItemsByColumn(int column, bool sortOrder)
+void ProcessListWidget::sortItemsByColumn(int column, bool isSort)
 {
-    if (m_sortFuncList->count() != 0 && m_sortFuncList->count() == columnTitles.count() && m_sortOrderes->count() == columnTitles.count()) {
+    if (m_sortFuncList->count() != 0 && m_sortFuncList->count() == columnTitles.count() && m_isSortList->count() == columnTitles.count()) {
         qSort(m_searchedItems->begin(), m_searchedItems->end(), [&](const ProcessListItem *item1, const ProcessListItem *item2) {
-                return (*m_sortFuncList)[column](item1, item2, sortOrder);
+                return (*m_sortFuncList)[column](item1, item2, isSort);
             });
     }
 }
@@ -1040,7 +989,6 @@ void ProcessListWidget::startScrollbarHideTimer()
     if (this->m_hideScrollbarTimer) {
         this->m_hideScrollbarTimer->stop();
     }
-
     this->m_hideScrollbarTimer = new QTimer();
     connect(this->m_hideScrollbarTimer, SIGNAL(timeout()), this, SLOT(hideScrollbar()));
     this->m_hideScrollbarTimer->start(2000);

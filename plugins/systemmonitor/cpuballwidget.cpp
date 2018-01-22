@@ -101,10 +101,14 @@ void CpuBallWidget::loadWaveImage()
 
 void CpuBallWidget::onRepaintWaveImage()
 {
-    m_xFrontOffset -= 1;
+//    m_xFrontOffset -= 1;
+    m_xFrontOffset += 1;
     m_xBackOffset += 2;
-    if (m_xFrontOffset < - (m_frontImage.width() - this->width())) {//保留整个显示直径的大小不做处理，避免出现断层
-        m_xFrontOffset = 0;
+//    if (m_xFrontOffset < - (m_frontImage.width() - this->width())) {//保留整个显示直径的大小不做处理，避免出现断层
+//        m_xFrontOffset = 0;
+//    }
+    if (m_xFrontOffset > m_frontImage.width()) {//保留整个显示直径的大小不做处理，避免出现断层
+        m_xFrontOffset = this->width();
     }
     if (m_xBackOffset > m_backImage.width()) {//保留整个显示直径的大小不做处理，避免出现断层
         m_xBackOffset = this->width();
@@ -167,7 +171,8 @@ void CpuBallWidget::paintEvent(QPaintEvent *)
     //CompositionMode_SourceOver保证波浪出现的时候其背景为通明的
     wavePainter.setCompositionMode(QPainter::CompositionMode_SourceOver);//混和模式QImage::CompositionMode_SourceOver ，即原象素（正在绘制的象素）和目标象素（已经存在的象素）混和，原象素的alpha分量定义为最终的透明度
     wavePainter.drawImage(static_cast<int>(m_xBackOffset) - m_backImage.width(), 100 - currentPercent, m_backImage);
-    wavePainter.drawImage(static_cast<int>(m_xFrontOffset), 100 - currentPercent, m_frontImage);
+//    wavePainter.drawImage(static_cast<int>(m_xFrontOffset), 100 - currentPercent, m_frontImage);
+    wavePainter.drawImage(static_cast<int>(m_xFrontOffset) - m_frontImage.width(), 100 - currentPercent, m_frontImage);
 
     //Step3:矩形区域中圆球的外径和内径
     QRectF outRect = QRectF(0, 0, waveSize.width(), waveSize.height());

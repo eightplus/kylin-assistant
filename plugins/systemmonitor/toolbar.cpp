@@ -38,7 +38,7 @@ ToolBar::ToolBar(QSettings *settings, QWidget *parent)
 {
     installEventFilter(this);
     setMouseTracking(true);
-    setFixedHeight(TOP_TITLE_WIDGET_HEIGHT);
+    setFixedHeight(TITLE_WIDGET_HEIGHT);
 
     m_topBorderColor = QColor(255, 255, 255, 153);
 //    this->setAutoFillBackground(true);

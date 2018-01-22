@@ -116,10 +116,10 @@ unsigned long long getCpuTimeData(unsigned long long &workTime)
     }
     fclose(file);
 
-    sscanf(buffer,
-           "cpu  %16llu %16llu %16llu %16llu %16llu %16llu %16llu %16llu %16llu %16llu",
+    sscanf(buffer, "cpu  %16llu %16llu %16llu %16llu %16llu %16llu %16llu %16llu %16llu %16llu",
            &user, &nice, &system, &idle, &iowait, &irq, &softirq, &steal, &guest, &guestnice);
     workTime = user + nice + system;
+
     return user + nice + system + idle + iowait + irq + softirq + steal;
 }
 

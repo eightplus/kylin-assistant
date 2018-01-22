@@ -60,13 +60,10 @@ void ProcessListItem::drawForeground(QRect rect, QPainter *painter, int column, 
     setFontSize(*painter, 9);
     painter->setOpacity(1);
     if (isSelect) {
-//        //this->setToolTip();//kobe neet to draw tooltip
         painter->setPen(QPen(QColor("#ffffff")));
     } else {
         painter->setPen(QPen(QColor("#000000")));
     }
-
-    // Draw icon and process's name
     if (column == 0) {
         painter->drawPixmap(QRect(rect.x() + padding, rect.y() + (rect.height() - iconSize) / 2, iconSize, iconSize), m_data.iconPixmap);
         QString name = m_data.processName;
@@ -84,7 +81,6 @@ void ProcessListItem::drawForeground(QRect rect, QPainter *painter, int column, 
             name = QString("(%1) %2").arg(tr("Uninterruptible")).arg(m_data.processName);
         }
         else {//Sleeping 睡眠中  Running 运行中
-
         }
         int nameMaxWidth = rect.width() - iconSize - padding * 3;
         QFont font = painter->font();
@@ -92,27 +88,22 @@ void ProcessListItem::drawForeground(QRect rect, QPainter *painter, int column, 
         QString procName = fm.elidedText(name, Qt::ElideRight, nameMaxWidth);
         painter->drawText(QRect(rect.x() + iconSize + padding * 2, rect.y(), nameMaxWidth, rect.height()), Qt::AlignLeft | Qt::AlignVCenter, procName);
     }
-    // Draw User.
     else if (column == 1) {
         if (!m_data.user.isEmpty()) {
             painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignCenter, m_data.user);
         }
     }
-    // Draw Status.
     else if (column == 2) {
         if (!m_data.m_status.isEmpty()) {
             painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignCenter, m_data.m_status);
         }
     }
-    // Draw CPU.
     else if (column == 3) {
         painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignCenter, QString("%1%").arg(m_data.cpu));
     }
-    // Draw pid.
     else if (column == 4) {
         painter->drawText(QRect(rect.x(), rect.y(), rect.width() - padding, rect.height()), Qt::AlignCenter, QString("%1").arg(m_data.pid));
     }
-    // Draw Command.
     else if (column == 5) {
         int commandMaxWidth = rect.width();
         QFont font = painter->font();
@@ -120,14 +111,12 @@ void ProcessListItem::drawForeground(QRect rect, QPainter *painter, int column, 
         QString command = fm.elidedText(m_data.commandLine, Qt::ElideRight, commandMaxWidth);
         painter->drawText(QRect(rect.x(), rect.y(), commandMaxWidth, rect.height()), Qt::AlignLeft | Qt::AlignVCenter, command);
     }
-    // Draw memory.
     else if (column == 6) {
         if (m_data.m_memory > 0) {
             QString memory = QString(g_format_size_full(m_data.m_memory, G_FORMAT_SIZE_IEC_UNITS));
             painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignCenter, memory);
         }
     }
-    // Draw Priority.
     else if (column == 7) {
         painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignLeft | Qt::AlignVCenter, getNiceLevel(m_data.m_nice));
     }
@@ -144,72 +133,58 @@ bool ProcessListItem::sortByName(const ProcessListItem *item1, const ProcessList
 {
     QString name1 = (static_cast<const ProcessListItem*>(item1))->getDisplayName();
     QString name2 = (static_cast<const ProcessListItem*>(item2))->getDisplayName();
-    bool sortOrder;
+    bool isSort;
 
-    // Sort item with cpu if name is same.
     if (name1 == name2) {
         double cpu1 = static_cast<const ProcessListItem*>(item1)->getCPU();
         double cpu2 = (static_cast<const ProcessListItem*>(item2))->getCPU();
-
-        sortOrder = cpu1 > cpu2;
+        isSort = cpu1 > cpu2;
     }
-    // Otherwise sort by name.
     else {
         QCollator qco(QLocale::system());
         int result = qco.compare(name1, name2);
-
-        sortOrder = result < 0;
+        isSort = result < 0;
     }
 
-    return descendingSort ? sortOrder : !sortOrder;
+    return descendingSort ? isSort : !isSort;
 }
 
 bool ProcessListItem::sortByUser(const ProcessListItem *item1, const ProcessListItem *item2, bool descendingSort)
 {
     QString user1 = (static_cast<const ProcessListItem*>(item1))->getUser();
     QString user2 = (static_cast<const ProcessListItem*>(item2))->getUser();
-    bool sortOrder;
-
-    // Sort item with cpu if user is same.
+    bool isSort;
     if (user1 == user2) {
         double cpu1 = static_cast<const ProcessListItem*>(item1)->getCPU();
         double cpu2 = (static_cast<const ProcessListItem*>(item2))->getCPU();
-
-        sortOrder = cpu1 > cpu2;
+        isSort = cpu1 > cpu2;
     }
-    // Otherwise sort by user.
     else {
         QCollator qco(QLocale::system());
         int result = qco.compare(user1, user2);
-
-        sortOrder = result < 0;
+        isSort = result < 0;
     }
 
-    return descendingSort ? sortOrder : !sortOrder;
+    return descendingSort ? isSort : !isSort;
 }
 
 bool ProcessListItem::sortByStatus(const ProcessListItem *item1, const ProcessListItem *item2, bool descendingSort)
 {
     QString status1 = (static_cast<const ProcessListItem*>(item1))->getStatus();
     QString status2 = (static_cast<const ProcessListItem*>(item2))->getStatus();
-    bool sortOrder;
-
-    // Sort item with cpu if status is same.
+    bool isSort;
     if (status1 == status2) {
         double cpu1 = static_cast<const ProcessListItem*>(item1)->getCPU();
         double cpu2 = (static_cast<const ProcessListItem*>(item2))->getCPU();
-
-        sortOrder = cpu1 > cpu2;
+        isSort = cpu1 > cpu2;
     }
-    // Otherwise sort by status.
     else {
         QCollator qco(QLocale::system());
         int result = qco.compare(status1, status2);
-
-        sortOrder = result < 0;
+        isSort = result < 0;
     }
 
-    return descendingSort ? sortOrder : !sortOrder;
+    return descendingSort ? isSort : !isSort;
 }
 
 
@@ -217,94 +192,77 @@ bool ProcessListItem::sortByCPU(const ProcessListItem *item1, const ProcessListI
 {
     double cpu1 = (static_cast<const ProcessListItem*>(item1))->getCPU();
     double cpu2 = (static_cast<const ProcessListItem*>(item2))->getCPU();
-    bool sortOrder;
-
-    // Sort item with memory if cpu is same.
+    bool isSort;
     if (cpu1 == cpu2) {
         long memory1 = static_cast<const ProcessListItem*>(item1)->getMemory();
         long memory2 = (static_cast<const ProcessListItem*>(item2))->getMemory();
-
-        sortOrder = memory1 > memory2;
+        isSort = memory1 > memory2;
     }
-    // Otherwise sort by cpu.
     else {
-        sortOrder = cpu1 > cpu2;
+        isSort = cpu1 > cpu2;
     }
 
-    return descendingSort ? sortOrder : !sortOrder;
+    return descendingSort ? isSort : !isSort;
 }
 
 bool ProcessListItem::sortByPid(const ProcessListItem *item1, const ProcessListItem *item2, bool descendingSort)
 {
-    bool sortOrder = (static_cast<const ProcessListItem*>(item1))->getPid() > (static_cast<const ProcessListItem*>(item2))->getPid();
+    bool isSort = (static_cast<const ProcessListItem*>(item1))->getPid() > (static_cast<const ProcessListItem*>(item2))->getPid();
 
-    return descendingSort ? sortOrder : !sortOrder;
+    return descendingSort ? isSort : !isSort;
 }
 
 bool ProcessListItem::sortByCommand(const ProcessListItem *item1, const ProcessListItem *item2, bool descendingSort)
 {
     QString command1 = (static_cast<const ProcessListItem*>(item1))->getCommandLine();
     QString command2 = (static_cast<const ProcessListItem*>(item2))->getCommandLine();
-    bool sortOrder;
-
-    // Sort item with cpu if command is same.
+    bool isSort;
     if (command1 == command2) {
         double cpu1 = static_cast<const ProcessListItem*>(item1)->getCPU();
         double cpu2 = (static_cast<const ProcessListItem*>(item2))->getCPU();
-
-        sortOrder = cpu1 > cpu2;
+        isSort = cpu1 > cpu2;
     }
-    // Otherwise sort by command.
     else {
         QCollator qco(QLocale::system());
         int result = qco.compare(command1, command2);
-
-        sortOrder = result < 0;
+        isSort = result < 0;
     }
 
-    return descendingSort ? sortOrder : !sortOrder;
+    return descendingSort ? isSort : !isSort;
 }
 
 bool ProcessListItem::sortByMemory(const ProcessListItem *item1, const ProcessListItem *item2, bool descendingSort)
 {
     long memory1 = (static_cast<const ProcessListItem*>(item1))->getMemory();
     long memory2 = (static_cast<const ProcessListItem*>(item2))->getMemory();
-    bool sortOrder;
-
-    // Sort item with cpu if memory is same.
+    bool isSort;
     if (memory1 == memory2) {
         double cpu1 = static_cast<const ProcessListItem*>(item1)->getCPU();
         double cpu2 = (static_cast<const ProcessListItem*>(item2))->getCPU();
-
-        sortOrder = cpu1 > cpu2;
+        isSort = cpu1 > cpu2;
     }
-    // Otherwise sort by memory.
     else {
-        sortOrder = memory1 > memory2;
+        isSort = memory1 > memory2;
     }
 
-    return descendingSort ? sortOrder : !sortOrder;
+    return descendingSort ? isSort : !isSort;
 }
 
 bool ProcessListItem::sortByPriority(const ProcessListItem *item1, const ProcessListItem *item2, bool descendingSort)
 {
     long nice1 = (static_cast<const ProcessListItem*>(item1))->getNice();
     long nice2 = (static_cast<const ProcessListItem*>(item2))->getNice();
-    bool sortOrder;
-
-    // Sort item with cpu if nice is same.
+    bool isSort;
     if (nice1 == nice2) {
         double cpu1 = static_cast<const ProcessListItem*>(item1)->getCPU();
         double cpu2 = (static_cast<const ProcessListItem*>(item2))->getCPU();
-
-        sortOrder = cpu1 > cpu2;
+        isSort = cpu1 > cpu2;
     }
-    // Otherwise sort by nice.
     else {
-        sortOrder = nice1 > nice2;
+        isSort = nice1 > nice2;
     }
 
-    return descendingSort ? sortOrder : !sortOrder;
+    return descendingSort ? isSort : !isSort;
 }
 
 QString ProcessListItem::getProcessName() const

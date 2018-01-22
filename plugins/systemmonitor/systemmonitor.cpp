@@ -103,18 +103,18 @@ SystemMonitor::~SystemMonitor()
 void SystemMonitor::resizeEvent(QResizeEvent *e)
 {
     if (m_titleWidget) {
-        m_titleWidget->resize(width(), TOP_TITLE_WIDGET_HEIGHT);
+        m_titleWidget->resize(width(), TITLE_WIDGET_HEIGHT);
         if (e->oldSize()  != e->size()) {
             emit m_titleWidget->updateMaxBtn();
         }
     }
     if (m_toolBar) {
-        m_toolBar->resize(width(), TOP_TITLE_WIDGET_HEIGHT);
-        m_toolBar->move(0, TOP_TITLE_WIDGET_HEIGHT);
+        m_toolBar->resize(width(), TITLE_WIDGET_HEIGHT);
+        m_toolBar->move(0, TITLE_WIDGET_HEIGHT);
     }
     if (m_sysMonitorStack) {
-        m_sysMonitorStack->resize(width(), this->height() - TOP_TITLE_WIDGET_HEIGHT*2);
-        m_sysMonitorStack->move(0, TOP_TITLE_WIDGET_HEIGHT*2);
+        m_sysMonitorStack->resize(width(), this->height() - TITLE_WIDGET_HEIGHT*2);
+        m_sysMonitorStack->move(0, TITLE_WIDGET_HEIGHT*2);
     }
 }
 
@@ -151,28 +151,28 @@ void SystemMonitor::recordVisibleColumn(int, bool, QList<bool> columnVisible)
         m_visibleColumns << "priority";
     }
 
-    QString processColumns = "";
+    QString displayedColumns = "";
     for (int i = 0; i < m_visibleColumns.length(); i++) {
         if (i != m_visibleColumns.length() - 1) {
-            processColumns += QString("%1,").arg(m_visibleColumns[i]);
+            displayedColumns += QString("%1,").arg(m_visibleColumns[i]);
         } else {
-            processColumns += m_visibleColumns[i];
+            displayedColumns += m_visibleColumns[i];
         }
     }
 
     proSettings->beginGroup("PROCESS");
-    proSettings->setValue("ProcessDisplayColumns", processColumns);
+    proSettings->setValue("DisplayedColumns", displayedColumns);
     proSettings->endGroup();
     proSettings->sync();
 }
 
-void SystemMonitor::recordSortStatus(int index, bool sortOrder)
+void SystemMonitor::recordSortStatus(int index, bool isSort)
 {
     QList<QString> columnNames = { "name", "user", "status", "cpu", "pid", "command", "memory", "priority"};
 
     proSettings->beginGroup("PROCESS");
-    proSettings->setValue("ProcessCurrentSortColumn", columnNames[index]);
-    proSettings->setValue("ProcessSortOrder", sortOrder);
+    proSettings->setValue("CurrentSortColumn", columnNames[index]);
+    proSettings->setValue("IsSort", isSort);
     proSettings->endGroup();
     proSettings->sync();
 }
@@ -182,13 +182,13 @@ void SystemMonitor::initPanelStack()
     m_sysMonitorStack = new QStackedWidget(this);
     m_sysMonitorStack->setStyleSheet("QStackedWidget{background: rgb(255, 255, 255);}");
     m_sysMonitorStack->setObjectName("SystemMonitorStack");
-    m_sysMonitorStack->resize(width(), this->height() - TOP_TITLE_WIDGET_HEIGHT);
-    m_sysMonitorStack->move(0, TOP_TITLE_WIDGET_HEIGHT);
+    m_sysMonitorStack->resize(width(), this->height() - TITLE_WIDGET_HEIGHT);
+    m_sysMonitorStack->move(0, TITLE_WIDGET_HEIGHT);
 
     m_sysMonitorStack->setMouseTracking(false);
     m_sysMonitorStack->installEventFilter(this);
 
-    process_dialog = new ProcessDialog(getColumnHideFlags(), getSortIndex(), getSortOrder(), proSettings);
+    process_dialog = new ProcessDialog(getReadyDisplayColumns(), getCurrentSortColumnIndex(), isSortOrNot(), proSettings);
     process_dialog->getProcessView()->installEventFilter(this);
     connect(process_dialog, &ProcessDialog::changeColumnVisible, this, &SystemMonitor::recordVisibleColumn);
     connect(process_dialog, &ProcessDialog::changeSortStatus, this, &SystemMonitor::recordSortStatus);
@@ -206,15 +206,15 @@ void SystemMonitor::initPanelStack()
 void SystemMonitor::initTitleWidget()
 {
     m_titleWidget = new MonitorTitleWidget(this);
-    m_titleWidget->resize(width(), TOP_TITLE_WIDGET_HEIGHT);
+    m_titleWidget->resize(width(), TITLE_WIDGET_HEIGHT);
     m_titleWidget->move(0, 0);
 }
 
 void SystemMonitor::initToolBar()
 {
     m_toolBar = new ToolBar(proSettings, this);
-    m_toolBar->resize(width(), TOP_TITLE_WIDGET_HEIGHT);
-    m_toolBar->move(0, TOP_TITLE_WIDGET_HEIGHT);
+    m_toolBar->resize(width(), TITLE_WIDGET_HEIGHT);
+    m_toolBar->move(0, TITLE_WIDGET_HEIGHT);
 }
 
 void SystemMonitor::initConnections()
@@ -239,53 +239,51 @@ void SystemMonitor::onChangePage(int index)
     }
 }
 
-int SystemMonitor::getSortIndex()
+int SystemMonitor::getCurrentSortColumnIndex()
 {
     proSettings->beginGroup("PROCESS");
-    QString sortingName = proSettings->value("ProcessCurrentSortColumn").toString();
+    QString currentSortColumn = proSettings->value("CurrentSortColumn").toString();
     proSettings->endGroup();
 
-    QList<QString> columnNames = {
-        "name", "user", "status", "cpu", "pid", "command", "memory", "priority"
-    };
+    QList<QString> columnNames = {"name", "user", "status", "cpu", "pid", "command", "memory", "priority"};
 
-    return columnNames.indexOf(sortingName);
+    return columnNames.indexOf(currentSortColumn);
 }
 
-bool SystemMonitor::getSortOrder()
+bool SystemMonitor::isSortOrNot()
 {
     proSettings->beginGroup("PROCESS");
-    bool value = proSettings->value("ProcessSortOrder", true).toBool();
+    bool value = proSettings->value("IsSort", true).toBool();
     proSettings->endGroup();
 
     return value;
 }
 
-QList<bool> SystemMonitor::getColumnHideFlags()
+QList<bool> SystemMonitor::getReadyDisplayColumns()
 {
     proSettings->beginGroup("PROCESS");
-    QString processColumns = proSettings->value("ProcessDisplayColumns", "name,user,status,cpu,pid,command,memory,priority").toString();
+    QString displayedColumns = proSettings->value("DisplayedColumns", "name,user,status,cpu,pid,command,memory,priority").toString();
     proSettings->endGroup();
 
-    if (processColumns.isEmpty()) {
+    if (displayedColumns.isEmpty()) {
         proSettings->beginGroup("PROCESS");
-        processColumns = "name,user,status,cpu,pid,command,memory,priority";
-        proSettings->setValue("ProcessDisplayColumns", processColumns);
+        displayedColumns = "name,user,status,cpu,pid,command,memory,priority";
+        proSettings->setValue("DisplayedColumns", displayedColumns);
         proSettings->endGroup();
         proSettings->sync();
     }
 
-    QList<bool> toggleHideFlags;
-    toggleHideFlags << processColumns.contains("name");
-    toggleHideFlags << processColumns.contains("user");
-    toggleHideFlags << processColumns.contains("status");
-    toggleHideFlags << processColumns.contains("cpu");
-    toggleHideFlags << processColumns.contains("pid");
-    toggleHideFlags << processColumns.contains("command");
-    toggleHideFlags << processColumns.contains("memory");
-    toggleHideFlags << processColumns.contains("priority");
+    QList<bool> m_shows;
+    m_shows << displayedColumns.contains("name");
+    m_shows << displayedColumns.contains("user");
+    m_shows << displayedColumns.contains("status");
+    m_shows << displayedColumns.contains("cpu");
+    m_shows << displayedColumns.contains("pid");
+    m_shows << displayedColumns.contains("command");
+    m_shows << displayedColumns.contains("memory");
+    m_shows << displayedColumns.contains("priority");
 
-    return toggleHideFlags;
+    return m_shows;
 }
 
 void SystemMonitor::moveCenter()

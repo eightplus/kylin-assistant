@@ -222,6 +222,11 @@
         <file>res/upload.svg</file>
         <file>res/wave-back.png</file>
         <file>res/wave-front.png</file>
+        <file>res/disk.png</file>
+        <file>res/sub_logo.png</file>
+        <file>res/user_proc.png</file>
+        <file>res/active_proc.png</file>
+        <file>res/all_proc.png</file>
     </qresource>
     <qresource prefix="/sys">
         <file>res/sysBtn/close_button.png</file>

@@ -22,8 +22,8 @@
 
 ProcessCategory::ProcessCategory(int tabIndex, QWidget *parent)
     : QWidget(parent)
-    ,width(26)
-    ,height(26)
+    ,width(16)
+    ,height(16)
     ,activeIndex(tabIndex)
 {
     setFixedSize(width * 3, height);
@@ -59,7 +59,6 @@ ProcessCategory::ProcessCategory(int tabIndex, QWidget *parent)
         userProcessButton->setChecked(true);
         allProcessButton->setChecked(false);
     }
-
 
     connect(activeProcessButton, &MyImageButton::clicked, this, [=] {
         activeIndex = 0;

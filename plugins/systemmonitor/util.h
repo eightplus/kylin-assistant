@@ -24,7 +24,7 @@
 #include <QObject>
 #include <QPainter>
 
-#define TOP_TITLE_WIDGET_HEIGHT 39
+#define TITLE_WIDGET_HEIGHT 39
 
 using std::string;
 

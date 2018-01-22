@@ -172,20 +172,22 @@ void SoundWidget::initSettingData()
 
 void SoundWidget::onSendSoundList(const QString &currentSound, const QStringList &soundList)
 {
-    m_soundlist.clear();
-    m_soundlist = soundList;
-    theme_combo->clear();
-    theme_combo->clearEditText();
-    theme_combo->addItems(m_soundlist);
+    if (!soundList.isEmpty()) {
+        m_soundlist.clear();
+        m_soundlist = soundList;
+        theme_combo->clear();
+        theme_combo->clearEditText();
+        theme_combo->addItems(m_soundlist);
 
-    QList<QString>::Iterator it = m_soundlist.begin(), itend = m_soundlist.end();
-    int initIndex = 0;
-    for(;it != itend; it++,initIndex++)
-    {
-        if(*it == currentSound)
-            break;
+        QList<QString>::Iterator it = m_soundlist.begin(), itend = m_soundlist.end();
+        int initIndex = 0;
+        for(;it != itend; it++,initIndex++)
+        {
+            if(*it == currentSound)
+                break;
+        }
+        theme_combo->setCurrentIndex(initIndex);
     }
-    theme_combo->setCurrentIndex(initIndex);
 }
 
 void SoundWidget::onSendEnableSoundValue(bool login_music, bool sound_event, bool input_sound)

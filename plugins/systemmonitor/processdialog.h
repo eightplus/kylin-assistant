@@ -17,14 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#include "processworker.h"
 #include "../../component/utils.h"
 #include "../widgets/mydialog.h"
-#include "processlistitem.h"
 #include "../widgets/myactiongroup.h"
 #include "../widgets/myactiongroupitem.h"
 #include "../widgets/myaction.h"
+#include "processworker.h"
+#include "processlistitem.h"
 #include "processlistwidget.h"
 
 #include <QLabel>
@@ -51,7 +50,7 @@ class ProcessDialog : public QWidget
     Q_OBJECT
 
 public:
-    explicit ProcessDialog(QList<bool> columnShowOrHideFlags, int sortIndex, bool sortOrder, QSettings *settings, QWidget* parent = 0);
+    explicit ProcessDialog(QList<bool> toBeDisplayedColumns, int currentSortIndex, bool isSort, QSettings *settings, QWidget* parent = 0);
     ~ProcessDialog();
 
     ProcessListWidget* getProcessView();
@@ -62,7 +61,7 @@ public:
 
 signals:
     void changeColumnVisible(int index, bool visible, QList<bool> columnVisible);
-    void changeSortStatus(int index, bool sortOrder);
+    void changeSortStatus(int index, bool isSort);
 
 public slots:
     void focusProcessView();
@@ -83,18 +82,18 @@ public slots:
     void refreshProcessList();
 
 private:
-  QTimer *timer;
-  QSettings *proSettings;
+  QTimer *timer = nullptr;
+  QSettings *proSettings = nullptr;
   guint64 cpu_total_time;
   guint64 cpu_total_time_last;
-  MyDialog *killProcessDialog;
-  MyDialog *endProcessDialog;
-  ProcessListWidget *m_processListWidget;
-  QAction *m_propertiyAction;
-  QAction *m_stopAction;//停止
-  QAction *m_continueAction;//继续进程
-  QAction *m_endAction;//结束
-  QAction *m_killAction;//杀死
+  MyDialog *killProcessDialog = nullptr;
+  MyDialog *endProcessDialog = nullptr;
+  ProcessListWidget *m_processListWidget = nullptr;
+  QAction *m_propertiyAction = nullptr;
+  QAction *m_stopAction = nullptr;//停止
+  QAction *m_continueAction = nullptr;//继续进程
+  QAction *m_endAction = nullptr;//结束
+  QAction *m_killAction = nullptr;//杀死
 //  QMenu *m_priorityMenu;
 //  MyActionGroup * priorityGroup;
 //  MyAction *veryHighAction;
@@ -104,7 +103,7 @@ private:
 //  MyAction *veryLowAction;
 //  MyAction *customAction;
   QList<pid_t> *actionPids;
-  QMenu *m_menu;
+  QMenu *m_menu = nullptr;
   QString whose_processes;
   gint num_cpus;
   unsigned frequency;

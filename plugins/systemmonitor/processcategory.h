@@ -41,10 +41,10 @@ private:
     int width;
     int height;
     int activeIndex;
-    QHBoxLayout *layout;
-    MyImageButton *activeProcessButton;
-    MyImageButton *userProcessButton;
-    MyImageButton *allProcessButton;
+    QHBoxLayout *layout = nullptr;
+    MyImageButton *activeProcessButton = nullptr;
+    MyImageButton *userProcessButton = nullptr;
+    MyImageButton *allProcessButton = nullptr;
 };
 
 #endif // PROCESSCATEGORY_H

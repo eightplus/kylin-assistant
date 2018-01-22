@@ -236,7 +236,7 @@ private:
     ThemeWidget *theme_widget;
     IconWidget *icon_widget;
     MouseWidget *mouse_widget;
-    SoundWidget *voice_widget;
+    SoundWidget *sound_widget;
 //    AnimationWidget *animation_widget;
     MenuWidget *launcher_widget;
     PanelWidget *panel_widget;

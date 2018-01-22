@@ -44,14 +44,14 @@ public:
     void initPanelStack();
     void initConnections();
 
-    QList<bool> getColumnHideFlags();
-    bool getSortOrder();
-    int getSortIndex();
+    QList<bool> getReadyDisplayColumns();
+    bool isSortOrNot();
+    int getCurrentSortColumnIndex();
     void moveCenter();
 
 public slots:
     void recordVisibleColumn(int, bool, QList<bool> columnVisible);
-    void recordSortStatus(int index, bool sortOrder);
+    void recordSortStatus(int index, bool isSort);
     void onChangePage(int index);
 
 protected:

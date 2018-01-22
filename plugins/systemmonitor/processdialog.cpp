@@ -87,29 +87,29 @@ QDataStream &operator>>(QDataStream &dataStream, ProcDataPtr &object)
     return dataStream;
 }
 
-ProcessDialog::ProcessDialog(QList<bool> columnShowOrHideFlags, int sortIndex, bool sortOrder, QSettings *settings, QWidget *parent)
+ProcessDialog::ProcessDialog(QList<bool> toBeDisplayedColumns, int currentSortIndex, bool isSort, QSettings *settings, QWidget *parent)
     :QWidget(parent)
     ,num_cpus(0)
     ,frequency(0U)
     ,proSettings(settings)
 {
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-//    setAcceptDrops(true);
     setAttribute(Qt::WA_NoMousePropagation);
-
-    this->setObjectName("ProcessDialog");
 
     qRegisterMetaType<ProcDataPtr>();
     qRegisterMetaTypeStreamOperators<ProcDataPtr>();
     qRegisterMetaType<ProcDataPtrList>();
     qRegisterMetaType<QList<ProcData>>();
 
+    actionPids = new QList<pid_t>();
+
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    m_processListWidget = new ProcessListWidget(columnShowOrHideFlags);
+    m_processListWidget = new ProcessListWidget(toBeDisplayedColumns);
     connect(m_processListWidget, SIGNAL(changeColumnVisible(int,bool,QList<bool>)), this, SIGNAL(changeColumnVisible(int,bool,QList<bool>)));
     connect(m_processListWidget, SIGNAL(changeSortStatus(int,bool)), this, SIGNAL(changeSortStatus(int,bool)));
+    connect(m_processListWidget, &ProcessListWidget::rightMouseClickedItems, this, &ProcessDialog::popupMenu, Qt::QueuedConnection);
     layout->addWidget(m_processListWidget);
 
     whose_processes = "user";
@@ -137,7 +137,7 @@ ProcessDialog::ProcessDialog(QList<bool> columnShowOrHideFlags, int sortIndex, b
     sortFuncList->append(&ProcessListItem::sortByCommand);
     sortFuncList->append(&ProcessListItem::sortByMemory);
     sortFuncList->append(&ProcessListItem::sortByPriority);
-    m_processListWidget->setColumnSortingAlgorithms(sortFuncList, sortIndex, sortOrder);
+    m_processListWidget->setProcessSortFunctions(sortFuncList, currentSortIndex, isSort);
     m_processListWidget->setSearchFunction(&ProcessListItem::doSearch);
 
     endProcessDialog = new MyDialog(QString(tr("End process")), QString(tr("Ending a process may destroy data, break the session or introduce a security risk. Only unresponsive processes should be ended.\nAre you sure to continue?")));
@@ -151,8 +151,6 @@ ProcessDialog::ProcessDialog(QList<bool> columnShowOrHideFlags, int sortIndex, b
     killProcessDialog->addButton(QString(tr("Cancel")), false);
     killProcessDialog->addButton(QString(tr("Kill process")), true);
     connect(killProcessDialog, &MyDialog::buttonClicked, this, &ProcessDialog::killDialogButtonClicked);
-
-    actionPids = new QList<pid_t>();
 
     m_menu = new QMenu();
     m_stopAction = new QAction(tr("Stop process"), this);
@@ -197,8 +195,6 @@ ProcessDialog::ProcessDialog(QList<bool> columnShowOrHideFlags, int sortIndex, b
 //    m_menu->addMenu(m_priorityMenu);
     m_menu->addSeparator();
     m_menu->addAction(m_propertiyAction);
-
-    connect(m_processListWidget, &ProcessListWidget::rightBtnClickedItems, this, &ProcessDialog::popupMenu, Qt::QueuedConnection);
 
     glibtop_init();
     this->num_cpus = glibtop_get_sysinfo()->ncpu;
@@ -305,7 +301,6 @@ void startRenice(QString command, int value, pid_t pid)
     QProcess::startDetached(rootCommand(command, value, pid));
 }
 
-
 void ProcessDialog::changeProcPriority(int nice)
 {
     if (nice == 32) {
@@ -348,8 +343,8 @@ void ProcessDialog::changeProcPriority(int nice)
                 QString command = QString("renice %1 %1").arg(nice).arg(cur_pid);
                 QFile file("/usr/bin/pkexec");
                 if(file.exists()) {
-                    gint *exit_status = NULL;
-                    GError *error = NULL;
+//                    gint *exit_status = NULL;
+//                    GError *error = NULL;
                     QString cmd = QString("pkexec --disable-internal-agent /usr/lib/gnome-system-monitor/gnome-system-monitor/gsm-%1").arg(command);//gsm-renice
                     qDebug() << "cmd="<<cmd;
                     //                    if (!g_spawn_command_line_sync(command_line, NULL, NULL, exit_status, &error)) {

@@ -335,38 +335,6 @@ void ProcessWorker::setProcData()
 
     info->unit = info->session = info->seat = NULL;
     get_process_systemd_info(info);
-
-
-    /*
-//    glibtop_proc_state procstate;
-    glibtop_proc_uid procuid;
-//    glibtop_proc_time proctime;
-//    glibtop_get_proc_state (&procstate, pid);
-//    info->status = procstate.state;
-
-    glibtop_get_proc_uid (&procuid, pid);
-//    glibtop_get_proc_time (&proctime, pid);
-
-
-    glibtop_proc_mem procmem;
-    glibtop_get_proc_mem(&procmem, pid);
-    info->mem = procmem.resident - procmem.share;
-
-    glibtop_get_proc_state (&procstate, pid);
-    info->status = procstate.state;
-
-    this->set_user(procstate.uid);
-
-    guint64 difference = proctime.rtime - info->cpu_time;
-    if (difference > 0)
-        info->status = GLIBTOP_PROCESS_RUNNING;
-    info->pcpu = difference * 100 / this->cpu_total_time;
-    info->pcpu = MIN(info->pcpu, 100);
-    //CPU 百分比使用 Solaris 模式，工作在“Solaris 模式”，其中任务的 CPU 使用量将被除以总的 CPU 数目。否则它将工作在“Irix 模式”。
-    info->pcpu *= this->num_cpus;
-
-    ProcessWorker::cpu_times[info->pid] = info->cpu_time = proctime.rtime;
-    info->nice = procuid.nice;*/
 }
 
 
