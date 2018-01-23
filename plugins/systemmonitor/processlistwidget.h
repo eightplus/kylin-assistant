@@ -40,6 +40,8 @@ public:
     ~ProcessListWidget();
     ProcessListWidget(QList<bool> toBeDisplayedColumns, QWidget *parent = 0);
 
+    void readyToHideScrollbar();
+
     void setProcessSortFunctions(QList<SortFunction> *list, int sortColumn=-1, bool isSort=false);
     void setSearchFunction(SearchFunction func);
     void addItems(QList<ProcessListItem*> items);
@@ -72,7 +74,7 @@ public:
     QList<int> getTitleItemsWidths();
 
     int setOffset(int offset);
-    void startScrollbarHideTimer();
+
     bool mouseAtScrollArea(int x);
     bool mouseAtTitleArea(int y);
 
@@ -122,12 +124,8 @@ private:
     int m_titlePadding;
     int m_titlePressColumn;
 
-    QPixmap m_downArrowHoverPixmap;
-    QPixmap m_downArrowNormalPixmap;
-    QPixmap m_downArrowPressPixmap;
-    QPixmap m_upArrowHoverPixmap;
-    QPixmap m_upArrowNormalPixmap;
-    QPixmap m_upArrowPressPixmap;
+    QPixmap m_downArrowPixmap;
+    QPixmap m_upArrowPixmap;
 };
 
 #endif // PROCESSLISTWIDGET_H

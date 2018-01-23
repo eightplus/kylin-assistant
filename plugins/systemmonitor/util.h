@@ -24,6 +24,7 @@
 #include <QObject>
 #include <QPainter>
 
+#define MONITOR_TITLE_WIDGET_HEIGHT 77
 #define TITLE_WIDGET_HEIGHT 39
 
 using std::string;

@@ -35,7 +35,7 @@ public:
     
     bool isSameItem(ProcessListItem *item);
     void drawBackground(QRect rect, QPainter *painter, int index, bool isSelect);
-    void drawForeground(QRect rect, QPainter *painter, int column, int index, bool isSelect);
+    void drawForeground(QRect rect, QPainter *painter, int column, int index, bool isSelect, bool isSeparator);
     static bool doSearch(const ProcessListItem *item, QString text);
     static bool sortByName(const ProcessListItem *item1, const ProcessListItem *item2, bool descendingSort);
     static bool sortByUser(const ProcessListItem *item1, const ProcessListItem *item2, bool descendingSort);

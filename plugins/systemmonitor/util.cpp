@@ -260,7 +260,8 @@ QString getNiceLevel(int nice)
 void setFontSize(QPainter &painter, int textSize)
 {
     QFont font = painter.font() ;
-    font.setPointSize(textSize);
+    font.setPixelSize(textSize);
+//    font.setPointSize(textSize);
     painter.setFont(font);
 }
 

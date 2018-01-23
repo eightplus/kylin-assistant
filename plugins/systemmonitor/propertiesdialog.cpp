@@ -19,7 +19,7 @@
 
 #include "propertiesdialog.h"
 #include "processworker.h"
-#include "../widgets/myimagebutton.h"
+#include "../widgets/mytristatebutton.h"
 #include "util.h"
 
 #include <QApplication>
@@ -60,9 +60,9 @@ PropertiesDialog::PropertiesDialog(QWidget *parent, pid_t processId) : QDialog(p
     startTimeLayout = new QHBoxLayout();
     startTimeLayout->setContentsMargins(0, 0, 0, 0);
 
-    closeButton = new MyImageButton();
+    closeButton = new MyTristateButton();
     closeButton->setObjectName("CloseButton");
-    connect(closeButton, &MyImageButton::clicked, this, [=] {
+    connect(closeButton, &MyTristateButton::clicked, this, [=] {
         this->close();
     });
 

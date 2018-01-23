@@ -42,42 +42,37 @@ void ProcessListItem::drawBackground(QRect rect, QPainter *painter, int index, b
     path.addRect(QRectF(rect));
 
     if (isSelect) {
-        painter->setOpacity(1.0);
-        painter->fillPath(path, QColor("#3f96e4"));
+        painter->setOpacity(0.5);//0.1
+        painter->fillPath(path, QColor("#2bb6ea"));
     }
     else {
-        painter->setOpacity(0.02);
+        painter->setOpacity(1);
         if (index % 2 == 0) {
-            painter->fillPath(path, QColor("#000000"));
+            painter->fillPath(path, QColor("#ffffff"));
         } else {
             painter->fillPath(path, QColor("#e9eef0"));
         }
     }
 }
 
-void ProcessListItem::drawForeground(QRect rect, QPainter *painter, int column, int, bool isSelect)
+void ProcessListItem::drawForeground(QRect rect, QPainter *painter, int column, int, bool isSelect, bool isSeparator)
 {
-    setFontSize(*painter, 9);
+    setFontSize(*painter, 12);
     painter->setOpacity(1);
-    if (isSelect) {
-        painter->setPen(QPen(QColor("#ffffff")));
-    } else {
-        painter->setPen(QPen(QColor("#000000")));
-    }
+    painter->setPen(QPen(QColor("#000000")));
     if (column == 0) {
         painter->drawPixmap(QRect(rect.x() + padding, rect.y() + (rect.height() - iconSize) / 2, iconSize, iconSize), m_data.iconPixmap);
         QString name = m_data.processName;
         if (m_data.m_status == tr("Stopped")) {//已停止
-            painter->setPen(QPen(QColor("#FA7053")));
+            painter->setPen(QPen(QColor("#fff4c4")));
             name = QString("(%1) %2").arg(tr("Suspend")).arg(m_data.processName);
         }
         else if (m_data.m_status == tr("Zombie")) {//僵死
-            painter->setPen(QPen(QColor("#808080")));
+            painter->setPen(QPen(QColor("#fca71d")));
             name = QString("(%1) %2").arg(tr("No response")).arg(m_data.processName);
-
         }
         else if (m_data.m_status == tr("Uninterruptible")) {//不可中断
-            painter->setPen(QPen(QColor("#A52A2A")));
+            painter->setPen(QPen(QColor("#f9eca8")));
             name = QString("(%1) %2").arg(tr("Uninterruptible")).arg(m_data.processName);
         }
         else {//Sleeping 睡眠中  Running 运行中
@@ -87,22 +82,61 @@ void ProcessListItem::drawForeground(QRect rect, QPainter *painter, int column, 
         QFontMetrics fm(font);
         QString procName = fm.elidedText(name, Qt::ElideRight, nameMaxWidth);
         painter->drawText(QRect(rect.x() + iconSize + padding * 2, rect.y(), nameMaxWidth, rect.height()), Qt::AlignLeft | Qt::AlignVCenter, procName);
+        if (isSeparator) {
+            painter->setOpacity(0.8);
+            QPainterPath separatorPath;
+            separatorPath.addRect(QRectF(rect.x() + rect.width() - 1, rect.y(), 1, rect.height()));
+            painter->fillPath(separatorPath, QColor("#e0e0e0"));
+        }
     }
     else if (column == 1) {
         if (!m_data.user.isEmpty()) {
             painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignCenter, m_data.user);
+        }
+        if (isSeparator) {
+            painter->setOpacity(0.8);
+            QPainterPath separatorPath;
+            separatorPath.addRect(QRectF(rect.x() + rect.width() - 1, rect.y(), 1, rect.height()));
+            painter->fillPath(separatorPath, QColor("#e0e0e0"));
         }
     }
     else if (column == 2) {
         if (!m_data.m_status.isEmpty()) {
             painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignCenter, m_data.m_status);
         }
+        if (isSeparator) {
+            painter->setOpacity(0.8);
+            QPainterPath separatorPath;
+            separatorPath.addRect(QRectF(rect.x() + rect.width() - 1, rect.y(), 1, rect.height()));
+            painter->fillPath(separatorPath, QColor("#e0e0e0"));
+        }
     }
     else if (column == 3) {
+        if (m_data.cpu < 10) {
+            painter->setPen(QPen(QColor("#fff4c4")));
+        }
+        else if (m_data.cpu < 33) {
+            painter->setPen(QPen(QColor("#f9eca8")));
+        }
+        else {
+            painter->setPen(QPen(QColor("#fca71d")));
+        }
         painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignCenter, QString("%1%").arg(m_data.cpu));
+        if (isSeparator) {
+            painter->setOpacity(0.8);
+            QPainterPath separatorPath;
+            separatorPath.addRect(QRectF(rect.x() + rect.width() - 1, rect.y(), 1, rect.height()));
+            painter->fillPath(separatorPath, QColor("#e0e0e0"));
+        }
     }
     else if (column == 4) {
         painter->drawText(QRect(rect.x(), rect.y(), rect.width() - padding, rect.height()), Qt::AlignCenter, QString("%1").arg(m_data.pid));
+        if (isSeparator) {
+            painter->setOpacity(0.8);
+            QPainterPath separatorPath;
+            separatorPath.addRect(QRectF(rect.x() + rect.width() - 1, rect.y(), 1, rect.height()));
+            painter->fillPath(separatorPath, QColor("#e0e0e0"));
+        }
     }
     else if (column == 5) {
         int commandMaxWidth = rect.width();
@@ -110,15 +144,43 @@ void ProcessListItem::drawForeground(QRect rect, QPainter *painter, int column, 
         QFontMetrics fm(font);
         QString command = fm.elidedText(m_data.commandLine, Qt::ElideRight, commandMaxWidth);
         painter->drawText(QRect(rect.x(), rect.y(), commandMaxWidth, rect.height()), Qt::AlignLeft | Qt::AlignVCenter, command);
+        if (isSeparator) {
+            painter->setOpacity(0.8);
+            QPainterPath separatorPath;
+            separatorPath.addRect(QRectF(rect.x() + rect.width() - 1, rect.y(), 1, rect.height()));
+            painter->fillPath(separatorPath, QColor("#e0e0e0"));
+        }
     }
     else if (column == 6) {
         if (m_data.m_memory > 0) {
+            painter->setOpacity(1);
             QString memory = QString(g_format_size_full(m_data.m_memory, G_FORMAT_SIZE_IEC_UNITS));
+            if (m_data.m_memory < 102400000) {//<100M
+                painter->setPen(QPen(QColor("#fff4c4")));
+            }
+            else if (m_data.m_memory < 1024000000) {//1G
+                painter->setPen(QPen(QColor("#f9eca8")));
+            }
+            else {
+                painter->setPen(QPen(QColor("#fca71d")));
+            }
             painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignCenter, memory);
+        }
+        if (isSeparator) {
+            painter->setOpacity(0.8);
+            QPainterPath separatorPath;
+            separatorPath.addRect(QRectF(rect.x() + rect.width() - 1, rect.y(), 1, rect.height()));
+            painter->fillPath(separatorPath, QColor("#e0e0e0"));
         }
     }
     else if (column == 7) {
         painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignLeft | Qt::AlignVCenter, getNiceLevel(m_data.m_nice));
+        if (isSeparator) {
+            painter->setOpacity(0.8);
+            QPainterPath separatorPath;
+            separatorPath.addRect(QRectF(rect.x() + rect.width() - 1, rect.y(), 1, rect.height()));
+            painter->fillPath(separatorPath, QColor("#e0e0e0"));
+        }
     }
 }
 

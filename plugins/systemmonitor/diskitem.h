@@ -26,7 +26,7 @@
 #include <QMapNode>
 #include <QLabel>
 
-class MyImageButton;
+class MyTristateButton;
 
 class DiskItem : public QFrame
 {
@@ -63,7 +63,7 @@ private:
     QLabel *m_availLabel;
     QLabel *m_usedLabel;
     QLabel *m_percentageLabel;
-    MyImageButton *m_detailBtn;
+    MyTristateButton *m_detailBtn;
     bool m_isHead;
     bool m_isTail;
 };

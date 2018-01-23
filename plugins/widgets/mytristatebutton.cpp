@@ -1,21 +1,20 @@
-#include "myimagebutton.h"
+#include "mytristatebutton.h"
 
 #include <QMouseEvent>
 #include <QEvent>
 
-
-MyImageButton::MyImageButton(QWidget *parent)
+MyTristateButton::MyTristateButton(QWidget *parent)
     : QLabel(parent)
 {
     setCheckable(false);//setCheckable(true);
     updateIcon();
 }
 
-MyImageButton::~MyImageButton()
+MyTristateButton::~MyTristateButton()
 {
 }
 
-void MyImageButton::enterEvent(QEvent *event)
+void MyTristateButton::enterEvent(QEvent *event)
 {
     setCursor(Qt::PointingHandCursor);
 
@@ -27,7 +26,7 @@ void MyImageButton::enterEvent(QEvent *event)
     //QLabel::enterEvent(event);
 }
 
-void MyImageButton::leaveEvent(QEvent *event)
+void MyTristateButton::leaveEvent(QEvent *event)
 {
     if (!m_isChecked){
         setState(Normal);
@@ -37,7 +36,7 @@ void MyImageButton::leaveEvent(QEvent *event)
     //QLabel::leaveEvent(event);
 }
 
-void MyImageButton::mousePressEvent(QMouseEvent *event)
+void MyTristateButton::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() != Qt::LeftButton)
         return;
@@ -48,7 +47,7 @@ void MyImageButton::mousePressEvent(QMouseEvent *event)
     //QLabel::mousePressEvent(event);
 }
 
-void MyImageButton::mouseReleaseEvent(QMouseEvent *event)
+void MyTristateButton::mouseReleaseEvent(QMouseEvent *event)
 {
     if (!rect().contains(event->pos()))
         return;
@@ -71,14 +70,14 @@ void MyImageButton::mouseReleaseEvent(QMouseEvent *event)
         emit clicked();
 }
 
-void MyImageButton::mouseMoveEvent(QMouseEvent *event)
+void MyTristateButton::mouseMoveEvent(QMouseEvent *event)
 {
     if (!m_isCheckable && !rect().contains(event->pos())) {
         setState(Normal);
     }
 }
 
-void MyImageButton::updateIcon()
+void MyTristateButton::updateIcon()
 {
     switch (m_state) {
     case Hover:     if (!m_hoverPic.isEmpty()) setPixmap(QPixmap(m_hoverPic));      break;
@@ -88,11 +87,9 @@ void MyImageButton::updateIcon()
     }
 
     setAlignment(Qt::AlignCenter);
-
-    emit stateChanged();
 }
 
-void MyImageButton::setState(MyImageButton::ButtonState state)
+void MyTristateButton::setState(MyTristateButton::ButtonState state)
 {
     if (m_state == state)
         return;
@@ -102,7 +99,7 @@ void MyImageButton::setState(MyImageButton::ButtonState state)
     updateIcon();
 }
 
-void MyImageButton::setCheckable(bool flag)
+void MyTristateButton::setCheckable(bool flag)
 {
     m_isCheckable = flag;
 
@@ -111,7 +108,7 @@ void MyImageButton::setCheckable(bool flag)
     }
 }
 
-void MyImageButton::setChecked(bool flag)
+void MyTristateButton::setChecked(bool flag)
 {
     if (m_isCheckable == false){
         return;
@@ -125,41 +122,41 @@ void MyImageButton::setChecked(bool flag)
     }
 }
 
-bool MyImageButton::isChecked()
+bool MyTristateButton::isChecked()
 {
     return m_isChecked;
 }
 
-bool MyImageButton::isCheckable()
+bool MyTristateButton::isCheckable()
 {
     return m_isCheckable;
 }
 
-void MyImageButton::setNormalPic(const QString &normalPicPixmap)
+void MyTristateButton::setNormalPic(const QString &normalPicPixmap)
 {
     m_normalPic = normalPicPixmap;
     updateIcon();
 }
 
-void MyImageButton::setHoverPic(const QString &hoverPicPixmap)
+void MyTristateButton::setHoverPic(const QString &hoverPicPixmap)
 {
     m_hoverPic = hoverPicPixmap;
     updateIcon();
 }
 
-void MyImageButton::setPressPic(const QString &pressPicPixmap)
+void MyTristateButton::setPressPic(const QString &pressPicPixmap)
 {
     m_pressPic = pressPicPixmap;
     updateIcon();
 }
 
-void MyImageButton::setCheckedPic(const QString &checkedPicPixmap)
+void MyTristateButton::setCheckedPic(const QString &checkedPicPixmap)
 {
     m_checkedPic = checkedPicPixmap;
     updateIcon();
 }
 
-MyImageButton::ButtonState MyImageButton::getButtonState() const
+MyTristateButton::ButtonState MyTristateButton::getButtonState() const
 {
     return m_state;
 }

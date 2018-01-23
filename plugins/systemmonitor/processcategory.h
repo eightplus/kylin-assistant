@@ -17,14 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #ifndef PROCESSCATEGORY_H
 #define PROCESSCATEGORY_H
 
 #include <QWidget>
 #include <QHBoxLayout>
 
-class MyImageButton;
+class MyHoverButton;
 
 class ProcessCategory : public QWidget
 {
@@ -42,9 +41,9 @@ private:
     int height;
     int activeIndex;
     QHBoxLayout *layout = nullptr;
-    MyImageButton *activeProcessButton = nullptr;
-    MyImageButton *userProcessButton = nullptr;
-    MyImageButton *allProcessButton = nullptr;
+    MyHoverButton *activeProcessButton = nullptr;
+    MyHoverButton *userProcessButton = nullptr;
+    MyHoverButton *allProcessButton = nullptr;
 };
 
 #endif // PROCESSCATEGORY_H

@@ -20,6 +20,7 @@
 #include "processdialog.h"
 #include "propertiesdialog.h"
 #include "processdata.h"
+#include "processcategory.h"
 #include "util.h"
 
 #include <QStringList>
@@ -32,6 +33,7 @@
 #include <QHeaderView>
 #include <QDesktopServices>
 #include <QApplication>
+#include <QHBoxLayout>
 #include <QDebug>
 #include <QDir>
 #include <QList>
@@ -103,14 +105,15 @@ ProcessDialog::ProcessDialog(QList<bool> toBeDisplayedColumns, int currentSortIn
 
     actionPids = new QList<pid_t>();
 
-    QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->setContentsMargins(0, 0, 0, 0);
+    m_layout = new QVBoxLayout(this);
+    m_layout->setContentsMargins(0, 0, 0, 0);
+    m_layout->setSpacing(0);
 
     m_processListWidget = new ProcessListWidget(toBeDisplayedColumns);
     connect(m_processListWidget, SIGNAL(changeColumnVisible(int,bool,QList<bool>)), this, SIGNAL(changeColumnVisible(int,bool,QList<bool>)));
     connect(m_processListWidget, SIGNAL(changeSortStatus(int,bool)), this, SIGNAL(changeSortStatus(int,bool)));
     connect(m_processListWidget, &ProcessListWidget::rightMouseClickedItems, this, &ProcessDialog::popupMenu, Qt::QueuedConnection);
-    layout->addWidget(m_processListWidget);
+    m_layout->addWidget(m_processListWidget);
 
     whose_processes = "user";
     proSettings->beginGroup("PROCESS");
@@ -127,6 +130,24 @@ ProcessDialog::ProcessDialog(QList<bool> toBeDisplayedColumns, int currentSortIn
     else {
         tabIndex = 1;
     }
+
+
+    QWidget *w = new QWidget;
+    w->setFixedHeight(50);
+    m_categoryLayout = new QHBoxLayout(w);
+    m_categoryLayout->setContentsMargins(0, 0, 6, 3);
+    m_categoryLayout->setSpacing(10);
+    processCategory = new ProcessCategory(tabIndex);
+    connect(processCategory, SIGNAL(activeWhoseProcessList(int)), this, SLOT(onActiveWhoseProcess(int)));
+    m_categoryLayout->addWidget(processCategory, 0, Qt::AlignRight);
+    m_layout->addWidget(w);
+
+
+
+
+
+
+
 
     QList<SortFunction> *sortFuncList = new QList<SortFunction>();
     sortFuncList->append(&ProcessListItem::sortByName);
@@ -218,7 +239,7 @@ ProcessDialog::~ProcessDialog()
         delete timer;
         timer = NULL;
     }
-
+    delete processCategory;
     delete endProcessDialog;
     delete killProcessDialog;
     delete m_processListWidget;
@@ -236,6 +257,14 @@ ProcessDialog::~ProcessDialog()
     delete m_propertiyAction;
     delete m_menu;
     delete actionPids;
+
+    QLayoutItem *child;
+    while ((child = m_categoryLayout->takeAt(0)) != 0) {
+        if (child->widget())
+            child->widget()->deleteLater();
+        delete child;
+    }
+    delete m_layout;
 }
 
 void ProcessDialog::displayAllProcess()

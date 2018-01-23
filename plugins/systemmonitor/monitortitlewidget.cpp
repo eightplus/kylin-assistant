@@ -18,23 +18,27 @@
  */
 
 #include "monitortitlewidget.h"
-#include "../widgets/myimagebutton.h"
-#include "../widgets/mytipimagebutton.h"
+#include "../widgets/mytristatebutton.h"
+#include "../widgets/myunderlinebutton.h"
+#include "../widgets/mysearchedit.h"
 #include "util.h"
 
 #include <QApplication>
 #include <QDebug>
+#include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QPushButton>
 #include <QPainter>
 #include <QResizeEvent>
 #include <QStyleFactory>
 
-MonitorTitleWidget::MonitorTitleWidget(QWidget *parent)
+MonitorTitleWidget::MonitorTitleWidget(QSettings *settings, QWidget *parent)
     :QFrame(parent)
+    ,proSettings(settings)
 {
     installEventFilter(this);
     setMouseTracking(true);
-    setFixedHeight(TITLE_WIDGET_HEIGHT);
+    setFixedHeight(MONITOR_TITLE_WIDGET_HEIGHT);
 
     m_topBorderColor = QColor(255, 255, 255, 153);
     this->setAutoFillBackground(true);
@@ -42,25 +46,122 @@ MonitorTitleWidget::MonitorTitleWidget(QWidget *parent)
     palette.setColor(QPalette::Background, QColor("#0d87ca"));
     this->setPalette(palette);
 
+    m_searchTimer = new QTimer(this);
+    m_searchTimer->setSingleShot(true);
+    connect(m_searchTimer, SIGNAL(timeout()), this, SLOT(onRefreshSearchResult()));
+
     initWidgets();
 }
 
 MonitorTitleWidget::~MonitorTitleWidget()
 {
+    delete emptyLabel;
+    delete m_searchEdit;
+    delete m_cancelSearchBtn;
+
+    if (m_searchTimer) {
+        disconnect(m_searchTimer, SIGNAL(timeout()), this, SLOT(onRefreshSearchResult()));
+        if(m_searchTimer->isActive()) {
+            m_searchTimer->stop();
+        }
+        delete m_searchTimer;
+        m_searchTimer = nullptr;
+    }
+
     //Segmentation fault
     QLayoutItem *child;
-    while ((child = m_lLayout->takeAt(0)) != 0) {
+    while ((child = m_titleLeftLayout->takeAt(0)) != 0) {
         if (child->widget())
             child->widget()->deleteLater();
         delete child;
     }
-
-    while ((child = m_rLayout->takeAt(0)) != 0) {
+    while ((child = m_titleMiddleLayout->takeAt(0)) != 0) {
+        if (child->widget())
+            child->widget()->deleteLater();
+        delete child;
+    }
+    while ((child = m_titleRightLayout->takeAt(0)) != 0) {
+        if (child->widget())
+            child->widget()->deleteLater();
+        delete child;
+    }
+    while ((child = m_toolLeftLayout->takeAt(0)) != 0) {
+        if (child->widget())
+            child->widget()->deleteLater();
+        delete child;
+    }
+    while ((child = m_toolRightLayout->takeAt(0)) != 0) {
+        if (child->widget())
+            child->widget()->deleteLater();
+        delete child;
+    }
+    while ((child = m_topLayout->takeAt(0)) != 0) {
+        if (child->widget())
+            child->widget()->deleteLater();
+        delete child;
+    }
+    while ((child = m_bottomLayout->takeAt(0)) != 0) {
         if (child->widget())
             child->widget()->deleteLater();
         delete child;
     }
     delete m_layout;
+}
+
+bool MonitorTitleWidget::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type() == QEvent::KeyPress) {
+        if (obj == this) {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+            if (keyEvent->key() == Qt::Key_Escape) {
+                m_searchEdit->clearEdit();
+                emit canelSearchEditFocus();
+            }
+        }
+        else if (obj == m_searchEdit->getLineEdit()) {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+            if (keyEvent->key() == Qt::Key_Tab) {
+                emit canelSearchEditFocus();
+            }
+        }
+    }
+
+    return QFrame::eventFilter(obj, event);
+}
+
+void MonitorTitleWidget::setSearchEditFocus()
+{
+    if (m_searchEdit->text() != "") {
+        m_searchEdit->getLineEdit()->setFocus();
+    } else {
+        m_searchEdit->setFocus();
+    }
+}
+
+void MonitorTitleWidget::onRefreshSearchResult()
+{
+    if (m_searchEdit->text() == searchTextCache) {
+        emit this->searchSignal(searchTextCache);
+    }
+}
+
+void MonitorTitleWidget::handleSearchTextChanged()
+{
+    searchTextCache = m_searchEdit->text();
+
+    this->m_cancelSearchBtn->setVisible(!searchTextCache.isEmpty());
+
+    if (m_searchTimer->isActive()) {
+        m_searchTimer->stop();
+    }
+    m_searchTimer->start(300);
+}
+
+void MonitorTitleWidget::onCancelSearchBtnClicked(bool b)
+{
+    this->m_cancelSearchBtn->setVisible(false);
+    m_searchEdit->clearEdit();
+    emit canelSearchEditFocus();
 }
 
 void MonitorTitleWidget::mouseDoubleClickEvent(QMouseEvent *e)
@@ -77,7 +178,6 @@ void MonitorTitleWidget::mouseDoubleClickEvent(QMouseEvent *e)
 
 void MonitorTitleWidget::paintEvent(QPaintEvent *e)
 {
-
     QFrame::paintEvent(e);
 
     QPainter p(this);
@@ -92,46 +192,52 @@ void MonitorTitleWidget::paintEvent(QPaintEvent *e)
     p.drawPath(tPath);
 }
 
-void MonitorTitleWidget::initLeftContent()
+void MonitorTitleWidget::initTitlebarLeftContent()
 {
     QWidget *w = new QWidget;
-    m_lLayout = new QHBoxLayout(w);
-    m_lLayout->setContentsMargins(6, 0, 0, 0);
-    m_lLayout->setSpacing(0);
+    m_titleLeftLayout = new QHBoxLayout(w);
+    m_titleLeftLayout->setContentsMargins(6, 0, 0, 0);
+    m_titleLeftLayout->setSpacing(0);
 
-    QLabel *label = new QLabel;
-    label->setStyleSheet("QLabel{border-image: url(://res/kylin-assistant.png);}");
-    label->setFixedSize(24, 24);
-    m_lLayout->addWidget(label);
+    emptyLabel = new QLabel;
+    emptyLabel->setStyleSheet("QLabel{background-color:transparent;}");
+    m_titleLeftLayout->addWidget(emptyLabel);
+
+    m_topLayout->addWidget(w, 1, Qt::AlignLeft);
+}
+
+void MonitorTitleWidget::initTitlebarMiddleContent()
+{
+    QWidget *w = new QWidget;
+    m_titleMiddleLayout = new QHBoxLayout(w);
+    m_titleMiddleLayout->setContentsMargins(0, 0, 0, 0);
 
     QLabel *titleLabel = new QLabel;
     titleLabel->setStyleSheet("QLabel{background-color:transparent;color:#ffffff; font-size:12px;}");
     titleLabel->setText(tr("Kylin System Monitor"));
-    m_lLayout->addSpacing(5);
-    m_lLayout->addWidget(titleLabel);
-
-    m_layout->addWidget(w, 1, Qt::AlignLeft);
+    m_titleMiddleLayout->addWidget(titleLabel);
+    m_topLayout->addWidget(w);
 }
 
-void MonitorTitleWidget::initRightContent()
+void MonitorTitleWidget::initTitlebarRightContent()
 {
     QWidget *w = new QWidget;
-    m_rLayout = new QHBoxLayout(w);
-    m_rLayout->setContentsMargins(0, 0, 6, 0);
-    m_rLayout->setSpacing(0);
+    m_titleRightLayout = new QHBoxLayout(w);
+    m_titleRightLayout->setContentsMargins(0, 0, 1, 0);
+    m_titleRightLayout->setSpacing(0);
 
-    m_layout->addWidget(w, 1, Qt::AlignRight);
+    m_topLayout->addWidget(w, 1, Qt::AlignRight);
 
-    MyImageButton *minBtn = new MyImageButton;
+    MyTristateButton *minBtn = new MyTristateButton;
     minBtn->setObjectName("MinButton");
-    connect(minBtn, &MyImageButton::clicked, this, [=] {
+    connect(minBtn, &MyTristateButton::clicked, this, [=] {
         if (parentWidget() && parentWidget()->parentWidget()) {
             parentWidget()->parentWidget()->showMinimized();
         }
     });
-    MyImageButton *maxBtn = new MyImageButton;
+    MyTristateButton *maxBtn = new MyTristateButton;
     maxBtn->setObjectName("MaxButton");
-    connect(maxBtn, &MyImageButton::clicked, this, [=] {
+    connect(maxBtn, &MyTristateButton::clicked, this, [=] {
         if (window()->isMaximized()) {
             window()->showNormal();
             maxBtn->setObjectName("MaxButton");
@@ -148,24 +254,126 @@ void MonitorTitleWidget::initRightContent()
             maxBtn->setObjectName("MaxButton");
         }
     });
-    MyImageButton *closeBtn = new MyImageButton;
+    MyTristateButton *closeBtn = new MyTristateButton;
     closeBtn->setObjectName("CloseButton");
-    connect(closeBtn, &MyImageButton::clicked, this, [=] {
+    connect(closeBtn, &MyTristateButton::clicked, this, [=] {
         window()->close();
     });
 
-    m_rLayout->addWidget(minBtn);
-    m_rLayout->addWidget(maxBtn);
-    m_rLayout->addWidget(closeBtn);
+    m_titleRightLayout->addWidget(minBtn);
+    m_titleRightLayout->addWidget(maxBtn);
+    m_titleRightLayout->addWidget(closeBtn);
+}
+
+void MonitorTitleWidget::initToolbarLeftContent()
+{
+    QWidget *w = new QWidget;
+    w->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    m_toolLeftLayout = new QHBoxLayout(w);
+    m_toolLeftLayout->setContentsMargins(0, 0, 0, 0);
+    m_toolLeftLayout->setSpacing(0);
+
+    MyUnderLineButton *processButton = new MyUnderLineButton();
+    processButton->setName(tr("Processes"));
+    processButton->setChecked(true);
+
+    MyUnderLineButton *resourcesButton = new MyUnderLineButton();
+    resourcesButton->setName(tr("Resources"));
+    resourcesButton->setChecked(false);
+
+    MyUnderLineButton *disksButton = new MyUnderLineButton();
+    disksButton->setName(tr("File Systems"));
+    disksButton->setChecked(false);
+
+    connect(processButton, &MyUnderLineButton::clicked, this, [=] {
+        emit this->changePage(0);
+        processButton->setChecked(true);
+        resourcesButton->setChecked(false);
+        disksButton->setChecked(false);
+        if (!m_searchEdit->isVisible())
+            m_searchEdit->setVisible(true);
+    });
+    connect(resourcesButton, &MyUnderLineButton::clicked, this, [=] {
+        emit this->changePage(1);
+        processButton->setChecked(false);
+        resourcesButton->setChecked(true);
+        disksButton->setChecked(false);
+        if (m_searchEdit->isVisible())
+            m_searchEdit->setVisible(false);
+        m_searchEdit->clearEdit();
+        emit canelSearchEditFocus();
+    });
+    connect(disksButton, &MyUnderLineButton::clicked, this, [=] {
+        emit this->changePage(2);
+        processButton->setChecked(false);
+        resourcesButton->setChecked(false);
+        disksButton->setChecked(true);
+        if (m_searchEdit->isVisible())
+            m_searchEdit->setVisible(false);
+        m_searchEdit->clearEdit();
+        emit canelSearchEditFocus();
+    });
+
+    m_toolLeftLayout->setContentsMargins(0, 0, 0, 0);
+    m_toolLeftLayout->setSpacing(10);
+    m_toolLeftLayout->addStretch();
+    m_toolLeftLayout->addWidget(processButton);
+    m_toolLeftLayout->addWidget(resourcesButton);
+    m_toolLeftLayout->addWidget(disksButton);
+    m_toolLeftLayout->addStretch();
+
+//    m_bottomLayout->addWidget(w);
+    m_bottomLayout->addWidget(w, 1, Qt::AlignLeft);
+}
+
+void MonitorTitleWidget::initToolbarRightContent()
+{
+    QWidget *w = new QWidget;
+    m_toolRightLayout = new QHBoxLayout(w);
+    m_toolRightLayout->setContentsMargins(0, 3, 6, 10);
+    m_toolRightLayout->setSpacing(5);
+
+    m_cancelSearchBtn = new QPushButton;
+    m_cancelSearchBtn->setStyleSheet("QPushButton{background-color:transparent;text-align:center;font-family: 方正黑体_GBK;font-size:11px;color:#ffffff;}QPushButton:hover{color:#000000;}");
+    m_cancelSearchBtn->setText(tr("Cancel"));
+    m_cancelSearchBtn->setFocusPolicy(Qt::NoFocus);
+    m_cancelSearchBtn->setFixedSize(46, 25);
+    m_cancelSearchBtn->setVisible(false);
+    connect(m_cancelSearchBtn, SIGNAL(clicked(bool)), SLOT(onCancelSearchBtnClicked(bool)));
+    connect(m_searchEdit, &MySearchEdit::textChanged, this, &MonitorTitleWidget::handleSearchTextChanged, Qt::QueuedConnection);
+    m_toolRightLayout->addWidget(m_searchEdit);
+    m_toolRightLayout->addWidget(m_cancelSearchBtn);
+    m_bottomLayout->addWidget(w, 1, Qt::AlignRight);
 }
 
 void MonitorTitleWidget::initWidgets()
 {
-    m_layout = new QHBoxLayout(this);
+    m_searchEdit = new MySearchEdit();
+    m_searchEdit->setPlaceHolder(tr("Enter the relevant info of process"));
+    m_searchEdit->setFixedSize(222, 30);
+    m_searchEdit->getLineEdit()->installEventFilter(this);
+
+    m_layout = new QVBoxLayout(this);
     m_layout->setContentsMargins(0, 0, 0, 0);
     m_layout->setSpacing(0);
+
+    QWidget *topWidget = new QWidget;
+    m_topLayout = new QHBoxLayout(topWidget);
+    m_topLayout->setContentsMargins(0, 0, 0, 0);
+    m_topLayout->setSpacing(0);
+    m_layout->addWidget(topWidget, 0, Qt::AlignTop);
+
+    QWidget *bottomWidget = new QWidget;
+    m_bottomLayout = new QHBoxLayout(bottomWidget);
+    m_bottomLayout->setContentsMargins(0, 0, 0, 0);
+    m_bottomLayout->setSpacing(0);
+    m_layout->addWidget(bottomWidget, 0, Qt::AlignBottom);
+
     this->setLayout(m_layout);
 
-    initLeftContent();
-    initRightContent();
+    initTitlebarLeftContent();
+    initTitlebarMiddleContent();
+    initTitlebarRightContent();
+    initToolbarLeftContent();
+    initToolbarRightContent();
 }

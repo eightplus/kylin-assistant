@@ -18,7 +18,7 @@
  */
 
 #include "processcategory.h"
-#include "../widgets/myimagebutton.h"
+#include "../widgets/myhoverbutton.h"
 
 ProcessCategory::ProcessCategory(int tabIndex, QWidget *parent)
     : QWidget(parent)
@@ -32,17 +32,12 @@ ProcessCategory::ProcessCategory(int tabIndex, QWidget *parent)
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
 
-    activeProcessButton = new MyImageButton(this);
-    activeProcessButton->setCheckable(true);
-    activeProcessButton->setObjectName("ActiveProcessBtn");
-
-    userProcessButton = new MyImageButton(this);
-    userProcessButton->setCheckable(true);
-    userProcessButton->setObjectName("UserProcessBtn");
-
-    allProcessButton = new MyImageButton(this);
-    allProcessButton->setCheckable(true);
-    allProcessButton->setObjectName("AllProcessBtn");
+    activeProcessButton = new MyHoverButton(this);
+    activeProcessButton->setPicture(":/res/active_proc.png");
+    userProcessButton = new MyHoverButton(this);
+    userProcessButton->setPicture(":/res/user_proc.png");
+    allProcessButton = new MyHoverButton(this);
+    allProcessButton->setPicture(":/res/all_proc.png");
 
     if (activeIndex == 0) {
         activeProcessButton->setChecked(true);
@@ -60,21 +55,21 @@ ProcessCategory::ProcessCategory(int tabIndex, QWidget *parent)
         allProcessButton->setChecked(false);
     }
 
-    connect(activeProcessButton, &MyImageButton::clicked, this, [=] {
+    connect(activeProcessButton, &MyHoverButton::clicked, this, [=] {
         activeIndex = 0;
         emit this->activeWhoseProcessList(activeIndex);
         activeProcessButton->setChecked(true);
         userProcessButton->setChecked(false);
         allProcessButton->setChecked(false);
     });
-    connect(userProcessButton, &MyImageButton::clicked, this, [=] {
+    connect(userProcessButton, &MyHoverButton::clicked, this, [=] {
         activeIndex = 1;
         emit this->activeWhoseProcessList(activeIndex);
         activeProcessButton->setChecked(false);
         userProcessButton->setChecked(true);
         allProcessButton->setChecked(false);
     });
-    connect(allProcessButton, &MyImageButton::clicked, this, [=] {
+    connect(allProcessButton, &MyHoverButton::clicked, this, [=] {
         activeIndex = 2;
         emit this->activeWhoseProcessList(activeIndex);
         activeProcessButton->setChecked(false);

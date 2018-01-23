@@ -1,12 +1,12 @@
-#ifndef MYIMAGEBUTTON_H
-#define MYIMAGEBUTTON_H
+#ifndef MYTRISTATEBUTTON_H
+#define MYTRISTATEBUTTON_H
 
 #include <QObject>
 #include <QWidget>
 #include <QLabel>
 #include <QPixmap>
 
-class MyImageButton : public QLabel
+class MyTristateButton : public QLabel
 {
     Q_OBJECT
     Q_PROPERTY(QString normalPic READ getNormalPic WRITE setNormalPic DESIGNABLE true)
@@ -15,9 +15,9 @@ class MyImageButton : public QLabel
     Q_PROPERTY(QString checkedPic READ getCheckedPic WRITE setCheckedPic DESIGNABLE true)
 
 public:
-    MyImageButton(QWidget * parent=0);
+    MyTristateButton(QWidget * parent=0);
 
-    ~MyImageButton();
+    ~MyTristateButton();
 
     void setChecked(bool flag);
     void setCheckable(bool flag);
@@ -63,4 +63,4 @@ private:
     QString m_checkedPic;
 };
 
-#endif // MYIMAGEBUTTON_H
+#endif // MYTRISTATEBUTTON_H

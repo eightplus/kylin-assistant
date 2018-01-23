@@ -12,17 +12,23 @@
 MySearchEdit::MySearchEdit(QWidget *parent)
     : QFrame(parent)
 {
-    this->setStyleSheet("QFrame{border-radius: 4px;}");
-    initInsideFrame();
+//    this->setStyleSheet("QFrame{background-color:#00376a;border-radius:0px;}");
+    this->setStyleSheet("QFrame{background-color:rgb(0, 55, 106, 127);border-radius:0px;}");
 
     m_searchBtn = new QLabel;
-    m_searchBtn->setStyleSheet("QLabel{background-color:transparent;margin: 2 -1 2 4 px;border-image:url(:/res/search.png);}");
+    m_searchBtn->setStyleSheet("QLabel{background-color:transparent;border:none;background-image:url(:/res/search.png);}");
     m_searchBtn->setFixedSize(16, 16);
-    m_clearBtn = new MyImageButton;
+
+    m_clearBtn = new MyTristateButton;
     m_clearBtn->setObjectName("ClearIcon");
     m_clearBtn->hide();
+
     m_edit = new QLineEdit;
     m_edit->setStyleSheet("QLineEdit{background-color:transparent;border-radius:0px;color:#303030;padding-right:15px;padding-bottom: 3px;}");
+    //m_edit->setPlaceholderText("enter process info");
+
+    m_placeHolder = new QLabel;
+    m_placeHolder->setStyleSheet("QLabel{background-color:transparent;color:#808080;font-size:12px;margin: 2 0 0 0 px;} QLabel:hover{color:#ffffff;font-size:12px;}");
 
     m_animation = new QPropertyAnimation(m_edit, "minimumWidth");
 
@@ -31,25 +37,33 @@ MySearchEdit::MySearchEdit(QWidget *parent)
     m_edit->setFixedWidth(0);
     m_edit->installEventFilter(this);
 
-    QHBoxLayout *layout = new QHBoxLayout(m_insideFrame);
+    QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addStretch();
     layout->addWidget(m_searchBtn);
     layout->setAlignment(m_searchBtn, Qt::AlignCenter);
+    layout->addWidget(m_placeHolder);
+    layout->setAlignment(m_placeHolder, Qt::AlignCenter);
     layout->addWidget(m_edit);
     layout->setAlignment(m_edit, Qt::AlignCenter);
+//    layout->addStretch();
+//    layout->addWidget(m_searchBtn);
+//    layout->setAlignment(m_searchBtn, Qt::AlignCenter);
     layout->addStretch();
     layout->addWidget(m_clearBtn);
     layout->setAlignment(m_clearBtn, Qt::AlignCenter);
     layout->setSpacing(0);
-    layout->setContentsMargins(3, 0, 3, 0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
-    setAutoFillBackground(true);
+//    setAutoFillBackground(true);
     setFocusPolicy(Qt::StrongFocus);
 
-    connect(m_clearBtn, &MyImageButton::clicked, m_edit, static_cast<void (QLineEdit::*)()>(&QLineEdit::setFocus));
-    connect(m_clearBtn, &MyImageButton::clicked, this, &MySearchEdit::clear);
+    connect(m_clearBtn, &MyTristateButton::clicked, m_edit, static_cast<void (QLineEdit::*)()>(&QLineEdit::setFocus));
+    connect(m_clearBtn, &MyTristateButton::clicked, this, &MySearchEdit::clearEdit);
     connect(m_edit, &QLineEdit::textChanged, [this] {m_clearBtn->setVisible(!m_edit->text().isEmpty());});
     connect(m_edit, &QLineEdit::textChanged, this, &MySearchEdit::textChanged, Qt::DirectConnection);
+//    connect(m_edit, &QLineEdit::textChanged, this, [=] {
+//        emit this->textChanged();
+//    });
 }
 
 MySearchEdit::~MySearchEdit()
@@ -62,13 +76,19 @@ const QString MySearchEdit::text() const
     return m_edit->text();
 }
 
+void MySearchEdit::clearEdit()
+{
+    m_edit->clear();
+//    this->setStyleSheet("QFrame{background-color:#00376a;border-radius:0px;}");
+    this->setStyleSheet("QFrame{background-color:rgb(0, 55, 106, 127);border-radius:0px;}");
+}
+
 void MySearchEdit::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() != Qt::LeftButton)
         return QFrame::mousePressEvent(event);
 
     setEditFocus();
-
     event->accept();
 }
 
@@ -87,37 +107,34 @@ bool MySearchEdit::eventFilter(QObject *object, QEvent *event)
             m_animation->setEndValue(0);
             m_animation->setEasingCurve(m_hideCurve);
             m_animation->start();
+            connect(m_animation, &QPropertyAnimation::finished, m_placeHolder, &QLabel::show);
         }
     }
 
     return QFrame::eventFilter(object, event);
 }
 
-QLineEdit *MySearchEdit::getLineEdit() const
-{
-    return m_edit;
-}
-
 void MySearchEdit::setEditFocus()
 {
+    if (!m_placeHolder->isVisible()) {
+        return;
+    }
+    disconnect(m_animation, &QPropertyAnimation::finished, m_placeHolder, &QLabel::show);
     m_animation->stop();
     m_animation->setStartValue(0);
     m_animation->setEndValue(m_size.width() - m_searchBtn->width() - 6);
     m_animation->setEasingCurve(m_showCurve);
     m_animation->start();
-
+    m_placeHolder->hide();
     m_edit->setFocus();
+//    this->setStyleSheet("QFrame{background-color:#00376a;border:1px solid #47ccf3;border-radius:0px;}");
+    this->setStyleSheet("QFrame{background-color:rgb(0, 55, 106, 127);border:1px solid #47ccf3;border-radius:0px;}");
 }
 
-void MySearchEdit::initInsideFrame()
+
+QLineEdit *MySearchEdit::getLineEdit() const
 {
-    m_insideFrame = new QFrame(this);
-    m_insideFrame->raise();
-    m_insideFrame->setStyleSheet("QFrame{background-color: white;border: 1px solid;border-radius: 4px;border-color: rgba(0, 0, 0, 0.08);}");
-    QHBoxLayout *insideLayout = new QHBoxLayout(this);
-    insideLayout->setContentsMargins(0, 0, 0, 1);
-    insideLayout->setSpacing(0);
-    insideLayout->addWidget(m_insideFrame);
+    return m_edit;
 }
 
 void MySearchEdit::resizeEvent(QResizeEvent *event)

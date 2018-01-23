@@ -36,7 +36,9 @@ HEADERS += \
     util.h \
     ../../component/utils.h \
     ../widgets/mydialog.h \
-    ../widgets/myimagebutton.h \
+    ../widgets/mytristatebutton.h \
+    ../widgets/myunderlinebutton.h \
+    ../widgets/myhoverbutton.h \
     propertiesdialog.h \
     processcategory.h \
     processdata.h \
@@ -44,8 +46,6 @@ HEADERS += \
     ../widgets/myactiongroupitem.h \
     ../widgets/myaction.h \
     monitortitlewidget.h \
-    toolbar.h \
-    ../widgets/mytipimagebutton.h \
     resourcesdialog.h \
     filesystemdialog.h \
     diskitemlist.h \
@@ -69,15 +69,15 @@ SOURCES += \
     processworker.cpp \
     util.cpp \
     ../widgets/mydialog.cpp \
-    ../widgets/myimagebutton.cpp \
+    ../widgets/mytristatebutton.cpp \
+    ../widgets/myunderlinebutton.cpp \
+    ../widgets/myhoverbutton.cpp \
     propertiesdialog.cpp \
     processcategory.cpp \
     ../widgets/myactiongroup.cpp \
     ../widgets/myactiongroupitem.cpp \
     ../widgets/myaction.cpp \
     monitortitlewidget.cpp \
-    toolbar.cpp \
-    ../widgets/mytipimagebutton.cpp \
     resourcesdialog.cpp \
     filesystemdialog.cpp \
     diskitemlist.cpp \

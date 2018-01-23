@@ -30,7 +30,7 @@
 #include <QTimer>
 
 class QMouseEvent;
-class MyImageButton;
+class MyTristateButton;
 
 //TODO: add timer to refresh
 
@@ -58,7 +58,7 @@ protected:
 //    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
 private:
-    MyImageButton *closeButton;
+    MyTristateButton *closeButton;
     QHBoxLayout *cmdlineLayout;
     QHBoxLayout *userLayout;
     QHBoxLayout *nameLayout;

@@ -7,7 +7,7 @@
 #include <QPropertyAnimation>
 #include <QLabel>
 
-#include "myimagebutton.h"
+#include "mytristatebutton.h"
 
 class MySearchEdit : public QFrame
 {
@@ -16,7 +16,7 @@ public:
     explicit MySearchEdit(QWidget *parent = 0);
     ~MySearchEdit();
 
-    void initInsideFrame();
+    void setPlaceHolder(const QString &text) {m_placeHolder->setText(text);}
     QSize sizeHint() const {return m_size;}
     QSize minimumSizeHint() const {return m_size;}
     const QString text() const;
@@ -25,7 +25,7 @@ public:
 public slots:
     void setEditFocus();
     void setText(const QString & text) {if (m_edit) m_edit->setText(text);}
-    inline void clear() {m_edit->clear();}
+    void clearEdit();
 
 signals:
     void textChanged();
@@ -41,8 +41,8 @@ private:
     QSize m_size;
     QLineEdit *m_edit;
     QLabel *m_searchBtn;
-    MyImageButton *m_clearBtn;
-    QFrame *m_insideFrame = NULL;
+    QLabel *m_placeHolder;
+    MyTristateButton *m_clearBtn;
     QPropertyAnimation *m_animation;
     QEasingCurve m_showCurve = QEasingCurve::OutCubic;
     QEasingCurve m_hideCurve = QEasingCurve::InCubic;

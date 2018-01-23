@@ -21,7 +21,6 @@
 #define SYSTEMMONITOR_H
 
 #include "monitortitlewidget.h"
-#include "toolbar.h"
 #include "processdialog.h"
 #include "resourcesdialog.h"
 #include "filesystemdialog.h"
@@ -40,7 +39,6 @@ public:
     ~SystemMonitor();
 
     void initTitleWidget();
-    void initToolBar();
     void initPanelStack();
     void initConnections();
 
@@ -65,7 +63,7 @@ protected:
 private:
     QStackedWidget  *m_sysMonitorStack = nullptr;
     MonitorTitleWidget  *m_titleWidget = nullptr;
-    ToolBar *m_toolBar = nullptr;
+//    ToolBar *m_toolBar = nullptr;
     ProcessDialog *process_dialog = nullptr;
     ResouresDialog *resources_dialog = nullptr;
     FileSystemDialog *filesystem_dialog = nullptr;

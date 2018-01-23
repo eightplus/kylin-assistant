@@ -44,6 +44,7 @@
 #include <QSettings>
 
 class ProcessManager;
+class ProcessCategory;
 
 class ProcessDialog : public QWidget
 {
@@ -62,6 +63,7 @@ public:
 signals:
     void changeColumnVisible(int index, bool visible, QList<bool> columnVisible);
     void changeSortStatus(int index, bool isSort);
+    void activeWhoseProcessList(int index);
 
 public slots:
     void focusProcessView();
@@ -82,29 +84,33 @@ public slots:
     void refreshProcessList();
 
 private:
-  QTimer *timer = nullptr;
-  QSettings *proSettings = nullptr;
-  guint64 cpu_total_time;
-  guint64 cpu_total_time_last;
-  MyDialog *killProcessDialog = nullptr;
-  MyDialog *endProcessDialog = nullptr;
-  ProcessListWidget *m_processListWidget = nullptr;
-  QAction *m_propertiyAction = nullptr;
-  QAction *m_stopAction = nullptr;//停止
-  QAction *m_continueAction = nullptr;//继续进程
-  QAction *m_endAction = nullptr;//结束
-  QAction *m_killAction = nullptr;//杀死
-//  QMenu *m_priorityMenu;
-//  MyActionGroup * priorityGroup;
-//  MyAction *veryHighAction;
-//  MyAction *highAction;
-//  MyAction *normalAction;
-//  MyAction *lowAction;
-//  MyAction *veryLowAction;
-//  MyAction *customAction;
-  QList<pid_t> *actionPids;
-  QMenu *m_menu = nullptr;
-  QString whose_processes;
-  gint num_cpus;
-  unsigned frequency;
+    QTimer *timer = nullptr;
+    QSettings *proSettings = nullptr;
+    guint64 cpu_total_time;
+    guint64 cpu_total_time_last;
+    MyDialog *killProcessDialog = nullptr;
+    MyDialog *endProcessDialog = nullptr;
+    ProcessListWidget *m_processListWidget = nullptr;
+    QAction *m_propertiyAction = nullptr;
+    QAction *m_stopAction = nullptr;//停止
+    QAction *m_continueAction = nullptr;//继续进程
+    QAction *m_endAction = nullptr;//结束
+    QAction *m_killAction = nullptr;//杀死
+    ProcessCategory *processCategory = nullptr;
+    //  QMenu *m_priorityMenu;
+    //  MyActionGroup * priorityGroup;
+    //  MyAction *veryHighAction;
+    //  MyAction *highAction;
+    //  MyAction *normalAction;
+    //  MyAction *lowAction;
+    //  MyAction *veryLowAction;
+    //  MyAction *customAction;
+    QList<pid_t> *actionPids;
+    QMenu *m_menu = nullptr;
+    QString whose_processes;
+    gint num_cpus;
+    unsigned frequency;
+
+    QVBoxLayout *m_layout = nullptr;
+    QHBoxLayout *m_categoryLayout = nullptr;
 };

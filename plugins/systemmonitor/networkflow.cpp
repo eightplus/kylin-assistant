@@ -245,7 +245,7 @@ void NetworkFlow::paintEvent(QPaintEvent *)
     painter.setPen(QPen(QColor("#303030")));
     painter.drawText(QRect(rect().x() + 2, rect().y(), rect().width() - 4, rect().height()), Qt::AlignLeft | Qt::AlignTop, tr("Network"));//绘制文本
 
-    setFontSize(painter, 9);
+    setFontSize(painter, 12);
     QFontMetrics fm = painter.fontMetrics();
     QString downloadTitle = QString("%1 %2").arg(tr("Receiving")).arg(formatNetworkRate(m_recvRateBytes));
     QString downloadContent = QString("%1 %2").arg(tr("Total Received")).arg(formatNetwork(m_recvTotalBytes));//接收
@@ -267,7 +267,7 @@ void NetworkFlow::paintEvent(QPaintEvent *)
 //    uploadPainter.setCompositionMode(QPainter::CompositionMode_SourceIn);//输出是源，其中alpha被目标的值减少   设置画刷的组合模式CompositionMode_SourceIn这个模式为目标图像在下
 //    uploadPainter.end();
 
-    setFontSize(painter, 9);
+    setFontSize(painter, 12);
     painter.setPen(QPen(QColor("#1E90FF")));
     painter.drawText(QRect(rect().x() + 20 + 5, rect().y() + 40, fm.width(downloadTitle), rect().height()), Qt::AlignLeft | Qt::AlignTop, downloadTitle);
     painter.drawText(QRect(rect().x() + 20 + rateW + 14, rect().y() + 40, fm.width(downloadContent), rect().height()), Qt::AlignLeft | Qt::AlignTop, downloadContent);
@@ -284,7 +284,7 @@ void NetworkFlow::paintEvent(QPaintEvent *)
 //    downloadPainter.setCompositionMode(QPainter::CompositionMode_SourceIn);//输出是源，其中alpha被目标的值减少   设置画刷的组合模式CompositionMode_SourceIn这个模式为目标图像在下
 //    downloadPainter.end();
 
-    setFontSize(painter, 9);
+    setFontSize(painter, 12);
     painter.setPen(QPen(QColor("#FF0000")));
     painter.drawText(QRect(rect().x() + 20 + 5, rect().y() + 70, fm.width(uploadTitle), rect().height()), Qt::AlignLeft | Qt::AlignTop, uploadTitle);
     painter.drawText(QRect(rect().x() + 20 + rateW + 14, rect().y() + 70, fm.width(uploadContent), rect().height()), Qt::AlignLeft | Qt::AlignTop, uploadContent);

@@ -11,7 +11,7 @@ class QButtonGroup;
 class QLabel;
 class QCloseEvent;
 class QVBoxLayout;
-class MyImageButton;
+class MyTristateButton;
 
 #include <QBoxLayout>
 
@@ -59,7 +59,7 @@ private:
     QLabel* messageLabel;
     QLabel* titleLabel;
 
-    MyImageButton* closeButton = nullptr;
+    MyTristateButton* closeButton = nullptr;
     QHBoxLayout *iconLayout;
     QVBoxLayout *contentLayout;
     QHBoxLayout *buttonLayout;

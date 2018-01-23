@@ -1,5 +1,5 @@
 ﻿#include "mydialog.h"
-#include "myimagebutton.h"
+#include "mytristatebutton.h"
 
 #include <QLabel>
 #include <QButtonGroup>
@@ -53,12 +53,12 @@ MyDialog::MyDialog(const QString &title, const QString &message, QWidget *parent
     topLayout->addLayout(contentLayout);
 
 
-    closeButton = new MyImageButton(this);
+    closeButton = new MyTristateButton(this);
     closeButton->setObjectName("CloseButton");
 //    closeButton->setNormalPic(":/res/tool/close_normal.png");
 //    closeButton->setHoverPic(":/res/tool/close_hover.png");
 //    closeButton->setPressPic(":/res/tool/close_press.png");
-    connect(closeButton, &MyImageButton::clicked, this, [=] {
+    connect(closeButton, &MyTristateButton::clicked, this, [=] {
         this->close();
     });
     closeButton->setAttribute(Qt::WA_NoMousePropagation);

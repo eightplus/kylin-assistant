@@ -22,31 +22,60 @@
 
 #include <QFrame>
 #include <QTimer>
+#include <QSettings>
 
+class QVBoxLayout;
 class QHBoxLayout;
+class QLabel;
+class QPushButton;
+class MySearchEdit;
 
 class MonitorTitleWidget : public QFrame
 {
     Q_OBJECT
 public:
-    MonitorTitleWidget(QWidget *parent);
+    MonitorTitleWidget(QSettings *settings, QWidget *parent);
     ~MonitorTitleWidget();
-    void initLeftContent();
-    void initRightContent();
+    void initTitlebarLeftContent();
+    void initTitlebarMiddleContent();
+    void initTitlebarRightContent();
+    void initToolbarLeftContent();
+    void initToolbarRightContent();
     void initWidgets();
+    void setSearchEditFocus();
+
+public slots:
+    void onRefreshSearchResult();
+    void handleSearchTextChanged();
+    void onCancelSearchBtnClicked(bool b);
+
+signals:
+    void updateMaxBtn();
+    void changePage(int index);
+    void searchSignal(QString searchContent);
+    void canelSearchEditFocus();
 
 protected:
     void mouseDoubleClickEvent(QMouseEvent *e) override;
     void paintEvent(QPaintEvent *e) override;
-
-signals:
-    void updateMaxBtn();
+    bool eventFilter(QObject *, QEvent *event) override;
 
 private:
+    QSettings *proSettings;
     QColor m_topBorderColor;
-    QHBoxLayout *m_layout;
-    QHBoxLayout *m_lLayout;
-    QHBoxLayout *m_rLayout;
+    MySearchEdit *m_searchEdit = nullptr;
+    QPushButton *m_cancelSearchBtn = nullptr;
+    QString searchTextCache;
+    QTimer *m_searchTimer = nullptr;
+    QLabel *emptyLabel = nullptr;
+    QVBoxLayout *m_layout = nullptr;
+    QHBoxLayout *m_topLayout = nullptr;
+    QHBoxLayout *m_titleMiddleLayout = nullptr;
+    QHBoxLayout *m_titleRightLayout = nullptr;
+    QHBoxLayout *m_bottomLayout = nullptr;
+    QHBoxLayout *m_titleLeftLayout = nullptr;
+    QHBoxLayout *m_toolLeftLayout = nullptr;
+    QHBoxLayout *m_toolRightLayout = nullptr;
 };
 
 #endif // MONITORTITLEWIDGET_H

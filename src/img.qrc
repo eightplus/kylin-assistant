@@ -193,12 +193,6 @@
         <file>res/camera-error.png</file>
         <file>res/catch-disable.png</file>
         <file>res/kylin-assistant.png</file>
-        <file>res/arrow_up_hover.png</file>
-        <file>res/arrow_up_normal.png</file>
-        <file>res/arrow_up_press.png</file>
-        <file>res/arrow_down_hover.png</file>
-        <file>res/arrow_down_normal.png</file>
-        <file>res/arrow_down_press.png</file>
         <file>res/tool/min_hover.png</file>
         <file>res/tool/min_normal.png</file>
         <file>res/tool/min_press.png</file>
@@ -227,6 +221,8 @@
         <file>res/user_proc.png</file>
         <file>res/active_proc.png</file>
         <file>res/all_proc.png</file>
+        <file>res/arrow_down.png</file>
+        <file>res/arrow_up.png</file>
     </qresource>
     <qresource prefix="/sys">
         <file>res/sysBtn/close_button.png</file>

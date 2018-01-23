@@ -31,8 +31,8 @@
 
 ProcessListWidget::ProcessListWidget(QList<bool> toBeDisplayedColumns, QWidget *parent) : QWidget(parent)
   ,m_titlePadding(10)
-  ,m_titleHeight(36)
-  ,m_rowHeight(36)
+  ,m_titleHeight(40)
+  ,m_rowHeight(29)
   ,m_offSet(0)
   ,m_origOffset(0)
   ,m_scrollbarWidth(10)
@@ -51,19 +51,15 @@ ProcessListWidget::ProcessListWidget(QList<bool> toBeDisplayedColumns, QWidget *
     this->m_sortFuncList = new QList<SortFunction>();
     this->m_isSortList = new QList<bool>();
 
-    this->m_upArrowNormalPixmap = QPixmap(":/res/arrow_up_normal.png");
-    this->m_upArrowHoverPixmap = QPixmap(":/res/arrow_up_hover.png");
-    this->m_upArrowPressPixmap = QPixmap(":/res/arrow_up_press.png");
-    this->m_downArrowNormalPixmap = QPixmap(":/res/arrow_down_normal.png");
-    this->m_downArrowHoverPixmap = QPixmap(":/res/arrow_down_hover.png");
-    this->m_downArrowPressPixmap = QPixmap(":/res/arrow_down_press.png");
+    this->m_downArrowPixmap = QPixmap(":/res/arrow_down.png");
+    this->m_upArrowPixmap = QPixmap(":/res/arrow_up.png");
 
     this->columnTitles << tr("Process Name") << tr("User") << tr("Status") << tr("CPU") << tr("ID") << tr("Command Line") << tr("Memory") << tr("Priority");
     QList<int> widths;
-    widths << 180 << 80 << 80 << 50 << 50 << -1 << 80 << 80;//-1时让改行填充所有剩余空间
+    widths << 180 << 80 << 80 << 60 << 50 << -1 << 80 << 80;//-1时让改行填充所有剩余空间
 
     QFont font;
-    font.setPointSize(9);//需要和填充所有剩余空间的那个的文字字体大小一致
+    font.setPixelSize(12);//需要和填充所有剩余空间的那个的文字字体大小一致 font.setPointSize(9)
     QFontMetrics fm(font);
 
     this->m_columnWidths.clear();
@@ -71,7 +67,7 @@ ProcessListWidget::ProcessListWidget(QList<bool> toBeDisplayedColumns, QWidget *
         if (widths[i] == -1) {
             this->m_columnWidths << widths[i];
         } else {//-1时让改行填充所有剩余空间
-            int maxWidth = fm.width(this->columnTitles[i]) + this->m_titlePadding + m_upArrowNormalPixmap.width() / m_upArrowNormalPixmap.devicePixelRatio() + 2 * 2;
+            int maxWidth = fm.width(this->columnTitles[i]) + this->m_titlePadding + m_upArrowPixmap.width() / m_upArrowPixmap.devicePixelRatio() + 2 * 2;
             this->m_columnWidths << std::max(widths[i], maxWidth);
         }
     }
@@ -86,13 +82,20 @@ ProcessListWidget::ProcessListWidget(QList<bool> toBeDisplayedColumns, QWidget *
 
 ProcessListWidget::~ProcessListWidget()
 {
+    if (this->m_hideScrollbarTimer != NULL) {
+        disconnect(this->m_hideScrollbarTimer,SIGNAL(timeout()),this,SLOT(hideScrollbar()));
+        if(this->m_hideScrollbarTimer->isActive()) {
+            this->m_hideScrollbarTimer->stop();
+        }
+        delete this->m_hideScrollbarTimer;
+        this->m_hideScrollbarTimer = nullptr;
+    }
     delete this->m_lastItem;
     delete this->m_listItems;
     delete this->m_searchedItems;
     delete this->m_selectedItems;
     delete this->m_sortFuncList;
     delete this->m_isSortList;
-    delete this->m_hideScrollbarTimer;
 }
 
 void ProcessListWidget::setProcessSortFunctions(QList<SortFunction> *list, int currentSortIndex, bool isSort)
@@ -501,7 +504,7 @@ void ProcessListWidget::keyPressEvent(QKeyEvent *keyEvent)
 void ProcessListWidget::mouseMoveEvent(QMouseEvent *mouseEvent)
 {
     if (this->m_mouseDragScrollbar) {
-        this->m_offSet = setOffset((mouseEvent->y() - getScrollbarHeight() / 2 - this->m_titleHeight) / (getTheScrollAreaHeight()) * this->getItemsTotalHeight());
+        this->m_offSet = setOffset((mouseEvent->y() - getScrollbarHeight() / 2 - this->m_titleHeight) / (getTheScrollAreaHeight() * 1.0) * this->getItemsTotalHeight());
         repaint();
     }
     else if (mouseAtScrollArea(mouseEvent->x()) != this->m_mouseAtScrollArea) {
@@ -603,7 +606,7 @@ void ProcessListWidget::mousePressEvent(QMouseEvent *mouseEvent)
             this->m_mouseDragScrollbar = true;
         }
         else {
-            this->m_offSet = setOffset((mouseEvent->y() - barHeight / 2 - this->m_titleHeight) / (getTheScrollAreaHeight()) * this->getItemsTotalHeight());
+            this->m_offSet = setOffset((mouseEvent->y() - barHeight / 2 - this->m_titleHeight) / (getTheScrollAreaHeight() * 1.0) * this->getItemsTotalHeight());
             repaint();
         }
     }
@@ -719,44 +722,33 @@ void ProcessListWidget::paintEvent(QPaintEvent *)
         int posX = 0;
         for (int itemWidth:titleItemsWidths) {
             if (itemWidth > 0) {
-                painter.setOpacity(1);
-                QFont font = painter.font();
-                font.setPointSize(10);
-                painter.setFont(font);
-                //标题文字
-                painter.setPen(QPen(QColor("#000000")));
-                painter.drawText(QRect(posX + this->m_titlePadding, 0, itemWidth, this->m_titleHeight), Qt::AlignVCenter | Qt::AlignLeft, this->columnTitles[counter]);
-                posX += itemWidth;
-                if (counter < titleItemsWidths.size() - 1) {//垂直分割线
-                    painter.setOpacity(0.1);
-                    QPainterPath separatorPath;
-                    separatorPath.addRect(QRectF(rect().x() + posX - 1, rect().y() + 5, 1, this->m_titleHeight - 5*2));
-                    painter.fillPath(separatorPath, QColor("#000000"));
-                }
-
-                //标题文字右侧的排序箭头图标
+                //标题文字左上方的排序箭头图标
                 if (this->m_currentSortIndex == counter) {
                     painter.setOpacity(1);
-                    int arrowX = rect().x() + posX - 2 - m_upArrowNormalPixmap.width() / m_upArrowNormalPixmap.devicePixelRatio();
-                    int arrowY = rect().y() + (this->m_titleHeight - m_downArrowNormalPixmap.height() / m_upArrowNormalPixmap.devicePixelRatio()) / 2;
-
+//                    int arrowX = rect().x() + posX - 2 - m_upArrowPixmap.width() / m_upArrowPixmap.devicePixelRatio();
+//                    int arrowY = rect().y() + (this->m_titleHeight / m_upArrowPixmap.devicePixelRatio()) - m_downArrowPixmap.height() - 5;
                     if (this->m_isSort) {
-                        if (this->m_titlePressColumn == this->m_currentSortIndex) {
-                            painter.drawPixmap(QPoint(arrowX, arrowY), m_downArrowPressPixmap);
-                        } else if (this->m_titleHoverColumn == this->m_currentSortIndex) {
-                            painter.drawPixmap(QPoint(arrowX, arrowY), m_downArrowHoverPixmap);
-                        } else {
-                            painter.drawPixmap(QPoint(arrowX, arrowY), m_downArrowNormalPixmap);
-                        }
+                        painter.drawPixmap(QPoint(rect().x() + posX + 5, rect().y() + 10), m_downArrowPixmap);
                     } else {
-                        if (this->m_titlePressColumn == this->m_currentSortIndex) {
-                            painter.drawPixmap(QPoint(arrowX, arrowY), m_upArrowPressPixmap);
-                        } else if (this->m_titleHoverColumn == this->m_currentSortIndex) {
-                            painter.drawPixmap(QPoint(arrowX, arrowY), m_upArrowHoverPixmap);
-                        } else {
-                            painter.drawPixmap(QPoint(arrowX, arrowY), m_upArrowNormalPixmap);
-                        }
+                        painter.drawPixmap(QPoint(rect().x() + posX + 5, rect().y() + 10), m_upArrowPixmap);
                     }
+                }
+
+                //标题文字
+                painter.setOpacity(1);
+                QFont font = painter.font();
+//                font.setPointSize(10);
+                font.setPixelSize(12);
+                painter.setFont(font);
+                painter.setPen(QPen(QColor("#999999")));
+                painter.drawText(QRect(posX + this->m_titlePadding, 0, itemWidth, this->m_titleHeight), Qt::AlignBottom | Qt::AlignLeft, this->columnTitles[counter]);
+                posX += itemWidth;
+
+                if (counter < titleItemsWidths.size() - 1) {//垂直分割线
+                    painter.setOpacity(0.8);
+                    QPainterPath separatorPath;
+                    separatorPath.addRect(QRectF(rect().x() + posX - 1, rect().y() + 5, 1, this->m_titleHeight - 5));
+                    painter.fillPath(separatorPath, QColor("#e0e0e0"));
                 }
             }
             counter++;
@@ -793,7 +785,10 @@ void ProcessListWidget::paintEvent(QPaintEvent *)
             for (int titleItemWidth : titleItemsWidths) {
                 if (titleItemWidth > 0) {
                     painter.save();
-                    item->drawForeground(QRect(columnTitleX, title_Y + rowCounter * this->m_rowHeight - this->m_offSet, titleItemWidth, this->m_rowHeight), &painter, columnCounter, rowCounter, isSelect);
+                    if (columnCounter < titleItemsWidths.size() - 1)
+                        item->drawForeground(QRect(columnTitleX, title_Y + rowCounter * this->m_rowHeight - this->m_offSet, titleItemWidth, this->m_rowHeight), &painter, columnCounter, rowCounter, isSelect, true);
+                    else
+                        item->drawForeground(QRect(columnTitleX, title_Y + rowCounter * this->m_rowHeight - this->m_offSet, titleItemWidth, this->m_rowHeight), &painter, columnCounter, rowCounter, isSelect, false);
                     painter.restore();
                     columnTitleX += titleItemWidth;
                 }
@@ -830,7 +825,7 @@ void ProcessListWidget::paintEvent(QPaintEvent *)
         paintScrollbar(&painter);
     } else if (this->m_origOffset != this->m_offSet) {
         paintScrollbar(&painter);
-        startScrollbarHideTimer();
+        readyToHideScrollbar();
     }
 }
 
@@ -941,12 +936,12 @@ int ProcessListWidget::getTheScrollAreaHeight()
 
 int ProcessListWidget::getScrollbarY()
 {
-    return static_cast<int>((this->m_offSet / (this->getItemsTotalHeight())) * getTheScrollAreaHeight() + this->m_titleHeight);
+    return static_cast<int>((this->m_offSet / (this->getItemsTotalHeight() * 1.0)) * getTheScrollAreaHeight() + this->m_titleHeight);
 }
 
 int ProcessListWidget::getScrollbarHeight()
 {
-    return std::max(static_cast<int>(getTheScrollAreaHeight() / (this->getItemsTotalHeight()) * rect().height()), this->m_rowHeight);
+    return std::max(static_cast<int>(getTheScrollAreaHeight() / (this->getItemsTotalHeight() * 1.0) * rect().height()), 30);//30 is min height
 }
 
 QList<ProcessListItem*> ProcessListWidget::getSearchedItems(QList<ProcessListItem*> items)
@@ -984,12 +979,16 @@ void ProcessListWidget::sortItemsByColumn(int column, bool isSort)
     }
 }
 
-void ProcessListWidget::startScrollbarHideTimer()
+void ProcessListWidget::readyToHideScrollbar()
 {
     if (this->m_hideScrollbarTimer) {
-        this->m_hideScrollbarTimer->stop();
+         if (this->m_hideScrollbarTimer->isActive())
+            this->m_hideScrollbarTimer->stop();
     }
-    this->m_hideScrollbarTimer = new QTimer();
-    connect(this->m_hideScrollbarTimer, SIGNAL(timeout()), this, SLOT(hideScrollbar()));
+    else {
+        this->m_hideScrollbarTimer = new QTimer();
+        this->m_hideScrollbarTimer->setSingleShot(true);
+        connect(this->m_hideScrollbarTimer, SIGNAL(timeout()), this, SLOT(hideScrollbar()));
+    }
     this->m_hideScrollbarTimer->start(2000);
 }

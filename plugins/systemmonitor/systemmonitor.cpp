@@ -58,7 +58,6 @@ SystemMonitor::SystemMonitor(QWidget *parent)
     proSettings->setIniCodec("UTF-8");
 
     this->initTitleWidget();
-    this->initToolBar();
     this->initPanelStack();
     this->initConnections();
 
@@ -77,10 +76,6 @@ SystemMonitor::~SystemMonitor()
     if (m_titleWidget) {
         delete m_titleWidget;
         m_titleWidget = nullptr;
-    }
-    if (m_toolBar) {
-        delete m_toolBar;
-        m_toolBar = nullptr;
     }
     if (process_dialog) {
         delete process_dialog;
@@ -103,18 +98,14 @@ SystemMonitor::~SystemMonitor()
 void SystemMonitor::resizeEvent(QResizeEvent *e)
 {
     if (m_titleWidget) {
-        m_titleWidget->resize(width(), TITLE_WIDGET_HEIGHT);
+        m_titleWidget->resize(width(), MONITOR_TITLE_WIDGET_HEIGHT);
         if (e->oldSize()  != e->size()) {
             emit m_titleWidget->updateMaxBtn();
         }
     }
-    if (m_toolBar) {
-        m_toolBar->resize(width(), TITLE_WIDGET_HEIGHT);
-        m_toolBar->move(0, TITLE_WIDGET_HEIGHT);
-    }
     if (m_sysMonitorStack) {
-        m_sysMonitorStack->resize(width(), this->height() - TITLE_WIDGET_HEIGHT*2);
-        m_sysMonitorStack->move(0, TITLE_WIDGET_HEIGHT*2);
+        m_sysMonitorStack->resize(width(), this->height() - MONITOR_TITLE_WIDGET_HEIGHT);
+        m_sysMonitorStack->move(0, MONITOR_TITLE_WIDGET_HEIGHT);
     }
 }
 
@@ -192,7 +183,6 @@ void SystemMonitor::initPanelStack()
     process_dialog->getProcessView()->installEventFilter(this);
     connect(process_dialog, &ProcessDialog::changeColumnVisible, this, &SystemMonitor::recordVisibleColumn);
     connect(process_dialog, &ProcessDialog::changeSortStatus, this, &SystemMonitor::recordSortStatus);
-    connect(m_toolBar, SIGNAL(activeWhoseProcessList(int)), process_dialog, SLOT(onActiveWhoseProcess(int)));
 
     resources_dialog = new ResouresDialog;
     filesystem_dialog = new FileSystemDialog;
@@ -205,23 +195,16 @@ void SystemMonitor::initPanelStack()
 
 void SystemMonitor::initTitleWidget()
 {
-    m_titleWidget = new MonitorTitleWidget(this);
-    m_titleWidget->resize(width(), TITLE_WIDGET_HEIGHT);
+    m_titleWidget = new MonitorTitleWidget(proSettings, this);
+    m_titleWidget->resize(width(), MONITOR_TITLE_WIDGET_HEIGHT);
     m_titleWidget->move(0, 0);
-}
-
-void SystemMonitor::initToolBar()
-{
-    m_toolBar = new ToolBar(proSettings, this);
-    m_toolBar->resize(width(), TITLE_WIDGET_HEIGHT);
-    m_toolBar->move(0, TITLE_WIDGET_HEIGHT);
 }
 
 void SystemMonitor::initConnections()
 {
-    connect(m_toolBar, SIGNAL(changePage(int)), this, SLOT(onChangePage(int)));
-    connect(m_toolBar, SIGNAL(canelSearchEditFocus()), process_dialog, SLOT(focusProcessView()));
-    connect(m_toolBar, SIGNAL(searchSignal(QString)), process_dialog, SLOT(onSearch(QString)), Qt::QueuedConnection);
+    connect(m_titleWidget, SIGNAL(changePage(int)), this, SLOT(onChangePage(int)));
+    connect(m_titleWidget, SIGNAL(canelSearchEditFocus()), process_dialog, SLOT(focusProcessView()));
+    connect(m_titleWidget, SIGNAL(searchSignal(QString)), process_dialog, SLOT(onSearch(QString)), Qt::QueuedConnection);
 }
 
 void SystemMonitor::onChangePage(int index)

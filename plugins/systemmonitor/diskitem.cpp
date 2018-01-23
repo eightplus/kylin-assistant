@@ -18,7 +18,7 @@
  */
 
 #include "diskitem.h"
-#include "../widgets/myimagebutton.h"
+#include "../widgets/mytristatebutton.h"
 
 #include <QHBoxLayout>
 #include <QMouseEvent>
@@ -35,7 +35,7 @@ DiskItem::DiskItem(QWidget *parent)
       ,m_availLabel(new QLabel)
       ,m_usedLabel(new QLabel)
       ,m_percentageLabel(new QLabel)
-      ,m_detailBtn(new MyImageButton)
+      ,m_detailBtn(new MyTristateButton)
 {
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     this->setFixedHeight(36);
@@ -58,7 +58,7 @@ DiskItem::DiskItem(QWidget *parent)
     setLayout(mainLayout);
 
     m_detailBtn->setObjectName("DiskDetailButton");
-    connect(m_detailBtn, &MyImageButton::clicked, this, [=] {
+    connect(m_detailBtn, &MyTristateButton::clicked, this, [=] {
         //TODO: show detail dialog
     });
 }
