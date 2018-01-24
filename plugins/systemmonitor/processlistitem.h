@@ -34,6 +34,7 @@ public:
     ProcessListItem(ProcData info);
     
     bool isSameItem(ProcessListItem *item);
+    void drawCellBackground(QRect rect, QPainter *painter, int level);
     void drawBackground(QRect rect, QPainter *painter, int index, bool isSelect);
     void drawForeground(QRect rect, QPainter *painter, int column, int index, bool isSelect, bool isSeparator);
     static bool doSearch(const ProcessListItem *item, QString text);

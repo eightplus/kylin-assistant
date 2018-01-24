@@ -143,12 +143,6 @@ ProcessDialog::ProcessDialog(QList<bool> toBeDisplayedColumns, int currentSortIn
     m_layout->addWidget(w);
 
 
-
-
-
-
-
-
     QList<SortFunction> *sortFuncList = new QList<SortFunction>();
     sortFuncList->append(&ProcessListItem::sortByName);
     sortFuncList->append(&ProcessListItem::sortByUser);
@@ -339,7 +333,6 @@ void ProcessDialog::changeProcPriority(int nice)
         pid_t cur_pid = -1;
         for (pid_t pid : *actionPids) {
             cur_pid = pid;
-            qDebug() << "******************"<<cur_pid;
             break;
         }
         if (cur_pid > -1) {
@@ -541,8 +534,6 @@ void ProcessDialog::refreshProcessList()
     // FIXME: not sure if glibtop always returns a sorted list of pid
     // but it is important otherwise refresh_list won't find the parent
     std::sort(pid_list, pid_list + proclist.number);
-//    qDebug() << "proclist.number="<<proclist.number;
-
 
     //---------------start----------------------
     typedef std::list<ProcessWorker*> ProcList;
@@ -599,7 +590,6 @@ void ProcessDialog::refreshProcessList()
         ++next;
 
         if (pids.find(info->pid) == pids.end()) {
-//            qDebug() << "ripping ====" << info->pid;
             addition.remove(info);
             ProcessWorker::all.erase(it);
             delete info;
@@ -609,31 +599,18 @@ void ProcessDialog::refreshProcessList()
 
     QList<ProcessListItem*> items;
     for (ProcessWorker::Iterator it(ProcessWorker::begin()); it != ProcessWorker::end(); ++it) {
-        //qDebug() <<"it->second->pid="<< it->second->pid;
         QString username = QString::fromStdString(it->second->user);
-        //qDebug() << "username=" << username;
         long nice = it->second->nice;
-//        QString session = "c2";
         QString name = QString::fromStdString(it->second->name);
-//        qDebug() << "pcpu="<<it->second->pcpu;
-//        qDebug() << "mem="<<it->second->mem;
         QString session;
         if (it->second->session) {
             session = QString(it->second->session);
         }
         QString status = formatProcessState(it->second->status);
-//        qDebug() <<"status="<<it->second->status;
-//        qDebug() <<"name================"<<name;
+
         uint cpu = it->second->pcpu;
         long memory = it->second->mem;
         pid_t pid = it->second->pid;
-
-//        if (pid == 16280) {
-//            qDebug() << "--------------------------"<<name << it->second->pid << "===" << it->second->uid;
-//        }
-//        if (pid == 6924) {
-//            qDebug() << "--------------------------"<<name << it->second->mem;
-//        }
 
         /*---------------------kobe test string---------------------
         //QString to std:string
@@ -646,7 +623,6 @@ void ProcessDialog::refreshProcessList()
 
         std::string desktopFile;
         desktopFile = getDesktopFileFromName(pid, name, "");
-
 //        qDebug() << "****************"<< QString::fromStdString(desktopFile);
 
         QPixmap icon_pixmap;
@@ -906,3 +882,26 @@ void ProcessDialog::updateStatus(QList<ProcessListItem*> items)
 {
     m_processListWidget->refreshItems(items);
 }
+
+/*void ProcessDialog::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    //绘制背景色
+//    QPainterPath path;
+//    path.addRect(QRectF(rect()));
+//    painter.setOpacity(1);
+//    painter.fillPath(path, QColor("#FFFFFF"));
+
+    //绘制圆角矩形
+//    painter.setPen(QPen(QColor("#0d87ca"), 0));//边框颜色   QColor(255, 255, 255, 153)
+//    painter.setBrush(QColor("#e9eef0"));//背景色   #0d87ca
+    painter.setPen(QPen(QColor("#0000FF"), 0));//边框颜色   QColor(255, 255, 255, 153)
+    painter.setBrush(QColor("#B22222"));//背景色   #0d87ca
+    painter.setOpacity(1);
+//    QRectF r(0 / 2.0, 0 / 2.0, width() - 0, height() - 0);//左边 上边 右边 下边
+    QRectF r(2, 2, width() - 0, height() - 0);//左边 上边 右边 下边
+    painter.drawRoundedRect(r, 10, 10);
+
+    QWidget::paintEvent(event);
+}*/

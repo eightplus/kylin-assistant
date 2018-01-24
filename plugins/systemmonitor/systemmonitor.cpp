@@ -34,19 +34,12 @@ SystemMonitor::SystemMonitor(QWidget *parent)
     : QFrame(parent)
     , mousePressed(false)
 {
-    /*this->setAutoFillBackground(true);
-    QPalette palette;
-    palette.setColor(QPalette::Background, QColor("#0d87ca"));
-    this->setPalette(palette);*/
-
 //    this->setStyleSheet("QFrame{border: 1px solid #121212;border-radius:1px;background-color:#1f1f1f;}");
 //    this->setAttribute(Qt::WA_DeleteOnClose);
+//    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);//去掉边框
+//    this->setAttribute(Qt::WA_TranslucentBackground);//背景透明
 
-
-    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);//去掉边框
-    this->setAttribute(Qt::WA_TranslucentBackground);//背景透明
-
-//    this->setWindowFlags(Qt::FramelessWindowHint);
+    this->setWindowFlags(Qt::FramelessWindowHint);
     this->setAutoFillBackground(true);
     this->setMouseTracking(true);
 //    installEventFilter(this);
@@ -292,14 +285,24 @@ void SystemMonitor::closeEvent(QCloseEvent *event)
     event->accept();
 }
 
-void SystemMonitor::paintEvent(QPaintEvent *)
+void SystemMonitor::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    //绘制背景色
+//    QPainterPath path;
+//    path.addRect(QRectF(rect()));
+//    painter.setOpacity(1);
+//    painter.fillPath(path, QColor("#FFFFFF"));
 
-    QPainterPath path;
-    path.addRect(QRectF(rect()));
+    //绘制圆角矩形
+    painter.setPen(QPen(QColor("#e9eef0"), 0));//边框颜色   QColor(255, 255, 255, 153)
+    painter.setBrush(QColor("#ffffff"));//背景色   #0d87ca
     painter.setOpacity(1);
-    painter.fillPath(path, QColor("#FFFFFF"));
+    QRectF r(1, 1, width() - 2, height() - 2);//左边 上边 右边 下边
+    painter.drawRoundedRect(r, 5, 5);
+
+    QFrame::paintEvent(event);
 }
 
 void SystemMonitor::mousePressEvent(QMouseEvent *event)

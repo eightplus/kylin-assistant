@@ -17,48 +17,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#ifndef NETWORKFLOW_H
-#define NETWORKFLOW_H
+#ifndef RESOURCESCATEGORY_H
+#define RESOURCESCATEGORY_H
 
 #include <QWidget>
-#include <QRadioButton>
+#include <QVBoxLayout>
 
-class NetworkFlow : public QWidget
+class NetworkIndicator;
+class ResourcesIndicator;
+
+class ResourcesCategory : public QWidget
 {
     Q_OBJECT
-
+    
 public:
-    NetworkFlow(QWidget *parent = 0);
-    ~NetworkFlow();
+    explicit ResourcesCategory(int tabIndex, QWidget *parent = 0);
+    ~ResourcesCategory();
 
 public slots:
+    void onUpdateCpuPercent(double value);
+    void onUpdateMemoryPercent(const QString &info, double value);
+//    void onUpdateNetworkPainterPath(QPainterPath downloadPath, QPainterPath uploadPath);
     void onUpdateNetworkStatus(long recvTotalBytes, long sentTotalBytes, long recvRateKbs, long sentRateKbs);
-    void setRadioButtonRowStatus();
-
+    
 signals:
-//    void rebackNetworkPainterPath(QPainterPath downloadPath, QPainterPath uploadPath);
-
-protected:
-    void paintEvent(QPaintEvent *event);
+    void switchResoucesPage(int index);
 
 private:
-    QList<long> *m_downloadSpeedList;
-    QList<long> *m_uploadSpeedList;
-    QPainterPath m_downloadPath;
-    QPainterPath m_uploadPath;
-
-    int m_netMaxHeight;
-    int m_pointsCount;
-
-    long m_recvTotalBytes;
-    long m_sentTotalBytes;
-    long m_recvRateBytes;
-    long m_sentRateBytes;
-    QList<int> *m_gridY;
-    int m_pointSpace;
-//    QRadioButton *math1_radio;
-//    QRadioButton *math2_radio;
+    int activeIndex;
+    QVBoxLayout *layout = nullptr;
+    ResourcesIndicator *cpuButton = nullptr;
+    ResourcesIndicator *memoryButton = nullptr;
+    NetworkIndicator *networkButton = nullptr;
 };
 
-#endif // NETWORKFLOW_H
+#endif // RESOURCESCATEGORY_H

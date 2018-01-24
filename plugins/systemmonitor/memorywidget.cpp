@@ -204,6 +204,9 @@ void MemoryWidget::drawText(QPainter *painter)
     painter->drawText(swapstatusRect, Qt::AlignVCenter | Qt::AlignHCenter, swapstatusStr);
 
     painter->restore();
+
+    const QString info = QString("%1/%2(%3%)").arg(formatMemory(mi.user)).arg(formatMemory(mi.total)).arg(QString::number(mi.percent, 'f', 1));
+    emit rebackMemoryInfo(info, mi.percent);
 }
 
 void MemoryWidget::onUpdateMemoryStatus()

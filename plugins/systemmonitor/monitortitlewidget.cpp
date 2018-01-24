@@ -36,15 +36,20 @@ MonitorTitleWidget::MonitorTitleWidget(QSettings *settings, QWidget *parent)
     :QFrame(parent)
     ,proSettings(settings)
 {
+    this->setWindowFlags(Qt::FramelessWindowHint);//this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);
+
     installEventFilter(this);
     setMouseTracking(true);
     setFixedHeight(MONITOR_TITLE_WIDGET_HEIGHT);
 
-    m_topBorderColor = QColor(255, 255, 255, 153);
     this->setAutoFillBackground(true);
+//    this->setAttribute(Qt::WA_TranslucentBackground);
+
     QPalette palette;
     palette.setColor(QPalette::Background, QColor("#0d87ca"));
     this->setPalette(palette);
+//    this->setStyleSheet("QFrame{background:transparent;background-color:#0d87ca;border-radius:5px;border:1px solid red;}");
+//    this->setStyleSheet("QFrame {padding: 5px 0;} QFrame:hover {background-color: rgba(255, 245, 250, 0.1);border-radius: 5px;}");
 
     m_searchTimer = new QTimer(this);
     m_searchTimer->setSingleShot(true);
@@ -176,21 +181,38 @@ void MonitorTitleWidget::mouseDoubleClickEvent(QMouseEvent *e)
     QFrame::mouseDoubleClickEvent(e);
 }
 
-void MonitorTitleWidget::paintEvent(QPaintEvent *e)
+/*void MonitorTitleWidget::paintEvent(QPaintEvent *event)
 {
-    QFrame::paintEvent(e);
+//    QFrame::paintEvent(event);
 
-    QPainter p(this);
-    p.setRenderHint(QPainter::Antialiasing);
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
 
-    const QColor tc(m_topBorderColor);
-    int borderHeight = 1;
-    QPainterPath tPath;
-    tPath.moveTo(QPointF(x(), y() + borderHeight - 0.5));
-    tPath.lineTo(QPointF(x() + width(), y() + borderHeight - 0.5));
-    p.setPen(QPen(tc));
-    p.drawPath(tPath);
-}
+    //draw background
+    QPainterPath path;
+    path.addRect(QRectF(0, 0, width(), height()));
+    painter.setOpacity(1);
+    painter.fillPath(path, QColor("#0d87ca"));
+
+
+    //draw line
+//    const QColor color(QColor(255, 255, 255, 127));
+//    int borderHeight = 1;
+//    QPainterPath path;
+//    path.moveTo(QPointF(x(), y() + borderHeight - 0.5));
+//    path.lineTo(QPointF(x() + width(), y() + borderHeight - 0.5));
+//    painter.setPen(QPen(color));
+//    painter.drawPath(path);
+
+    //绘制圆角矩形
+//    painter.setPen(QPen(QColor("#e9eef0"), 0));//边框颜色
+//    painter.setBrush(QColor("#0d87ca"));//背景色
+//    painter.setOpacity(1);
+//    QRectF r(1, 1, width() - 2, height() - 2);//左边 上边 右边 下边
+//    painter.drawRoundedRect(r, 5, 5);
+
+    QFrame::paintEvent(event);
+}*/
 
 void MonitorTitleWidget::initTitlebarLeftContent()
 {

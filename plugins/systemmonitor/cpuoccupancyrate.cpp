@@ -26,10 +26,16 @@
 
 CpuOccupancyRate::CpuOccupancyRate(QWidget *parent) : QWidget(parent)
 {
-    this->setFixedSize(302, 140);
+//    this->setFixedSize(302, 140);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    /*QVBoxLayout **/mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
+
+    QWidget *w = new QWidget;
+    w->setFixedSize(302, 140);
+    m_titleLeftLayout = new QHBoxLayout(w);
+    m_titleLeftLayout->setContentsMargins(6, 0, 0, 0);
+    m_titleLeftLayout->setSpacing(0);
 
     m_title = new QLabel(tr("CPU"));
     m_title->setAlignment(Qt::AlignLeft | Qt::AlignTop);
@@ -43,8 +49,14 @@ CpuOccupancyRate::CpuOccupancyRate(QWidget *parent) : QWidget(parent)
     m_cpuBall = new CpuBallWidget;
     m_cpuBall->setFixedSize(100, 100);
 
-    mainLayout->addWidget(m_title, 0, Qt::AlignLeft);
-    mainLayout->addWidget(m_cpuBall, 0, Qt::AlignCenter);
+    m_titleLeftLayout->addWidget(m_title, 0, Qt::AlignLeft);
+    m_titleLeftLayout->addWidget(m_cpuBall, 0, Qt::AlignCenter);
+
+    mainLayout->addWidget(w, 1, Qt::AlignCenter);
+
+
+//    mainLayout->addWidget(m_title, 0, Qt::AlignLeft);
+//    mainLayout->addWidget(m_cpuBall, 0, Qt::AlignCenter);
 
     m_cpuBall->startTimer();
 }
@@ -53,6 +65,13 @@ CpuOccupancyRate::~CpuOccupancyRate()
 {
     delete m_title;
     delete m_cpuBall;
+    QLayoutItem *child;
+    while ((child = m_titleLeftLayout->takeAt(0)) != 0) {
+        if (child->widget())
+            child->widget()->deleteLater();
+        delete child;
+    }
+    delete mainLayout;
 }
 
 void CpuOccupancyRate::onUpdateCpuPercent(double value)

@@ -56,13 +56,12 @@ signals:
     void canelSearchEditFocus();
 
 protected:
-    void mouseDoubleClickEvent(QMouseEvent *e) override;
-    void paintEvent(QPaintEvent *e) override;
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
+//    void paintEvent(QPaintEvent *event) override;
     bool eventFilter(QObject *, QEvent *event) override;
 
 private:
     QSettings *proSettings;
-    QColor m_topBorderColor;
     MySearchEdit *m_searchEdit = nullptr;
     QPushButton *m_cancelSearchBtn = nullptr;
     QString searchTextCache;

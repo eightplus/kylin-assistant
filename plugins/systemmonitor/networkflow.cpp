@@ -229,6 +229,8 @@ void NetworkFlow::onUpdateNetworkStatus(long recvTotalBytes, long sentTotalBytes
     }
     m_uploadPath = SmoothCurveGenerator::generateSmoothCurve(uploadPoints);
 
+//    emit rebackNetworkPainterPath(m_downloadPath, m_uploadPath);
+
     repaint();
 }
 

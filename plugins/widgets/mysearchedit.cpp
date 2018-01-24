@@ -24,7 +24,7 @@ MySearchEdit::MySearchEdit(QWidget *parent)
     m_clearBtn->hide();
 
     m_edit = new QLineEdit;
-    m_edit->setStyleSheet("QLineEdit{background-color:transparent;border-radius:0px;color:#303030;padding-right:15px;padding-bottom: 3px;}");
+    m_edit->setStyleSheet("QLineEdit{background-color:transparent;border-radius:0px;color:#ffffff;padding-right:12px;padding-bottom: 2px;}");
     //m_edit->setPlaceholderText("enter process info");
 
     m_placeHolder = new QLabel;

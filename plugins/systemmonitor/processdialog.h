@@ -83,6 +83,9 @@ public slots:
     void changeProcPriority(int nice);
     void refreshProcessList();
 
+protected:
+//    void paintEvent(QPaintEvent *event);
+
 private:
     QTimer *timer = nullptr;
     QSettings *proSettings = nullptr;

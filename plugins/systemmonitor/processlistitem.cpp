@@ -36,13 +36,29 @@ bool ProcessListItem::isSameItem(ProcessListItem *item)
     return m_data.pid == ((static_cast<ProcessListItem*>(item)))->m_data.pid;
 }
 
+void ProcessListItem::drawCellBackground(QRect rect, QPainter *painter, int level)
+{
+    QPainterPath path;
+    path.addRect(QRectF(rect.x(), rect.y(), rect.width(), rect.height()));
+    painter->setOpacity(0.5);//0.1
+    if (level == 0) {
+        painter->fillPath(path, QColor("#fff4c4"));
+    }
+    else if (level == 1) {
+        painter->fillPath(path, QColor("#f9eca8"));
+    }
+    else {
+        painter->fillPath(path, QColor("#fca71d"));
+    }
+}
+
 void ProcessListItem::drawBackground(QRect rect, QPainter *painter, int index, bool isSelect)
 {
     QPainterPath path;
     path.addRect(QRectF(rect));
 
     if (isSelect) {
-        painter->setOpacity(0.5);//0.1
+        painter->setOpacity(0.1);
         painter->fillPath(path, QColor("#2bb6ea"));
     }
     else {
@@ -64,15 +80,15 @@ void ProcessListItem::drawForeground(QRect rect, QPainter *painter, int column, 
         painter->drawPixmap(QRect(rect.x() + padding, rect.y() + (rect.height() - iconSize) / 2, iconSize, iconSize), m_data.iconPixmap);
         QString name = m_data.processName;
         if (m_data.m_status == tr("Stopped")) {//已停止
-            painter->setPen(QPen(QColor("#fff4c4")));
+            painter->setPen(QPen(QColor("#fca71d")));
             name = QString("(%1) %2").arg(tr("Suspend")).arg(m_data.processName);
         }
         else if (m_data.m_status == tr("Zombie")) {//僵死
-            painter->setPen(QPen(QColor("#fca71d")));
+            painter->setPen(QPen(QColor("#808080")));
             name = QString("(%1) %2").arg(tr("No response")).arg(m_data.processName);
         }
         else if (m_data.m_status == tr("Uninterruptible")) {//不可中断
-            painter->setPen(QPen(QColor("#f9eca8")));
+            painter->setPen(QPen(QColor("#ff6a6a")));
             name = QString("(%1) %2").arg(tr("Uninterruptible")).arg(m_data.processName);
         }
         else {//Sleeping 睡眠中  Running 运行中
@@ -91,7 +107,7 @@ void ProcessListItem::drawForeground(QRect rect, QPainter *painter, int column, 
     }
     else if (column == 1) {
         if (!m_data.user.isEmpty()) {
-            painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignCenter, m_data.user);
+            painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignRight | Qt::AlignVCenter, m_data.user);
         }
         if (isSeparator) {
             painter->setOpacity(0.8);
@@ -102,7 +118,7 @@ void ProcessListItem::drawForeground(QRect rect, QPainter *painter, int column, 
     }
     else if (column == 2) {
         if (!m_data.m_status.isEmpty()) {
-            painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignCenter, m_data.m_status);
+            painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignRight | Qt::AlignVCenter, m_data.m_status);
         }
         if (isSeparator) {
             painter->setOpacity(0.8);
@@ -113,24 +129,18 @@ void ProcessListItem::drawForeground(QRect rect, QPainter *painter, int column, 
     }
     else if (column == 3) {
         if (m_data.cpu < 10) {
-            painter->setPen(QPen(QColor("#fff4c4")));
+            this->drawCellBackground(QRect(rect.x(), rect.y(), rect.width(), rect.height()), painter, 0);
         }
         else if (m_data.cpu < 33) {
-            painter->setPen(QPen(QColor("#f9eca8")));
+            this->drawCellBackground(QRect(rect.x(), rect.y(), rect.width(), rect.height()), painter, 1);
         }
         else {
-            painter->setPen(QPen(QColor("#fca71d")));
+            this->drawCellBackground(QRect(rect.x(), rect.y(), rect.width(), rect.height()), painter, 2);
         }
-        painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignCenter, QString("%1%").arg(m_data.cpu));
-        if (isSeparator) {
-            painter->setOpacity(0.8);
-            QPainterPath separatorPath;
-            separatorPath.addRect(QRectF(rect.x() + rect.width() - 1, rect.y(), 1, rect.height()));
-            painter->fillPath(separatorPath, QColor("#e0e0e0"));
-        }
+        painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignRight | Qt::AlignVCenter, QString("%1%").arg(m_data.cpu));
     }
     else if (column == 4) {
-        painter->drawText(QRect(rect.x(), rect.y(), rect.width() - padding, rect.height()), Qt::AlignCenter, QString("%1").arg(m_data.pid));
+        painter->drawText(QRect(rect.x(), rect.y(), rect.width() - padding, rect.height()), Qt::AlignRight | Qt::AlignVCenter, QString("%1").arg(m_data.pid));
         if (isSeparator) {
             painter->setOpacity(0.8);
             QPainterPath separatorPath;
@@ -156,15 +166,15 @@ void ProcessListItem::drawForeground(QRect rect, QPainter *painter, int column, 
             painter->setOpacity(1);
             QString memory = QString(g_format_size_full(m_data.m_memory, G_FORMAT_SIZE_IEC_UNITS));
             if (m_data.m_memory < 102400000) {//<100M
-                painter->setPen(QPen(QColor("#fff4c4")));
+                this->drawCellBackground(QRect(rect.x(), rect.y(), rect.width(), rect.height()), painter, 0);
             }
             else if (m_data.m_memory < 1024000000) {//1G
-                painter->setPen(QPen(QColor("#f9eca8")));
+                this->drawCellBackground(QRect(rect.x(), rect.y(), rect.width(), rect.height()), painter, 1);
             }
             else {
-                painter->setPen(QPen(QColor("#fca71d")));
+                this->drawCellBackground(QRect(rect.x(), rect.y(), rect.width(), rect.height()), painter, 2);
             }
-            painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignCenter, memory);
+            painter->drawText(QRect(rect.x(), rect.y(), rect.width() - textPadding, rect.height()), Qt::AlignRight | Qt::AlignVCenter, memory);
         }
         if (isSeparator) {
             painter->setOpacity(0.8);

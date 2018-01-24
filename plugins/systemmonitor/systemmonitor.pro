@@ -58,7 +58,10 @@ HEADERS += \
     cpuoccupancyrate.h \
     cpuballwidget.h \
     smoothcurvegenerator.h \
-    memorywidget.h
+    memorywidget.h \
+    networkindicator.h \
+    resourcesindicator.h \
+    resourcescategory.h
 
 SOURCES += \
     systemmonitor.cpp \
@@ -90,7 +93,10 @@ SOURCES += \
     cpuoccupancyrate.cpp \
     cpuballwidget.cpp \
     smoothcurvegenerator.cpp \
-    memorywidget.cpp
+    memorywidget.cpp \
+    networkindicator.cpp \
+    resourcesindicator.cpp \
+    resourcescategory.cpp
 
 OTHER_FILES += \
     systemmonitor.json

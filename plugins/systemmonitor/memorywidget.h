@@ -41,6 +41,9 @@ public:
 public slots:
     void onUpdateMemoryStatus();
 
+signals:
+    void rebackMemoryInfo(const QString &info, double percent);
+
 protected:
     void paintEvent(QPaintEvent * event);
 

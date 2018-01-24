@@ -21,6 +21,7 @@
 #include "cpuoccupancyrate.h"
 #include "memorywidget.h"
 #include "networkflow.h"
+#include "resourcescategory.h"
 
 #include <glibtop/netload.h>
 #include <glibtop/netlist.h>
@@ -129,7 +130,6 @@ ResouresDialog::ResouresDialog(QWidget *parent)
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     setAcceptDrops(true);
     setAttribute(Qt::WA_NoMousePropagation);
-
     this->setObjectName("ResouresDialog");
 
     //cpu
@@ -138,19 +138,54 @@ ResouresDialog::ResouresDialog(QWidget *parent)
     m_prevCpuTotalTime = 0;
     m_prevCpuWorkTime = 0;
 
-    m_vlayout = new QVBoxLayout(this);
-    m_vlayout->setSpacing(2);
+    m_hlayout = new QHBoxLayout(this);
+    m_hlayout->setContentsMargins(0, 0, 0, 0);
 
+//    splitter = new QSplitter(this);
+//    splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+//    splitter->setOrientation(Qt::Horizontal);
+//    splitter->setHandleWidth(1);
+
+    m_stack = new QStackedWidget(this);
+    m_stack->setStyleSheet("QStackedWidget{background: rgb(255, 255, 255);}");
+//    m_stack->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    m_resourcesCategory = new ResourcesCategory(0);
+    connect(m_resourcesCategory, SIGNAL(switchResoucesPage(int)), this, SLOT(onSwitchResoucesPage(int)));
+
+//    m_vlayout = new QVBoxLayout;
     m_cpuWidget = new CpuOccupancyRate();
     m_memoryWidget = new MemoryWidget();
     m_networkWidget = new NetworkFlow();
-    m_vlayout->addWidget(m_cpuWidget, 0, Qt::AlignHCenter);
-    m_vlayout->addWidget(m_memoryWidget, 0, Qt::AlignHCenter);
-    m_vlayout->addWidget(m_networkWidget, 0, Qt::AlignHCenter);
+//    m_vlayout->addWidget(m_cpuWidget, 0, Qt::AlignHCenter);
+//    m_vlayout->addWidget(m_memoryWidget, 0, Qt::AlignHCenter);
+//    m_vlayout->addWidget(m_networkWidget, 0, Qt::AlignHCenter);
+    m_stack->addWidget(m_cpuWidget);
+    m_stack->addWidget(m_memoryWidget);
+    m_stack->addWidget(m_networkWidget);
+    m_stack->setCurrentWidget(m_cpuWidget);
+
+    m_hlayout->addWidget(m_resourcesCategory);
+//    m_hlayout->addLayout(m_vlayout);
+    m_hlayout->addWidget(m_stack);
+//    splitter->addWidget(m_resourcesCategory);
+//    splitter->addWidget(m_stack);
+
+//    m_hlayout->addWidget(splitter);
 
     connect(this, SIGNAL(updateNetworkStatus(long,long,long,long)), m_networkWidget, SLOT(onUpdateNetworkStatus(long,long,long,long)), Qt::QueuedConnection);
     connect(this, SIGNAL(updateMemoryStatus()), m_memoryWidget, SLOT(onUpdateMemoryStatus()));
     connect(this, SIGNAL(updateCpuStatus(double)), m_cpuWidget, SLOT(onUpdateCpuPercent(double)), Qt::QueuedConnection);
+
+    connect(m_memoryWidget, &MemoryWidget::rebackMemoryInfo, this, [=] (const QString &info, double percent) {
+        m_resourcesCategory->onUpdateMemoryPercent(info, percent);
+    });
+
+    connect(this, SIGNAL(updateCpuStatus(double)), m_resourcesCategory, SLOT(onUpdateCpuPercent(double)), Qt::QueuedConnection);
+    connect(this, SIGNAL(updateNetworkStatus(long,long,long,long)), m_resourcesCategory, SLOT(onUpdateNetworkStatus(long,long,long,long)), Qt::QueuedConnection);
+//    connect(m_networkWidget, &NetworkFlow::rebackNetworkPainterPath, this, [=] (QPainterPath downloadPath, QPainterPath uploadPath) {
+//        m_resourcesCategory->onUpdateNetworkPainterPath(downloadPath, uploadPath);
+//    });
 
     updateStatusTimer = new QTimer(this);
     connect(updateStatusTimer, SIGNAL(timeout()), this, SLOT(updateResourceStatus()));
@@ -159,18 +194,36 @@ ResouresDialog::ResouresDialog(QWidget *parent)
 
 ResouresDialog::~ResouresDialog()
 {
-    if (m_vlayout) {
-        foreach (QObject *child, m_vlayout->children()) {
+    delete m_resourcesCategory;
+    if (m_stack) {
+        foreach (QObject *child, m_stack->children()) {
             QWidget *widget = static_cast<QWidget *>(child);
             widget->deleteLater();
         }
+        delete m_stack;
     }
-    /*QLayoutItem *child;
+    /*
+//    if (m_vlayout) {
+//        foreach (QObject *child, m_vlayout->children()) {
+//            QWidget *widget = static_cast<QWidget *>(child);
+//            widget->deleteLater();
+//        }
+//    }
+
+    QLayoutItem *child;
     while ((child = m_vlayout->takeAt(0)) != 0) {
         if (child->widget())
             child->widget()->deleteLater();
         delete child;
     }*/
+
+    delete m_hlayout;
+}
+
+void ResouresDialog::onSwitchResoucesPage(int index)
+{
+    if (index < 3 && index >= 0)
+        m_stack->setCurrentIndex(index);
 }
 
 void ResouresDialog::startCpuTimer()

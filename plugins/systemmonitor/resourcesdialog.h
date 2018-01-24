@@ -20,7 +20,10 @@
 
 #include <QWidget>
 #include <QVBoxLayout>
+#include <QStackedWidget>
+#include <QSplitter>
 
+class ResourcesCategory;
 class CpuOccupancyRate;
 class MemoryWidget;
 class NetworkFlow;
@@ -38,6 +41,7 @@ public:
 
 public slots:
     void updateResourceStatus();
+    void onSwitchResoucesPage(int index);
 
 signals:
     void updateCpuStatus(double percent);
@@ -58,8 +62,13 @@ private:
     unsigned long long int m_rateSentBytes;
 
     QTimer *updateStatusTimer = nullptr;
-    QVBoxLayout *m_vlayout = nullptr;
+    QHBoxLayout *m_hlayout = nullptr;
+//    QVBoxLayout *m_vlayout = nullptr;
+    ResourcesCategory * m_resourcesCategory = nullptr;
     CpuOccupancyRate *m_cpuWidget = nullptr;
     MemoryWidget *m_memoryWidget = nullptr;
     NetworkFlow *m_networkWidget = nullptr;
+
+//    QSplitter *splitter = nullptr;
+    QStackedWidget *m_stack = nullptr;
 };

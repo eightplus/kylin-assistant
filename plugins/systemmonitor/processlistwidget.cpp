@@ -704,7 +704,7 @@ void ProcessListWidget::paintEvent(QPaintEvent *)
 
     int penWidth = 1;
     QPainterPath framePath;
-    framePath.addRoundedRect(QRect(rect().x() + penWidth, rect().y() + penWidth, rect().width() - penWidth * 2, rect().height() - penWidth * 2), 4, 4);//背景弧度
+    framePath.addRoundedRect(QRect(rect().x() + penWidth, rect().y() + penWidth, rect().width() - penWidth * 2, rect().height() - penWidth * 2), 5, 5);//背景弧度
     painter.setClipPath(framePath);
 
     //标题的背景
@@ -725,8 +725,6 @@ void ProcessListWidget::paintEvent(QPaintEvent *)
                 //标题文字左上方的排序箭头图标
                 if (this->m_currentSortIndex == counter) {
                     painter.setOpacity(1);
-//                    int arrowX = rect().x() + posX - 2 - m_upArrowPixmap.width() / m_upArrowPixmap.devicePixelRatio();
-//                    int arrowY = rect().y() + (this->m_titleHeight / m_upArrowPixmap.devicePixelRatio()) - m_downArrowPixmap.height() - 5;
                     if (this->m_isSort) {
                         painter.drawPixmap(QPoint(rect().x() + posX + 5, rect().y() + 10), m_downArrowPixmap);
                     } else {
@@ -741,15 +739,25 @@ void ProcessListWidget::paintEvent(QPaintEvent *)
                 font.setPixelSize(12);
                 painter.setFont(font);
                 painter.setPen(QPen(QColor("#999999")));
-                painter.drawText(QRect(posX + this->m_titlePadding, 0, itemWidth, this->m_titleHeight), Qt::AlignBottom | Qt::AlignLeft, this->columnTitles[counter]);
-                posX += itemWidth;
 
-                if (counter < titleItemsWidths.size() - 1) {//垂直分割线
-                    painter.setOpacity(0.8);
-                    QPainterPath separatorPath;
-                    separatorPath.addRect(QRectF(rect().x() + posX - 1, rect().y() + 5, 1, this->m_titleHeight - 5));
-                    painter.fillPath(separatorPath, QColor("#e0e0e0"));
+                if (this->columnTitles[counter] == tr("Process Name") || this->columnTitles[counter] == tr("Command Line") || this->columnTitles[counter] == tr("Priority"))
+                    painter.drawText(QRect(posX + this->m_titlePadding, 0, itemWidth, this->m_titleHeight), Qt::AlignBottom | Qt::AlignLeft, this->columnTitles[counter]);
+                else
+                    painter.drawText(QRect(posX, 0, itemWidth - this->m_titlePadding, this->m_titleHeight), Qt::AlignBottom | Qt::AlignRight, this->columnTitles[counter]);
+
+                //水平下划线
+                painter.setOpacity(0.8);
+                QPainterPath h_separatorPath;
+                h_separatorPath.addRect(QRectF(posX, rect().y() + this->m_titleHeight - 1, itemWidth, 1));
+                painter.fillPath(h_separatorPath, QColor("#e0e0e0"));
+
+                if (counter < titleItemsWidths.size()) {//垂直分割线
+                    QPainterPath v_separatorPath;
+                    v_separatorPath.addRect(QRectF(rect().x() + posX - 1, rect().y() + 5, 1, this->m_titleHeight - 5));
+                    painter.fillPath(v_separatorPath, QColor("#e0e0e0"));
                 }
+
+                posX += itemWidth;
             }
             counter++;
         }
@@ -849,10 +857,7 @@ void ProcessListWidget::paintScrollbar(QPainter *painter)
         painter->setOpacity(opacitry);
         QPainterPath path;
         path.addRoundedRect(
-            QRectF(rect().x() + rect().width() - barWidth - 4,
-                   barY + 2,
-                   barWidth,
-                   barHeight - 2 * 2), 2, 2);
+            QRectF(rect().x() + rect().width() - barWidth - 4, barY + 2, barWidth, barHeight - 2 * 2), 2, 2);//2 is radius
         painter->fillPath(path, QColor("#0B95D7"));
 
         QPen pen;

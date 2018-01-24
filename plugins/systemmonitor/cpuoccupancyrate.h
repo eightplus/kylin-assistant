@@ -22,6 +22,8 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
 class CpuBallWidget;
 
@@ -42,6 +44,8 @@ public slots:
 private:
     QLabel *m_title = nullptr;
     CpuBallWidget *m_cpuBall = nullptr;
+    QHBoxLayout *m_titleLeftLayout = nullptr;
+    QVBoxLayout *mainLayout = nullptr;
 };
 
 #endif // CPUOCCUPANCYRATE_H
