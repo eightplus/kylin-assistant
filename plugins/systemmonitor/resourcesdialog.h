@@ -24,9 +24,9 @@
 #include <QSplitter>
 
 class ResourcesCategory;
-class CpuOccupancyRate;
+class CpuRateWidget;
 class MemoryWidget;
-class NetworkFlow;
+class NetworkWidget;
 
 class ResouresDialog : public QWidget
 {
@@ -65,10 +65,10 @@ private:
     QHBoxLayout *m_hlayout = nullptr;
 //    QVBoxLayout *m_vlayout = nullptr;
     ResourcesCategory * m_resourcesCategory = nullptr;
-    CpuOccupancyRate *m_cpuWidget = nullptr;
+    CpuRateWidget *m_cpuWidget = nullptr;
     MemoryWidget *m_memoryWidget = nullptr;
-    NetworkFlow *m_networkWidget = nullptr;
+    NetworkWidget *m_networkWidget = nullptr;
 
-//    QSplitter *splitter = nullptr;
+    QSplitter *splitter = nullptr;
     QStackedWidget *m_stack = nullptr;
 };

@@ -54,11 +54,13 @@ HEADERS += \
     diskmodel.h \
     diskinfo.h \
     ../widgets/mysearchedit.h \
+    networkwidget.h \
     networkflow.h \
-    cpuoccupancyrate.h \
+    cpuratewidget.h \
     cpuballwidget.h \
     smoothcurvegenerator.h \
     memorywidget.h \
+    memorycircle.h \
     networkindicator.h \
     resourcesindicator.h \
     resourcescategory.h
@@ -89,11 +91,13 @@ SOURCES += \
     diskmodel.cpp \
     diskinfo.cpp \
     ../widgets/mysearchedit.cpp \
+    networkwidget.cpp \
     networkflow.cpp \
-    cpuoccupancyrate.cpp \
+    cpuratewidget.cpp \
     cpuballwidget.cpp \
     smoothcurvegenerator.cpp \
     memorywidget.cpp \
+    memorycircle.cpp \
     networkindicator.cpp \
     resourcesindicator.cpp \
     resourcescategory.cpp

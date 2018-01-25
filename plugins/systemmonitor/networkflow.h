@@ -22,7 +22,6 @@
 #define NETWORKFLOW_H
 
 #include <QWidget>
-#include <QRadioButton>
 
 class NetworkFlow : public QWidget
 {
@@ -34,10 +33,6 @@ public:
 
 public slots:
     void onUpdateNetworkStatus(long recvTotalBytes, long sentTotalBytes, long recvRateKbs, long sentRateKbs);
-    void setRadioButtonRowStatus();
-
-signals:
-//    void rebackNetworkPainterPath(QPainterPath downloadPath, QPainterPath uploadPath);
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -57,8 +52,14 @@ private:
     long m_sentRateBytes;
     QList<int> *m_gridY;
     int m_pointSpace;
-//    QRadioButton *math1_radio;
-//    QRadioButton *math2_radio;
+
+    QColor m_outsideBorderColor;
+    QColor m_bgColor;
+    QColor m_downloadColor;
+    QColor m_uploadColor;
+
+    QString receiveText;
+    QString sendText;
 };
 
 #endif // NETWORKFLOW_H

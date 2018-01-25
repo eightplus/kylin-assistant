@@ -30,6 +30,7 @@ ResourcesIndicator::ResourcesIndicator(int flag, QWidget *parent)
     else {
         m_borderColor = Qt::transparent;
     }
+    setResourcesState(Normal);
 
     /*m_layout = new QHBoxLayout(this);
     m_layout->setContentsMargins(5,5,5,5);

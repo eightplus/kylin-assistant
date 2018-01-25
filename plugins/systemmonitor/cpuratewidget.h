@@ -17,27 +17,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STARTUPLISTWIDGET_H
-#define STARTUPLISTWIDGET_H
+#ifndef CPURATEWIDGET_H
+#define CPURATEWIDGET_H
 
-#include "startupitem.h"
+#include <QWidget>
+#include <QLabel>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
-#include <QListWidget>
+class CpuBallWidget;
 
-class StartupListWidget : public QListWidget
+class CpuRateWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    StartupListWidget(QWidget *parent=0);
-    ~StartupListWidget();
+    CpuRateWidget(QWidget *parent = 0);
+    ~CpuRateWidget();
 
-    void loadItem(QString info);
-    void loadItems(QStringList items, int scrollValue);
+    void startTimer();
+    void stopTimer();
 
 public slots:
-    void onChangeStartup();
-    void onMouseEnter();
+    void onUpdateCpuPercent(double value);
+
+private:
+    QLabel *m_title = nullptr;
+    CpuBallWidget *m_cpuBall = nullptr;
+    QVBoxLayout *m_widgetLayout = nullptr;
+    QHBoxLayout *mainLayout = nullptr;
 };
 
-#endif // STARTUPLISTWIDGET_H
+#endif // CPURATEWIDGET_H

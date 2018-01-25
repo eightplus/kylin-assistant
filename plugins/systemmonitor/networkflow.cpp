@@ -101,24 +101,18 @@ inline QString formatNetworkRate(guint64 rate)
 }
 
 NetworkFlow::NetworkFlow(QWidget *parent) : QWidget(parent)
+  ,m_outsideBorderColor(QColor("#009944"))
+  ,m_bgColor(QColor("#ffffff"))
+  ,m_downloadColor(QColor("#009944"))
+  ,m_uploadColor(QColor("#e60012"))
 {
-    setFixedSize(302, 200);
+    setFixedSize(403, 240);
+
+    receiveText = tr("Receive");
+    sendText = tr("Send");
 
     m_netMaxHeight = 60;
     m_pointSpace = 10;
-
-//    math1_radio = new QRadioButton();
-//    math2_radio = new QRadioButton();
-//    math1_radio->setFocusPolicy(Qt::NoFocus);
-//    math1_radio->setObjectName("math1");
-//    math2_radio->setFocusPolicy(Qt::NoFocus);
-//    math2_radio->setObjectName("math2");
-//    math1_radio->setChecked(false);
-//    math2_radio->setChecked(true);
-//    math1_radio->move(10,10);
-//    math2_radio->move(100,10);
-//    connect(math1_radio, SIGNAL(clicked()), this, SLOT(setRadioButtonRowStatus()));
-//    connect(math2_radio, SIGNAL(clicked()), this, SLOT(setRadioButtonRowStatus()));
 
     m_pointsCount = int((this->width() -2) / m_pointSpace);
     m_downloadSpeedList = new QList<long>();
@@ -145,21 +139,6 @@ NetworkFlow::~NetworkFlow()
     delete m_downloadSpeedList;
     delete m_uploadSpeedList;
     delete m_gridY;
-}
-
-void NetworkFlow::setRadioButtonRowStatus()
-{
-    QObject *obj = sender(); //返回发出信号的对象，用QObject类型接收
-    QRadioButton* pbtn = qobject_cast<QRadioButton*>(obj);
-    QString obj_name = pbtn->objectName();
-    if(obj_name == "math1")
-    {
-
-    }
-    else if(obj_name == "math2")
-    {
-
-    }
 }
 
 //http://www.qtdebug.com/qtbook-paint-smooth-curve/
@@ -229,8 +208,6 @@ void NetworkFlow::onUpdateNetworkStatus(long recvTotalBytes, long sentTotalBytes
     }
     m_uploadPath = SmoothCurveGenerator::generateSmoothCurve(uploadPoints);
 
-//    emit rebackNetworkPainterPath(m_downloadPath, m_uploadPath);
-
     repaint();
 }
 
@@ -240,117 +217,75 @@ void NetworkFlow::paintEvent(QPaintEvent *)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);//反走样,绘制出来的线条会出现锯齿
 
-    QFont font = painter.font();
-    font.setPointSize(22);
-    font.setWeight(QFont::Light);
-    painter.setFont(font);
-    painter.setPen(QPen(QColor("#303030")));
-    painter.drawText(QRect(rect().x() + 2, rect().y(), rect().width() - 4, rect().height()), Qt::AlignLeft | Qt::AlignTop, tr("Network"));//绘制文本
-
-    setFontSize(painter, 12);
-    QFontMetrics fm = painter.fontMetrics();
-    QString downloadTitle = QString("%1 %2").arg(tr("Receiving")).arg(formatNetworkRate(m_recvRateBytes));
-    QString downloadContent = QString("%1 %2").arg(tr("Total Received")).arg(formatNetwork(m_recvTotalBytes));//接收
-    QString uploadTitle = QString("%1 %2").arg(tr("Sending")).arg(formatNetworkRate(m_sentRateBytes));
-    QString uploadContent = QString("%1 %2").arg(tr("Total Sent")).arg(formatNetwork(m_sentTotalBytes));//发送
-
-    int rateW = std::max(fm.width(downloadTitle), fm.width(uploadTitle));
-
-    //download
-    painter.setOpacity(1);
-    QSvgRenderer uploadRender(QString("://res/download.svg"));
-    QImage uploadimage(20, 20, QImage::Format_ARGB32);
-    uploadimage.fill(QColor("#1E90FF"));
-    QPainter uploadPainter(&uploadimage);
-    uploadPainter.setRenderHint(QPainter::Antialiasing, true);
-//    uploadPainter.setCompositionMode(QPainter::CompositionMode_SourceOver);//默认模式,源的alpha将目标顶部的像素混合
-    uploadRender.render(&uploadPainter);
-    painter.drawImage(rect().x() + 2, rect().y() + 40, uploadimage);
-//    uploadPainter.setCompositionMode(QPainter::CompositionMode_SourceIn);//输出是源，其中alpha被目标的值减少   设置画刷的组合模式CompositionMode_SourceIn这个模式为目标图像在下
-//    uploadPainter.end();
-
-    setFontSize(painter, 12);
-    painter.setPen(QPen(QColor("#1E90FF")));
-    painter.drawText(QRect(rect().x() + 20 + 5, rect().y() + 40, fm.width(downloadTitle), rect().height()), Qt::AlignLeft | Qt::AlignTop, downloadTitle);
-    painter.drawText(QRect(rect().x() + 20 + rateW + 14, rect().y() + 40, fm.width(downloadContent), rect().height()), Qt::AlignLeft | Qt::AlignTop, downloadContent);
-
-    //upload
-    QSvgRenderer downloadRender(QString("://res/upload.svg"));
-    QImage downloadimage(20, 20, QImage::Format_ARGB32);
-    downloadimage.fill(QColor("#FF0000"));
-    QPainter downloadPainter(&downloadimage);
-    downloadPainter.setRenderHint(QPainter::Antialiasing, true);
-//    downloadPainter.setCompositionMode(QPainter::CompositionMode_SourceOver);//默认模式,源的alpha将目标顶部的像素混合
-    downloadRender.render(&downloadPainter);
-    painter.drawImage(rect().x() + 2, rect().y() + 70, downloadimage);
-//    downloadPainter.setCompositionMode(QPainter::CompositionMode_SourceIn);//输出是源，其中alpha被目标的值减少   设置画刷的组合模式CompositionMode_SourceIn这个模式为目标图像在下
-//    downloadPainter.end();
-
-    setFontSize(painter, 12);
-    painter.setPen(QPen(QColor("#FF0000")));
-    painter.drawText(QRect(rect().x() + 20 + 5, rect().y() + 70, fm.width(uploadTitle), rect().height()), Qt::AlignLeft | Qt::AlignTop, uploadTitle);
-    painter.drawText(QRect(rect().x() + 20 + rateW + 14, rect().y() + 70, fm.width(uploadContent), rect().height()), Qt::AlignLeft | Qt::AlignTop, uploadContent);
-
-    //网格背景
-    painter.setBrush(QBrush(QColor("#AFEEEE")));
-    painter.setRenderHint(QPainter::Antialiasing, false);
-    QPen framePen;
-    painter.setOpacity(0.1);
-    framePen.setColor(QColor("#303030"));
-    framePen.setWidth(0.5);
-    painter.setPen(framePen);
-
     int penSize = 1;
     int gridX = rect().x() + penSize;
-    int gridY = rect().y() + 95;
-
+    int gridY = rect().y() + 10;
     int gridWidth = rect().width() - penSize * 2;
-    int gridHeight = 100;
+    int gridHeight = 90;
 
-    QPainterPath framePath;
-    framePath.addRect(QRect(gridX, gridY, gridWidth, gridHeight));
-    painter.drawPath(framePath);
+    //border of rect
+    QPainterPath borderPath;
+    borderPath.addRoundedRect(QRect(rect().x(), rect().y() + 9, gridWidth + penSize * 2, gridHeight + penSize * 2), 0, 0);
+    QPen pen(this->m_outsideBorderColor, 1);
+    painter.setPen(pen);
+    painter.drawPath(borderPath);
 
-    //网格
-    QPen gridPen;
-    QVector<qreal> dashes;
-    qreal space = 4;
-    dashes << 1 << space << 3 << space << 9 << space << 27 << space << 9 << space;
-    painter.setOpacity(0.05);
-    gridPen.setColor(QColor("#303030"));
-    gridPen.setWidth(0.5);
-    gridPen.setDashPattern(dashes);
-    painter.setPen(gridPen);
-    int gridLineX = gridX;
-    while (gridLineX < gridX + gridWidth - 100) {
-        gridLineX += 100;
-        painter.drawLine(gridLineX, gridY + 1, gridLineX, gridY + gridHeight - 1);
-    }
-    painter.setPen(gridPen);
-
-    m_gridY->clear();
-    int gridLineY = gridY;
-    while (gridLineY < gridY + gridHeight - 20) {
-        gridLineY += 20;
-        painter.drawLine(gridX + 1, gridLineY, gridX + gridWidth - 1, gridLineY);
-        m_gridY->append(gridLineY);
-    }
-
+    //background of rect
     painter.setOpacity(1);
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    //利用translate()函数进行平移变换
-    painter.translate((rect().width() - m_pointsCount * m_pointSpace - 2) / 2 + 6, 175);//将坐标第原点移动到该点
-    //利用scale()函数进行比例变换，实现缩放效果
+    QPainterPath framePath;
+    framePath.addRect(QRectF(gridX, gridY, gridWidth, gridHeight));
+    painter.fillPath(framePath, this->m_bgColor);//painter.drawPath(framePath);
+
+    painter.save();
+
+    //draw download smoothcurve
+    painter.setOpacity(1);
+    painter.translate((rect().width() - m_pointsCount * m_pointSpace - 2) / 2 + 6, 80);//将坐标第原点移动到该点
     painter.scale(1, -1);//将横坐标扩大1倍,将纵坐标缩小1倍
-    //使用QPainterPath画贝塞尔曲线
-    painter.setPen(QPen(QColor("#1E90FF"), 1));
+    painter.setPen(QPen(this->m_downloadColor, 1));
     painter.setBrush(QBrush());
     painter.drawPath(m_downloadPath);//绘制前面创建的path:m_downloadPath
 
-    painter.translate(0, -8);//将点（0，-8）设为原点
-//    painter.translate(0, 2);
-//    painter.scale(1, -1);
-    painter.setPen(QPen(QColor("#FF0000"), 1));
+    //draw upload smoothcurve
+    painter.translate(0, -8);
+    painter.setPen(QPen(this->m_uploadColor, 1));
     painter.setBrush(QBrush());
     painter.drawPath(m_uploadPath);
+
+    painter.restore();
+
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    setFontSize(painter, 12);
+    QFontMetrics fm = painter.fontMetrics();
+    int receiveTextWidth = fm.width(this->receiveText);
+    int sendTextWidth = fm.width(this->sendText);
+    painter.setPen(QPen(QColor("#000000"), 1));
+    painter.drawText(QRect(gridX, gridHeight + 10, receiveTextWidth, 30), Qt::AlignLeft | Qt::AlignVCenter, this->receiveText);
+    painter.drawText(QRect(gridX + receiveTextWidth*2, gridHeight + 10, sendTextWidth, 30), Qt::AlignLeft | Qt::AlignVCenter, this->sendText);
+    painter.setPen(QPen(QColor("#009944"), 1));
+    painter.drawLine(gridX + receiveTextWidth + 5, gridHeight + 10 + 30/2, gridX + receiveTextWidth*2 - 10, gridHeight + 10 + 30/2);
+    painter.setPen(QPen(QColor("#e60012"), 1));
+    painter.drawLine(gridX + receiveTextWidth*2 + sendTextWidth + 5, gridHeight + 10 + 30/2, gridX + receiveTextWidth*3 + sendTextWidth - 10, gridHeight + 10 + 30/2);
+
+    int contentWidth = 180;
+    //draw title
+    setFontSize(painter, 12);
+    painter.setPen(QPen(QColor("#999999")));
+    painter.drawText(QRect(gridX, gridHeight + 40, contentWidth, 30), Qt::AlignLeft |Qt::AlignVCenter, tr("Receiving"));
+    painter.drawText(QRect(gridX + contentWidth, gridHeight + 40, contentWidth, 30), Qt::AlignLeft |Qt::AlignVCenter, tr("Sending"));
+    painter.drawText(QRect(gridX, gridHeight + 95, contentWidth, 30), Qt::AlignLeft |Qt::AlignVCenter, tr("Total Received"));
+    painter.drawText(QRect(gridX + contentWidth, gridHeight + 95, contentWidth, 30), Qt::AlignLeft |Qt::AlignVCenter, tr("Total Sent"));
+
+    //draw text data
+    setFontSize(painter, 20);
+    QFontMetrics fms = painter.fontMetrics();
+    painter.setPen(QPen(QColor("#000000")));
+    const QString downloadRate = formatNetworkRate(m_recvRateBytes);
+    const QString downloadContent = formatNetwork(m_recvTotalBytes);//接收
+    const QString uploadRate = formatNetworkRate(m_sentRateBytes);
+    const QString uploadContent = formatNetwork(m_sentTotalBytes);
+    painter.drawText(QRect(gridX, gridHeight + 65, fms.width(downloadRate), 30), Qt::AlignLeft |Qt::AlignVCenter, downloadRate);
+    painter.drawText(QRect(gridX + contentWidth, gridHeight + 65, fms.width(uploadRate), 30), Qt::AlignLeft |Qt::AlignVCenter, uploadRate);
+    painter.drawText(QRect(gridX, gridHeight + 120, fms.width(downloadContent), 30), Qt::AlignLeft |Qt::AlignVCenter, downloadContent);
+    painter.drawText(QRect(gridX + contentWidth, gridHeight + 120, fms.width(uploadContent), 30), Qt::AlignLeft |Qt::AlignVCenter, uploadContent);
 }

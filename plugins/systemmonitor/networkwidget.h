@@ -17,35 +17,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CPUOCCUPANCYRATE_H
-#define CPUOCCUPANCYRATE_H
+#ifndef NETWORKWIDGET_H
+#define NETWORKWIDGET_H
 
 #include <QWidget>
+#include <QRadioButton>
+#include <QImage>
 #include <QLabel>
-#include <QHBoxLayout>
 #include <QVBoxLayout>
 
-class CpuBallWidget;
+class NetworkFlow;
 
-class CpuOccupancyRate : public QWidget
+class NetworkWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    CpuOccupancyRate(QWidget *parent = 0);
-    ~CpuOccupancyRate();
-
-    void startTimer();
-    void stopTimer();
+    NetworkWidget(QWidget *parent = 0);
+    ~NetworkWidget();
 
 public slots:
-    void onUpdateCpuPercent(double value);
+    void onUpdateNetworkStatus(long recvTotalBytes, long sentTotalBytes, long recvRateKbs, long sentRateKbs);
+    void setRadioButtonRowStatus();
 
 private:
     QLabel *m_title = nullptr;
-    CpuBallWidget *m_cpuBall = nullptr;
-    QHBoxLayout *m_titleLeftLayout = nullptr;
-    QVBoxLayout *mainLayout = nullptr;
+    NetworkFlow *m_networkFlow = nullptr;
+    QVBoxLayout *m_widgetLayout = nullptr;
+    QHBoxLayout *mainLayout = nullptr;
+//    QRadioButton *math1_radio;
+//    QRadioButton *math2_radio;
 };
 
-#endif // CPUOCCUPANCYRATE_H
+#endif // NETWORKWIDGET_H

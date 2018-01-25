@@ -214,8 +214,6 @@
         <file>res/menu_selected.png</file>
         <file>res/download.svg</file>
         <file>res/upload.svg</file>
-        <file>res/wave-back.png</file>
-        <file>res/wave-front.png</file>
         <file>res/disk.png</file>
         <file>res/sub_logo.png</file>
         <file>res/user_proc.png</file>
@@ -223,6 +221,10 @@
         <file>res/all_proc.png</file>
         <file>res/arrow_down.png</file>
         <file>res/arrow_up.png</file>
+        <file>res/wave_front.png</file>
+        <file>res/wave_front_small.png</file>
+        <file>res/wave_back.png</file>
+        <file>res/wave_back_small.png</file>
     </qresource>
     <qresource prefix="/sys">
         <file>res/sysBtn/close_button.png</file>

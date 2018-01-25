@@ -17,25 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cpuoccupancyrate.h"
+#include "cpuratewidget.h"
 #include "cpuballwidget.h"
 
 #include <QApplication>
 #include <QDebug>
 #include <QVBoxLayout>
 
-CpuOccupancyRate::CpuOccupancyRate(QWidget *parent) : QWidget(parent)
+CpuRateWidget::CpuRateWidget(QWidget *parent) : QWidget(parent)
 {
 //    this->setFixedSize(302, 140);
 
-    /*QVBoxLayout **/mainLayout = new QVBoxLayout(this);
+    /*QVBoxLayout **/mainLayout = new QHBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
 
     QWidget *w = new QWidget;
-    w->setFixedSize(302, 140);
-    m_titleLeftLayout = new QHBoxLayout(w);
-    m_titleLeftLayout->setContentsMargins(6, 0, 0, 0);
-    m_titleLeftLayout->setSpacing(0);
+    w->setFixedSize(300, 300);
+    m_widgetLayout = new QVBoxLayout(w);
+    m_widgetLayout->setContentsMargins(6, 0, 0, 0);
+    m_widgetLayout->setSpacing(0);
 
     m_title = new QLabel(tr("CPU"));
     m_title->setAlignment(Qt::AlignLeft | Qt::AlignTop);
@@ -47,10 +47,10 @@ CpuOccupancyRate::CpuOccupancyRate(QWidget *parent) : QWidget(parent)
     m_title->setFont(font);
 
     m_cpuBall = new CpuBallWidget;
-    m_cpuBall->setFixedSize(100, 100);
+//    m_cpuBall->setFixedSize(100, 100);
 
-    m_titleLeftLayout->addWidget(m_title, 0, Qt::AlignLeft);
-    m_titleLeftLayout->addWidget(m_cpuBall, 0, Qt::AlignCenter);
+    m_widgetLayout->addWidget(m_title, 0, Qt::AlignLeft);
+    m_widgetLayout->addWidget(m_cpuBall, 0, Qt::AlignCenter);
 
     mainLayout->addWidget(w, 1, Qt::AlignCenter);
 
@@ -58,15 +58,24 @@ CpuOccupancyRate::CpuOccupancyRate(QWidget *parent) : QWidget(parent)
 //    mainLayout->addWidget(m_title, 0, Qt::AlignLeft);
 //    mainLayout->addWidget(m_cpuBall, 0, Qt::AlignCenter);
 
+    /*sudo dmidecode -t processor
+    u32 len;
+    u8 *buf;
+    size_t size = len;
+    buf = read_file(&size, devmem);
+    len = size;
+//    dmi_table_decode(buf, len, num, ver, flags);
+//    dmi_decode(&h, ver);*/
+
     m_cpuBall->startTimer();
 }
 
-CpuOccupancyRate::~CpuOccupancyRate()
+CpuRateWidget::~CpuRateWidget()
 {
     delete m_title;
     delete m_cpuBall;
     QLayoutItem *child;
-    while ((child = m_titleLeftLayout->takeAt(0)) != 0) {
+    while ((child = m_widgetLayout->takeAt(0)) != 0) {
         if (child->widget())
             child->widget()->deleteLater();
         delete child;
@@ -74,17 +83,17 @@ CpuOccupancyRate::~CpuOccupancyRate()
     delete mainLayout;
 }
 
-void CpuOccupancyRate::onUpdateCpuPercent(double value)
+void CpuRateWidget::onUpdateCpuPercent(double value)
 {
     m_cpuBall->updateCpuPercent(value);
 }
 
-void CpuOccupancyRate::startTimer()
+void CpuRateWidget::startTimer()
 {
     m_cpuBall->startTimer();
 }
 
-void CpuOccupancyRate::stopTimer()
+void CpuRateWidget::stopTimer()
 {
     m_cpuBall->stopTimer();
 }

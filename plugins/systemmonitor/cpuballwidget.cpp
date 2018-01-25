@@ -27,10 +27,10 @@
 
 CpuBallWidget::CpuBallWidget(QWidget *parent) : QWidget(parent)
 {
-    this->setFixedSize(100, 100);
+    this->setFixedSize(210, 210);
 
-    m_frontImagePath = "://res/wave-front.png";
-    m_backimagePath = "://res/wave-back.png";
+    m_frontImagePath = "://res/wave_front.png";
+    m_backimagePath = "://res/wave_back.png";
 
     m_xFrontOffset = 0;
     m_xBackOffset = this->width();
@@ -69,8 +69,9 @@ void CpuBallWidget::loadWaveImage()
     QImageReader frontReader(m_frontImagePath);
     int w = frontReader.size().width();
     int h = frontReader.size().height();
-//    QImage image(w, h, QImage::Format_ARGB32);
-    QImage image(w, h, QImage::Format_ARGB32_Premultiplied);
+//    w = w * this->width() / 100;
+//    h = h * this->height() / 100;
+    QImage image(w, h, QImage::Format_ARGB32_Premultiplied);//QImage::Format_ARGB32
     image.fill(Qt::transparent);
     image.load(m_frontImagePath);
     /*QPainter painter(&image);
@@ -81,13 +82,13 @@ void CpuBallWidget::loadWaveImage()
     painter.end();*/
     m_frontImage = image;
 
-
     QImageReader backReader(m_backimagePath);
     w = backReader.size().width();
     h = backReader.size().height();
-
-//    QImage image(w, h, QImage::Format_ARGB32);
-    QImage backImage(w, h, QImage::Format_ARGB32_Premultiplied);
+//    w = w * this->width() / 100;
+//    h = h * this->height() / 100;
+    QImage backImage(w, h, QImage::Format_ARGB32_Premultiplied);//QImage::Format_ARGB32
+    backImage = backImage.scaled(QSize(w, h), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     backImage.fill(Qt::transparent);
     backImage.load(m_backimagePath);
     /*QPainter backPainter(&backImage);
@@ -101,17 +102,13 @@ void CpuBallWidget::loadWaveImage()
 
 void CpuBallWidget::onRepaintWaveImage()
 {
-//    m_xFrontOffset -= 1;
-    m_xFrontOffset += 1;
+    m_xFrontOffset += 2;
     m_xBackOffset += 2;
-//    if (m_xFrontOffset < - (m_frontImage.width() - this->width())) {//保留整个显示直径的大小不做处理，避免出现断层
-//        m_xFrontOffset = 0;
-//    }
     if (m_xFrontOffset > m_frontImage.width()) {//保留整个显示直径的大小不做处理，避免出现断层
-        m_xFrontOffset = this->width();
+        m_xFrontOffset = 0;
     }
     if (m_xBackOffset > m_backImage.width()) {//保留整个显示直径的大小不做处理，避免出现断层
-        m_xBackOffset = this->width();
+        m_xBackOffset = 0;
     }
     this->update();//this->repaint();
 }
@@ -154,42 +151,38 @@ void CpuBallWidget::paintEvent(QPaintEvent *)
     QImage waveRectImage = QImage(waveSize, QImage::Format_ARGB32_Premultiplied);//创建一个Format_ARGB32_Premultiplied 格式的QIamge，大小和控件相同
     QPainter wavePainter(&waveRectImage);//创建一个QPainter绘制waveRectImage这个图像
     wavePainter.setRenderHint(QPainter::Antialiasing, true);//setRenderHint() 来设置反走样，要么绘制出来的线条会出现锯齿
-    wavePainter.initFrom(this);//用控件的设置初始化画笔，刷子和字体
+//    wavePainter.initFrom(this);//用控件的设置初始化画笔，刷子和字体
     wavePainter.setCompositionMode(QPainter::CompositionMode_Source);//输出源像素，避免整个矩形背景区域出现花屏现象
     if (currentPercent > 88) {
-        wavePainter.fillRect(waveRectImage.rect(), QColor(255, 0, 0, 127));//OrangeRed
         m_shadowEffect->setColor(QColor(255, 0, 0, 127));//红色
     } else if (currentPercent > 55) {
-        wavePainter.fillRect(waveRectImage.rect(), QColor(255, 165, 255, 127));//Orange
         m_shadowEffect->setColor(QColor(255, 193, 37, 127));//黄
     } else {
-        wavePainter.fillRect(waveRectImage.rect(), QColor(135, 206, 250, 127));//LightSkyBlue
         m_shadowEffect->setColor(QColor(232, 232, 232, 127));//灰
     }
+    wavePainter.fillRect(waveRectImage.rect(), QColor(255, 255, 255, 127));
 
     //Step2:波浪区域
     //CompositionMode_SourceOver保证波浪出现的时候其背景为通明的
     wavePainter.setCompositionMode(QPainter::CompositionMode_SourceOver);//混和模式QImage::CompositionMode_SourceOver ，即原象素（正在绘制的象素）和目标象素（已经存在的象素）混和，原象素的alpha分量定义为最终的透明度
-    wavePainter.drawImage(static_cast<int>(m_xBackOffset) - m_backImage.width(), 100 - currentPercent, m_backImage);
-//    wavePainter.drawImage(static_cast<int>(m_xFrontOffset), 100 - currentPercent, m_frontImage);
-    wavePainter.drawImage(static_cast<int>(m_xFrontOffset) - m_frontImage.width(), 100 - currentPercent, m_frontImage);
+    wavePainter.drawImage(static_cast<int>(m_xBackOffset), (100 - currentPercent)*this->width()/100, m_backImage);
+    wavePainter.drawImage(static_cast<int>(m_xBackOffset) - m_backImage.width(), (100 - currentPercent)*this->width()/100, m_backImage);
+    wavePainter.drawImage(static_cast<int>(m_xFrontOffset), (100 - currentPercent)*this->width()/100, m_frontImage);
+    wavePainter.drawImage(static_cast<int>(m_xFrontOffset) - m_frontImage.width(), (100 - currentPercent)*this->width()/100, m_frontImage);
 
-    //Step3:矩形区域中圆球的外径和内径
+    //Step3:矩形区域中圆球的外径
     QRectF outRect = QRectF(0, 0, waveSize.width(), waveSize.height());
     QPainterPath outBorderPath;
     //QMargins定义了矩形的四个外边距量，left,top,right和bottom，描述围绕矩形的边框宽度
     outBorderPath.addEllipse(outRect.marginsRemoved(QMarginsF(0.5, 0.5, 0.5, 0.5)));//marginsAdded:增长矩形的边距，扩大它
-    wavePainter.strokePath(outBorderPath, QPen(QColor(178, 34, 34, 127), 2));//外边框
-    QPainterPath inBorderPath;
-    inBorderPath.addEllipse(outRect.marginsRemoved(QMarginsF(2, 2, 2, 2)));//marginsRemoved:删除矩形的边距，缩小它
-    wavePainter.strokePath(inBorderPath, QPen(QColor(0, 0, 255, 127), 2));//内边框
+    wavePainter.strokePath(outBorderPath, QPen(QColor("#0f84bc"), 1));//外边框  59aee2
 
     //Step4:占用率文字描述
     QFont font = wavePainter.font();
-    font.setPixelSize(waveSize.height() * 20 / 100);
+    font.setPixelSize(44);//waveSize.height() * 20 / this->height()
     wavePainter.setFont(font);
     wavePainter.setPen(Qt::white);
-    wavePainter.drawText(rect, Qt::AlignCenter, m_progressText);
+    wavePainter.drawText(QRect(rect.x(), rect.y() + rect.height()*2/3, rect.width(), rect.height()/3), Qt::AlignHCenter, m_progressText);
     wavePainter.end();
 
     QImage image = QImage(waveSize, QImage::Format_ARGB32_Premultiplied);

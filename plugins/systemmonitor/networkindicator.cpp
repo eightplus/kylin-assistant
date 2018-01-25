@@ -34,6 +34,8 @@ NetworkIndicator::NetworkIndicator(QWidget *parent)
     }
 
     m_gridY = new QList<int>();
+
+    setNetworkState(Normal);
 }
 
 NetworkIndicator::~NetworkIndicator()

@@ -18,9 +18,9 @@
  */
 
 #include "resourcesdialog.h"
-#include "cpuoccupancyrate.h"
+#include "cpuratewidget.h"
 #include "memorywidget.h"
-#include "networkflow.h"
+#include "networkwidget.h"
 #include "resourcescategory.h"
 
 #include <glibtop/netload.h>
@@ -141,10 +141,10 @@ ResouresDialog::ResouresDialog(QWidget *parent)
     m_hlayout = new QHBoxLayout(this);
     m_hlayout->setContentsMargins(0, 0, 0, 0);
 
-//    splitter = new QSplitter(this);
-//    splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-//    splitter->setOrientation(Qt::Horizontal);
-//    splitter->setHandleWidth(1);
+    splitter = new QSplitter(this);
+    splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    splitter->setOrientation(Qt::Horizontal);
+    splitter->setHandleWidth(1);
 
     m_stack = new QStackedWidget(this);
     m_stack->setStyleSheet("QStackedWidget{background: rgb(255, 255, 255);}");
@@ -154,9 +154,9 @@ ResouresDialog::ResouresDialog(QWidget *parent)
     connect(m_resourcesCategory, SIGNAL(switchResoucesPage(int)), this, SLOT(onSwitchResoucesPage(int)));
 
 //    m_vlayout = new QVBoxLayout;
-    m_cpuWidget = new CpuOccupancyRate();
+    m_cpuWidget = new CpuRateWidget();
     m_memoryWidget = new MemoryWidget();
-    m_networkWidget = new NetworkFlow();
+    m_networkWidget = new NetworkWidget();
 //    m_vlayout->addWidget(m_cpuWidget, 0, Qt::AlignHCenter);
 //    m_vlayout->addWidget(m_memoryWidget, 0, Qt::AlignHCenter);
 //    m_vlayout->addWidget(m_networkWidget, 0, Qt::AlignHCenter);
@@ -165,13 +165,12 @@ ResouresDialog::ResouresDialog(QWidget *parent)
     m_stack->addWidget(m_networkWidget);
     m_stack->setCurrentWidget(m_cpuWidget);
 
-    m_hlayout->addWidget(m_resourcesCategory);
+    /*m_hlayout->addWidget(m_resourcesCategory);
 //    m_hlayout->addLayout(m_vlayout);
-    m_hlayout->addWidget(m_stack);
-//    splitter->addWidget(m_resourcesCategory);
-//    splitter->addWidget(m_stack);
-
-//    m_hlayout->addWidget(splitter);
+    m_hlayout->addWidget(m_stack);*/
+    splitter->addWidget(m_resourcesCategory);
+    splitter->addWidget(m_stack);
+    m_hlayout->addWidget(splitter);
 
     connect(this, SIGNAL(updateNetworkStatus(long,long,long,long)), m_networkWidget, SLOT(onUpdateNetworkStatus(long,long,long,long)), Qt::QueuedConnection);
     connect(this, SIGNAL(updateMemoryStatus()), m_memoryWidget, SLOT(onUpdateMemoryStatus()));
@@ -183,9 +182,6 @@ ResouresDialog::ResouresDialog(QWidget *parent)
 
     connect(this, SIGNAL(updateCpuStatus(double)), m_resourcesCategory, SLOT(onUpdateCpuPercent(double)), Qt::QueuedConnection);
     connect(this, SIGNAL(updateNetworkStatus(long,long,long,long)), m_resourcesCategory, SLOT(onUpdateNetworkStatus(long,long,long,long)), Qt::QueuedConnection);
-//    connect(m_networkWidget, &NetworkFlow::rebackNetworkPainterPath, this, [=] (QPainterPath downloadPath, QPainterPath uploadPath) {
-//        m_resourcesCategory->onUpdateNetworkPainterPath(downloadPath, uploadPath);
-//    });
 
     updateStatusTimer = new QTimer(this);
     connect(updateStatusTimer, SIGNAL(timeout()), this, SLOT(updateResourceStatus()));

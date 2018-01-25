@@ -532,9 +532,9 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     </message>
 </context>
 <context>
-    <name>CpuOccupancyRate</name>
+    <name>CpuRateWidget</name>
     <message>
-        <location filename="../../plugins/systemmonitor/cpuoccupancyrate.cpp" line="34"/>
+        <location filename="../../plugins/systemmonitor/cpuratewidget.cpp" line="40"/>
         <source>CPU</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1346,16 +1346,41 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     </message>
 </context>
 <context>
-    <name>MemoryWidget</name>
+    <name>MemoryCircle</name>
     <message>
-        <location filename="../../plugins/systemmonitor/memorywidget.cpp" line="37"/>
+        <location filename="../../plugins/systemmonitor/memorycircle.cpp" line="140"/>
         <source>Memory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/memorywidget.cpp" line="132"/>
-        <location filename="../../plugins/systemmonitor/memorywidget.cpp" line="134"/>
-        <source>Used %1(%2), Total %3</source>
+        <location filename="../../plugins/systemmonitor/memorycircle.cpp" line="141"/>
+        <source>Swap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/memorycircle.cpp" line="146"/>
+        <location filename="../../plugins/systemmonitor/memorycircle.cpp" line="147"/>
+        <source>Used(Percent)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/memorycircle.cpp" line="148"/>
+        <location filename="../../plugins/systemmonitor/memorycircle.cpp" line="149"/>
+        <source>Total</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/memorycircle.cpp" line="155"/>
+        <location filename="../../plugins/systemmonitor/memorycircle.cpp" line="156"/>
+        <source>%1(%2%)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MemoryWidget</name>
+    <message>
+        <location filename="../../plugins/systemmonitor/memorywidget.cpp" line="19"/>
+        <source>Memory</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1415,8 +1440,33 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>MonitorTitleWidget</name>
     <message>
-        <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="109"/>
+        <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="239"/>
         <source>Kylin System Monitor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="299"/>
+        <source>Processes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="303"/>
+        <source>Resources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="307"/>
+        <source>File Systems</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="360"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="374"/>
+        <source>Enter the relevant info of process</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1446,28 +1496,41 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>NetworkFlow</name>
     <message>
-        <location filename="../../plugins/systemmonitor/networkflow.cpp" line="246"/>
-        <source>Network</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../plugins/systemmonitor/networkflow.cpp" line="250"/>
+        <location filename="../../plugins/systemmonitor/networkflow.cpp" line="274"/>
         <source>Receiving</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/networkflow.cpp" line="251"/>
+        <location filename="../../plugins/systemmonitor/networkflow.cpp" line="276"/>
         <source>Total Received</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/networkflow.cpp" line="252"/>
+        <location filename="../../plugins/systemmonitor/networkflow.cpp" line="275"/>
         <source>Sending</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/networkflow.cpp" line="253"/>
+        <location filename="../../plugins/systemmonitor/networkflow.cpp" line="111"/>
+        <source>Receive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/networkflow.cpp" line="112"/>
+        <source>Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/networkflow.cpp" line="277"/>
         <source>Total Sent</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NetworkWidget</name>
+    <message>
+        <location filename="../../plugins/systemmonitor/networkwidget.cpp" line="41"/>
+        <source>Network</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1565,49 +1628,49 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>ProcessDialog</name>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="143"/>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="146"/>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="162"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="158"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="161"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="175"/>
         <source>End process</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="143"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="158"/>
         <source>Ending a process may destroy data, break the session or introduce a security risk. Only unresponsive processes should be ended.
 Are you sure to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="145"/>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="151"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="160"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="166"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="149"/>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="152"/>
         <location filename="../../plugins/systemmonitor/processdialog.cpp" line="164"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="167"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="177"/>
         <source>Kill process</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="149"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="164"/>
         <source>Killing a process may destroy data, break the session or introduce a security risk. Only unresponsive processes should be killed.
 Are you sure to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="158"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="171"/>
         <source>Stop process</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="160"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="173"/>
         <source>Continue process</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="189"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="202"/>
         <source>Properties</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1615,28 +1678,28 @@ Are you sure to continue?</source>
 <context>
     <name>ProcessListItem</name>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="73"/>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="82"/>
         <source>Stopped</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="75"/>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="84"/>
         <source>Suspend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="77"/>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="86"/>
         <source>Zombie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="79"/>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="88"/>
         <source>No response</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="82"/>
-        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="84"/>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="90"/>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="92"/>
         <source>Uninterruptible</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1644,47 +1707,50 @@ Are you sure to continue?</source>
 <context>
     <name>ProcessListWidget</name>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="65"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="57"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="743"/>
         <source>Process Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="65"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="57"/>
         <source>User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="65"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="57"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="65"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="57"/>
         <source>CPU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="65"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="57"/>
         <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="65"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="57"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="743"/>
         <source>Command Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="65"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="57"/>
         <source>Memory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="65"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="57"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="743"/>
         <source>Priority</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="677"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="821"/>
         <source>No search result</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1705,27 +1771,27 @@ Are you sure to continue?</source>
 <context>
     <name>PropertiesDialog</name>
     <message>
-        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="77"/>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="75"/>
         <source>User name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="89"/>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="87"/>
         <source>Process name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="101"/>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="99"/>
         <source>Command line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="117"/>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="115"/>
         <source>CPU Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="130"/>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="128"/>
         <source>Started Time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2472,6 +2538,7 @@ Are you sure to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../plugins/systemmonitor/memorycircle.cpp" line="24"/>
         <location filename="../../plugins/systemmonitor/networkflow.cpp" line="50"/>
         <source>byte</source>
         <translation type="unfinished"></translation>
@@ -2482,6 +2549,7 @@ Are you sure to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../plugins/systemmonitor/memorycircle.cpp" line="27"/>
         <location filename="../../plugins/systemmonitor/networkflow.cpp" line="56"/>
         <source>bytes</source>
         <translation type="unfinished"></translation>
@@ -2492,6 +2560,7 @@ Are you sure to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../plugins/systemmonitor/memorycircle.cpp" line="34"/>
         <location filename="../../plugins/systemmonitor/networkflow.cpp" line="66"/>
         <source>KiB</source>
         <translation type="unfinished"></translation>
@@ -2502,6 +2571,7 @@ Are you sure to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../plugins/systemmonitor/memorycircle.cpp" line="37"/>
         <location filename="../../plugins/systemmonitor/networkflow.cpp" line="72"/>
         <source>MiB</source>
         <translation type="unfinished"></translation>
@@ -2512,6 +2582,7 @@ Are you sure to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../plugins/systemmonitor/memorycircle.cpp" line="40"/>
         <location filename="../../plugins/systemmonitor/networkflow.cpp" line="78"/>
         <source>GiB</source>
         <translation type="unfinished"></translation>
@@ -2522,6 +2593,7 @@ Are you sure to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../plugins/systemmonitor/memorycircle.cpp" line="43"/>
         <location filename="../../plugins/systemmonitor/networkflow.cpp" line="84"/>
         <source>TiB</source>
         <translation type="unfinished"></translation>
@@ -2537,6 +2609,24 @@ Are you sure to continue?</source>
     <message>
         <location filename="../../component/quibo.ui" line="14"/>
         <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ResourcesCategory</name>
+    <message>
+        <location filename="../../plugins/systemmonitor/resourcescategory.cpp" line="35"/>
+        <source>CPU</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/resourcescategory.cpp" line="37"/>
+        <source>Memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/resourcescategory.cpp" line="39"/>
+        <source>Network</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2685,29 +2775,6 @@ Are you sure to continue?</source>
     <message>
         <location filename="../../component/tipdialog.cpp" line="109"/>
         <source>Tip Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ToolBar</name>
-    <message>
-        <location filename="../../plugins/systemmonitor/toolbar.cpp" line="236"/>
-        <source>Processes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../plugins/systemmonitor/toolbar.cpp" line="237"/>
-        <source>Resources</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../plugins/systemmonitor/toolbar.cpp" line="238"/>
-        <source>File Systems</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../plugins/systemmonitor/toolbar.cpp" line="260"/>
-        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
