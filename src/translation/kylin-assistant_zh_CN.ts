@@ -1198,9 +1198,29 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>CpuRateWidget</name>
     <message>
-        <location filename="../../plugins/systemmonitor/cpuratewidget.cpp" line="40"/>
+        <location filename="../../plugins/systemmonitor/cpuratewidget.cpp" line="258"/>
         <source>CPU</source>
         <translation>处理器</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/cpuratewidget.cpp" line="264"/>
+        <source>Occupancy rate</source>
+        <translation>占用率</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/cpuratewidget.cpp" line="270"/>
+        <source>Idle rate</source>
+        <translation>空闲率</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/cpuratewidget.cpp" line="276"/>
+        <source>The running time of system</source>
+        <translation>系统运行时间</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/cpuratewidget.cpp" line="282"/>
+        <source>The idle time of system</source>
+        <translation>系统空闲时间</translation>
     </message>
 </context>
 <context>
@@ -2148,7 +2168,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
         <translation type="vanished">内存信息 %1</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/memorywidget.cpp" line="19"/>
+        <location filename="../../plugins/systemmonitor/memorywidget.cpp" line="18"/>
         <source>Memory</source>
         <translation>内存</translation>
     </message>
@@ -2348,9 +2368,9 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>NetworkWidget</name>
     <message>
-        <location filename="../../plugins/systemmonitor/networkwidget.cpp" line="41"/>
+        <location filename="../../plugins/systemmonitor/networkwidget.cpp" line="38"/>
         <source>Network</source>
-        <translation type="unfinished">网络</translation>
+        <translation>网络</translation>
     </message>
 </context>
 <context>
@@ -2453,6 +2473,24 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
         <location filename="../../setting/panelwidget.cpp" line="370"/>
         <source>Show icon</source>
         <translation>显示图标</translation>
+    </message>
+</context>
+<context>
+    <name>ProcessCategory</name>
+    <message>
+        <location filename="../../plugins/systemmonitor/processcategory.cpp" line="37"/>
+        <source>Active Processes</source>
+        <translation>活动的进程</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processcategory.cpp" line="40"/>
+        <source>My Processes</source>
+        <translation>我的进程</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processcategory.cpp" line="43"/>
+        <source>All Processes</source>
+        <translation>全部进程</translation>
     </message>
 </context>
 <context>
@@ -3483,6 +3521,46 @@ Are you sure to continue?</source>
         <source>TiB/s</source>
         <translation>TiB/秒</translation>
     </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/cpuratewidget.cpp" line="41"/>
+        <source>%1hours</source>
+        <translation>%1小时</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/cpuratewidget.cpp" line="43"/>
+        <source>%1hour</source>
+        <translation>%1小时</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/cpuratewidget.cpp" line="45"/>
+        <source>%1minutes</source>
+        <translation>%1分</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/cpuratewidget.cpp" line="47"/>
+        <source>%1minute</source>
+        <translation>%1分</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/cpuratewidget.cpp" line="49"/>
+        <source>%1seconds</source>
+        <translation>%1秒</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/cpuratewidget.cpp" line="51"/>
+        <source>%1second</source>
+        <translation>%1秒</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/cpuratewidget.cpp" line="56"/>
+        <source>%1day</source>
+        <translation>%1天</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/cpuratewidget.cpp" line="58"/>
+        <source>%1days</source>
+        <translation>%1天</translation>
+    </message>
 </context>
 <context>
     <name>QUIBO</name>
@@ -3495,17 +3573,17 @@ Are you sure to continue?</source>
 <context>
     <name>ResourcesCategory</name>
     <message>
-        <location filename="../../plugins/systemmonitor/resourcescategory.cpp" line="35"/>
+        <location filename="../../plugins/systemmonitor/resourcescategory.cpp" line="37"/>
         <source>CPU</source>
         <translation>处理器</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/resourcescategory.cpp" line="37"/>
+        <location filename="../../plugins/systemmonitor/resourcescategory.cpp" line="39"/>
         <source>Memory</source>
         <translation>内存</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/resourcescategory.cpp" line="39"/>
+        <location filename="../../plugins/systemmonitor/resourcescategory.cpp" line="41"/>
         <source>Network</source>
         <translation>网络</translation>
     </message>

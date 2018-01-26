@@ -21,6 +21,8 @@
 #include "resourcesindicator.h"
 #include "networkindicator.h"
 
+#include <QDebug>
+
 ResourcesCategory::ResourcesCategory(int tabIndex, QWidget *parent)
     : QWidget(parent)
     ,activeIndex(tabIndex)

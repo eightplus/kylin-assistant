@@ -1,3 +1,23 @@
+/*
+ * Copyright (C) 2013 ~ 2018 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
+ *
+ * Authors:
+ *  Kobe Lee    xiangli@ubuntukylin.com/kobe24_lixiang@126.com
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
 #include "resourcesindicator.h"
 
 #include <QMouseEvent>
@@ -31,40 +51,11 @@ ResourcesIndicator::ResourcesIndicator(int flag, QWidget *parent)
         m_borderColor = Qt::transparent;
     }
     setResourcesState(Normal);
-
-    /*m_layout = new QHBoxLayout(this);
-    m_layout->setContentsMargins(5,5,5,5);
-
-    QWidget *w = new QWidget;
-    m_rLayout = new QVBoxLayout(w);
-    m_rLayout->setContentsMargins(0, 0, 5, 0);
-    m_rLayout->setSpacing(5);
-
-    m_titleLabel = new QLabel;
-    m_titleLabel->setText("CPU");
-    m_titleLabel->setStyleSheet("QLabel{background-color:transparent;color:#ffffff; font-size:16px;text-align:left;}");
-
-    m_textLabel = new QLabel;
-    m_textLabel->setText("40% 1.8GHz");
-    m_textLabel->setStyleSheet("QLabel{background-color:transparent;color:#ffffff; font-size:12px;text-align:left;}");
-
-    m_rLayout->addWidget(m_titleLabel);
-    m_rLayout->addWidget(m_textLabel);
-
-    m_layout->addWidget(w, 1, Qt::AlignRight);*/
 }
 
 ResourcesIndicator::~ResourcesIndicator()
 {
-//    delete m_titleLabel;
-//    delete m_textLabel;
-//    QLayoutItem *child;
-//    while ((child = m_rLayout->takeAt(0)) != 0) {
-//        if (child->widget())
-//            child->widget()->deleteLater();
-//        delete child;
-//    }
-//    delete m_layout;
+
 }
 
 void ResourcesIndicator::enterEvent(QEvent *event)
@@ -180,6 +171,7 @@ void ResourcesIndicator::setTitle(const QString &title)
 
 void ResourcesIndicator::updatePercentAndInfo(double percent, const QString &info)
 {
+
     this->m_currentPercent = static_cast<int>(percent);
     this->m_info = info;
     repaint();
@@ -197,7 +189,6 @@ void ResourcesIndicator::paintEvent(QPaintEvent *event)
     gradient.setColorAt(0, QColor::fromRgbF(0, 1, 0, 1));
     gradient.setColorAt(1, QColor::fromRgbF(0, 0, 0, 0));
     QBrush brush(gradient);*/
-
 
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
@@ -242,40 +233,4 @@ void ResourcesIndicator::paintEvent(QPaintEvent *event)
     painter.drawText(QRect(68, 30, 120, 20), Qt::AlignLeft | Qt::AlignVCenter, text);
 
     QWidget::paintEvent(event);
-
-
-
-
-
-
-
-
-
-
-
-    /*QFrame::paintEvent(e);
-
-    QPainter p(this);
-    p.setRenderHint(QPainter::Antialiasing);
-
-    //border
-    QPainterPath path;
-    path.addRoundedRect(this->rect(), m_borderRadius, m_borderRadius);
-    QPen pen(m_outsideBorderColor, m_borderWidth);
-    p.setPen(pen);
-    p.drawPath(path);
-
-    QRect insideRect;
-    insideRect.setRect(this->rect().x() + m_borderWidth,
-                       this->rect().y() + m_borderWidth,
-                       this->rect().width() - m_borderWidth * 2,
-                       this->rect().height() - m_borderWidth * 2);
-    QPainterPath lastpath;
-    lastpath.addRoundedRect(insideRect, m_borderRadius, m_borderRadius);
-    p.setClipPath(lastpath);
-
-    p.fillRect(0, 0, width(), height(), m_coverBrush);
-
-    p.end();*/
 }
-

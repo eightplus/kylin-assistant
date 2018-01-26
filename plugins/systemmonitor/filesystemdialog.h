@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include <QWidget>
+#include <QFileSystemWatcher>
 
 class DiskItemList;
 class DiskModel;
@@ -34,9 +34,12 @@ public:
     explicit FileSystemDialog(QWidget* parent = 0);
     ~FileSystemDialog();
 
+    void initFileSystemMonitor();
+
 public slots:
     void addDiskInfoItem(DiskInfo *info);
     void removeDiskInfoItemByDevName(DiskInfo *info);
+    void onDirectoryChanged(QString path);
 
 private:
     bool event(QEvent *event);
@@ -45,5 +48,7 @@ private:
     QVBoxLayout *m_centralLayout = nullptr;
     DiskItemList *m_diskItemList;
     DiskModel *m_diskModelList;
-    FileSystemWorker *m_fileSystemWorker;
+    FileSystemWorker *m_fileSystemWorker = nullptr;
+    QFileSystemWatcher *m_fileSystemMonitor = nullptr;
+    QString m_monitorFile;
 };

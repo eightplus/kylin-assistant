@@ -171,11 +171,18 @@ void CpuBallWidget::paintEvent(QPaintEvent *)
     wavePainter.drawImage(static_cast<int>(m_xFrontOffset) - m_frontImage.width(), (100 - currentPercent)*this->width()/100, m_frontImage);
 
     //Step3:矩形区域中圆球的外径
-    QRectF outRect = QRectF(0, 0, waveSize.width(), waveSize.height());
+    /*QRectF outRect = QRectF(0, 0, waveSize.width(), waveSize.height());
     QPainterPath outBorderPath;
     //QMargins定义了矩形的四个外边距量，left,top,right和bottom，描述围绕矩形的边框宽度
     outBorderPath.addEllipse(outRect.marginsRemoved(QMarginsF(0.5, 0.5, 0.5, 0.5)));//marginsAdded:增长矩形的边距，扩大它
-    wavePainter.strokePath(outBorderPath, QPen(QColor("#0f84bc"), 1));//外边框  59aee2
+    wavePainter.strokePath(outBorderPath, QPen(QColor("#0f84bc"), 1));//外边框*/
+    //QGradient支持三种渐变画刷：线性渐变(QLinearGradient)、辐射渐变(QRadialGradient)、角度渐变(QConicalGradient)
+    QRectF outRect = QRectF(0, 0, waveSize.width(), waveSize.height());
+    QConicalGradient conicalGradient(waveSize.width()/2, waveSize.height()/2, waveSize.width());//参数分别为中心坐标和初始角度
+    conicalGradient.setColorAt(0, QColor("#59aee2"));
+    conicalGradient.setColorAt(1.0, QColor("#0f84bc"));
+    wavePainter.setPen(QPen(QBrush(conicalGradient), 1));
+    wavePainter.drawEllipse(outRect.marginsRemoved(QMarginsF(0.5, 0.5, 0.5, 0.5)));
 
     //Step4:占用率文字描述
     QFont font = wavePainter.font();

@@ -27,29 +27,25 @@
 
 NetworkWidget::NetworkWidget(QWidget *parent) : QWidget(parent)
 {
-//    setFixedSize(302, 200);
-
     mainLayout = new QHBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
 
     QWidget *w = new QWidget;
-    w->setFixedSize(500, 400);
     m_widgetLayout = new QVBoxLayout(w);
     m_widgetLayout->setContentsMargins(6, 0, 0, 0);
     m_widgetLayout->setSpacing(0);
 
     m_title = new QLabel(tr("Network"));
-    m_title->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    m_title->setStyleSheet("font-size: 22px; color:#303030");
-
-    QFont font = m_title->font();
-    font.setPointSize(22);
+    m_title->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    m_title->setStyleSheet("background:transparent;font-size:24px;color:#000000");
+    /*QFont font = m_title->font();
+    font.setPointSize(24);
     font.setWeight(QFont::Light);
-    m_title->setFont(font);
+    m_title->setFont(font);*/
 
     m_networkFlow = new NetworkFlow;
 
-    m_widgetLayout->addWidget(m_title, 0, Qt::AlignTop);
+    m_widgetLayout->addWidget(m_title);
     m_widgetLayout->addWidget(m_networkFlow);
 
     mainLayout->addWidget(w, 0, Qt::AlignCenter);
@@ -70,7 +66,15 @@ NetworkWidget::NetworkWidget(QWidget *parent) : QWidget(parent)
 
 NetworkWidget::~NetworkWidget()
 {
-
+    delete m_title;
+    delete m_networkFlow;
+    QLayoutItem *child;
+    while ((child = m_widgetLayout->takeAt(0)) != 0) {
+        if (child->widget())
+            child->widget()->deleteLater();
+        delete child;
+    }
+    delete mainLayout;
 }
 
 void NetworkWidget::setRadioButtonRowStatus()

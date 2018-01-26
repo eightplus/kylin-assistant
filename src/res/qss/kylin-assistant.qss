@@ -1,5 +1,7 @@
 QSplitter::handle{
-    background:lightgray;
+    /*background:lightgray;*/
+    /*background-color: qconicalgradient(cx:0.5, cy:0.5, angle:180, stop:0.49999 rgba(134, 198, 233, 255), stop:0.50001 rgba(206, 234, 248, 255));*/
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,stop:0 #f1f1f1, stop:1 #e0e0e0)
 }
 
 QLabel{
@@ -789,3 +791,19 @@ MyTristateButton#UnMaxButton {
     qproperty-hoverPic: url(:/res/tool/unmax_hover.png);
     qproperty-pressPic: url(:/res/tool/unmax_press.png);
 }
+
+/*QPushButton#KylinButton {
+    border: 1px solid rgb(124, 124, 124);
+    background-color: qconicalgradient(cx:0.5, cy:0.5, angle:180, stop:0.49999 rgba(214, 214, 214, 255), stop:0.50001 rgba(236, 236, 236, 255));
+    border-radius:5px;
+}
+QPushButton#KylinButton:hover{
+    border: 1px solid #3C80B1;
+    background-color: qconicalgradient(cx:0.5, cy:0.5, angle:180, stop:0.49999 rgba(181, 225, 250, 255), stop:0.50001 rgba(222, 242, 251, 255));
+    border-radius:5px;
+}
+QPushButton#KylinButton:pressed{
+    border: 1px solid #5F92B2;
+    background-color: qconicalgradient(cx:0.5, cy:0.5, angle:180, stop:0.49999 rgba(134, 198, 233, 255), stop:0.50001 rgba(206, 234, 248, 255));
+    border-radius:5px;
+}*/

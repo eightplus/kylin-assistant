@@ -35,17 +35,28 @@ public:
     CpuRateWidget(QWidget *parent = 0);
     ~CpuRateWidget();
 
+    void refreshData(double cpu);
     void startTimer();
     void stopTimer();
+
+    void initWidgets();
 
 public slots:
     void onUpdateCpuPercent(double value);
 
 private:
-    QLabel *m_title = nullptr;
+    QLabel *m_cpuRateTitle = nullptr;
+    QLabel *m_cpuRateText = nullptr;
+    QLabel *m_cpuIdleRateTitle = nullptr;
+    QLabel *m_cpuIdleRateText = nullptr;
+    QLabel *m_cpuRunTimeTitle = nullptr;
+    QLabel *m_cpuRunTimeText = nullptr;
+    QLabel *m_cpuIdleTimeTitle = nullptr;
+    QLabel *m_cpuIdleTimeText = nullptr;
     CpuBallWidget *m_cpuBall = nullptr;
-    QVBoxLayout *m_widgetLayout = nullptr;
-    QHBoxLayout *mainLayout = nullptr;
+    QHBoxLayout *m_contentLayout = nullptr;
+    QVBoxLayout *m_labelLayout = nullptr;
+    QVBoxLayout *m_layout = nullptr;
 };
 
 #endif // CPURATEWIDGET_H

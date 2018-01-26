@@ -11,24 +11,22 @@ MemoryWidget::MemoryWidget(QWidget *parent)
     mainLayout->setContentsMargins(0, 0, 0, 0);
 
     QWidget *w = new QWidget;
-    w->setFixedSize(500, 400);
     m_widgetLayout = new QVBoxLayout(w);
-    m_widgetLayout->setContentsMargins(6, 0, 0, 0);
+    m_widgetLayout->setContentsMargins(0, 0, 0, 0);
     m_widgetLayout->setSpacing(0);
 
     m_title = new QLabel(tr("Memory"));
-    m_title->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    m_title->setStyleSheet("font-size: 22px; color:#303030");
-
-    QFont font = m_title->font();
-    font.setPointSize(22);
+    m_title->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    m_title->setStyleSheet("background:transparent;font-size:24px;color:#000000");
+    /*QFont font = m_title->font();
+    font.setPointSize(24);
     font.setWeight(QFont::Light);
-    m_title->setFont(font);
+    m_title->setFont(font);*/
 
     m_memoryCircle = new MemoryCircle;
     connect(m_memoryCircle, SIGNAL(rebackMemoryInfo(QString,double)), this, SIGNAL(rebackMemoryInfo(QString,double)));
 
-    m_widgetLayout->addWidget(m_title, 0, Qt::AlignTop);
+    m_widgetLayout->addWidget(m_title);
     m_widgetLayout->addWidget(m_memoryCircle);
 
     mainLayout->addWidget(w, 0, Qt::AlignCenter);

@@ -106,7 +106,7 @@ NetworkFlow::NetworkFlow(QWidget *parent) : QWidget(parent)
   ,m_downloadColor(QColor("#009944"))
   ,m_uploadColor(QColor("#e60012"))
 {
-    setFixedSize(403, 240);
+    setFixedSize(403, 300);
 
     receiveText = tr("Receive");
     sendText = tr("Send");
@@ -243,13 +243,13 @@ void NetworkFlow::paintEvent(QPaintEvent *)
     painter.translate((rect().width() - m_pointsCount * m_pointSpace - 2) / 2 + 6, 80);//将坐标第原点移动到该点
     painter.scale(1, -1);//将横坐标扩大1倍,将纵坐标缩小1倍
     painter.setPen(QPen(this->m_downloadColor, 1));
-    painter.setBrush(QBrush());
+    painter.setBrush(QBrush());//painter.setBrush(QBrush(QColor("#f4f2f4")));
     painter.drawPath(m_downloadPath);//绘制前面创建的path:m_downloadPath
 
     //draw upload smoothcurve
     painter.translate(0, -8);
     painter.setPen(QPen(this->m_uploadColor, 1));
-    painter.setBrush(QBrush());
+    painter.setBrush(QBrush());//painter.setBrush(QBrush(QColor("#f4f2f4")));
     painter.drawPath(m_uploadPath);
 
     painter.restore();
@@ -273,8 +273,8 @@ void NetworkFlow::paintEvent(QPaintEvent *)
     painter.setPen(QPen(QColor("#999999")));
     painter.drawText(QRect(gridX, gridHeight + 40, contentWidth, 30), Qt::AlignLeft |Qt::AlignVCenter, tr("Receiving"));
     painter.drawText(QRect(gridX + contentWidth, gridHeight + 40, contentWidth, 30), Qt::AlignLeft |Qt::AlignVCenter, tr("Sending"));
-    painter.drawText(QRect(gridX, gridHeight + 95, contentWidth, 30), Qt::AlignLeft |Qt::AlignVCenter, tr("Total Received"));
-    painter.drawText(QRect(gridX + contentWidth, gridHeight + 95, contentWidth, 30), Qt::AlignLeft |Qt::AlignVCenter, tr("Total Sent"));
+    painter.drawText(QRect(gridX, gridHeight + 100, contentWidth, 30), Qt::AlignLeft |Qt::AlignVCenter, tr("Total Received"));
+    painter.drawText(QRect(gridX + contentWidth, gridHeight + 100, contentWidth, 30), Qt::AlignLeft |Qt::AlignVCenter, tr("Total Sent"));
 
     //draw text data
     setFontSize(painter, 20);
@@ -284,8 +284,8 @@ void NetworkFlow::paintEvent(QPaintEvent *)
     const QString downloadContent = formatNetwork(m_recvTotalBytes);//接收
     const QString uploadRate = formatNetworkRate(m_sentRateBytes);
     const QString uploadContent = formatNetwork(m_sentTotalBytes);
-    painter.drawText(QRect(gridX, gridHeight + 65, fms.width(downloadRate), 30), Qt::AlignLeft |Qt::AlignVCenter, downloadRate);
-    painter.drawText(QRect(gridX + contentWidth, gridHeight + 65, fms.width(uploadRate), 30), Qt::AlignLeft |Qt::AlignVCenter, uploadRate);
-    painter.drawText(QRect(gridX, gridHeight + 120, fms.width(downloadContent), 30), Qt::AlignLeft |Qt::AlignVCenter, downloadContent);
-    painter.drawText(QRect(gridX + contentWidth, gridHeight + 120, fms.width(uploadContent), 30), Qt::AlignLeft |Qt::AlignVCenter, uploadContent);
+    painter.drawText(QRect(gridX, gridHeight + 70, fms.width(downloadRate), 30), Qt::AlignLeft |Qt::AlignVCenter, downloadRate);
+    painter.drawText(QRect(gridX + contentWidth, gridHeight + 70, fms.width(uploadRate), 30), Qt::AlignLeft |Qt::AlignVCenter, uploadRate);
+    painter.drawText(QRect(gridX, gridHeight + 130, fms.width(downloadContent), 30), Qt::AlignLeft |Qt::AlignVCenter, downloadContent);
+    painter.drawText(QRect(gridX + contentWidth, gridHeight + 130, fms.width(uploadContent), 30), Qt::AlignLeft |Qt::AlignVCenter, uploadContent);
 }

@@ -15,6 +15,7 @@ TEMPLATE = lib
 DESTDIR = $$_PRO_FILE_PWD_/../
 CONFIG += plugin c++11 link_pkgconfig
 PKGCONFIG += libgtop-2.0 libsystemd
+#gio-2.0
 
 target.path = $${PREFIX}/lib/kylin-assistant/plugins/
 INSTALLS += target

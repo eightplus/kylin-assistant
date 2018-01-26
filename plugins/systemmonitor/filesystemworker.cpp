@@ -104,13 +104,25 @@ DISK_INFO add_disk(const glibtop_mountentry *entry, gboolean show_all_fs)
 //}
 
 FileSystemWorker::FileSystemWorker(DiskModel *diskList, QObject *parent)
-    : QObject(parent),
-      m_diskModel(diskList)
+    : QObject(parent)
+    ,m_diskModel(diskList)
 {
     onFileSystemListChanged();
-//    GVolumeMonitor * monitor;
+//    GVolumeMonitor * monitor;//GVolumeMonitor不是 thread-default-context aware，因此不能在除了主线程中的其他地方使用????
 //    monitor = g_volume_monitor_get();
 //    g_signal_connect(monitor, "mount-added", G_CALLBACK(hello), NULL);
+
+
+//    GVolumeMonitor* monitor = g_volume_monitor_get();
+//    GList* mountDeviceList = g_volume_monitor_get_mounts(monitor);
+//    GList* it = NULL;
+//    for(it = mountDeviceList; it; it = it->next) {
+//         qDebug() << "mount device list:" << it->data;
+//    }
+//    GList* mountVolumeList = g_volume_monitor_get_volumes(monitor);
+//    for(it = mountVolumeList; it; it = it->next) {
+//         qDebug() << "mount volume list:" << it->data;
+//    }
 }
 
 void FileSystemWorker::onFileSystemListChanged()

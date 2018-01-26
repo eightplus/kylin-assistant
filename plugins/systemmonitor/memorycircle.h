@@ -31,9 +31,9 @@ public:
     MemoryCircle(QWidget *parent = 0);
     ~MemoryCircle();
 
-    void drawCircle(QPainter *painter, bool isSwap = false);
-    void drawColorPie(QPainter *painter, bool isSwap = false);
-    void drawText(QPainter *painter);
+    void drawCircle(QPainter &painter, bool isSwap = false);
+    void drawColorPie(QPainter &painter, bool isSwap = false);
+    void drawTextInfo(QPainter &painter);
 
 public slots:
     void onUpdateMemoryStatus();

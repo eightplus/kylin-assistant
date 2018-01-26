@@ -34,10 +34,13 @@ ProcessCategory::ProcessCategory(int tabIndex, QWidget *parent)
 
     activeProcessButton = new MyHoverButton(this);
     activeProcessButton->setPicture(":/res/active_proc.png");
+    activeProcessButton->setToolTip(tr("Active Processes"));
     userProcessButton = new MyHoverButton(this);
     userProcessButton->setPicture(":/res/user_proc.png");
+    userProcessButton->setToolTip(tr("My Processes"));
     allProcessButton = new MyHoverButton(this);
     allProcessButton->setPicture(":/res/all_proc.png");
+    allProcessButton->setToolTip(tr("All Processes"));
 
     if (activeIndex == 0) {
         activeProcessButton->setChecked(true);
