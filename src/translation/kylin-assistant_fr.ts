@@ -772,6 +772,60 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     </message>
 </context>
 <context>
+    <name>FileSystemDialog</name>
+    <message>
+        <location filename="../../plugins/systemmonitor/filesystemdialog.cpp" line="58"/>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FileSystemListWidget</name>
+    <message>
+        <location filename="../../plugins/systemmonitor/filesystemlistwidget.cpp" line="49"/>
+        <location filename="../../plugins/systemmonitor/filesystemlistwidget.cpp" line="355"/>
+        <source>Device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/filesystemlistwidget.cpp" line="49"/>
+        <location filename="../../plugins/systemmonitor/filesystemlistwidget.cpp" line="355"/>
+        <source>Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/filesystemlistwidget.cpp" line="49"/>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/filesystemlistwidget.cpp" line="49"/>
+        <source>Total</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/filesystemlistwidget.cpp" line="49"/>
+        <source>Free</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/filesystemlistwidget.cpp" line="49"/>
+        <source>Available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/filesystemlistwidget.cpp" line="49"/>
+        <location filename="../../plugins/systemmonitor/filesystemlistwidget.cpp" line="355"/>
+        <source>Used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/filesystemlistwidget.cpp" line="433"/>
+        <source>No File System Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FontWidget</name>
     <message>
         <location filename="../../setting/fontwidget.cpp" line="84"/>
@@ -1716,28 +1770,28 @@ Are you sure to continue?</source>
 <context>
     <name>ProcessListItem</name>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="82"/>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="83"/>
         <source>Stopped</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="84"/>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="85"/>
         <source>Suspend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="86"/>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="87"/>
         <source>Zombie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="88"/>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="89"/>
         <source>No response</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="90"/>
-        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="92"/>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="91"/>
+        <location filename="../../plugins/systemmonitor/processlistitem.cpp" line="93"/>
         <source>Uninterruptible</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1746,7 +1800,7 @@ Are you sure to continue?</source>
     <name>ProcessListWidget</name>
     <message>
         <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="57"/>
-        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="743"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="745"/>
         <source>Process Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1772,7 +1826,7 @@ Are you sure to continue?</source>
     </message>
     <message>
         <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="57"/>
-        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="743"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="745"/>
         <source>Command Line</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1783,12 +1837,12 @@ Are you sure to continue?</source>
     </message>
     <message>
         <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="57"/>
-        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="743"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="745"/>
         <source>Priority</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="821"/>
+        <location filename="../../plugins/systemmonitor/processlistwidget.cpp" line="823"/>
         <source>No search result</source>
         <translation type="unfinished"></translation>
     </message>

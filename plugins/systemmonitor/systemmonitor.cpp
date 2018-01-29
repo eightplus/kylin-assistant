@@ -102,7 +102,7 @@ void SystemMonitor::resizeEvent(QResizeEvent *e)
     }
 }
 
-void SystemMonitor::recordVisibleColumn(int, bool, QList<bool> columnVisible)
+void SystemMonitor::recordProcessVisibleColumn(int, bool, QList<bool> columnVisible)
 {
     QList<QString> m_visibleColumns;
     m_visibleColumns << "name";
@@ -161,6 +161,50 @@ void SystemMonitor::recordSortStatus(int index, bool isSort)
     proSettings->sync();
 }
 
+void SystemMonitor::recordFileSysVisibleColumn(int, bool, QList<bool> columnVisible)
+{
+    QList<QString> m_visibleColumns;
+    m_visibleColumns << "device";
+
+    if (columnVisible[1]) {
+        m_visibleColumns << "directory";
+    }
+
+    if (columnVisible[2]) {
+        m_visibleColumns << "type";
+    }
+
+    if (columnVisible[3]) {
+        m_visibleColumns << "total";
+    }
+
+    if (columnVisible[4]) {
+        m_visibleColumns << "free";
+    }
+
+    if (columnVisible[5]) {
+        m_visibleColumns << "available";
+    }
+
+    if (columnVisible[6]) {
+        m_visibleColumns << "used";
+    }
+
+    QString displayedColumns = "";
+    for (int i = 0; i < m_visibleColumns.length(); i++) {
+        if (i != m_visibleColumns.length() - 1) {
+            displayedColumns += QString("%1,").arg(m_visibleColumns[i]);
+        } else {
+            displayedColumns += m_visibleColumns[i];
+        }
+    }
+
+    proSettings->beginGroup("FileSystem");
+    proSettings->setValue("DisplayedColumns", displayedColumns);
+    proSettings->endGroup();
+    proSettings->sync();
+}
+
 void SystemMonitor::initPanelStack()
 {
     m_sysMonitorStack = new QStackedWidget(this);
@@ -172,13 +216,16 @@ void SystemMonitor::initPanelStack()
     m_sysMonitorStack->setMouseTracking(false);
     m_sysMonitorStack->installEventFilter(this);
 
-    process_dialog = new ProcessDialog(getReadyDisplayColumns(), getCurrentSortColumnIndex(), isSortOrNot(), proSettings);
+    process_dialog = new ProcessDialog(getReadyDisplayProcessColumns(), getCurrentSortColumnIndex(), isSortOrNot(), proSettings);
     process_dialog->getProcessView()->installEventFilter(this);
-    connect(process_dialog, &ProcessDialog::changeColumnVisible, this, &SystemMonitor::recordVisibleColumn);
+    connect(process_dialog, &ProcessDialog::changeColumnVisible, this, &SystemMonitor::recordProcessVisibleColumn);
     connect(process_dialog, &ProcessDialog::changeSortStatus, this, &SystemMonitor::recordSortStatus);
 
     resources_dialog = new ResouresDialog;
-    filesystem_dialog = new FileSystemDialog;
+
+    filesystem_dialog = new FileSystemDialog(getReadyDisplayFileSysColumns(), proSettings);
+    filesystem_dialog->getFileSysView()->installEventFilter(this);
+    connect(filesystem_dialog, SIGNAL(changeColumnVisible(int,bool,QList<bool>)), this, SLOT(recordFileSysVisibleColumn(int,bool,QList<bool>)));
 
     m_sysMonitorStack->addWidget(process_dialog);
     m_sysMonitorStack->addWidget(resources_dialog);
@@ -235,7 +282,7 @@ bool SystemMonitor::isSortOrNot()
     return value;
 }
 
-QList<bool> SystemMonitor::getReadyDisplayColumns()
+QList<bool> SystemMonitor::getReadyDisplayProcessColumns()
 {
     proSettings->beginGroup("PROCESS");
     QString displayedColumns = proSettings->value("DisplayedColumns", "name,user,status,cpu,pid,command,memory,priority").toString();
@@ -258,6 +305,32 @@ QList<bool> SystemMonitor::getReadyDisplayColumns()
     m_shows << displayedColumns.contains("command");
     m_shows << displayedColumns.contains("memory");
     m_shows << displayedColumns.contains("priority");
+
+    return m_shows;
+}
+
+QList<bool> SystemMonitor::getReadyDisplayFileSysColumns()
+{
+    proSettings->beginGroup("FileSystem");
+    QString displayedColumns = proSettings->value("DisplayedColumns", "device,directory,type,total,free,available,used").toString();
+    proSettings->endGroup();
+
+    if (displayedColumns.isEmpty()) {
+        proSettings->beginGroup("FileSystem");
+        displayedColumns = "device,directory,type,total,free,available,used";
+        proSettings->setValue("DisplayedColumns", displayedColumns);
+        proSettings->endGroup();
+        proSettings->sync();
+    }
+
+    QList<bool> m_shows;
+    m_shows << displayedColumns.contains("device");
+    m_shows << displayedColumns.contains("directory");
+    m_shows << displayedColumns.contains("type");
+    m_shows << displayedColumns.contains("total");
+    m_shows << displayedColumns.contains("free");
+    m_shows << displayedColumns.contains("available");
+    m_shows << displayedColumns.contains("used");
 
     return m_shows;
 }

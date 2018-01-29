@@ -24,32 +24,35 @@
 #include <QObject>
 #include <QString>
 
-class DiskInfo : public QObject
+class FileSystemData : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit DiskInfo(QObject *parent = 0);
+    explicit FileSystemData(QObject *parent = 0);
 
-    const QString devname() const;
+    const QString deviceName() const;
     void setDevName(const QString &name);
 
-    const QString mountdir() const;
-    const QString disktype() const;
-    const QString totalcapacity() const;
-    const QString availcapacity() const;
-    const QString usedcapactiy() const;
-    const QString percentage() const;
-    void setOtherDiskInfo(QString mountDir, QString diskType, QString totalCapacity,  QString availCapacity, QString usedCapactiy, QString percentage);
+    const QString mountDir() const;
+    const QString diskType() const;
+    const QString totalCapacity() const;
+    const QString freeCapacity() const;
+    const QString availCapacity() const;
+    const QString usedCapactiy() const;
+    const int usedPercentage();
+
+    void updateDiskInfo(QString mountDir, QString diskType, QString totalCapacity, QString freeCapacity, QString availCapacity, QString usedCapactiy, int percentage);
 
 private:
     QString m_devName;
     QString m_mountDir;
     QString m_diskType;
     QString m_totalCapacity;
+    QString m_freeCapacity;
     QString m_availCapacity;
     QString m_usedCapactiy;
-    QString m_percentage;
+    int m_percentage;
 };
 
 

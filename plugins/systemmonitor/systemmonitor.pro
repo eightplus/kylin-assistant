@@ -16,6 +16,7 @@ DESTDIR = $$_PRO_FILE_PWD_/../
 CONFIG += plugin c++11 link_pkgconfig
 PKGCONFIG += libgtop-2.0 libsystemd
 #gio-2.0
+#LIBS +=-lgio-2.0 -lglib-2.0
 
 target.path = $${PREFIX}/lib/kylin-assistant/plugins/
 INSTALLS += target
@@ -49,11 +50,8 @@ HEADERS += \
     monitortitlewidget.h \
     resourcesdialog.h \
     filesystemdialog.h \
-    diskitemlist.h \
-    diskitem.h \
     filesystemworker.h \
-    diskmodel.h \
-    diskinfo.h \
+    filesystemdata.h \
     ../widgets/mysearchedit.h \
     networkwidget.h \
     networkflow.h \
@@ -64,7 +62,9 @@ HEADERS += \
     memorycircle.h \
     networkindicator.h \
     resourcesindicator.h \
-    resourcescategory.h
+    resourcescategory.h \
+    filesystemlistwidget.h \
+    filesystemlistitem.h
 
 SOURCES += \
     systemmonitor.cpp \
@@ -86,11 +86,8 @@ SOURCES += \
     monitortitlewidget.cpp \
     resourcesdialog.cpp \
     filesystemdialog.cpp \
-    diskitemlist.cpp \
-    diskitem.cpp \
     filesystemworker.cpp \
-    diskmodel.cpp \
-    diskinfo.cpp \
+    filesystemdata.cpp \
     ../widgets/mysearchedit.cpp \
     networkwidget.cpp \
     networkflow.cpp \
@@ -101,7 +98,9 @@ SOURCES += \
     memorycircle.cpp \
     networkindicator.cpp \
     resourcesindicator.cpp \
-    resourcescategory.cpp
+    resourcescategory.cpp \
+    filesystemlistwidget.cpp \
+    filesystemlistitem.cpp
 
 OTHER_FILES += \
     systemmonitor.json

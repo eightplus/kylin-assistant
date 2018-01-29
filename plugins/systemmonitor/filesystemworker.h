@@ -22,25 +22,33 @@
 #define FILESYSTEMWORKER_H
 
 #include <QObject>
-#include "diskinfo.h"
-#include "diskmodel.h"
+#include <QMap>
+
+#include "filesystemdata.h"
 
 class FileSystemWorker : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit FileSystemWorker(DiskModel *diskList, QObject *parent = 0);
+    explicit FileSystemWorker(QObject *parent = 0);
+    ~FileSystemWorker();
 
     void removeDiskItem(const QString &devname);
+
+    FileSystemData *getDiskInfo(const QString &devname);
+    QList<FileSystemData *> diskInfoList() const;
+    void addDiskInfo(const QString &devname, FileSystemData *info);
+    void removeDiskInfo(const QString &devname);
+    bool isDeviceContains(const QString &devname);
 
 public slots:
     void onFileSystemListChanged();
     void removeUserByName(const QString &name);
 
-
 private:
-    DiskModel *m_diskModel;
+    QMap<QString, FileSystemData *> m_diskInfoList;
+//    QMap<QString, bool> *processSentBytes;
 };
 
 #endif // FILESYSTEMWORKER_H

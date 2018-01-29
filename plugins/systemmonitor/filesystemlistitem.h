@@ -18,46 +18,35 @@
  */
 
 
-#ifndef DISKITEMLIST_H
-#define DISKITEMLIST_H
+#ifndef FILESYSTEMLISTITEM_H
+#define FILESYSTEMLISTITEM_H
 
-#include <QFrame>
-#include <QTimer>
+#include <QObject>
+#include <QPainter>
+#include <QPen>
 
+#include "filesystemdata.h"
 
-class QVBoxLayout;
-
-class DiskItem;
-
-class DiskItemList : public QWidget
+class FileSystemListItem : public QObject
 {
     Q_OBJECT
-
+    
 public:
-    explicit DiskItemList(QFrame *parent = 0);
-    explicit DiskItemList(const QString &title, QFrame *parent = 0);
-    ~DiskItemList();
+    FileSystemListItem(FileSystemData *info);
+    
+    bool isSameItem(FileSystemListItem *item);
+    void drawCellBackground(QRect rect, QPainter *painter, int level);
+    void drawBackground(QRect rect, QPainter *painter, int index, bool isSelect);
+    void drawForeground(QRect rect, QPainter *painter, int column, int index, bool isSelect, bool isSeparator);
 
-    DiskItem* getItem(int index);
-    void appendItem(DiskItem * item);
-    void removeItem(DiskItem * item);
-    void moveItem(DiskItem *item, const int index);
-    void setSpacing(const int spaceing);
-
-    int itemCount() const;
-    void clear();
-
+    QString getDeviceName() const;
+    QString getDirectory() const;
+    
 private:
-    bool eventFilter(QObject *, QEvent *event);
-    void updateHeadTail();
-
-private slots:
-    void updateHeight();
-
-private:
-    QVBoxLayout *m_layout;
-    QTimer *m_updateHTimer;
-    QTimer *m_updateHeadTimer;
+    FileSystemData *m_data;
+    int iconSize;
+    int padding;
+    int textPadding;
 };
 
-#endif // DISKITEMLIST_H
+#endif // FILESYSTEMLISTITEM_H

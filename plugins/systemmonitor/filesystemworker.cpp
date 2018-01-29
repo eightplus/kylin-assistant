@@ -18,14 +18,16 @@
  */
 
 #include "filesystemworker.h"
-#include "diskinfo.h"
 
 #include <stddef.h>
 #include <glibtop/mountlist.h>
 #include <glibtop/fsusage.h>
 /*For PRIu64*/
 #include <inttypes.h>
+
+//extern "C" {
 //#include <gio/gio.h>
+//}
 
 typedef struct _DISK_INFO
 {
@@ -34,6 +36,7 @@ typedef struct _DISK_INFO
     char type[256];
     gint percentage;
     guint64 btotal;
+    guint64 bfree;
     guint64 bavail;
     guint64 bused;
     gint valid;
@@ -85,6 +88,7 @@ DISK_INFO add_disk(const glibtop_mountentry *entry, gboolean show_all_fs)
     memcpy(disk.type, entry->type, strlen(entry->type));
     disk.percentage = percentage;
     disk.btotal = btotal;
+    disk.bfree = bfree;
     disk.bavail = bavail;
     disk.bused = bused;
     disk.valid = 1;
@@ -103,11 +107,9 @@ DISK_INFO add_disk(const glibtop_mountentry *entry, gboolean show_all_fs)
 //    g_print ("Hello World\n");
 //}
 
-FileSystemWorker::FileSystemWorker(DiskModel *diskList, QObject *parent)
+FileSystemWorker::FileSystemWorker(QObject *parent)
     : QObject(parent)
-    ,m_diskModel(diskList)
 {
-    onFileSystemListChanged();
 //    GVolumeMonitor * monitor;//GVolumeMonitor不是 thread-default-context aware，因此不能在除了主线程中的其他地方使用????
 //    monitor = g_volume_monitor_get();
 //    g_signal_connect(monitor, "mount-added", G_CALLBACK(hello), NULL);
@@ -125,8 +127,14 @@ FileSystemWorker::FileSystemWorker(DiskModel *diskList, QObject *parent)
 //    }
 }
 
+FileSystemWorker::~FileSystemWorker()
+{
+    m_diskInfoList.clear();
+}
+
 void FileSystemWorker::onFileSystemListChanged()
 {
+    QStringList newDiskList;
     glibtop_mountentry *entries;
     glibtop_mountlist mountlist;
     guint i;
@@ -136,27 +144,65 @@ void FileSystemWorker::onFileSystemListChanged()
         DISK_INFO disk = add_disk(&entries[i], show_all_fs);
         if (disk.valid == 1) {
             QString dev_name = QString(QLatin1String(disk.devname));
-            if (!m_diskModel->contains(dev_name)) {
-                DiskInfo *info = new DiskInfo(this);
+            newDiskList.append(dev_name);
+
+            if (!this->isDeviceContains(dev_name)) {
+                FileSystemData *info = new FileSystemData(this);
                 info->setDevName(dev_name);
-                info->setOtherDiskInfo(QString(QLatin1String(disk.mountdir)), QString(QLatin1String(disk.type)), QString(QLatin1String(g_format_size_full(disk.btotal, G_FORMAT_SIZE_DEFAULT))),  QString(QLatin1String(g_format_size_full(disk.bavail, G_FORMAT_SIZE_DEFAULT))), QString(QLatin1String(g_format_size_full(disk.bused, G_FORMAT_SIZE_DEFAULT))), QString::number(disk.percentage).append("%"));
-                m_diskModel->addDiskInfo(dev_name, info);
+                info->updateDiskInfo(QString(QLatin1String(disk.mountdir)), QString(QLatin1String(disk.type)), QString(QLatin1String(g_format_size_full(disk.btotal, G_FORMAT_SIZE_DEFAULT))), QString(QLatin1String(g_format_size_full(disk.bfree, G_FORMAT_SIZE_DEFAULT))), QString(QLatin1String(g_format_size_full(disk.bavail, G_FORMAT_SIZE_DEFAULT))), QString(QLatin1String(g_format_size_full(disk.bused, G_FORMAT_SIZE_DEFAULT))), disk.percentage/*QString::number(disk.percentage).append("%")*/);
+                this->addDiskInfo(dev_name, info);
             }
             else {//update info which had exists
-                DiskInfo *info = m_diskModel->getDiskInfo(dev_name);
+                FileSystemData *info = this->getDiskInfo(dev_name);
                 if (info) {
-                    info->setOtherDiskInfo(QString(QLatin1String(disk.mountdir)), QString(QLatin1String(disk.type)), QString(QLatin1String(g_format_size_full(disk.btotal, G_FORMAT_SIZE_DEFAULT))),  QString(QLatin1String(g_format_size_full(disk.bavail, G_FORMAT_SIZE_DEFAULT))), QString(QLatin1String(g_format_size_full(disk.bused, G_FORMAT_SIZE_DEFAULT))), QString::number(disk.percentage).append("%"));
+                    info->updateDiskInfo(QString(QLatin1String(disk.mountdir)), QString(QLatin1String(disk.type)), QString(QLatin1String(g_format_size_full(disk.btotal, G_FORMAT_SIZE_DEFAULT))), QString(QLatin1String(g_format_size_full(disk.bfree, G_FORMAT_SIZE_DEFAULT))), QString(QLatin1String(g_format_size_full(disk.bavail, G_FORMAT_SIZE_DEFAULT))), QString(QLatin1String(g_format_size_full(disk.bused, G_FORMAT_SIZE_DEFAULT))), disk.percentage/*QString::number(disk.percentage).append("%")*/);
                 }
-//                for (DiskInfo *info : m_diskModel->diskInfoList()) {
-//                }
             }
         }
     }
+
+    //remove the device whice not exists anymore
+    for (auto device : m_diskInfoList.keys()) {
+        bool foundDevice = false;
+        for (auto devName : newDiskList) {
+            if (devName == device) {
+                foundDevice = true;
+                break;
+            }
+        }
+
+        if (!foundDevice) {
+            m_diskInfoList.remove(device);//or erase???
+        }
+    }
+
     g_free(entries);
+}
+
+FileSystemData *FileSystemWorker::getDiskInfo(const QString &devname)
+{
+    return m_diskInfoList.value(devname, nullptr);
+}
+
+QList<FileSystemData *> FileSystemWorker::diskInfoList() const
+{
+    return m_diskInfoList.values();
+}
+
+void FileSystemWorker::addDiskInfo(const QString &devname, FileSystemData *info)
+{
+    if (!m_diskInfoList.contains(devname)) {
+        m_diskInfoList[devname] = info;
+    }
 }
 
 void FileSystemWorker::removeDiskItem(const QString &devname)
 {
-    m_diskModel->removeDiskInfo(devname);
+//    FileSystemData *info = getDiskInfo(devname);
+//    m_diskInfoList.remove(devname);
 }
 
+bool FileSystemWorker::isDeviceContains(const QString &devname)
+{
+    return m_diskInfoList.contains(devname);
+}

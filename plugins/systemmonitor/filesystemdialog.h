@@ -18,37 +18,50 @@
  */
 
 #include <QWidget>
+#include <QSettings>
+#include <QMenu>
 #include <QFileSystemWatcher>
+#include "filesystemlistwidget.h"
 
-class DiskItemList;
-class DiskModel;
-class DiskInfo;
+//class DiskItemList;
+//class DiskModel;
+class FileSystemData;
 class FileSystemWorker;
 class QVBoxLayout;
+class QHBoxLayout;
 
 class FileSystemDialog : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit FileSystemDialog(QWidget* parent = 0);
+    explicit FileSystemDialog(QList<bool> toBeDisplayedColumns, QSettings *settings, QWidget* parent = 0);
     ~FileSystemDialog();
 
+    FileSystemListWidget* getFileSysView();
     void initFileSystemMonitor();
 
 public slots:
-    void addDiskInfoItem(DiskInfo *info);
-    void removeDiskInfoItemByDevName(DiskInfo *info);
+    void refreshFileSysList();
     void onDirectoryChanged(QString path);
+    void popupMenu(QPoint pos);
+
+signals:
+    void changeColumnVisible(int index, bool visible, QList<bool> columnVisible);
+
+//private:
+//    bool event(QEvent *event);
 
 private:
-    bool event(QEvent *event);
-
-private:
-    QVBoxLayout *m_centralLayout = nullptr;
-    DiskItemList *m_diskItemList;
-    DiskModel *m_diskModelList;
+//    QVBoxLayout *m_centralLayout = nullptr;
+//    DiskItemList *m_diskItemList;
+//    DiskModel *m_diskModelList;
     FileSystemWorker *m_fileSystemWorker = nullptr;
-    QFileSystemWatcher *m_fileSystemMonitor = nullptr;
-    QString m_monitorFile;
+//    QFileSystemWatcher *m_fileSystemMonitor = nullptr;
+//    QString m_monitorFile;
+    QSettings *proSettings = nullptr;
+    FileSystemListWidget *m_fileSysListWidget = nullptr;
+    QAction *m_refreshAction = nullptr;
+    QMenu *m_menu = nullptr;
+    QVBoxLayout *m_layout = nullptr;
 };

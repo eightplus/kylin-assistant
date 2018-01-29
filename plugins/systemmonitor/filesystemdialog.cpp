@@ -24,16 +24,13 @@
 #include <QDebug>
 #include <QFileInfo>
 
-#include "diskitemlist.h"
-#include "diskitem.h"
-#include "diskmodel.h"
-#include "diskinfo.h"
+#include "filesystemdata.h"
 #include "filesystemworker.h"
 
-FileSystemDialog::FileSystemDialog(QWidget *parent)
+FileSystemDialog::FileSystemDialog(QList<bool> toBeDisplayedColumns, QSettings *settings, QWidget *parent)
     :QWidget(parent)
-    ,m_diskItemList(new DiskItemList)
-    ,m_monitorFile("/home/lixiang/testwatcher/1.c")
+    ,proSettings(settings)
+//    ,m_monitorFile("/home/lixiang/testwatcher/1.c")
 //    ,m_monitorFile("/etc/mtab")
 {
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -43,42 +40,62 @@ FileSystemDialog::FileSystemDialog(QWidget *parent)
 
     this->setObjectName("FileSystemDialog");
 
-    m_centralLayout = new QVBoxLayout;
-    m_centralLayout->addWidget(m_diskItemList);
-    m_centralLayout->setSpacing(10);
-    m_centralLayout->setMargin(0);
+    m_layout = new QVBoxLayout(this);
+    m_layout->setContentsMargins(0, 0, 0, 0);
+    m_layout->setSpacing(0);
 
-    setLayout(m_centralLayout);
+    m_fileSysListWidget = new FileSystemListWidget(toBeDisplayedColumns);
+    connect(m_fileSysListWidget, &FileSystemListWidget::rightMouseClickedItem, this, &FileSystemDialog::popupMenu, Qt::QueuedConnection);
+    connect(m_fileSysListWidget, SIGNAL(changeColumnVisible(int,bool,QList<bool>)), this, SIGNAL(changeColumnVisible(int,bool,QList<bool>)));
+    m_layout->addWidget(m_fileSysListWidget);
 
-
-    m_diskModelList = new DiskModel;
-    connect(m_diskModelList, SIGNAL(oneDiskInfoAdded(DiskInfo*)), this, SLOT(addDiskInfoItem(DiskInfo*)));
-    connect(m_diskModelList, SIGNAL(oneDiskInfoRemoved(DiskInfo*)), this, SLOT(removeDiskInfoItemByDevName(DiskInfo*)));
-
-    m_fileSystemWorker = new FileSystemWorker(m_diskModelList);
+    m_fileSystemWorker = new FileSystemWorker;
     m_fileSystemWorker->moveToThread(qApp->thread());
-    m_diskModelList->moveToThread(qApp->thread());
 
-    this->initFileSystemMonitor();
+//    this->initFileSystemMonitor();
+
+    m_menu = new QMenu();
+    m_refreshAction = new QAction(tr("Refresh"), this);
+    connect(m_refreshAction, &QAction::triggered, this, &FileSystemDialog::refreshFileSysList);
+    m_menu->addAction(m_refreshAction);
+
+    this->refreshFileSysList();
 }
 
 FileSystemDialog::~FileSystemDialog()
 {
-    m_fileSystemMonitor->removePath(m_monitorFile);
-    delete m_fileSystemMonitor;
+//    m_fileSystemMonitor->removePath(m_monitorFile);
+//    delete m_fileSystemMonitor;
 
-    m_diskModelList->deleteLater();
     m_fileSystemWorker->deleteLater();
+    delete m_fileSysListWidget;
+    delete m_refreshAction;
+    delete m_menu;
+    delete m_layout;
+}
 
-    QList<DiskItem *> items = findChildren<DiskItem*>();
-    for (DiskItem *item : items) {
-        m_diskItemList->removeItem(item);
-        item->deleteLater();
+void FileSystemDialog::refreshFileSysList()
+{
+
+    m_fileSystemWorker->onFileSystemListChanged();
+
+
+    QList<FileSystemListItem*> items;
+    for (FileSystemData *info : m_fileSystemWorker->diskInfoList()) {
+        FileSystemListItem *item = new FileSystemListItem(info);
+        items << item;
     }
-    if (m_diskItemList) {
-        delete m_diskItemList;
-        m_diskItemList = 0;
-    }
+    m_fileSysListWidget->refreshFileSystemItems(items);
+}
+
+void FileSystemDialog::popupMenu(QPoint pos)
+{
+    m_menu->exec(pos);
+}
+
+FileSystemListWidget* FileSystemDialog::getFileSysView()
+{
+    return m_fileSysListWidget;
 }
 
 void FileSystemDialog::initFileSystemMonitor() {
@@ -87,7 +104,7 @@ void FileSystemDialog::initFileSystemMonitor() {
 //    int ret = inotify_rm_watch (fd, wd);*/
 
 
-    m_fileSystemMonitor = new QFileSystemWatcher(this);
+    /*m_fileSystemMonitor = new QFileSystemWatcher(this);
 //    m_fileSystemMonitor->addPath(m_monitorFile);
     QFileInfo info(m_monitorFile);
     m_fileSystemMonitor->addPath(info.absoluteFilePath());
@@ -95,7 +112,7 @@ void FileSystemDialog::initFileSystemMonitor() {
     connect(m_fileSystemMonitor, SIGNAL(directoryChanged(QString)), this, SLOT(onDirectoryChanged(QString)));
     connect(m_fileSystemMonitor, &QFileSystemWatcher::fileChanged, [=] (const QString &path) {
         qDebug()<< "file path===================="<<path;
-    });
+    });*/
 }
 
 void FileSystemDialog::onDirectoryChanged(QString path)
@@ -103,35 +120,10 @@ void FileSystemDialog::onDirectoryChanged(QString path)
     qDebug()<< "dir path===================="<<path;
 }
 
-void FileSystemDialog::addDiskInfoItem(DiskInfo *info)
-{
-    DiskItem *w = new DiskItem;
-    m_diskItemList->appendItem(w);
-    w->setDevName(info->devname());
-    w->setMountDir(info->mountdir());
-    w->setDiskType(info->disktype());
-    w->setTotalCapacity(info->totalcapacity());
-    w->setAvailCapacity(info->availcapacity());
-    w->setUsedCapactiy(info->usedcapactiy());
-    w->setPercentage(info->percentage());
-}
+//bool FileSystemDialog::event(QEvent *event)
+//{
+//    if (event->type() == QEvent::LayoutRequest)
+//        setFixedHeight(m_centralLayout->sizeHint().height());
 
-void FileSystemDialog::removeDiskInfoItemByDevName(DiskInfo *info)
-{
-    QList<DiskItem *> items = findChildren<DiskItem*>();
-    for (DiskItem *item : items) {
-        if (item->devName() == info->devname()) {
-            m_diskItemList->removeItem(item);
-            item->deleteLater();
-            break;
-        }
-    }
-}
-
-bool FileSystemDialog::event(QEvent *event)
-{
-    if (event->type() == QEvent::LayoutRequest)
-        setFixedHeight(m_centralLayout->sizeHint().height());
-
-    return QWidget::event(event);
-}
+//    return QWidget::event(event);
+//}

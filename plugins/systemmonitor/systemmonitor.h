@@ -42,14 +42,18 @@ public:
     void initPanelStack();
     void initConnections();
 
-    QList<bool> getReadyDisplayColumns();
+    QList<bool> getReadyDisplayProcessColumns();
     bool isSortOrNot();
     int getCurrentSortColumnIndex();
+
+    QList<bool> getReadyDisplayFileSysColumns();
+
     void moveCenter();
 
 public slots:
-    void recordVisibleColumn(int, bool, QList<bool> columnVisible);
+    void recordProcessVisibleColumn(int, bool, QList<bool> columnVisible);
     void recordSortStatus(int index, bool isSort);
+    void recordFileSysVisibleColumn(int, bool, QList<bool> columnVisible);
     void onChangePage(int index);
 
 protected:

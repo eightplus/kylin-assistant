@@ -616,7 +616,8 @@ void ProcessListWidget::mousePressEvent(QMouseEvent *mouseEvent)
             clearSelectedItems();
 
             repaint();
-        } else {
+        }
+        else {
             if (mouseEvent->button() == Qt::LeftButton) {
                 if (pressedItemIndex < this->m_searchedItems->count()) {
                     if (mouseEvent->modifiers() == Qt::ControlModifier) {
@@ -644,7 +645,8 @@ void ProcessListWidget::mousePressEvent(QMouseEvent *mouseEvent)
                     }
                     repaint();
                 }
-            } else if (mouseEvent->button() == Qt::RightButton) {
+            }
+            else if (mouseEvent->button() == Qt::RightButton) {
                 ProcessListItem *pressItem = (*this->m_searchedItems)[pressedItemIndex];
                 bool pressInSelectionArea = false;
                 for (ProcessListItem *item : *this->m_selectedItems) {
