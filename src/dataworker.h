@@ -40,6 +40,9 @@ public:
     bool isBatteryExist() { return m_existBattery; }
     bool isSensorExist() { return m_existSensor; }
 
+    const QStringList cpuModeList() const;
+    const QString cpuCurrentMode() const;
+
 public slots:
     void doWork();
     void updateSensorValue();
@@ -190,6 +193,7 @@ public slots:
     void onResetSleepTimeoutAC(int index, int value);
     void onResetSleepTimeoutDisplayBattery(int index, int value);
     void onResetSleepTimeoutDisplayAC(int index, int value);
+    void onSetCurrentCpuMode(const QString &mode);
 
     //file manager
     void onRequestFileManagerData();
@@ -331,6 +335,8 @@ private:
 
     bool m_existBattery;
     bool m_existSensor;
+    QStringList m_cpulist;
+    QString m_currentCpuMode;
 
     QTimer *m_sensorTimer = nullptr;
 };

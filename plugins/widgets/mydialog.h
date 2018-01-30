@@ -23,6 +23,7 @@ public:
     explicit MyDialog(const QString &title, const QString& message, QWidget *parent = 0);
     ~MyDialog();
 
+    void updateSize();
     int buttonCount() const;
     QRect getParentGeometry() const;
     void moveToCenter();
@@ -32,11 +33,9 @@ signals:
 
 public slots:
     int addButton(const QString &text, bool isDefault = false);
-    void clearButtons();
     void setDefaultButton(QAbstractButton *button);
     void setTitle(const QString &title);
     void setMessage(const QString& message);
-
     int exec() Q_DECL_OVERRIDE;
 
 public slots:
@@ -54,22 +53,21 @@ protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
 private:
-    QString m_title;
-    QString m_message;
-    QLabel* messageLabel;
-    QLabel* titleLabel;
-
-    MyTristateButton* closeButton = nullptr;
-    QHBoxLayout *iconLayout;
-    QVBoxLayout *contentLayout;
-    QHBoxLayout *buttonLayout;
-    QHBoxLayout *topLayout;
+    QLabel *m_messageLabel = nullptr;
+    QLabel *m_titleLabel = nullptr;
+    MyTristateButton *closeButton = nullptr;
+//    QVBoxLayout *contentLayout = nullptr;
+    QHBoxLayout *m_buttonLayout = nullptr;
+    QHBoxLayout *m_topLayout = nullptr;
     QList<QAbstractButton*> buttonList;
     QList<QWidget*> contentList;
 
     QPointer<QAbstractButton> defaultButton;
     int clickedButtonIndex;
-    void updateSize();
+
+    QString m_title;
+    QString m_message;
+
     QPoint dragPosition;
     bool mousePressed;
 };

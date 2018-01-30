@@ -25,6 +25,12 @@
 #include <QImageReader>
 #include <QGraphicsDropShadowEffect>
 
+#include <QtMath>
+qreal gradientDistance(qreal x)
+{
+    return (1 - qCos(M_PI * x)) / 2;
+}
+
 CpuBallWidget::CpuBallWidget(QWidget *parent) : QWidget(parent)
 {
     this->setFixedSize(210, 210);
@@ -34,6 +40,7 @@ CpuBallWidget::CpuBallWidget(QWidget *parent) : QWidget(parent)
 
     m_xFrontOffset = 0;
     m_xBackOffset = this->width();
+    m_prevPercentValue = 0.0;
     m_percentValue = 0.0;
     m_progressText = QString("%1%").arg(QString::number(m_percentValue, 'f', 1));
 
@@ -47,7 +54,10 @@ CpuBallWidget::CpuBallWidget(QWidget *parent) : QWidget(parent)
 
     m_waveTimer = new QTimer(this);
     connect(m_waveTimer, SIGNAL(timeout()), this, SLOT(onRepaintWaveImage()));
-    m_waveTimer->setInterval(60);
+    m_waveTimer->setInterval(200);
+
+    m_animationIndex = 0;
+    m_animationCounts = 2000/200;//2000为数据更新的时间间隔，200为波浪更新的时间间隔
 }
 
 CpuBallWidget::~CpuBallWidget()
@@ -110,7 +120,14 @@ void CpuBallWidget::onRepaintWaveImage()
     if (m_xBackOffset > m_backImage.width()) {//保留整个显示直径的大小不做处理，避免出现断层
         m_xBackOffset = 0;
     }
-    this->update();//this->repaint();
+
+    if (m_animationIndex < m_animationCounts) {
+        m_animationIndex++;
+        repaint();
+    } else {
+        m_waveTimer->stop();
+    }
+//    this->update();//this->repaint();
 }
 
 //value:0 ~ 100
@@ -119,21 +136,24 @@ void CpuBallWidget::updateCpuPercent(double value)
     if (this->m_percentValue == value || value > 100 || value < 0) {
         return;
     }
-
+    m_prevPercentValue = m_percentValue;
     m_percentValue = value;
     m_progressText = QString("%1%").arg(QString::number(value, 'f', 1));
+
+    m_animationIndex = 0;
+    m_waveTimer->start();
 }
 
 void CpuBallWidget::startTimer()
 {
-    if (this->m_waveTimer && !this->m_waveTimer->isActive())
-        this->m_waveTimer->start();
+//    if (this->m_waveTimer && !this->m_waveTimer->isActive())
+//        this->m_waveTimer->start();
 }
 
 void CpuBallWidget::stopTimer()
 {
-    if (this->m_waveTimer && this->m_waveTimer->isActive())
-        this->m_waveTimer->stop();
+//    if (this->m_waveTimer && this->m_waveTimer->isActive())
+//        this->m_waveTimer->stop();
 }
 
 //在不同的平台上得到一样的效果，但绘制的文字除外
@@ -145,7 +165,9 @@ void CpuBallWidget::paintEvent(QPaintEvent *)
     QRectF rect = QRectF(0, 0, this->width(), this->height());
     QSize waveSize = this->size();
 
-    int currentPercent = static_cast<int>(m_percentValue);
+//    int currentPercent = static_cast<int>(m_percentValue);
+    double percent = m_prevPercentValue + gradientDistance(m_animationIndex / m_animationCounts) * (m_percentValue - m_prevPercentValue);
+    int currentPercent = static_cast<int>(percent);
 
     //Step1:整个矩形背景
     QImage waveRectImage = QImage(waveSize, QImage::Format_ARGB32_Premultiplied);//创建一个Format_ARGB32_Premultiplied 格式的QIamge，大小和控件相同

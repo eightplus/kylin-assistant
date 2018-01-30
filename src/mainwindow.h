@@ -159,6 +159,8 @@ private:
     QString arch;
     bool battery;
     bool sensor;
+    QStringList m_cpulist;
+    QString m_currentCpuMode;
     QParallelAnimationGroup *spreadGroup;
     QParallelAnimationGroup *gatherGroup;
     PAGESTATUS status;

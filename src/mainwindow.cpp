@@ -326,6 +326,8 @@ void MainWindow::onInitDataFinished()
 {
     this->battery = m_dataWorker->isBatteryExist();
     this->sensor = m_dataWorker->isSensorExist();
+    this->m_cpulist = m_dataWorker->cpuModeList();
+    this->m_currentCpuMode = m_dataWorker->cpuCurrentMode();
 
     this->displayMainWindow();
 
@@ -350,8 +352,6 @@ void MainWindow::onInitDataFinished()
     connect(m_dataWorker, SIGNAL(finishCleanWorkMainError(QString)), home_action_widget, SLOT(finishCleanError(QString)));
     connect(m_dataWorker, SIGNAL(quickCleanProcess(QString,QString)), home_action_widget, SLOT(getCleaningMessage(QString,QString)));
 
-
-
     //theme
     connect(setting_widget, SIGNAL(changeSystemTheme(QString)), m_dataWorker, SLOT(onChangeSystemTheme(QString)));
     connect(setting_widget, SIGNAL(requestThemeData()), m_dataWorker, SLOT(onRequestThemeData()));
@@ -367,7 +367,6 @@ void MainWindow::onInitDataFinished()
     connect(setting_widget, SIGNAL(displayNetworkIcon(bool)), m_dataWorker, SLOT(onDisplayNetworkIcon(bool)));
     connect(setting_widget, SIGNAL(displayRecycleBinIcon(bool)), m_dataWorker, SLOT(onDisplayRecycleBinIcon(bool)));
     connect(setting_widget, SIGNAL(displayDiskIcon(bool)), m_dataWorker, SLOT(onDisplayDiskIcon(bool)));
-
 
     //mouse
     connect(setting_widget, SIGNAL(requestMouseData()), m_dataWorker, SLOT(onRequestMouseData()));
@@ -404,7 +403,6 @@ void MainWindow::onInitDataFinished()
     connect(setting_widget, SIGNAL(resetShowIcon(bool)), m_dataWorker, SLOT(onResetShowIcon(bool)));
     connect(setting_widget, SIGNAL(resetShowPlaces(bool)), m_dataWorker, SLOT(onResetShowPlaces(bool)));
 
-
     //launcher menu
     connect(setting_widget, SIGNAL(requestMateOrUnityMenuData(bool)), m_dataWorker, SLOT(onRequestMateOrUnityMenuData(bool)));
     connect(m_dataWorker, SIGNAL(sendMatePanelIconValue(int,int,bool,bool)), setting_widget, SIGNAL(sendMatePanelIconValue(int,int,bool,bool)));
@@ -438,7 +436,6 @@ void MainWindow::onInitDataFinished()
     connect(setting_widget, SIGNAL(resetMouseRightClick(QString)), m_dataWorker, SLOT(onResetMouseRightClick(QString)));
     connect(setting_widget, SIGNAL(resetWindowButtonLeftOrRightAlign(bool)), m_dataWorker, SLOT(onResetWindowButtonLeftOrRightAlign(bool)));
 
-
     //font
     connect(setting_widget, SIGNAL(requestFontData()), m_dataWorker, SLOT(onRequestFontData()));
     connect(m_dataWorker, SIGNAL(sendFontValue(QString)), setting_widget, SIGNAL(sendFontValue(QString)));
@@ -462,7 +459,6 @@ void MainWindow::onInitDataFinished()
     connect(setting_widget, SIGNAL(restoreDocumentDefaultFont(bool)), m_dataWorker, SLOT(onRestoreDocumentDefaultFont(bool)));
     connect(setting_widget, SIGNAL(restoreTitlebarDefaultFont(bool)), m_dataWorker, SLOT(onRestoreTitlebarDefaultFont(bool)));
 
-
     //touchpad
     connect(setting_widget, SIGNAL(requestMateOrUnityTouchpadData(bool)), m_dataWorker, SLOT(onRequestMateOrUnityTouchpadData(bool)));
     connect(m_dataWorker, SIGNAL(sendTouchPadValue(bool,bool,QString,int,QString)), setting_widget, SIGNAL(sendTouchPadValue(bool,bool,QString,int,QString)));
@@ -471,8 +467,6 @@ void MainWindow::onInitDataFinished()
     connect(setting_widget, SIGNAL(setScrollbarOverlayOrLegacyMode(bool)), m_dataWorker, SLOT(onSetScrollbarOverlayOrLegacyMode(bool)));
     connect(setting_widget, SIGNAL(setMateTouchscrollingMode(int)), m_dataWorker, SLOT(onSetMateTouchscrollingMode(int)));
     connect(setting_widget, SIGNAL(setUnityTouchscrollingMode(int)), m_dataWorker, SLOT(onSetUnityTouchscrollingMode(int)));
-
-
 
     //ac and battery
     connect(setting_widget, SIGNAL(requestPowerAndBatteryData()), m_dataWorker, SLOT(onRequestPowerAndBatteryData()));
@@ -491,7 +485,7 @@ void MainWindow::onInitDataFinished()
     connect(setting_widget, SIGNAL(resetSleepTimeoutAC(int,int)), m_dataWorker, SLOT(onResetSleepTimeoutAC(int,int)));
     connect(setting_widget, SIGNAL(resetSleepTimeoutDisplayBattery(int,int)), m_dataWorker, SLOT(onResetSleepTimeoutDisplayBattery(int,int)));
     connect(setting_widget, SIGNAL(resetSleepTimeoutDisplayAC(int,int)), m_dataWorker, SLOT(onResetSleepTimeoutDisplayAC(int,int)));
-
+    connect(setting_widget, SIGNAL(setCurrentCpuMode(QString)), m_dataWorker, SLOT(onSetCurrentCpuMode(QString)));
 
     //file manager
     connect(setting_widget, SIGNAL(requestFileManagerData()), m_dataWorker, SLOT(onRequestFileManagerData()));
@@ -994,7 +988,6 @@ void MainWindow::initOtherPages()
     connect(m_dataWorker, SIGNAL(tellCleanerMainStatus(QString, QString)), cleaner_action_widget, SLOT(showCleanerStatus(QString, QString)));
     connect(m_dataWorker, SIGNAL(sendCleanErrorSignal(QString)), cleaner_action_widget, SLOT(showCleanerError(QString)));
 
-
     connect(cleaner_widget, SIGNAL(startScanSystem(QMap<QString,QVariant>)), m_dataWorker, SLOT(onStartScanSystem(QMap<QString,QVariant>)));
     connect(cleaner_widget, SIGNAL(startCleanSystem(QMap<QString,QVariant>)), m_dataWorker, SLOT(onStartCleanSystem(QMap<QString,QVariant>)));
 
@@ -1012,7 +1005,6 @@ void MainWindow::initOtherPages()
     //20180101
 //    connect(sessioninterface, SIGNAL(tellCleanerDetailStatus(QString)), cleaner_action_widget, SLOT(showCleanReciveStatus(QString)));
 //    connect(sessioninterface, SIGNAL(tellCleanerDetailError(QString)), cleaner_action_widget, SLOT(showCleanReciveError(QString)));
-
 
     connect(cleaner_action_widget, SIGNAL(sendScanSignal()),cleaner_widget, SIGNAL(transScanSignal()));
     connect(cleaner_widget, SIGNAL(tranActionAnimaitonSignal()),cleaner_action_widget, SLOT(displayAnimation()));
@@ -1090,7 +1082,7 @@ void MainWindow::initOtherPages()
 
 
     if(setting_widget == NULL)
-        setting_widget = new SettingWidget(this->desktop, this->battery);//20180101
+        setting_widget = new SettingWidget(this->m_cpulist, this->m_currentCpuMode, this->desktop, this->battery);//20180101
     setting_widget->setParentWindow(this);
 //    setting_widget->setSessionDbusProxy(sessioninterface);
 //    setting_widget->setSystemDbusProxy(systeminterface);

@@ -16,16 +16,15 @@ public:
     explicit MySearchEdit(QWidget *parent = 0);
     ~MySearchEdit();
 
-    void setPlaceHolder(const QString &text) {m_placeHolder->setText(text);}
-    QSize sizeHint() const {return m_size;}
-    QSize minimumSizeHint() const {return m_size;}
-    const QString text() const;
+    void clearAndFocusEdit();
+    void setPlaceHolder(const QString &text);
+    const QString searchedText() const;
     QLineEdit *getLineEdit() const;
 
 public slots:
-    void setEditFocus();
-    void setText(const QString & text) {if (m_edit) m_edit->setText(text);}
     void clearEdit();
+    void setEditFocus();
+    void setText(const QString & text);
 
 signals:
     void textChanged();
@@ -38,14 +37,14 @@ protected:
     bool eventFilter(QObject *object, QEvent *event);
 
 private:
+    QPropertyAnimation *m_animation = nullptr;
+    QEasingCurve m_showCurve;
+    QEasingCurve m_hideCurve;
     QSize m_size;
-    QLineEdit *m_edit;
-    QLabel *m_searchBtn;
-    QLabel *m_placeHolder;
-    MyTristateButton *m_clearBtn;
-    QPropertyAnimation *m_animation;
-    QEasingCurve m_showCurve = QEasingCurve::OutCubic;
-    QEasingCurve m_hideCurve = QEasingCurve::InCubic;
+    QLineEdit *m_edit = nullptr;
+    QLabel *m_searchBtn = nullptr;
+    QLabel *m_placeHolder = nullptr;
+    MyTristateButton *m_clearBtn = nullptr;
 };
 
 #endif // MYSEARCHEDIT_H

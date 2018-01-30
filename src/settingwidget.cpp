@@ -25,8 +25,12 @@
 #include "../setting/settingmodel.h"
 #include "../setting/settingdelegate.h"
 
-SettingWidget::SettingWidget(QString cur_desktop, bool has_battery, QWidget *parent) :
-    QWidget(parent), desktop(cur_desktop), battery(has_battery)
+SettingWidget::SettingWidget(QStringList cpulist, QString cpu, QString cur_desktop, bool has_battery, QWidget *parent) :
+    QWidget(parent)
+    ,m_cpuList(cpulist)
+    ,m_currentCpu(cpu)
+    ,desktop(cur_desktop)
+    ,battery(has_battery)
 {
     this->setFixedSize(900, 403);
 //    setStyleSheet("background-color: rgba(155, 255, 255, .238);");
@@ -140,7 +144,7 @@ void SettingWidget::initUI(/*QString skin*/)
     font_widget = new FontWidget(this, p_mainwindow, desktop, "");//TODO:read skin from ini file
     touchpad_widget = new TouchpadWidget(this, desktop);
 //    deadpixel_widget = new DeadpixelWidget(this);
-    conserve_widget = new EnergyWidget(this, desktop, battery);
+    conserve_widget = new EnergyWidget(m_cpuList, m_currentCpu, desktop, battery, this);
     nautilus_widget = new FileManagerWidget(this);
     stacked_widget->addWidget(theme_widget);
     stacked_widget->addWidget(icon_widget);
@@ -306,7 +310,7 @@ void SettingWidget::initUI(/*QString skin*/)
     connect(conserve_widget, SIGNAL(resetSleepTimeoutAC(int,int)), this, SIGNAL(resetSleepTimeoutAC(int,int)));
     connect(conserve_widget, SIGNAL(resetSleepTimeoutDisplayBattery(int,int)), this, SIGNAL(resetSleepTimeoutDisplayBattery(int,int)));
     connect(conserve_widget, SIGNAL(resetSleepTimeoutDisplayAC(int,int)), this, SIGNAL(resetSleepTimeoutDisplayAC(int,int)));
-
+    connect(conserve_widget, SIGNAL(setCurrentCpuMode(QString)), this, SIGNAL(setCurrentCpuMode(QString)));
 
     //file manager
     connect(nautilus_widget, SIGNAL(requestFileManagerData()), this, SIGNAL(requestFileManagerData()));

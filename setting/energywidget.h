@@ -32,6 +32,7 @@ class QComboBox;
 class QDoubleSpinBox;
 class QSlider;
 class QRadioButton;
+class QVBoxLayout;
 
 #include "settingmodulelpage.h"
 
@@ -39,7 +40,7 @@ class EnergyWidget : public SettingModulePage
 {
     Q_OBJECT
 public:
-    explicit EnergyWidget(QWidget *parent = 0, /*SessionDispatcher *proxy = 0,*/ QString cur_desktop = "", bool has_battery = false);
+    explicit EnergyWidget(QStringList cpulist, QString cpu, QString cur_desktop, bool has_battery = false, QWidget *parent = 0);
     ~EnergyWidget();
     void setLanguage();
     void initConnect();
@@ -54,6 +55,7 @@ public slots:
     void setLockEnabled();
 //    void setLockDelay(QString value);
     void setLockDelay(int index);
+    void onCpuRadioButtonClicked();
     void setRadioButtonRowStatus();
     void setSleepTimeoutBattery(int index);
     void setSleepTimeoutAC(int index);
@@ -62,8 +64,6 @@ public slots:
 
     void onSendIdleAndGammaData(double gamma, const QStringList &aclist, int brightnessValue, const QString &sleepTimeoutDisplayBattery, const QString &sleepTimeoutFisplayAC, const QString &idle_delay, const QStringList &idledelaylist);
     void onSendLockAndSleepData(bool lockEnabled, const QString &lock_delay, const QStringList &lockdelaylist, const QString &critical_low, const QString &laptop_battery, const QString &laptop_ac, const QString &sleepTimeoutBattery, const QStringList &batterylist, const QString &sleepTimeoutAc);
-
-
 
 signals:
     void requestPowerAndBatteryData();
@@ -79,6 +79,7 @@ signals:
     void resetSleepTimeoutAC(int index, int value);
     void resetSleepTimeoutDisplayBattery(int index, int value);
     void resetSleepTimeoutDisplayAC(int index, int value);
+    void setCurrentCpuMode(const QString &mode);
 
 private:
     QString desktop;
@@ -119,6 +120,7 @@ private:
     QComboBox *sleep_ac_display_combo;
 
     QStringList m_aclist;
+    QVBoxLayout *m_layout = nullptr;
 };
 
 #endif // ENERGYWIDGET_H

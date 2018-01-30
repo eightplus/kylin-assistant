@@ -26,7 +26,7 @@
 #include <QSlider>
 #include <QButtonGroup>
 
-EnergyWidget::EnergyWidget(QWidget *parent, /*SessionDispatcher *proxy, */QString cur_desktop, bool has_battery) :
+EnergyWidget::EnergyWidget(QStringList cpulist, QString cpu, QString cur_desktop, bool has_battery, QWidget *parent) :
     SettingModulePage(parent),desktop(cur_desktop)
 {
     gamma_label = new QLabel();
@@ -49,7 +49,6 @@ EnergyWidget::EnergyWidget(QWidget *parent, /*SessionDispatcher *proxy, */QStrin
     lock_enabled_switch = new KylinSwitcher();
     lock_delay_label = new QLabel();
     lock_delay_combo = new QComboBox();
-
 
     critical_low_label = new QLabel();
     suspend_low_radio = new QRadioButton();
@@ -89,7 +88,6 @@ EnergyWidget::EnergyWidget(QWidget *parent, /*SessionDispatcher *proxy, */QStrin
     sleep_battery_display_combo = new QComboBox();
     sleep_ac_display_label = new QLabel();
     sleep_ac_display_combo = new QComboBox();
-
 
     if (this->desktop == "mate" || this->desktop == "MATE" || this->desktop == "UKUI" || this->desktop == "ukui") {
         brightness_label->hide();
@@ -133,6 +131,8 @@ EnergyWidget::EnergyWidget(QWidget *parent, /*SessionDispatcher *proxy, */QStrin
     sleep_ac_label->setFixedWidth(260);
     sleep_battery_display_label->setFixedWidth(260);
     sleep_ac_display_label->setFixedWidth(260);
+
+
 
     QHBoxLayout *layout0 = new QHBoxLayout();
     layout0->setSpacing(10);
@@ -200,27 +200,107 @@ EnergyWidget::EnergyWidget(QWidget *parent, /*SessionDispatcher *proxy, */QStrin
     layout11->addWidget(sleep_ac_display_combo);
     layout11->addStretch();
 
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->addLayout(layout0);
-    layout->addLayout(layout1);
-    layout->addLayout(layout2);
-    layout->addLayout(layout3);
-    layout->addLayout(layout4);
-    layout->addLayout(layout5);
-    layout->addLayout(layout6);
-    layout->addLayout(layout7);
-    layout->addLayout(layout8);
-    layout->addLayout(layout9);
-    layout->addLayout(layout10);
-    layout->addLayout(layout11);
-    layout->addStretch();
-    setLayout(layout);
-    layout->setSpacing(10);
-    layout->setContentsMargins(20, 20, 0, 0);
+    m_layout = new QVBoxLayout(this);
+    m_layout->setSpacing(10);
+    m_layout->setContentsMargins(20, 20, 0, 0);
+
+    m_layout->addLayout(layout0);
+    m_layout->addLayout(layout1);
+    m_layout->addLayout(layout2);
+    m_layout->addLayout(layout3);
+    m_layout->addLayout(layout4);
+    m_layout->addLayout(layout5);
+    m_layout->addLayout(layout6);
+    m_layout->addLayout(layout7);
+    m_layout->addLayout(layout8);
+    m_layout->addLayout(layout9);
+    m_layout->addLayout(layout10);
+    m_layout->addLayout(layout11);
+
+    //kobe reset cpu mode
+    if (!cpulist.isEmpty()) {
+//        qDebug() << cpulist;
+//        qDebug() << cpu;
+        QLabel *cpu_label = new QLabel();
+        cpu_label->setText(tr("CPU FM mode:"));
+        QHBoxLayout *cpu_layout = new QHBoxLayout();
+        cpu_layout->setSpacing(10);
+        cpu_layout->addWidget(cpu_label);
+        QButtonGroup *cpuGroup = new QButtonGroup();
+
+        QList<QString>::Iterator it = cpulist.begin(), itend = cpulist.end();
+        for(;it != itend; it++) {
+            if(*it == "ondemand") {
+                QRadioButton *ondemand_radio = new QRadioButton();
+                ondemand_radio->setFocusPolicy(Qt::NoFocus);
+                ondemand_radio->setText(tr("Ondemand"));
+                ondemand_radio->setObjectName("ondemandradio");
+                ondemand_radio->setChecked(false);
+                cpuGroup->addButton(ondemand_radio);
+                cpu_layout->addWidget(ondemand_radio);
+                connect(ondemand_radio, SIGNAL(clicked()), this, SLOT(onCpuRadioButtonClicked()));
+            }
+            else if(*it == "powersave") {
+                QRadioButton *powersave_radio = new QRadioButton();
+                powersave_radio->setFocusPolicy(Qt::NoFocus);
+                powersave_radio->setText(tr("Powersave"));
+                powersave_radio->setObjectName("powersaveradio");
+                powersave_radio->setChecked(false);
+                cpuGroup->addButton(powersave_radio);
+                cpu_layout->addWidget(powersave_radio);
+                connect(powersave_radio, SIGNAL(clicked()), this, SLOT(onCpuRadioButtonClicked()));
+            }
+            else if(*it == "performance") {
+                QRadioButton *performance_radio = new QRadioButton();
+                performance_radio->setFocusPolicy(Qt::NoFocus);
+                performance_radio->setText(tr("Performance"));
+                performance_radio->setObjectName("performanceradio");
+                performance_radio->setChecked(false);
+                cpuGroup->addButton(performance_radio);
+                cpu_layout->addWidget(performance_radio);
+                connect(performance_radio, SIGNAL(clicked()), this, SLOT(onCpuRadioButtonClicked()));
+            }
+        }
+        cpu_layout->addStretch();
+        m_layout->addLayout(cpu_layout);
+
+//        for (auto cpuMode : cpulist)
+        foreach (QAbstractButton *absbutton, cpuGroup->buttons()) {
+            QRadioButton *radio = qobject_cast<QRadioButton*>(absbutton);
+            if (radio) {
+                QString obj_name = radio->objectName();
+                if(obj_name == "ondemandradio") {
+                    if(cpu == "ondemand") {
+                        radio->setChecked(true);
+                    }
+                    else {
+                        radio->setChecked(false);
+                    }
+                }
+                else if(obj_name == "powersaveradio") {
+                    if(cpu == "powersave") {
+                        radio->setChecked(true);
+                    }
+                    else {
+                        radio->setChecked(false);
+                    }
+                }
+                else if(obj_name == "performanceradio") {
+                    if(cpu == "performance") {
+                        radio->setChecked(true);
+                    }
+                    else {
+                        radio->setChecked(false);
+                    }
+                }
+            }
+        }
+
+    }
+    m_layout->addStretch();
 
 //    this->initSettingData();
     this->setLanguage();
-
 
 //    iface = new QDBusInterface("org.gnome.SettingsDaemon",
 //                               "/org/gnome/SettingsDaemon/Power",
@@ -345,6 +425,13 @@ EnergyWidget::~EnergyWidget()
     if (sleep_ac_display_combo != NULL) {
         delete sleep_ac_display_combo;
         sleep_ac_display_combo = NULL;
+    }
+
+    QLayoutItem *child;
+    while ((child = m_layout->takeAt(0)) != 0) {
+        if (child->widget())
+            child->widget()->deleteLater();
+        delete child;
     }
 }
 
@@ -775,7 +862,8 @@ void EnergyWidget::onSendLockAndSleepData(bool lockEnabled, const QString &lock_
     sleep_ac_combo->setCurrentIndex(initIndex4);
 }
 
-void EnergyWidget::initConnect() {
+void EnergyWidget::initConnect()
+{
     connect(gamma_slider, SIGNAL(valueChanged(double)), this, SLOT(setScreenGammaValue(double)));
     connect(brightness_slider, SIGNAL(valueChanged(int)), this, SLOT(setBrightnessValue(int)));
 //    connect(idle_delay_combo, SIGNAL(currentIndexChanged(QString)),  this, SLOT(setIdleDelay(QString)));
@@ -908,6 +996,15 @@ void EnergyWidget::setLockDelay(int index)
 //        sessionproxy->set_current_lock_delay_qt(current_lock_delay.toInt());
 //    }
 ////    sessionproxy->set_current_lock_delay_qt(value.toInt());
+}
+
+void EnergyWidget::onCpuRadioButtonClicked()
+{
+    QRadioButton *button = qobject_cast<QRadioButton*>(this->sender());
+    if (button) {
+        QString obj_name = button->objectName();
+        emit setCurrentCpuMode(obj_name);
+    }
 }
 
 void EnergyWidget::setRadioButtonRowStatus()

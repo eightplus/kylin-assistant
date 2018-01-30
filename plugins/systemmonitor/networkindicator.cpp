@@ -116,7 +116,7 @@ void NetworkIndicator::updateBgColor()
         this->m_bgColor = QColor("#f6fcfe");
         break;
     case Checked:
-        this->m_outsideBorderColor = QColor("#0973b4");
+        this->m_outsideBorderColor = QColor("#009944");
         this->m_bgColor = QColor("#e9f8fd");
         break;
     default:
@@ -243,15 +243,14 @@ void NetworkIndicator::paintEvent(QPaintEvent *event)
     path.addRect(QRectF(1, 1, width()-2, height()-2));
     painter.fillPath(path, this->m_bgColor);
 
-
     painter.translate((rect().width() - m_pointsCount * m_pointSpace) / 2 + 2, 40);//将坐标第原点移动到该点
     painter.scale(1, -1);//将横坐标扩大1倍,将纵坐标缩小1倍
     //使用QPainterPath画贝塞尔曲线
-    painter.setPen(QPen(QColor("#1E90FF"), 1));
+    painter.setPen(QPen(QColor("#009944"), 1));
     painter.setBrush(QBrush());
     painter.drawPath(m_downloadPath);//绘制前面创建的path:m_downloadPath
     painter.translate(0, -8);//将点（0，-8）设为原点
-    painter.setPen(QPen(QColor("#FF0000"), 1));
+    painter.setPen(QPen(QColor("#e60012"), 1));
     painter.setBrush(QBrush());
     painter.drawPath(m_uploadPath);
 

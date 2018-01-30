@@ -399,7 +399,6 @@ void MenuWidget::onSendMatePanelIconValue(int topIconSize, int bottomIconSize, b
 
 void MenuWidget::onSendUnityIconValue(int iconSize, bool iconHide, bool desktopIconShowed, double launcherTransparency, int iconColourIndex, const QStringList &colourlist)
 {
-    qDebug() << "MenuWidget::onSendUnityIconValue============";
     size_slider->setValue(iconSize);
     size_value_label->setText(QString::number(iconSize));
     hide_switcher->switchedOn = iconHide;

@@ -136,7 +136,7 @@ bool MonitorTitleWidget::eventFilter(QObject *obj, QEvent *event)
 
 void MonitorTitleWidget::setSearchEditFocus()
 {
-    if (m_searchEdit->text() != "") {
+    if (m_searchEdit->searchedText() != "") {
         m_searchEdit->getLineEdit()->setFocus();
     } else {
         m_searchEdit->setFocus();
@@ -145,14 +145,14 @@ void MonitorTitleWidget::setSearchEditFocus()
 
 void MonitorTitleWidget::onRefreshSearchResult()
 {
-    if (m_searchEdit->text() == searchTextCache) {
+    if (m_searchEdit->searchedText() == searchTextCache) {
         emit this->searchSignal(searchTextCache);
     }
 }
 
 void MonitorTitleWidget::handleSearchTextChanged()
 {
-    searchTextCache = m_searchEdit->text();
+    searchTextCache = m_searchEdit->searchedText();
 
     this->m_cancelSearchBtn->setVisible(!searchTextCache.isEmpty());
 
@@ -165,7 +165,7 @@ void MonitorTitleWidget::handleSearchTextChanged()
 void MonitorTitleWidget::onCancelSearchBtnClicked(bool b)
 {
     this->m_cancelSearchBtn->setVisible(false);
-    m_searchEdit->clearEdit();
+    m_searchEdit->clearAndFocusEdit();
     emit canelSearchEditFocus();
 }
 

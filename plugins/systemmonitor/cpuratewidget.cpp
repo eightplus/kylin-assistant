@@ -308,6 +308,8 @@ void CpuRateWidget::initWidgets()
     cpuIdleTimeLayout->addWidget(m_cpuIdleTimeTitle);
     cpuIdleTimeLayout->addWidget(m_cpuIdleTimeText);
 
+
+
     m_labelLayout->setContentsMargins(0, 0, 0, 0);
     m_labelLayout->setSpacing(10);
     m_labelLayout->addWidget(m_title);

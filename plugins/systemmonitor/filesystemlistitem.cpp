@@ -156,26 +156,29 @@ void FileSystemListItem::drawForeground(QRect rect, QPainter *painter, int colum
         }
     }
     else if (column == 6) {
-        if (!m_data->usedCapactiy().isEmpty()) {
-            int maxWidth = 60;
-            QFont font = painter->font();
-            QFontMetrics fm(font);
-            QString uCapacity = fm.elidedText(m_data->usedCapactiy(), Qt::ElideRight, maxWidth);
-            painter->drawText(QRect(rect.x(), rect.y(), maxWidth - textPadding, rect.height()), Qt::AlignLeft | Qt::AlignVCenter, uCapacity);
-        }
         int leftPadding = 10;
         int topPadding = 5;
-        int pWidth = rect.width() - 60 - 2 * leftPadding - textPadding;
-        int pHeight = rect.height() - 2 * topPadding;
+        int progressWidth = 100;
+        int progressHeight = rect.height() - 2 * topPadding;
+        int textMaxWidth = rect.width() - progressWidth - 2 * leftPadding;
+        if (!m_data->usedCapactiy().isEmpty()) {
+            QFont font = painter->font();
+            QFontMetrics fm(font);
+            QString uCapacity = fm.elidedText(m_data->usedCapactiy(), Qt::ElideRight, textMaxWidth - textPadding);
+            painter->drawText(QRect(rect.x() + textPadding, rect.y(), textMaxWidth - textPadding, rect.height()), Qt::AlignLeft | Qt::AlignVCenter, uCapacity);
+        }
         QPainterPath bgPath;
-        bgPath.addRect(QRectF(rect.x() + 60, rect.y() + topPadding, pWidth, pHeight));
+        bgPath.addRect(QRectF(rect.x() + textMaxWidth + leftPadding, rect.y() + topPadding, progressWidth, progressHeight));
         painter->fillPath(bgPath, QColor("#eeeeee"));
         QPainterPath fillPath;
-        fillPath.addRect(QRectF(rect.x() + 60, rect.y() + topPadding, pWidth - m_data->usedPercentage(), pHeight));
+        fillPath.addRect(QRectF(rect.x() + textMaxWidth + leftPadding, rect.y() + topPadding, m_data->usedPercentage(), progressHeight));
         painter->setOpacity(0.5);
-        painter->fillPath(fillPath, QColor("#0288d1"));
+        if (m_data->usedPercentage() < 75)
+            painter->fillPath(fillPath, QColor("#0288d1"));
+        else
+            painter->fillPath(fillPath, QColor("#f8b551"));
         painter->setOpacity(1);
-        painter->drawText(QRect(rect.x() + 60, rect.y() + topPadding, pWidth, pHeight), Qt::AlignHCenter | Qt::AlignVCenter, QString::number(m_data->usedPercentage()).append("%"));
+        painter->drawText(QRect(rect.x() + textMaxWidth + leftPadding, rect.y() + topPadding, progressWidth, progressHeight), Qt::AlignHCenter | Qt::AlignVCenter, QString::number(m_data->usedPercentage()).append("%"));
 
         /*
         QStyleOptionProgressBar progressBarStyle;//progressBarStyle.initFrom(this);

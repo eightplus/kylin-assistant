@@ -64,6 +64,7 @@ void DataWorker::initDataWorker()
     sessioninterface = new SessionDispatcher;
     ThreadPool::Instance()->moveToNewThread(sessioninterface);
     this->m_existBattery = sessioninterface->judge_power_is_exists_qt();
+
     connect(sessioninterface, SIGNAL(string_value_notify(QString,QString)), this, SIGNAL(string_value_notify(QString,QString)));
     connect(sessioninterface, SIGNAL(bool_value_notify(QString,bool)), this, SIGNAL(bool_value_notify(QString,bool)));
     connect(sessioninterface, SIGNAL(int_value_notify(QString,int)), this, SIGNAL(int_value_notify(QString,int)));
@@ -85,6 +86,8 @@ void DataWorker::initDataWorker()
     systemThread->start();*/
 
     this->m_existSensor = systeminterface->judge_sensors_exists_qt();
+    this->m_cpulist = systeminterface->get_cpufreq_scaling_governer_list_qt();
+    this->m_currentCpuMode = systeminterface->get_current_cpufreq_scaling_governer_qt();
 
     connect(systeminterface, SIGNAL(finishCleanWorkMain(QString)), this, SIGNAL(finishCleanWorkMain(QString)));
     connect(systeminterface, SIGNAL(finishCleanWorkMainError(QString)), this, SIGNAL(finishCleanWorkMainError(QString)));
@@ -101,6 +104,16 @@ void DataWorker::doWork()
 {
     this->initDataWorker();
     emit dataLoadFinished();
+}
+
+const QStringList DataWorker::cpuModeList() const
+{
+    return this->m_cpulist;
+}
+
+const QString DataWorker::cpuCurrentMode() const
+{
+    return this->m_currentCpuMode;
 }
 
 bool DataWorker::deleteAppointedFile(QString filename)
@@ -1063,6 +1076,19 @@ void DataWorker::onResetSleepTimeoutDisplayAC(int index, int value)
     }
 }
 
+void DataWorker::onSetCurrentCpuMode(const QString &mode)
+{
+//    qDebug() << "set cpu mode="<<mode;
+    if(mode == "ondemandradio") {
+        systeminterface->adjust_cpufreq_scaling_governer_qt("ondemand");
+    }
+    else if(mode == "powersaveradio") {
+        systeminterface->adjust_cpufreq_scaling_governer_qt("powersave");
+    }
+    else if(mode == "performanceradio") {
+        systeminterface->adjust_cpufreq_scaling_governer_qt("performance");
+    }
+}
 
 
 //-------------------file manager

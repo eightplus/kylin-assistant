@@ -1,19 +1,17 @@
 #include "mysearchedit.h"
 
 #include <QHBoxLayout>
-#include <QSpacerItem>
-#include <QPropertyAnimation>
 #include <QDebug>
 #include <QEvent>
 #include <QFocusEvent>
 #include <QResizeEvent>
-#include <QTimer>
 
 MySearchEdit::MySearchEdit(QWidget *parent)
     : QFrame(parent)
+    ,m_showCurve(QEasingCurve::OutCubic)
+    ,m_hideCurve(QEasingCurve::InCubic)
 {
-//    this->setStyleSheet("QFrame{background-color:#00376a;border-radius:0px;}");
-    this->setStyleSheet("QFrame{background-color:rgb(0, 55, 106, 127);border-radius:0px;}");
+    this->setStyleSheet("QFrame{background-color:#00376a;border-radius:0px;}");
 
     m_searchBtn = new QLabel;
     m_searchBtn->setStyleSheet("QLabel{background-color:transparent;border:none;background-image:url(:/res/search.png);}");
@@ -45,42 +43,45 @@ MySearchEdit::MySearchEdit(QWidget *parent)
     layout->setAlignment(m_placeHolder, Qt::AlignCenter);
     layout->addWidget(m_edit);
     layout->setAlignment(m_edit, Qt::AlignCenter);
-//    layout->addStretch();
-//    layout->addWidget(m_searchBtn);
-//    layout->setAlignment(m_searchBtn, Qt::AlignCenter);
     layout->addStretch();
     layout->addWidget(m_clearBtn);
     layout->setAlignment(m_clearBtn, Qt::AlignCenter);
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);
 
-//    setAutoFillBackground(true);
     setFocusPolicy(Qt::StrongFocus);
 
-    connect(m_clearBtn, &MyTristateButton::clicked, m_edit, static_cast<void (QLineEdit::*)()>(&QLineEdit::setFocus));
-    connect(m_clearBtn, &MyTristateButton::clicked, this, &MySearchEdit::clearEdit);
     connect(m_edit, &QLineEdit::textChanged, [this] {m_clearBtn->setVisible(!m_edit->text().isEmpty());});
     connect(m_edit, &QLineEdit::textChanged, this, &MySearchEdit::textChanged, Qt::DirectConnection);
-//    connect(m_edit, &QLineEdit::textChanged, this, [=] {
-//        emit this->textChanged();
-//    });
+    connect(m_clearBtn, &MyTristateButton::clicked, this, [=] {
+        this->clearAndFocusEdit();
+    });
 }
 
 MySearchEdit::~MySearchEdit()
 {
     m_animation->deleteLater();
+    delete m_edit;
+    delete m_searchBtn;
+    delete m_placeHolder;
+    delete m_clearBtn;
 }
 
-const QString MySearchEdit::text() const
+const QString MySearchEdit::searchedText() const
 {
     return m_edit->text();
+}
+
+void MySearchEdit::clearAndFocusEdit()
+{
+    this->clearEdit();
+    this->m_edit->setFocus();
 }
 
 void MySearchEdit::clearEdit()
 {
     m_edit->clear();
-//    this->setStyleSheet("QFrame{background-color:#00376a;border-radius:0px;}");
-    this->setStyleSheet("QFrame{background-color:rgb(0, 55, 106, 127);border-radius:0px;}");
+    this->setStyleSheet("QFrame{background-color:#00376a;border-radius:0px;}");
 }
 
 void MySearchEdit::mousePressEvent(QMouseEvent *event)
@@ -102,6 +103,7 @@ bool MySearchEdit::eventFilter(QObject *object, QEvent *event)
     if (object == m_edit && event->type() == QEvent::FocusOut && m_edit->text().isEmpty()) {
         auto focusEvent = dynamic_cast<QFocusEvent *>(event);
         if (focusEvent && focusEvent->reason() != Qt::PopupFocusReason) {
+//            m_placeHolder->show();
             m_animation->stop();
             m_animation->setStartValue(m_edit->width());
             m_animation->setEndValue(0);
@@ -110,7 +112,6 @@ bool MySearchEdit::eventFilter(QObject *object, QEvent *event)
             connect(m_animation, &QPropertyAnimation::finished, m_placeHolder, &QLabel::show);
         }
     }
-
     return QFrame::eventFilter(object, event);
 }
 
@@ -127,10 +128,20 @@ void MySearchEdit::setEditFocus()
     m_animation->start();
     m_placeHolder->hide();
     m_edit->setFocus();
-//    this->setStyleSheet("QFrame{background-color:#00376a;border:1px solid #47ccf3;border-radius:0px;}");
-    this->setStyleSheet("QFrame{background-color:rgb(0, 55, 106, 127);border:1px solid #47ccf3;border-radius:0px;}");
+    this->setStyleSheet("QFrame{background-color:#00376a;border:1px solid #47ccf3;border-radius:0px;}");
 }
 
+void MySearchEdit::setPlaceHolder(const QString &text)
+{
+    m_placeHolder->setText(text);
+}
+
+void MySearchEdit::setText(const QString & text)
+{
+    if (m_edit) {
+        m_edit->setText(text);
+    }
+}
 
 QLineEdit *MySearchEdit::getLineEdit() const
 {
@@ -148,13 +159,9 @@ bool MySearchEdit::event(QEvent *event)
     if (event->type() == QEvent::FocusIn) {
         const QFocusEvent *ev = static_cast<QFocusEvent*>(event);
 
-        if (ev->reason() == Qt::TabFocusReason
-                || ev->reason() == Qt::BacktabFocusReason
-                || ev->reason() == Qt::OtherFocusReason
-                || ev->reason() == Qt::ShortcutFocusReason) {
+        if (ev->reason() == Qt::TabFocusReason || ev->reason() == Qt::BacktabFocusReason || ev->reason() == Qt::OtherFocusReason || ev->reason() == Qt::ShortcutFocusReason) {
             setEditFocus();
         }
     }
-
     return QFrame::event(event);
 }

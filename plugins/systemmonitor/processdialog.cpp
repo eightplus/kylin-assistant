@@ -622,7 +622,7 @@ void ProcessDialog::refreshProcessList()
         ----------------------------------------------------------*/
 
         std::string desktopFile;
-        desktopFile = getDesktopFileFromName(pid, name, "");
+        desktopFile = getDesktopFileAccordProcName(name, "");
 //        qDebug() << "****************"<< QString::fromStdString(desktopFile);
 
         QPixmap icon_pixmap;
@@ -632,14 +632,14 @@ void ProcessDialog::refreshProcessList()
             icon_pixmap = defaultPixmap;
             icon_pixmap.setDevicePixelRatio(qApp->devicePixelRatio());
         } else {
-            icon_pixmap = getDesktopFileIcon(desktopFile, 24);
+            icon_pixmap = getAppIconFromDesktopFile(desktopFile, 24);
             if (icon_pixmap.isNull()) {
                 icon_pixmap = defaultPixmap;
                 icon_pixmap.setDevicePixelRatio(qApp->devicePixelRatio());
             }
             //QPixmap pixmap = QPixmap::fromImage(img).scaled(iconSize, iconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
-        QString title = getDisplayNameFromName(name, desktopFile);
+        QString title = getDisplayNameAccordProcName(name, desktopFile);
         QString displayName;
         if (whose_processes == "all") {
             displayName = QString("[%1] %2").arg(username).arg(title);

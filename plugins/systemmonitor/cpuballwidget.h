@@ -56,9 +56,13 @@ private:
 
     QString m_progressText;
 
+    double m_prevPercentValue;
     double m_percentValue;
     double m_xFrontOffset;
     double m_xBackOffset;
+
+    double m_animationCounts;
+    int m_animationIndex;
 };
 
 #endif // CPUBALLWIDGET_H

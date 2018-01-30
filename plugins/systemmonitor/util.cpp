@@ -17,16 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "util.h"
+
 #include <QApplication>
 #include <QIcon>
-#include <glib/gi18n.h>
-#include <glib.h>
-#include <glibtop/procstate.h>
-#include "util.h"
 #include <QDirIterator>
+
+#include <glibtop/procstate.h>
 #include <fstream>
 #include <sstream>
-#include <qdiriterator.h>
 
 std::string make_string(char *c_str)
 {
@@ -59,7 +58,6 @@ QString formatDurationForDisplay(unsigned centiseconds)
     gchar *duration = NULL;
 
     if (weeks) {
-        /* xgettext: weeks, days */
         duration = g_strdup_printf("%uw%ud", weeks, days);
         formatTime = QString(QLatin1String(duration));
         if (duration) {
@@ -70,7 +68,6 @@ QString formatDurationForDisplay(unsigned centiseconds)
     }
 
     if (days) {
-        /* xgettext: days, hours (0 -> 23) */
         duration = g_strdup_printf("%ud%02uh", days, hours);
         formatTime = QString(QLatin1String(duration));
         if (duration) {
@@ -81,7 +78,6 @@ QString formatDurationForDisplay(unsigned centiseconds)
     }
 
     if (hours) {
-        /* xgettext: hours (0 -> 23), minutes, seconds */
         duration = g_strdup_printf("%u:%02u:%02u", hours, minutes, seconds);
         formatTime = QString(QLatin1String(duration));
         if (duration) {
@@ -91,7 +87,6 @@ QString formatDurationForDisplay(unsigned centiseconds)
         return formatTime;
     }
 
-    /* xgettext: minutes, seconds, centiseconds */
     duration = g_strdup_printf("%u:%02u.%02u", minutes, seconds, centiseconds);
     formatTime = QString(QLatin1String(duration));
     if (duration) {
@@ -101,18 +96,12 @@ QString formatDurationForDisplay(unsigned centiseconds)
     return formatTime;
 }
 
-std::string getDesktopFileFromName(int pid, QString procName, QString cmdline)
+std::string getDesktopFileAccordProcName(QString procName, QString cmdline)
 {
     QDirIterator dir("/usr/share/applications", QDirIterator::Subdirectories);
     std::string desktopFile;
-
-    // Convert to lower characters.
     QString procname = procName.toLower();
-
-    // Replace "_" instead "-", avoid some applications desktop file can't found, such as, sublime text.
     procname.replace("_", "-");
-
-    // Concat desktop file.
     QString processFilename = procname + ".desktop";
 
     while(dir.hasNext()) {
@@ -128,7 +117,7 @@ std::string getDesktopFileFromName(int pid, QString procName, QString cmdline)
     return desktopFile;
 }
 
-QPixmap getDesktopFileIcon(std::string desktopFile, int iconSize)
+QPixmap getAppIconFromDesktopFile(std::string desktopFile, int iconSize)
 {
     std::ifstream in;
     in.open(desktopFile);
@@ -141,13 +130,11 @@ QPixmap getDesktopFileIcon(std::string desktopFile, int iconSize)
         iconName = QString::fromStdString(line);
 
         if (iconName.startsWith("Icon=")) {
-            iconName.remove(0,5); // remove the first 5 chars
+            iconName.remove(0,5);
         } else {
             continue;
         }
-
         if (iconName.contains("/")) {
-            // this is probably a path to the file, use that instead of the theme icon name
             icon = QIcon(iconName);
         } else {
             icon = QIcon::fromTheme(iconName, defaultExecutableIcon);
@@ -164,39 +151,35 @@ QPixmap getDesktopFileIcon(std::string desktopFile, int iconSize)
     return pixmap;
 }
 
-
-QString getDisplayNameFromName(QString procName, std::string desktopFile)
+QString getDisplayNameAccordProcName(QString procName, std::string desktopFile)
 {
     if (desktopFile.size() == 0) {
         return procName;
     }
-
     std::ifstream in;
     in.open(desktopFile);
     QString displayName = procName;
     while(!in.eof()) {
         std::string line;
         std::getline(in,line);
-
         QString lineContent = QString::fromStdString(line);
-
         QString localNameFlag = QString("Name[%1]=").arg(QLocale::system().name());
         QString nameFlag = "Name=";
         QString genericNameFlag = QString("GenericName[%1]=").arg(QLocale::system().name());
 
         if (lineContent.startsWith(localNameFlag)) {
             displayName = lineContent.remove(0, localNameFlag.size());
-
             break;
-        } else if (lineContent.startsWith(genericNameFlag)) {
+        }
+        else if (lineContent.startsWith(genericNameFlag)) {
             displayName = lineContent.remove(0, genericNameFlag.size());
-
             break;
-        } else if (lineContent.startsWith(nameFlag)) {
+        }
+        else if (lineContent.startsWith(nameFlag)) {
             displayName = lineContent.remove(0, nameFlag.size());
-
             continue;
-        } else {
+        }
+        else {
             continue;
         }
     }
@@ -204,15 +187,6 @@ QString getDisplayNameFromName(QString procName, std::string desktopFile)
 
     return displayName;
 }
-
-QString getImagePath(QString imageName)
-{
-    QDir dir(qApp->applicationDirPath());
-    dir.cdUp();
-
-    return QDir(dir.filePath("image")).filePath(imageName);
-}
-
 
 QString formatProcessState(guint state)
 {
@@ -281,7 +255,6 @@ QString formatUnitSize(double v, const char** orders, int nb_orders)
 QString formatByteCount(double v)
 {
     static const char* orders[] = { "B", "KB", "MB", "GB", "TB" };
-
     return formatUnitSize(v, orders, sizeof(orders)/sizeof(orders[0]));
 }
 

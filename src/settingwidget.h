@@ -55,7 +55,7 @@ class SettingWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SettingWidget(QString cur_desktop = "", bool has_battery = false, QWidget *parent = 0);
+    explicit SettingWidget(QStringList cpulist, QString cpu, QString cur_desktop, bool has_battery = false, QWidget *parent = 0);
     ~SettingWidget();
     void setParentWindow(MainWindow* window) { p_mainwindow = window;}
     void initUI(/*QString skin*/);
@@ -199,6 +199,7 @@ signals:
     void resetSleepTimeoutAC(int index, int value);
     void resetSleepTimeoutDisplayBattery(int index, int value);
     void resetSleepTimeoutDisplayAC(int index, int value);
+    void setCurrentCpuMode(const QString &mode);
 
     //file manager
     void requestFileManagerData();
@@ -231,6 +232,8 @@ private:
     MainWindow *p_mainwindow;
     QString desktop;
     bool battery;
+    QStringList m_cpuList;
+    QString m_currentCpu;
 
     QStackedWidget *stacked_widget;
     ThemeWidget *theme_widget;

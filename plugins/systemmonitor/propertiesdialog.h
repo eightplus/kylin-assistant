@@ -45,6 +45,7 @@ public:
     pid_t getPid();
     QRect getParentGeometry() const;
     void moveToCenter();
+    void updateLabelFrameHeight();
     void initProcproperties();
 
 public slots:
@@ -58,8 +59,9 @@ protected:
 //    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
 private:
-    MyTristateButton *closeButton;
-    QHBoxLayout *cmdlineLayout;
+    MyTristateButton *closeButton = nullptr;
+    QLabel *m_logoLabel = nullptr;
+    /*QHBoxLayout *cmdlineLayout;
     QHBoxLayout *userLayout;
     QHBoxLayout *nameLayout;
     QHBoxLayout *cpuDurationLayout;
@@ -68,19 +70,29 @@ private:
     QLabel *cmdlineTitleLabel;
     QLabel *userLabel;
     QLabel *userTitleLabel;
-    QLabel *iconLabel;
     QLabel *m_appNameLabel;
     QLabel *nameTitleLabel;
     QLabel *cpuDurationLabel;
     QLabel *cpuDurationTitleLabel;
     QLabel *startTimeLabel;
-    QLabel *startTimeTitleLabel;
-    QLabel *titleLabel;
-    QVBoxLayout *layout;
+    QLabel *startTimeTitleLabel;*/
+
+    QVBoxLayout *m_layout = nullptr;
+    QHBoxLayout *m_topLayout = nullptr;
+    QHBoxLayout *m_topLeftLayout = nullptr;
+    QHBoxLayout *m_topRightLayout = nullptr;
+    QHBoxLayout *m_bottomLayout = nullptr;
+    QLabel *m_iconLabel = nullptr;
+    QLabel *m_titleLabel = nullptr;
+    QPushButton *m_okBtn = nullptr;
+
     pid_t pid;
     QPoint dragPosition;
     bool mousePressed;
-    QTimer *timer;
+    QTimer *timer = nullptr;
+
+    QFrame *m_infoFrame = nullptr;
+    QList<QLabel *> m_labelList;
 };
 
 #endif // PROPERTIESSDIALOG_H
