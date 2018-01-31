@@ -18,7 +18,7 @@
  */
 
 #include "startuptitlewidget.h"
-#include "../widgets/myimagebutton.h"
+#include "../widgets/mytristatebutton.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -108,17 +108,17 @@ void StartupTitleWidget::initRightContent()
 
     m_layout->addWidget(w, 1, Qt::AlignRight);
 
-    MyImageButton *minBtn = new MyImageButton;
+    MyTristateButton *minBtn = new MyTristateButton;
     minBtn->setObjectName("MinButton");
-    connect(minBtn, &MyImageButton::clicked, this, [=] {
+    connect(minBtn, &MyTristateButton::clicked, this, [=] {
         if (parentWidget() && parentWidget()->parentWidget()) {
             parentWidget()->parentWidget()->showMinimized();
         }
     });
 
-    MyImageButton *closeBtn = new MyImageButton;
+    MyTristateButton *closeBtn = new MyTristateButton;
     closeBtn->setObjectName("CloseButton");
-    connect(closeBtn, &MyImageButton::clicked, this, [=] {
+    connect(closeBtn, &MyTristateButton::clicked, this, [=] {
         window()->close();
     });
     m_rLayout->addWidget(minBtn);

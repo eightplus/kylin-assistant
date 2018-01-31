@@ -60,12 +60,25 @@ FileSystemDialog::FileSystemDialog(QList<bool> toBeDisplayedColumns, QSettings *
     m_menu->addAction(m_refreshAction);
 
     this->refreshFileSysList();
+
+    //refresh file system info every 5 minutes
+    m_timer = new QTimer(this);
+    connect(m_timer,SIGNAL(timeout()),this,SLOT(refreshFileSysList()));
+    m_timer->start(5000);
 }
 
 FileSystemDialog::~FileSystemDialog()
 {
 //    m_fileSystemMonitor->removePath(m_monitorFile);
 //    delete m_fileSystemMonitor;
+    if (m_timer != NULL) {
+        disconnect(m_timer,SIGNAL(timeout()),this,SLOT(refreshProcproperties()));
+        if(m_timer->isActive()) {
+            m_timer->stop();
+        }
+        delete m_timer;
+        m_timer = NULL;
+    }
 
     m_fileSystemWorker->deleteLater();
     delete m_fileSysListWidget;

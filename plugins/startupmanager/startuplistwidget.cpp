@@ -25,445 +25,364 @@
 #include <QListWidgetItem>
 #include <QScrollBar>
 #include <QDirIterator>
-
+#include <QStandardPaths>
+#include <QLibraryInfo>
+#include <QApplication>
 #include <fstream>
 #include <qdiriterator.h>
 #include <sstream>
 #include <stdio.h>
 #include <string>
 
-
 #include <glib-object.h>
 #include <glib.h>
 
+#include "startupworker.h"
 
-static char **
-gsm_util_get_standard_autostart_dirs (void)
-{
-        GPtrArray          *dirs;
-        const char * const *system_config_dirs;
-        const char * const *system_data_dirs;
-        int                 i;
+using namespace std;
 
-        dirs = g_ptr_array_new ();
+///usr/share/gnome-session/sessions/ubuntu.session
 
-        g_ptr_array_add (dirs,
-                         g_build_filename (g_get_user_config_dir (),
-                                           "autostart", NULL));
 
-        system_data_dirs = g_get_system_data_dirs ();
-        for (i = 0; system_data_dirs[i]; i++) {
-                g_ptr_array_add (dirs,
-                                 g_build_filename (system_data_dirs[i],
-                                                   "gnome", "autostart", NULL));
-        }
-
-        system_config_dirs = g_get_system_config_dirs ();
-        for (i = 0; system_config_dirs[i]; i++) {
-                g_ptr_array_add (dirs,
-                                 g_build_filename (system_config_dirs[i],
-                                                   "autostart", NULL));
-        }
-
-        g_ptr_array_add (dirs, NULL);
-
-        return (char **) g_ptr_array_free (dirs, FALSE);
-}
-
-char **
-gsm_util_get_autostart_dirs ()
-{
-//        if (autostart_dirs) {
-//                return g_strdupv ((char **)autostart_dirs);
-//        }
-
-        return gsm_util_get_standard_autostart_dirs ();
-}
-
-//static int
-//gsp_app_manager_get_dir_index (GspAppManager *manager,
-//                               const char    *dir)
+//static void _gsp_ensure_user_autostart_dir (void)
 //{
-//        GSList    *l;
-//        GspXdgDir *xdgdir;
+//        char *dir;
 
-//        g_return_val_if_fail (GSP_IS_APP_MANAGER (manager), -1);
-//        g_return_val_if_fail (dir != NULL, -1);
+//        dir = g_build_filename (g_get_user_config_dir (), "autostart", NULL);
+//        g_mkdir_with_parents (dir, S_IRWXU);
 
-//        for (l = manager->priv->dirs; l != NULL; l = l->next) {
-//                xdgdir = l->data;
-//                if (strcmp (dir, xdgdir->dir) == 0) {
-//                        return xdgdir->index;
-//                }
-//        }
-
-//        return -1;
+//        g_free (dir);
 //}
 
-
-//const char *
-//gsp_app_manager_get_dir (GspAppManager *manager,
-//                         unsigned int   index)
+//static inline void _gsp_app_save_done_success (GspApp *app)
 //{
-//        GSList    *l;
-//        GspXdgDir *xdgdir;
+//        app->priv->save_mask = 0;
 
-//        g_return_val_if_fail (GSP_IS_APP_MANAGER (manager), NULL);
-
-//        for (l = manager->priv->dirs; l != NULL; l = l->next) {
-//                xdgdir = l->data;
-//                if (index == xdgdir->index) {
-//                        return xdgdir->dir;
-//                }
+//        if (app->priv->old_system_path) {
+//                g_free (app->priv->old_system_path);
+//                app->priv->old_system_path = NULL;
 //        }
-
-//        return NULL;
 //}
 
-//static gboolean
-//gsp_app_manager_xdg_dir_monitor (GFileMonitor      *monitor,
-//                                 GFile             *child,
-//                                 GFile             *other_file,
-//                                 GFileMonitorEvent  flags,
-//                                 gpointer           data)
+//static gboolean _gsp_app_user_equal_system (GspApp  *app,
+//                            char   **system_path)
 //{
 //        GspAppManager *manager;
-//        GspApp        *old_app;
-//        GspApp        *app;
-//        GFile         *parent;
-//        char          *basename;
-//        char          *dir;
+//        const char    *system_dir;
 //        char          *path;
-//        int            index;
+//        char          *str;
+//        GKeyFile      *keyfile;
 
-//        manager = GSP_APP_MANAGER (data);
-
-//        basename = g_file_get_basename (child);
-//        if (!g_str_has_suffix (basename, ".desktop")) {
-//                /* not a desktop file, we can ignore */
-//                g_free (basename);
-//                return TRUE;
-//        }
-//        old_app = gsp_app_manager_find_app_with_basename (manager, basename);
-
-//        parent = g_file_get_parent (child);
-//        dir = g_file_get_path (parent);
-//        g_object_unref (parent);
-
-//        index = gsp_app_manager_get_dir_index (manager, dir);
-//        if (index < 0) {
-//                /* not a directory we know; should never happen, though */
-//                g_free (dir);
-//                return TRUE;
+//        manager = gsp_app_manager_get ();
+//        system_dir = gsp_app_manager_get_dir (manager,
+//                                              app->priv->xdg_system_position);
+//        g_object_unref (manager);
+//        if (!system_dir) {
+//                return FALSE;
 //        }
 
-//        path = g_file_get_path (child);
+//        path = g_build_filename (system_dir, app->priv->basename, NULL);
 
-//        switch (flags) {
-//        case G_FILE_MONITOR_EVENT_CHANGED:
-//        case G_FILE_MONITOR_EVENT_CREATED:
-//                /* we just do as if it was a new file: GspApp is clever enough
-//                 * to do the right thing */
-//                app = gsp_app_new (path, (unsigned int) index);
-
-//                /* we didn't have this app before, so add it */
-//                if (old_app == NULL && app != NULL) {
-//                        gsp_app_manager_add (manager, app);
-//                        g_object_unref (app);
-//                }
-//                /* else: it was just updated, GspApp took care of
-//                 * sending the event */
-//                break;
-//        case G_FILE_MONITOR_EVENT_DELETED:
-//                if (!old_app) {
-//                        /* it got deleted, but we don't know about it, so
-//                         * nothing to do */
-//                        break;
-//                }
-
-//                _gsp_app_manager_handle_delete (manager, old_app,
-//                                                basename, index);
-//                break;
-//        default:
-//                break;
+//        keyfile = g_key_file_new ();
+//        if (!g_key_file_load_from_file (keyfile, path, G_KEY_FILE_NONE, NULL)) {
+//                g_free (path);
+//                g_key_file_free (keyfile);
+//                return FALSE;
+//        }
+//        if (gsp_key_file_get_boolean (keyfile,
+//                                      G_KEY_FILE_DESKTOP_KEY_HIDDEN,
+//                                      FALSE) != app->priv->hidden ||
+//            gsp_key_file_get_boolean (keyfile,
+//                                      GSP_KEY_FILE_DESKTOP_KEY_AUTOSTART_ENABLED,
+//                                      TRUE) != app->priv->enabled ||
+//            gsp_key_file_get_shown (keyfile,
+//                                    _gsp_get_current_desktop ()) != app->priv->shown) {
+//                g_free (path);
+//                g_key_file_free (keyfile);
+//                return FALSE;
 //        }
 
-//        g_free (path);
-//        g_free (dir);
-//        g_free (basename);
+//        if (gsp_key_file_get_boolean (keyfile,
+//                                      G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY,
+//                                      FALSE) != app->priv->no_display) {
+//                g_free (path);
+//                g_key_file_free (keyfile);
+//                return FALSE;
+//        }
+
+//        str = gsp_key_file_get_locale_string (keyfile,
+//                                              G_KEY_FILE_DESKTOP_KEY_NAME);
+//        if (!_gsp_str_equal (str, app->priv->name)) {
+//                g_free (str);
+//                g_free (path);
+//                g_key_file_free (keyfile);
+//                return FALSE;
+//        }
+//        g_free (str);
+//        str = gsp_key_file_get_locale_string (keyfile,
+//                                              G_KEY_FILE_DESKTOP_KEY_COMMENT);
+//        if (!_gsp_str_equal (str, app->priv->comment)) {
+//                g_free (str);
+//                g_free (path);
+//                g_key_file_free (keyfile);
+//                return FALSE;
+//        }
+//        g_free (str);
+
+//        str = gsp_key_file_get_string (keyfile,
+//                                       G_KEY_FILE_DESKTOP_KEY_EXEC);
+//        if (!_gsp_str_equal (str, app->priv->exec)) {
+//                g_free (str);
+//                g_free (path);
+//                g_key_file_free (keyfile);
+//                return FALSE;
+//        }
+//        g_free (str);
+
+//        str = gsp_key_file_get_locale_string (keyfile,
+//                                              G_KEY_FILE_DESKTOP_KEY_ICON);
+//        if (!_gsp_str_equal (str, app->priv->icon)) {
+//                g_free (str);
+//                g_free (path);
+//                g_key_file_free (keyfile);
+//                return FALSE;
+//        }
+//        g_free (str);
+
+//        g_key_file_free (keyfile);
+
+//        *system_path = path;
 
 //        return TRUE;
 //}
 
-//static void
-//_gsp_app_manager_fill_from_dir (GspAppManager *manager,
-//                                GspXdgDir     *xdgdir)
+
+//static gboolean
+//_gsp_app_save (gpointer data)
 //{
-//        GFile      *file;
-//        GDir       *dir;
-//        const char *name;
+//        GspApp   *app;
+//        char     *use_path;
+//        GKeyFile *keyfile;
+//        GError   *error;
 
-//        file = g_file_new_for_path (xdgdir->dir);
-//        xdgdir->monitor = g_file_monitor_directory (file, G_FILE_MONITOR_NONE,
-//                                                    NULL, NULL);
-//        g_object_unref (file);
+//        app = GSP_APP (data);
 
-//        if (xdgdir->monitor) {
-//                g_signal_connect (xdgdir->monitor, "changed",
-//                                  G_CALLBACK (gsp_app_manager_xdg_dir_monitor),
-//                                  manager);
-//        }
-
-//        dir = g_dir_open (xdgdir->dir, 0, NULL);
-//        if (!dir) {
-//                return;
-//        }
-
-//        while ((name = g_dir_read_name (dir))) {
-//                GspApp *app;
-//                char   *desktop_file_path;
-
-//                if (!g_str_has_suffix (name, ".desktop")) {
-//                        continue;
+//        /* first check if removing the data from the user dir and using the
+//         * data from the system dir is enough -- this helps us keep clean the
+//         * user config dir by removing unneeded files */
+//        if (_gsp_app_user_equal_system (app, &use_path)) {
+//                if (g_file_test (app->priv->path, G_FILE_TEST_EXISTS)) {
+//                        g_remove (app->priv->path);
 //                }
 
-//                desktop_file_path = g_build_filename (xdgdir->dir, name, NULL);
-//                app = gsp_app_new (desktop_file_path, xdgdir->index);
+//                g_free (app->priv->path);
+//                app->priv->path = use_path;
 
-//                if (app != NULL) {
-//                        gsp_app_manager_add (manager, app);
-//                        g_object_unref (app);
-//                }
+//                app->priv->xdg_position = app->priv->xdg_system_position;
 
-//                g_free (desktop_file_path);
+//                _gsp_app_save_done_success (app);
+//                return FALSE;
 //        }
 
-//        g_dir_close (dir);
+//        if (app->priv->old_system_path)
+//                use_path = app->priv->old_system_path;
+//        else
+//                use_path = app->priv->path;
+
+//        keyfile = g_key_file_new ();
+
+//        error = NULL;
+//        g_key_file_load_from_file (keyfile, use_path,
+//                                   G_KEY_FILE_KEEP_COMMENTS|G_KEY_FILE_KEEP_TRANSLATIONS,
+//                                   &error);
+
+//        if (error) {
+//                g_error_free (error);
+//                gsp_key_file_populate (keyfile);
+//        }
+
+//        if (app->priv->save_mask & GSP_ASP_SAVE_MASK_HIDDEN) {
+//                gsp_key_file_set_boolean (keyfile,
+//                                          G_KEY_FILE_DESKTOP_KEY_HIDDEN,
+//                                          app->priv->hidden);
+//        }
+//        if (app->priv->save_mask & GSP_ASP_SAVE_MASK_NO_DISPLAY) {
+//                gsp_key_file_set_boolean (keyfile,
+//                                          G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY,
+//                                          app->priv->no_display);
+//        }
+
+//        if (app->priv->save_mask & GSP_ASP_SAVE_MASK_ENABLED) {
+//                gsp_key_file_set_boolean (keyfile,
+//                                          GSP_KEY_FILE_DESKTOP_KEY_AUTOSTART_ENABLED,
+//                                          app->priv->enabled);
+//        }
+
+//        if (app->priv->save_mask & GSP_ASP_SAVE_MASK_NAME) {
+//                gsp_key_file_set_locale_string (keyfile,
+//                                                G_KEY_FILE_DESKTOP_KEY_NAME,
+//                                                app->priv->name);
+//                gsp_key_file_ensure_C_key (keyfile, G_KEY_FILE_DESKTOP_KEY_NAME);
+//        }
+
+//        if (app->priv->save_mask & GSP_ASP_SAVE_MASK_COMMENT) {
+//                gsp_key_file_set_locale_string (keyfile,
+//                                                G_KEY_FILE_DESKTOP_KEY_COMMENT,
+//                                                app->priv->comment);
+//                gsp_key_file_ensure_C_key (keyfile, G_KEY_FILE_DESKTOP_KEY_COMMENT);
+//        }
+
+//        if (app->priv->save_mask & GSP_ASP_SAVE_MASK_EXEC) {
+//                gsp_key_file_set_string (keyfile,
+//                                         G_KEY_FILE_DESKTOP_KEY_EXEC,
+//                                         app->priv->exec);
+//        }
+//        _gsp_ensure_user_autostart_dir ();
+//        if (gsp_key_file_to_file (keyfile, app->priv->path, NULL)) {
+//                app->priv->skip_next_monitor_event = TRUE;
+//                _gsp_app_save_done_success (app);
+//        } else {
+//                g_warning ("Could not save %s file", app->priv->path);
+//        }
+
+//        g_key_file_free (keyfile);
+
+//        app->priv->save_timeout = 0;
+//        return FALSE;
 //}
-void test_func()
-{
-    char **autostart_dirs;
-    int    i;
 
-    autostart_dirs = gsm_util_get_autostart_dirs ();
-    /* we always assume that the first directory is the user one */
-    g_assert (g_str_has_prefix (autostart_dirs[0],
-                                g_get_user_config_dir ()));
+//static void
+//_gsp_app_queue_save (StartupData info/*GspApp *app*/)
+//{
+//    /* if the file was not in the user directory, then we'll create a copy
+//     * there */
+//    if (info.xdg_position != 0) {
+//            info.xdg_position = 0;
 
-    for (i = 0; autostart_dirs[i] != NULL; i++) {
-//            GspXdgDir *xdgdir;
-
-//            if (gsp_app_manager_get_dir_index (manager,
-//                                               autostart_dirs[i]) >= 0) {
-//                    continue;
+//            if (info.old_system_path.isEmpty()) {
+//                    info.old_system_path = info.path;
+//                    /* if old_system_path was not NULL, then it means we
+//                     * tried to save and we failed; in that case, we want
+//                     * to try again and use the old file as a basis again */
 //            }
-//            xdgdir = _gsp_xdg_dir_new (autostart_dirs[i], i);
-//            manager->priv->dirs = g_slist_prepend (manager->priv->dirs,
-//                                                   xdgdir);
-//            _gsp_app_manager_fill_from_dir (manager, xdgdir);
-    }
 
-    g_strfreev (autostart_dirs);
-}
-
-//static void
-//_fill_iter_from_app (GtkListStore *list_store,
-//                     GtkTreeIter  *iter,
-//                     GspApp       *app)
-//{
-//        gboolean    hidden;
-//        gboolean    display;
-//        gboolean    enabled;
-//        gboolean    shown;
-//        GIcon      *icon;
-//        const char *description;
-//        const char *app_name;
-
-//        hidden      = gsp_app_get_hidden (app);
-//        display     = gsp_app_get_display (app);
-//        enabled     = gsp_app_get_enabled (app);
-//        shown       = gsp_app_get_shown (app);
-//        icon        = gsp_app_get_icon (app);
-//        description = gsp_app_get_description (app);
-//        app_name    = gsp_app_get_name (app);
-
-//        if (G_IS_THEMED_ICON (icon)) {
-//                GtkIconTheme       *theme;
-//                const char * const *icon_names;
-
-//                theme = gtk_icon_theme_get_default ();
-//                icon_names = g_themed_icon_get_names (G_THEMED_ICON (icon));
-//                if (icon_names[0] == NULL ||
-//                    !gtk_icon_theme_has_icon (theme, icon_names[0])) {
-//                        g_object_unref (icon);
-//                        icon = NULL;
-//                }
-//        } else if (G_IS_FILE_ICON (icon)) {
-//                GFile *iconfile;
-
-//                iconfile = g_file_icon_get_file (G_FILE_ICON (icon));
-//                if (!g_file_query_exists (iconfile, NULL)) {
-//                        g_object_unref (icon);
-//                        icon = NULL;
-//                }
-//        }
-
-//        if (icon == NULL) {
-//                icon = g_themed_icon_new (STARTUP_APP_ICON);
-//        }
-
-//        gtk_list_store_set (list_store, iter,
-//                            STORE_COL_VISIBLE, !hidden && shown && display,
-//                            STORE_COL_ENABLED, enabled,
-//                            STORE_COL_GICON, icon,
-//                            STORE_COL_DESCRIPTION, description,
-//                            STORE_COL_APP, app,
-//                            STORE_COL_SEARCH, app_name,
-//                            -1);
-//        g_object_unref (icon);
-//}
-//static void
-//append_app (GsmPropertiesDialog *dialog,
-//            GspApp              *app)
-//{
-//        GtkTreeIter   iter;
-
-//        gtk_list_store_append (dialog->priv->list_store, &iter);
-//        _fill_iter_from_app (dialog->priv->list_store, &iter, app);
-
-//        g_signal_connect_swapped (app, "changed",
-//                                  G_CALLBACK (_app_changed), dialog);
-//}
-//static void
-//populate_model (GsmPropertiesDialog *dialog)
-//{
-//        GSList *apps;
-//        GSList *l;
-
-//        apps = gsp_app_manager_get_apps (dialog->priv->manager);
-//        for (l = apps; l != NULL; l = l->next) {
-//                append_app (dialog, GSP_APP (l->data));
-//        }
-//        g_slist_free (apps);
-//}
-
-//populate_model (dialog);
-
-//inline QPixmap getDesktopFileIcon(QString desktopFile, int iconSize)
-//{
-//    std::string desktop_file;
-//    desktopFile = desktopFile.toStdString();
-//    std::ifstream in;
-//    in.open(desktop_file);
-//    QIcon defaultExecutableIcon = QIcon::fromTheme("application-x-executable");
-//    QIcon icon;
-//    QString iconName;
-//    while(!in.eof()) {
-//        std::string line;
-//        std::getline(in,line);
-//        iconName = QString::fromStdString(line);
-
-//        if (iconName.startsWith("Icon=")) {
-//            iconName.remove(0,5); // remove the first 5 chars
-//        } else {
-//            continue;
-//        }
-
-//        if (iconName.contains("/")) {
-//            icon = QIcon(iconName);
-//        } else {
-//            icon = QIcon::fromTheme(iconName, defaultExecutableIcon);
-//            break;
-//        }
+//            info.path = g_build_filename (g_get_user_config_dir (),
+//                                                "autostart",
+//                                                info.basename, NULL);
 //    }
-//    in.close();
 
-//    qreal devicePixelRatio = qApp->devicePixelRatio();
 
-//    QPixmap pixmap = icon.pixmap(iconSize * devicePixelRatio, iconSize * devicePixelRatio);
-//    pixmap.setDevicePixelRatio(devicePixelRatio);
+////        if (app->priv->save_timeout) {
+////                g_source_remove (app->priv->save_timeout);
+////                app->priv->save_timeout = 0;
+////        }
 
-//    return pixmap;
+////        /* if the file was not in the user directory, then we'll create a copy
+////         * there */
+////        if (app->priv->xdg_position != 0) {
+////                app->priv->xdg_position = 0;
+
+////                if (app->priv->old_system_path == NULL) {
+////                        app->priv->old_system_path = app->priv->path;
+////                        /* if old_system_path was not NULL, then it means we
+////                         * tried to save and we failed; in that case, we want
+////                         * to try again and use the old file as a basis again */
+////                }
+
+////                app->priv->path = g_build_filename (g_get_user_config_dir (),
+////                                                    "autostart",
+////                                                    app->priv->basename, NULL);
+////        }
+
+////        app->priv->save_timeout = g_timeout_add_seconds (GSP_APP_SAVE_DELAY,
+////                                                         _gsp_app_save,
+////                                                         app);
 //}
 
-inline QString getDesktopFile(QString processname)
+//void
+//gsp_app_delete (GspApp *app)
+//{
+//        g_return_if_fail (GSP_IS_APP (app));
+
+//        if (app->priv->xdg_position == 0 &&
+//            app->priv->xdg_system_position == G_MAXUINT) {
+//                /* exists in user directory only */
+//                if (app->priv->save_timeout) {
+//                        g_source_remove (app->priv->save_timeout);
+//                        app->priv->save_timeout = 0;
+//                }
+
+//                if (g_file_test (app->priv->path, G_FILE_TEST_EXISTS)) {
+//                        g_remove (app->priv->path);
+//                }
+
+//                /* for extra safety */
+//                app->priv->hidden = TRUE;
+//                app->priv->save_mask |= GSP_ASP_SAVE_MASK_HIDDEN;
+
+//                _gsp_app_emit_removed (app);
+//        } else {
+//                /* also exists in system directory, so we have to keep a file
+//                 * in the user directory */
+//                app->priv->hidden = TRUE;
+//                app->priv->save_mask |= GSP_ASP_SAVE_MASK_HIDDEN;
+
+//                _gsp_app_queue_save (app);
+////                _gsp_app_emit_changed (app);
+//        }
+//}
+
+std::string make_string(char *c_str)
 {
-    QDirIterator dir("/usr/share/applications", QDirIterator::Subdirectories);
-//    std::string desktopFile;
-    QString desktopFile;
-
-    QString procname = processname.toLower();
-    procname.replace("_", "-");
-
-    QString processFilename = procname + ".desktop";
-
-    while(dir.hasNext()) {
-        if (dir.fileInfo().suffix() == "desktop") {
-            if (dir.fileName().toLower().contains(processFilename)) {
-//                desktopFile = dir.filePath().toStdString();
-                desktopFile = dir.filePath();
-                break;
-            }
-        }
-        dir.next();
+    if (!c_str) {
+        return string();
     }
-
-//    return QString::fromStdString(desktopFile);
-    return desktopFile;
+    string s(c_str);
+    g_free(c_str);
+    return s;
 }
 
-//inline QString getDisplayNameFromName(QString procName, QString desktopFile, bool displayProcessName)
-//{
-//    QString procname = procName.toLower();
-//    if (processDescriptions.contains(procname)) {
-//        if (displayProcessName) {
-//            return QString("%1    ( %2 )").arg(processDescriptions[procname], procName);
-//        } else {
-//            return processDescriptions[procname];
-//        }
-//    }
+inline QStringList autoStartDirectorys()
+{
+    QStringList dirList;
+    const gchar *config_dir = g_get_user_config_dir();
+    std::string formatted_result(make_string(g_strdup(config_dir)));//std::string formatted_result = make_string(g_strdup(config_dir));
+    dirList.append(QString::fromStdString(formatted_result));
 
-//    if (desktopFile.size() == 0) {
-//        return procName;
-//    }
+    const char * const *system_config_dirs;
+    const char * const *system_data_dirs;
+    int i;
+    system_data_dirs = g_get_system_data_dirs();
+    for (i = 0; system_data_dirs[i]; i++) {
+        std::string formatted_result(make_string(g_strdup(system_data_dirs[i])));
+        QString dirPath = QString::fromStdString(formatted_result);
+        if (dirPath.endsWith("/"))
+            dirPath = QString("%1gnome/autostart").arg(dirPath);
+        else
+            dirPath = QString("%1/gnome/autostart").arg(dirPath);
+        if (!dirList.contains(dirPath) && QDir(dirPath).exists())
+            dirList.append(dirPath);
+    }
 
-//    std::ifstream in;
-//    in.open(desktopFile);
-//    QString displayName = procName;
-//    while(!in.eof()) {
-//        std::string line;
-//        std::getline(in,line);
+    system_config_dirs = g_get_system_config_dirs();
+    for (i = 0; system_config_dirs[i]; i++) {
+        std::string formatted_result(make_string(g_strdup(system_config_dirs[i])));
+        QString dirPath = QString::fromStdString(formatted_result);
+        if (dirPath.endsWith("/"))
+            dirPath = dirPath + "autostart";
+        else
+            dirPath = dirPath + QLatin1Char('/') + "autostart";
+        if (!dirList.contains(dirPath) && QDir(dirPath).exists())
+            dirList.append(dirPath);
+    }
 
-//        QString lineContent = QString::fromStdString(line);
-
-//        QString localNameFlag = QString("Name[%1]=").arg(QLocale::system().name());
-//        QString nameFlag = "Name=";
-//        QString genericNameFlag = QString("GenericName[%1]=").arg(QLocale::system().name());
-
-//        if (lineContent.startsWith(localNameFlag)) {
-//            displayName = lineContent.remove(0, localNameFlag.size());
-
-//            break;
-//        } else if (lineContent.startsWith(genericNameFlag)) {
-//            displayName = lineContent.remove(0, genericNameFlag.size());
-//            break;
-//        } else if (lineContent.startsWith(nameFlag)) {
-//            displayName = lineContent.remove(0, nameFlag.size());
-//            continue;
-//        } else {
-//            continue;
-//        }
-//    }
-//    in.close();
-
-//    return displayName;
-//}
+    return dirList;
+}
 
 
 StartupListWidget::StartupListWidget(QWidget *parent) : QListWidget(parent)
 {
 //    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
     this->setFixedWidth(parent->width());
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -472,24 +391,53 @@ StartupListWidget::StartupListWidget(QWidget *parent) : QListWidget(parent)
             qDebug() << fileItem->getAppName();
         });
 
-//    loadItems(QStringList(), 0);
-    QStringList tmp;
-    tmp.append("AAA");
-    tmp.append("BBB");
-    tmp.append("CCC");
-    tmp.append("DDD");
-    tmp.append("EEE");
-    tmp.append("FFF");
-    tmp.append("GGG");
-    tmp.append("HHH");
-    tmp.append("JJJ");
-    tmp.append("KKK");
-    tmp.append("III");
-    loadItems(tmp, 0);
+
+    m_startupWorker = new StartupWorker;
+    m_startupWorker->moveToThread(qApp->thread());
+
+    QStringList autoDir = autoStartDirectorys();
+    foreach (auto dir, autoDir) {
+//        qDebug() << "dir="<<dir;
+        listAllDesktopFileFromDir(dir);
+    }
+
+//    QList<FileSystemListItem*> items;
+    this->clear();
+    for (StartupData info : m_startupWorker->getStartupInfoList()) {
+        loadItem(info);
+    }
+    this->verticalScrollBar()->setValue(0);
+
+//    qDebug()<<"GenericDataLocation=" << QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
+//    qDebug()<<"ConfigLocation=" << QStandardPaths::standardLocations(QStandardPaths::ConfigLocation);
+//    qDebug()<<"DocumentsLocation1=" << QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+//    qDebug()<<"DocumentsLocation2=" << QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+//    qDebug()<<"PicturesLocation=" << QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
+//    QStringList directory = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+//    qDebug()<<"HomeLocation=" <<directory;
+//    qDebug()<<"DataLocation=" << QStandardPaths::standardLocations(QStandardPaths::DataLocation);
+//    qDebug()<<"DesktopLocation=" << QStandardPaths::standardLocations(QStandardPaths::DesktopLocation);
+//    qDebug()<<"TempLocation=" << QStandardPaths::standardLocations(QStandardPaths::TempLocation);
+//    qDebug()<<"GenericCacheLocation=" << QStandardPaths::standardLocations(QStandardPaths::GenericCacheLocation);
+//    qDebug()<<"RuntimeLocation=" << QStandardPaths::standardLocations(QStandardPaths::RuntimeLocation);
+//    qDebug()<<"CacheLocation=" << QStandardPaths::standardLocations(QStandardPaths::CacheLocation);
+//    qDebug()<<"ApplicationsLocation=" << QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
+//    qDebug()<<"configPath=" << QDir(QDir(QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first()).filePath(qApp->organizationName())).filePath(qApp->applicationName());
+//    qDebug()<<"AppDataLocation=" << QStandardPaths::standardLocations(QStandardPaths::AppDataLocation);
+//    const QString settingsPath = QLibraryInfo::location(QLibraryInfo::SettingsPath);
+//    if (!settingsPath.isEmpty()) { // SettingsPath is empty unless specified in qt.conf.
+////        const QFileInfo fi(settingsPath + QLatin1Char('/') + fileName);
+////        if (fi.isFile())
+////            qDebug() << fi.absoluteFilePath();
+//        qDebug() << "settingsPath="<<settingsPath;///etc/xdg
+//    }
+//    qDebug() << QStandardPaths::locate(QStandardPaths::ConfigLocation, fileName);
 }
 
 StartupListWidget::~StartupListWidget()
 {
+    m_startupWorker->deleteLater();
+
     for(int i = 0; i < this->count(); i++) {
         QListWidgetItem *listItem = item(i);
         StartupItem *item = static_cast<StartupItem *>(itemWidget(listItem));
@@ -499,11 +447,55 @@ StartupListWidget::~StartupListWidget()
     }
 }
 
-void StartupListWidget::loadItem(QString info)
+void StartupListWidget::listAllDesktopFileFromDir(QString directory)
 {
-    StartupItem *item = new StartupItem();
-    item->setAppName(info);
-    connect(item, SIGNAL(changeStartup()), this, SLOT(onChangeStartup()));
+    QDirIterator dir(directory, QDirIterator::Subdirectories);
+
+    while(dir.hasNext()) {
+        if (dir.fileInfo().suffix() == "desktop") {
+            QString desktopFile = dir.filePath();//dir.fileName().toLower()
+//            qDebug() << "desktopFile="<<desktopFile;
+            m_startupWorker->addStartupInfo(desktopFile);
+        }
+        dir.next();
+    }
+}
+
+//gsp_app_set_enabled (gboolean enabled)
+void StartupListWidget::setAppAutoStartup(StartupData info, bool enabled)
+{
+    if (info.enabled == enabled)
+        return;
+
+    info.enabled = enabled;
+    info.save_mask |= SAVE_MASK_ENABLED;
+
+//    _gsp_app_queue_save (info);
+
+
+//    static void
+//    _app_changed (GsmPropertiesDialog *dialog,
+//                  GspApp              *app)
+//    {
+//            GtkTreeIter iter;
+
+//            if (!find_by_app (GTK_TREE_MODEL (dialog->priv->list_store),
+//                              &iter, app)) {
+//                    return;
+//            }
+
+//            _fill_iter_from_app (dialog->priv->list_store, &iter, app);
+//    }
+
+//            _gsp_app_emit_changed (app);//g_signal_emit (G_OBJECT (app), gsp_app_signals[CHANGED], 0);
+
+
+}
+
+void StartupListWidget::loadItem(StartupData info)
+{
+    StartupItem *item = new StartupItem(info);
+    connect(item, SIGNAL(changeStartup(QString,bool)), this, SLOT(onChangeStartup(QString,bool)));
     connect(item, SIGNAL(enter()), this, SLOT(onMouseEnter()));
     addItem(item->getItem());
     item->getItem()->setSizeHint(QSize(this->width() - 10, 60));
@@ -512,64 +504,20 @@ void StartupListWidget::loadItem(QString info)
 
 void StartupListWidget::loadItems(QStringList items, int scrollValue)
 {
-    clear();
+//    clear();
 
-    foreach (auto item, items) {
-        loadItem(item);
-    }
+//    foreach (auto item, items) {
+//        loadItem(item);
+//    }
 
-    this->verticalScrollBar()->setValue(scrollValue);
+//    this->verticalScrollBar()->setValue(scrollValue);
 }
 
-void StartupListWidget::onChangeStartup()
+void StartupListWidget::onChangeStartup(const QString &exec, bool active)
 {
-    QString appName = ((StartupItem*) sender())->getAppName();
-
-
-
-
-
-
-
-
-
-//    def interface_get_status(fobj):
-//        locale_language = locale.getdefaultlocale()[0]
-//        try:
-//            obj = Desktop_Autostart_Manage()
-//            obj.get_final_status()
-//            up = obj.dic.get("autostart", [])
-//            if up:
-//                for upvalue in up:
-//                    up_list = obj.get_desktop_info(upvalue, locale_language)
-//                    up_list.append('Status:' + 'true')
-//                    fobj.autostartmanage_data_signal(up_list)
-
-//            down = obj.dic.get("notautostart", [])
-//            if down:
-//                for downvalue in down:
-//                    down_list = obj.get_desktop_info(downvalue, locale_language)
-//                    down_list.append('Status:' + 'false')
-//                    fobj.autostartmanage_data_signal(down_list)
-
-
-//    std::string desktopFile;
-//    if (trayProcessMap.contains(pid)) {
-//        desktopFile = Utils::getProcessEnvironmentVariable(pid, "GIO_LAUNCHED_DESKTOP_FILE").toStdString();
-//    } else {
-//        desktopFile = getDesktopFileFromName(pid, name, cmdline);
-//    }
-
-//    QPixmap icon;
-//    if (desktopFile.size() == 0) {
-//        qreal devicePixelRatio = qApp->devicePixelRatio();
-//        icon = findWindowTitle->getWindowIcon(findWindowTitle->getWindow(pid), 96 * devicePixelRatio);
-//        icon.setDevicePixelRatio(devicePixelRatio);
-//    } else {
-//        icon = getDesktopFileIcon(desktopFile, 96);
-//    }
-//    QString displayName = getDisplayNameFromName(name, desktopFile, false);
-
+//    QString appName = ((StartupItem*) sender())->getAppName();
+    StartupData data = m_startupWorker->getStartupInfo(exec);
+    this->setAppAutoStartup(data, active);
 }
 
 void StartupListWidget::onMouseEnter()

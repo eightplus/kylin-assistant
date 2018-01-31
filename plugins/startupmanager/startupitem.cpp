@@ -19,12 +19,34 @@
 
 #include "startupitem.h"
 #include "../../component/kylinswitcher.h"
+#include "startupdata.h"
 
+#include <QApplication>
 #include <QDebug>
 #include <QPainter>
 #include <QLabel>
 
-StartupItem::StartupItem(QWidget *parent) : QWidget(parent)
+inline QPixmap getAppIconPix(const QString &iconName, int iconSize)
+{
+    QIcon defaultExecutableIcon = QIcon::fromTheme("application-x-executable");
+    QIcon icon;
+
+    if (iconName.contains("/")) {
+        icon = QIcon(iconName);
+    }
+    else {
+        icon = QIcon::fromTheme(iconName, defaultExecutableIcon);
+    }
+
+    qreal devicePixelRatio = qApp->devicePixelRatio();
+
+    QPixmap pixmap = icon.pixmap(iconSize * devicePixelRatio, iconSize * devicePixelRatio);
+    pixmap.setDevicePixelRatio(devicePixelRatio);
+
+    return pixmap;
+}
+
+StartupItem::StartupItem(StartupData info, QWidget *parent) : QWidget(parent)
   ,isEntered(false)
 {
     item = new QListWidgetItem();
@@ -37,17 +59,20 @@ StartupItem::StartupItem(QWidget *parent) : QWidget(parent)
     m_appIcon = new QLabel();
     m_appIcon->setFixedSize(40, 40);
     m_appIcon->setScaledContents(true);//自动缩放,显示图像大小自动调整为Qlabel大小
-    m_appIcon->setPixmap(QPixmap("://res/ubuntukylin.png"));
+    m_appIcon->setPixmap(getAppIconPix(info.icon, 40));
 
     m_appNameLabel = new QLabel();
+    this->setAppName(info.name);
     m_appDescLabel = new QLabel();
-    m_appDescLabel->setText("ppppp");
+    m_appDescLabel->setText(info.comment);
 
     switcher = new KylinSwitcher();
-    switcher->switchedOn = false;
+    switcher->switchedOn = info.enabled;
+//    connect(switcher, SIGNAL(clicked()), this, SLOT()
     connect(switcher, &KylinSwitcher::clicked, [=] () {
+        qDebug() << switcher->switchedOn;
         //changeAutoStartAppStatus
-        emit changeStartup();
+        emit changeStartup(info.exec, switcher->switchedOn);
     });
     m_switchLayout->addWidget(switcher, 0, Qt::AlignCenter);
 

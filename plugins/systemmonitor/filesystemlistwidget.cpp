@@ -193,8 +193,8 @@ void FileSystemListWidget::mouseDoubleClickEvent(QMouseEvent *event)
                 }
                 if (pressInSelectionArea) {
                     //open the mount dir
-                    FileSystemListItem *procItem = static_cast<FileSystemListItem*>(pressItem);
-                    QString targetPath = QString("file://%1").arg(procItem->getDirectory());
+                    FileSystemListItem *item = static_cast<FileSystemListItem*>(pressItem);
+                    QString targetPath = QString("file://%1").arg(item->getDirectory());
                     QDesktopServices::openUrl(QUrl(targetPath));//xdg-open
                 }
             }

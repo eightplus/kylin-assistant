@@ -18,8 +18,8 @@
  */
 
 
-#ifndef DISKINFO_H
-#define DISKINFO_H
+#ifndef FILESYSTEMDATA_H
+#define FILESYSTEMDATA_H
 
 #include <QObject>
 #include <QString>
@@ -55,6 +55,5 @@ private:
     int m_percentage;
 };
 
-
-#endif // DISKINFO_H
+#endif // FILESYSTEMDATA_H
 

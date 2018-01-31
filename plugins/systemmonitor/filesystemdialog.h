@@ -64,4 +64,5 @@ private:
     QAction *m_refreshAction = nullptr;
     QMenu *m_menu = nullptr;
     QVBoxLayout *m_layout = nullptr;
+    QTimer *m_timer = nullptr;
 };

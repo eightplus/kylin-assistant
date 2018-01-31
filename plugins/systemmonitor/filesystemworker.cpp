@@ -204,5 +204,5 @@ void FileSystemWorker::removeDiskItem(const QString &devname)
 
 bool FileSystemWorker::isDeviceContains(const QString &devname)
 {
-    return m_diskInfoList.contains(devname);
+    return m_diskInfoList.keys().contains(devname);
 }

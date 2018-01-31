@@ -32,7 +32,7 @@
 //#sudo apt-get install sysv-rc-conf
 //运行：#sudo sysv-rc-conf
 
-//gnome-session-properties
+//gnome-session-properties(gnome-session-bin/gnome-session)
 
 
 StartupManager::StartupManager(QObject *parent)

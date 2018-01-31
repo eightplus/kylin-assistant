@@ -30,19 +30,23 @@ HEADERS += \
     startupwidget.h \
     ../../component/plugininterface.h \
     startuptitlewidget.h \
-    ../widgets/myimagebutton.h \
+    ../widgets/mytristatebutton.h \
     startuplistwidget.h \
     startupitem.h \
-    ../../component/kylinswitcher.h
+    ../../component/kylinswitcher.h \
+    startupworker.h \
+    startupdata.h
 
 SOURCES += \
     startupmanager.cpp \
     startupwidget.cpp \
     startuptitlewidget.cpp \
-    ../widgets/myimagebutton.cpp \
+    ../widgets/mytristatebutton.cpp \
     startuplistwidget.cpp \
     startupitem.cpp \
-    ../../component/kylinswitcher.cpp
+    ../../component/kylinswitcher.cpp \
+    startupworker.cpp
+#    startupdata.cpp
 
 OTHER_FILES += \
     startupmanager.json

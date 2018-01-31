@@ -34,8 +34,6 @@
 #include <QDesktopServices>
 #include <QApplication>
 #include <QHBoxLayout>
-#include <QDebug>
-#include <QDir>
 #include <QList>
 #include <QProcess>
 #include <QStyleFactory>

@@ -22,6 +22,7 @@
 #include <QApplication>
 #include <QIcon>
 #include <QDirIterator>
+#include <QDebug>
 
 #include <glibtop/procstate.h>
 #include <fstream>
@@ -131,12 +132,15 @@ QPixmap getAppIconFromDesktopFile(std::string desktopFile, int iconSize)
 
         if (iconName.startsWith("Icon=")) {
             iconName.remove(0,5);
-        } else {
+        }
+        else {
             continue;
         }
+
         if (iconName.contains("/")) {
             icon = QIcon(iconName);
-        } else {
+        }
+        else {
             icon = QIcon::fromTheme(iconName, defaultExecutableIcon);
             break;
         }

@@ -20,6 +20,7 @@
 #include "startupwidget.h"
 #include "startuptitlewidget.h"
 #include "startuplistwidget.h"
+#include "startupdata.h"
 
 #include <QFileSystemWatcher>
 #include <QLabel>
@@ -33,10 +34,36 @@
 #include <QApplication>
 #include <QScreen>
 
+QDataStream &operator<<(QDataStream &dataStream, const StartupDataPtr &object)
+{
+    auto ptr = object.data();
+    auto ptrval = reinterpret_cast<qulonglong>(ptr);
+    auto var = QVariant::fromValue(ptrval);
+    dataStream << var;
+    return  dataStream;
+}
+
+QDataStream &operator>>(QDataStream &dataStream, StartupDataPtr &object)
+{
+    QVariant var;
+    dataStream >> var;
+    qulonglong ptrval = var.toULongLong();
+    auto ptr = reinterpret_cast<StartupData *>(ptrval);
+    object = StartupDataPtr(ptr);
+    return dataStream;
+}
+
+
 StartupWidget::StartupWidget(QWidget *parent)
     : QFrame(parent)
     , mousePressed(false)
 {
+    qRegisterMetaType<StartupDataPtr>();
+    qRegisterMetaTypeStreamOperators<StartupDataPtr>();
+    qRegisterMetaType<StartupDataPtrList>();
+    qRegisterMetaType<QList<StartupData>>();
+
+
     this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);//去掉边框
     this->setAttribute(Qt::WA_TranslucentBackground);//背景透明
 

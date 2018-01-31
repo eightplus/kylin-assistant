@@ -74,8 +74,6 @@ protected:
 
 private:
     QTimer *m_hideScrollbarTimer = nullptr;
-//    SearchFunction m_searchFunc;
-
     FileSystemListItem *m_lastItem = nullptr;
     QList<FileSystemListItem*> *m_listItems;
     QList<FileSystemListItem*> *m_selectedItems;

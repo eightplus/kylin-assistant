@@ -24,6 +24,9 @@
 
 #include <QListWidget>
 
+class StartupWorker;
+class StartupData;
+
 class StartupListWidget : public QListWidget
 {
     Q_OBJECT
@@ -32,12 +35,18 @@ public:
     StartupListWidget(QWidget *parent=0);
     ~StartupListWidget();
 
-    void loadItem(QString info);
+    void loadItem(StartupData info);
     void loadItems(QStringList items, int scrollValue);
 
+    void listAllDesktopFileFromDir(QString directory);
+    void setAppAutoStartup(StartupData info, bool enabled);
+
 public slots:
-    void onChangeStartup();
+    void onChangeStartup(const QString &exec, bool active);
     void onMouseEnter();
+
+private:
+    StartupWorker *m_startupWorker = nullptr;
 };
 
 #endif // STARTUPLISTWIDGET_H

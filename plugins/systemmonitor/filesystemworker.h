@@ -44,11 +44,9 @@ public:
 
 public slots:
     void onFileSystemListChanged();
-    void removeUserByName(const QString &name);
 
 private:
     QMap<QString, FileSystemData *> m_diskInfoList;
-//    QMap<QString, bool> *processSentBytes;
 };
 
 #endif // FILESYSTEMWORKER_H

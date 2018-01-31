@@ -26,13 +26,14 @@
 #include <QListWidgetItem>
 
 class KylinSwitcher;
+class StartupData;
 
 class StartupItem : public QWidget
 {
     Q_OBJECT
 
 public:
-    StartupItem(QWidget *parent=0);
+    StartupItem(StartupData info, QWidget *parent=0);
 
     QListWidgetItem* getItem();
     QString getAppName();
@@ -42,7 +43,7 @@ public:
     void unsetItemHovered();
 
 signals:
-    void changeStartup();
+    void changeStartup(const QString &exec, bool active);
     void enter();
 
 protected:
