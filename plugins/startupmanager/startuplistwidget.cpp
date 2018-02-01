@@ -37,312 +37,9 @@
 #include <glib-object.h>
 #include <glib.h>
 
-#include "startupworker.h"
+// /usr/share/gnome-session/sessions/ubuntu.session
 
-using namespace std;
-
-///usr/share/gnome-session/sessions/ubuntu.session
-
-
-//static void _gsp_ensure_user_autostart_dir (void)
-//{
-//        char *dir;
-
-//        dir = g_build_filename (g_get_user_config_dir (), "autostart", NULL);
-//        g_mkdir_with_parents (dir, S_IRWXU);
-
-//        g_free (dir);
-//}
-
-//static inline void _gsp_app_save_done_success (GspApp *app)
-//{
-//        app->priv->save_mask = 0;
-
-//        if (app->priv->old_system_path) {
-//                g_free (app->priv->old_system_path);
-//                app->priv->old_system_path = NULL;
-//        }
-//}
-
-//static gboolean _gsp_app_user_equal_system (GspApp  *app,
-//                            char   **system_path)
-//{
-//        GspAppManager *manager;
-//        const char    *system_dir;
-//        char          *path;
-//        char          *str;
-//        GKeyFile      *keyfile;
-
-//        manager = gsp_app_manager_get ();
-//        system_dir = gsp_app_manager_get_dir (manager,
-//                                              app->priv->xdg_system_position);
-//        g_object_unref (manager);
-//        if (!system_dir) {
-//                return FALSE;
-//        }
-
-//        path = g_build_filename (system_dir, app->priv->basename, NULL);
-
-//        keyfile = g_key_file_new ();
-//        if (!g_key_file_load_from_file (keyfile, path, G_KEY_FILE_NONE, NULL)) {
-//                g_free (path);
-//                g_key_file_free (keyfile);
-//                return FALSE;
-//        }
-//        if (gsp_key_file_get_boolean (keyfile,
-//                                      G_KEY_FILE_DESKTOP_KEY_HIDDEN,
-//                                      FALSE) != app->priv->hidden ||
-//            gsp_key_file_get_boolean (keyfile,
-//                                      GSP_KEY_FILE_DESKTOP_KEY_AUTOSTART_ENABLED,
-//                                      TRUE) != app->priv->enabled ||
-//            gsp_key_file_get_shown (keyfile,
-//                                    _gsp_get_current_desktop ()) != app->priv->shown) {
-//                g_free (path);
-//                g_key_file_free (keyfile);
-//                return FALSE;
-//        }
-
-//        if (gsp_key_file_get_boolean (keyfile,
-//                                      G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY,
-//                                      FALSE) != app->priv->no_display) {
-//                g_free (path);
-//                g_key_file_free (keyfile);
-//                return FALSE;
-//        }
-
-//        str = gsp_key_file_get_locale_string (keyfile,
-//                                              G_KEY_FILE_DESKTOP_KEY_NAME);
-//        if (!_gsp_str_equal (str, app->priv->name)) {
-//                g_free (str);
-//                g_free (path);
-//                g_key_file_free (keyfile);
-//                return FALSE;
-//        }
-//        g_free (str);
-//        str = gsp_key_file_get_locale_string (keyfile,
-//                                              G_KEY_FILE_DESKTOP_KEY_COMMENT);
-//        if (!_gsp_str_equal (str, app->priv->comment)) {
-//                g_free (str);
-//                g_free (path);
-//                g_key_file_free (keyfile);
-//                return FALSE;
-//        }
-//        g_free (str);
-
-//        str = gsp_key_file_get_string (keyfile,
-//                                       G_KEY_FILE_DESKTOP_KEY_EXEC);
-//        if (!_gsp_str_equal (str, app->priv->exec)) {
-//                g_free (str);
-//                g_free (path);
-//                g_key_file_free (keyfile);
-//                return FALSE;
-//        }
-//        g_free (str);
-
-//        str = gsp_key_file_get_locale_string (keyfile,
-//                                              G_KEY_FILE_DESKTOP_KEY_ICON);
-//        if (!_gsp_str_equal (str, app->priv->icon)) {
-//                g_free (str);
-//                g_free (path);
-//                g_key_file_free (keyfile);
-//                return FALSE;
-//        }
-//        g_free (str);
-
-//        g_key_file_free (keyfile);
-
-//        *system_path = path;
-
-//        return TRUE;
-//}
-
-
-//static gboolean
-//_gsp_app_save (gpointer data)
-//{
-//        GspApp   *app;
-//        char     *use_path;
-//        GKeyFile *keyfile;
-//        GError   *error;
-
-//        app = GSP_APP (data);
-
-//        /* first check if removing the data from the user dir and using the
-//         * data from the system dir is enough -- this helps us keep clean the
-//         * user config dir by removing unneeded files */
-//        if (_gsp_app_user_equal_system (app, &use_path)) {
-//                if (g_file_test (app->priv->path, G_FILE_TEST_EXISTS)) {
-//                        g_remove (app->priv->path);
-//                }
-
-//                g_free (app->priv->path);
-//                app->priv->path = use_path;
-
-//                app->priv->xdg_position = app->priv->xdg_system_position;
-
-//                _gsp_app_save_done_success (app);
-//                return FALSE;
-//        }
-
-//        if (app->priv->old_system_path)
-//                use_path = app->priv->old_system_path;
-//        else
-//                use_path = app->priv->path;
-
-//        keyfile = g_key_file_new ();
-
-//        error = NULL;
-//        g_key_file_load_from_file (keyfile, use_path,
-//                                   G_KEY_FILE_KEEP_COMMENTS|G_KEY_FILE_KEEP_TRANSLATIONS,
-//                                   &error);
-
-//        if (error) {
-//                g_error_free (error);
-//                gsp_key_file_populate (keyfile);
-//        }
-
-//        if (app->priv->save_mask & GSP_ASP_SAVE_MASK_HIDDEN) {
-//                gsp_key_file_set_boolean (keyfile,
-//                                          G_KEY_FILE_DESKTOP_KEY_HIDDEN,
-//                                          app->priv->hidden);
-//        }
-//        if (app->priv->save_mask & GSP_ASP_SAVE_MASK_NO_DISPLAY) {
-//                gsp_key_file_set_boolean (keyfile,
-//                                          G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY,
-//                                          app->priv->no_display);
-//        }
-
-//        if (app->priv->save_mask & GSP_ASP_SAVE_MASK_ENABLED) {
-//                gsp_key_file_set_boolean (keyfile,
-//                                          GSP_KEY_FILE_DESKTOP_KEY_AUTOSTART_ENABLED,
-//                                          app->priv->enabled);
-//        }
-
-//        if (app->priv->save_mask & GSP_ASP_SAVE_MASK_NAME) {
-//                gsp_key_file_set_locale_string (keyfile,
-//                                                G_KEY_FILE_DESKTOP_KEY_NAME,
-//                                                app->priv->name);
-//                gsp_key_file_ensure_C_key (keyfile, G_KEY_FILE_DESKTOP_KEY_NAME);
-//        }
-
-//        if (app->priv->save_mask & GSP_ASP_SAVE_MASK_COMMENT) {
-//                gsp_key_file_set_locale_string (keyfile,
-//                                                G_KEY_FILE_DESKTOP_KEY_COMMENT,
-//                                                app->priv->comment);
-//                gsp_key_file_ensure_C_key (keyfile, G_KEY_FILE_DESKTOP_KEY_COMMENT);
-//        }
-
-//        if (app->priv->save_mask & GSP_ASP_SAVE_MASK_EXEC) {
-//                gsp_key_file_set_string (keyfile,
-//                                         G_KEY_FILE_DESKTOP_KEY_EXEC,
-//                                         app->priv->exec);
-//        }
-//        _gsp_ensure_user_autostart_dir ();
-//        if (gsp_key_file_to_file (keyfile, app->priv->path, NULL)) {
-//                app->priv->skip_next_monitor_event = TRUE;
-//                _gsp_app_save_done_success (app);
-//        } else {
-//                g_warning ("Could not save %s file", app->priv->path);
-//        }
-
-//        g_key_file_free (keyfile);
-
-//        app->priv->save_timeout = 0;
-//        return FALSE;
-//}
-
-//static void
-//_gsp_app_queue_save (StartupData info/*GspApp *app*/)
-//{
-//    /* if the file was not in the user directory, then we'll create a copy
-//     * there */
-//    if (info.xdg_position != 0) {
-//            info.xdg_position = 0;
-
-//            if (info.old_system_path.isEmpty()) {
-//                    info.old_system_path = info.path;
-//                    /* if old_system_path was not NULL, then it means we
-//                     * tried to save and we failed; in that case, we want
-//                     * to try again and use the old file as a basis again */
-//            }
-
-//            info.path = g_build_filename (g_get_user_config_dir (),
-//                                                "autostart",
-//                                                info.basename, NULL);
-//    }
-
-
-////        if (app->priv->save_timeout) {
-////                g_source_remove (app->priv->save_timeout);
-////                app->priv->save_timeout = 0;
-////        }
-
-////        /* if the file was not in the user directory, then we'll create a copy
-////         * there */
-////        if (app->priv->xdg_position != 0) {
-////                app->priv->xdg_position = 0;
-
-////                if (app->priv->old_system_path == NULL) {
-////                        app->priv->old_system_path = app->priv->path;
-////                        /* if old_system_path was not NULL, then it means we
-////                         * tried to save and we failed; in that case, we want
-////                         * to try again and use the old file as a basis again */
-////                }
-
-////                app->priv->path = g_build_filename (g_get_user_config_dir (),
-////                                                    "autostart",
-////                                                    app->priv->basename, NULL);
-////        }
-
-////        app->priv->save_timeout = g_timeout_add_seconds (GSP_APP_SAVE_DELAY,
-////                                                         _gsp_app_save,
-////                                                         app);
-//}
-
-//void
-//gsp_app_delete (GspApp *app)
-//{
-//        g_return_if_fail (GSP_IS_APP (app));
-
-//        if (app->priv->xdg_position == 0 &&
-//            app->priv->xdg_system_position == G_MAXUINT) {
-//                /* exists in user directory only */
-//                if (app->priv->save_timeout) {
-//                        g_source_remove (app->priv->save_timeout);
-//                        app->priv->save_timeout = 0;
-//                }
-
-//                if (g_file_test (app->priv->path, G_FILE_TEST_EXISTS)) {
-//                        g_remove (app->priv->path);
-//                }
-
-//                /* for extra safety */
-//                app->priv->hidden = TRUE;
-//                app->priv->save_mask |= GSP_ASP_SAVE_MASK_HIDDEN;
-
-//                _gsp_app_emit_removed (app);
-//        } else {
-//                /* also exists in system directory, so we have to keep a file
-//                 * in the user directory */
-//                app->priv->hidden = TRUE;
-//                app->priv->save_mask |= GSP_ASP_SAVE_MASK_HIDDEN;
-
-//                _gsp_app_queue_save (app);
-////                _gsp_app_emit_changed (app);
-//        }
-//}
-
-std::string make_string(char *c_str)
-{
-    if (!c_str) {
-        return string();
-    }
-    string s(c_str);
-    g_free(c_str);
-    return s;
-}
-
-inline QStringList autoStartDirectorys()
+inline QStringList autoStartupDirectorys()
 {
     QStringList dirList;
     const gchar *config_dir = g_get_user_config_dir();
@@ -379,7 +76,6 @@ inline QStringList autoStartDirectorys()
     return dirList;
 }
 
-
 StartupListWidget::StartupListWidget(QWidget *parent) : QListWidget(parent)
 {
 //    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -395,16 +91,42 @@ StartupListWidget::StartupListWidget(QWidget *parent) : QListWidget(parent)
     m_startupWorker = new StartupWorker;
     m_startupWorker->moveToThread(qApp->thread());
 
-    QStringList autoDir = autoStartDirectorys();
+
+    //gsp_app_manager_fill
+    QStringList autoDir = autoStartupDirectorys();
+    int i = 0;
+    /*QList<QString>::Iterator it = autoDir.begin(), itend = autoDir.end();
+    for(;it != itend; it++,i++) {
+        qDebug() << *it;
+    }*/
     foreach (auto dir, autoDir) {
 //        qDebug() << "dir="<<dir;
-        listAllDesktopFileFromDir(dir);
+        GspXdgDir xdgDir;
+        if (m_startupWorker->getDirIndex(dir) >= 0) {
+            i++;
+            continue;
+        }
+        xdgDir.dir = dir;
+        xdgDir.index = i;
+        i++;
+        m_startupWorker->AddDirWithIndex(xdgDir);//append dir
+        listAllDesktopFileFromDir(xdgDir);
+//        GspXdgDir *xdgdir;
+//        if (gsp_app_manager_get_dir_index (manager, autostart_dirs[i]) >= 0) {
+//                continue;
+//        }
+//        xdgdir = _gsp_xdg_dir_new (autostart_dirs[i], i);
+//        manager->priv->dirs = g_slist_prepend (manager->priv->dirs,xdgdir);
+//        _gsp_app_manager_fill_from_dir (manager, xdgdir);
     }
 
-//    QList<FileSystemListItem*> items;
     this->clear();
     for (StartupData info : m_startupWorker->getStartupInfoList()) {
-        loadItem(info);
+        //show or hide
+        if (!info.hidden && info.shown && !info.no_display) {
+            //show
+            loadItem(info);
+        }
     }
     this->verticalScrollBar()->setValue(0);
 
@@ -447,49 +169,34 @@ StartupListWidget::~StartupListWidget()
     }
 }
 
-void StartupListWidget::listAllDesktopFileFromDir(QString directory)
+//_gsp_app_manager_fill_from_dir
+void StartupListWidget::listAllDesktopFileFromDir(GspXdgDir xdgDir)
 {
-    QDirIterator dir(directory, QDirIterator::Subdirectories);
+    QDirIterator dir(xdgDir.dir, QDirIterator::Subdirectories);
 
     while(dir.hasNext()) {
         if (dir.fileInfo().suffix() == "desktop") {
             QString desktopFile = dir.filePath();//dir.fileName().toLower()
 //            qDebug() << "desktopFile="<<desktopFile;
-            m_startupWorker->addStartupInfo(desktopFile);
+            m_startupWorker->newStartupInfo(desktopFile, xdgDir.index);
         }
         dir.next();
     }
 }
 
 //gsp_app_set_enabled (gboolean enabled)
-void StartupListWidget::setAppAutoStartup(StartupData info, bool enabled)
+void StartupListWidget::setAppAutoStartup(/*StartupData info,*/const QString &exec, bool enabled)
 {
+    StartupData info = m_startupWorker->getStartupInfo(exec);
+//    qDebug() << "info.enabled="<<info.enabled << ",enabled="<<enabled;
     if (info.enabled == enabled)
         return;
 
     info.enabled = enabled;
     info.save_mask |= SAVE_MASK_ENABLED;
-
-//    _gsp_app_queue_save (info);
-
-
-//    static void
-//    _app_changed (GsmPropertiesDialog *dialog,
-//                  GspApp              *app)
-//    {
-//            GtkTreeIter iter;
-
-//            if (!find_by_app (GTK_TREE_MODEL (dialog->priv->list_store),
-//                              &iter, app)) {
-//                    return;
-//            }
-
-//            _fill_iter_from_app (dialog->priv->list_store, &iter, app);
-//    }
-
-//            _gsp_app_emit_changed (app);//g_signal_emit (G_OBJECT (app), gsp_app_signals[CHANGED], 0);
-
-
+    m_startupWorker->updateEnable(info.exec, info.enabled);
+    m_startupWorker->updateSaveMask(info.exec, info.save_mask);
+    m_startupWorker->_gsp_app_queue_save(info);
 }
 
 void StartupListWidget::loadItem(StartupData info)
@@ -516,8 +223,8 @@ void StartupListWidget::loadItems(QStringList items, int scrollValue)
 void StartupListWidget::onChangeStartup(const QString &exec, bool active)
 {
 //    QString appName = ((StartupItem*) sender())->getAppName();
-    StartupData data = m_startupWorker->getStartupInfo(exec);
-    this->setAppAutoStartup(data, active);
+//    StartupData data = m_startupWorker->getStartupInfo(exec);
+    this->setAppAutoStartup(/*data,*/exec, active);
 }
 
 void StartupListWidget::onMouseEnter()

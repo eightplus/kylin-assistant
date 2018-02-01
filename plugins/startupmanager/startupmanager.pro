@@ -16,6 +16,8 @@ DESTDIR = $$_PRO_FILE_PWD_/../
 CONFIG += plugin c++11 link_pkgconfig
 PKGCONFIG += glib-2.0 gobject-2.0
 
+QMAKE_CXXFLAGS += -fpermissive
+
 target.path = $${PREFIX}/lib/kylin-assistant/plugins/
 INSTALLS += target
 
@@ -35,7 +37,8 @@ HEADERS += \
     startupitem.h \
     ../../component/kylinswitcher.h \
     startupworker.h \
-    startupdata.h
+    startupdata.h \
+    util.h
 
 SOURCES += \
     startupmanager.cpp \
@@ -45,8 +48,9 @@ SOURCES += \
     startuplistwidget.cpp \
     startupitem.cpp \
     ../../component/kylinswitcher.cpp \
-    startupworker.cpp
-#    startupdata.cpp
+    startupworker.cpp \
+#    startupdata.cpp \
+    util.cpp
 
 OTHER_FILES += \
     startupmanager.json

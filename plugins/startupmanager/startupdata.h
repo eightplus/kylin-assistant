@@ -25,9 +25,14 @@
 #include <QString>
 #include <QMap>
 #include <QSharedPointer>
+#include <glib.h>
 
-class StartupData
+class StartupData/* : public QObject*/
 {
+//    Q_OBJECT
+//public:
+//    explicit StartupData(QObject *parent = 0);
+
 public:
     bool hidden;
     bool no_display;
@@ -43,14 +48,17 @@ public:
     QString description;
 
     /* position of the directory in the XDG environment variable */
-    unsigned int  xdg_position;
+    unsigned int  xdg_position = G_MAXUINT;
     /* position of the first system directory in the XDG env var containing
      * this autostart app too (G_MAXUINT means none) */
-    unsigned int  xdg_system_position;
+    unsigned int  xdg_system_position = G_MAXUINT;
     /* mask of what has changed */
-    unsigned int  save_mask = 0;
+    unsigned int save_mask = 0;
     /* path that contains the original file that needs to be saved */
     QString old_system_path;
+
+public:
+    void setEnabled(bool b) { this->enabled = b; }
 };
 
 

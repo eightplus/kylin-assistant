@@ -17,38 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STARTUPLISTWIDGET_H
-#define STARTUPLISTWIDGET_H
+#include <glib.h>
+#include <iostream>
+#include <map>
+#include <QString>
+#include <QObject>
 
-#include "startupitem.h"
-#include "startupworker.h"
-#include "util.h"
+using std::string;
 
-#include <QListWidget>
-
-class StartupWorker;
-class StartupData;
-
-class StartupListWidget : public QListWidget
-{
-    Q_OBJECT
-
-public:
-    StartupListWidget(QWidget *parent=0);
-    ~StartupListWidget();
-
-    void loadItem(StartupData info);
-    void loadItems(QStringList items, int scrollValue);
-
-    void listAllDesktopFileFromDir(GspXdgDir xdgDir);
-    void setAppAutoStartup(/*StartupData info,*/const QString &exec, bool enabled);
-
-public slots:
-    void onChangeStartup(const QString &exec, bool active);
-    void onMouseEnter();
-
-private:
-    StartupWorker *m_startupWorker = nullptr;
-};
-
-#endif // STARTUPLISTWIDGET_H
+std::string make_string(char *c_str);
