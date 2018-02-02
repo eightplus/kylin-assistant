@@ -48,13 +48,13 @@
 #define KEY_FILE_DESKTOP_TYPE_DIRECTORY "Directory"
 
 
-#define GSP_ASP_SAVE_MASK_HIDDEN     0x0001
+#define SAVE_MASK_HIDDEN     0x0001
 #define SAVE_MASK_ENABLED    0x0002
-#define GSP_ASP_SAVE_MASK_NAME       0x0004
-#define GSP_ASP_SAVE_MASK_EXEC       0x0008
-#define GSP_ASP_SAVE_MASK_COMMENT    0x0010
-#define GSP_ASP_SAVE_MASK_NO_DISPLAY 0x0020
-#define GSP_ASP_SAVE_MASK_ALL        0xffff
+#define SAVE_MASK_NAME       0x0004
+#define SAVE_MASK_EXEC       0x0008
+#define SAVE_MASK_COMMENT    0x0010
+#define SAVE_MASK_NO_DISPLAY 0x0020
+#define SAVE_MASK_ALL        0xffff
 
 typedef struct {
         QString dir;

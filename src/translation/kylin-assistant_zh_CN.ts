@@ -1247,173 +1247,193 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>EnergyWidget</name>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="357"/>
+        <location filename="../../setting/energywidget.cpp" line="225"/>
+        <source>CPU FM mode:</source>
+        <translation>CPU调频模式：</translation>
+    </message>
+    <message>
+        <location filename="../../setting/energywidget.cpp" line="236"/>
+        <source>Ondemand</source>
+        <translation>自动调频</translation>
+    </message>
+    <message>
+        <location filename="../../setting/energywidget.cpp" line="246"/>
+        <source>Powersave</source>
+        <translation>省电模式</translation>
+    </message>
+    <message>
+        <location filename="../../setting/energywidget.cpp" line="256"/>
+        <source>Performance</source>
+        <translation>性能模式</translation>
+    </message>
+    <message>
+        <location filename="../../setting/energywidget.cpp" line="444"/>
         <source>Adjust gamma</source>
         <translation>调整伽马值</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="358"/>
+        <location filename="../../setting/energywidget.cpp" line="445"/>
         <source>Adjust brightness</source>
         <translation>调整屏幕亮度</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="359"/>
+        <location filename="../../setting/energywidget.cpp" line="446"/>
         <source>Time before session is considered idle</source>
         <translation>在此时间范围内无操作则关闭屏幕</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="360"/>
+        <location filename="../../setting/energywidget.cpp" line="447"/>
         <source>Lock screen</source>
         <translation>锁定屏幕</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="361"/>
+        <location filename="../../setting/energywidget.cpp" line="448"/>
         <source>Lock delay</source>
         <translation>锁定延时</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="362"/>
+        <location filename="../../setting/energywidget.cpp" line="449"/>
         <source>Battery critical low action</source>
         <translation>电池严重不足时</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="363"/>
+        <location filename="../../setting/energywidget.cpp" line="450"/>
         <source>Laptop lid close action on battery</source>
         <translation>使用电池合上盖子时</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="364"/>
+        <location filename="../../setting/energywidget.cpp" line="451"/>
         <source>Laptop lid close action on AC</source>
         <translation>使用电源合上盖子时</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="365"/>
+        <location filename="../../setting/energywidget.cpp" line="452"/>
         <source>Sleep timeout PC when on battery</source>
         <translation>使用电池，空闲此时间后电脑转入睡眠</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="366"/>
+        <location filename="../../setting/energywidget.cpp" line="453"/>
         <source>Sleep timeout PC when on AC</source>
         <translation>使用电源，空闲此时间后电脑转入睡眠</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="367"/>
+        <location filename="../../setting/energywidget.cpp" line="454"/>
         <source>Sleep timeout display when on battery</source>
         <translation>使用电池，空闲此时间后屏幕转入睡眠</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="368"/>
+        <location filename="../../setting/energywidget.cpp" line="455"/>
         <source>Sleep timeout display when on AC</source>
         <translation>使用电源，空闲此时间后屏幕转入睡眠</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="369"/>
-        <location filename="../../setting/energywidget.cpp" line="371"/>
-        <location filename="../../setting/energywidget.cpp" line="373"/>
+        <location filename="../../setting/energywidget.cpp" line="456"/>
+        <location filename="../../setting/energywidget.cpp" line="458"/>
+        <location filename="../../setting/energywidget.cpp" line="460"/>
         <source>suspend</source>
         <translation>挂起</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="370"/>
+        <location filename="../../setting/energywidget.cpp" line="457"/>
         <source>shutdown</source>
         <translation>电源关闭</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="372"/>
-        <location filename="../../setting/energywidget.cpp" line="374"/>
+        <location filename="../../setting/energywidget.cpp" line="459"/>
+        <location filename="../../setting/energywidget.cpp" line="461"/>
         <source>nothing</source>
         <translation>不处理</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="590"/>
-        <location filename="../../setting/energywidget.cpp" line="612"/>
-        <location filename="../../setting/energywidget.cpp" line="650"/>
-        <location filename="../../setting/energywidget.cpp" line="685"/>
-        <location filename="../../setting/energywidget.cpp" line="735"/>
-        <location filename="../../setting/energywidget.cpp" line="757"/>
+        <location filename="../../setting/energywidget.cpp" line="677"/>
+        <location filename="../../setting/energywidget.cpp" line="699"/>
+        <location filename="../../setting/energywidget.cpp" line="737"/>
+        <location filename="../../setting/energywidget.cpp" line="772"/>
+        <location filename="../../setting/energywidget.cpp" line="822"/>
+        <location filename="../../setting/energywidget.cpp" line="844"/>
         <source>5 minutes</source>
         <translation>5 分钟</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="590"/>
-        <location filename="../../setting/energywidget.cpp" line="612"/>
-        <location filename="../../setting/energywidget.cpp" line="650"/>
-        <location filename="../../setting/energywidget.cpp" line="685"/>
-        <location filename="../../setting/energywidget.cpp" line="735"/>
-        <location filename="../../setting/energywidget.cpp" line="757"/>
+        <location filename="../../setting/energywidget.cpp" line="677"/>
+        <location filename="../../setting/energywidget.cpp" line="699"/>
+        <location filename="../../setting/energywidget.cpp" line="737"/>
+        <location filename="../../setting/energywidget.cpp" line="772"/>
+        <location filename="../../setting/energywidget.cpp" line="822"/>
+        <location filename="../../setting/energywidget.cpp" line="844"/>
         <source>10 minutes</source>
         <translation>10 分钟</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="590"/>
-        <location filename="../../setting/energywidget.cpp" line="612"/>
-        <location filename="../../setting/energywidget.cpp" line="735"/>
-        <location filename="../../setting/energywidget.cpp" line="757"/>
+        <location filename="../../setting/energywidget.cpp" line="677"/>
+        <location filename="../../setting/energywidget.cpp" line="699"/>
+        <location filename="../../setting/energywidget.cpp" line="822"/>
+        <location filename="../../setting/energywidget.cpp" line="844"/>
         <source>20 minutes</source>
         <translation>20 分钟</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="590"/>
-        <location filename="../../setting/energywidget.cpp" line="612"/>
-        <location filename="../../setting/energywidget.cpp" line="650"/>
-        <location filename="../../setting/energywidget.cpp" line="685"/>
-        <location filename="../../setting/energywidget.cpp" line="735"/>
-        <location filename="../../setting/energywidget.cpp" line="757"/>
+        <location filename="../../setting/energywidget.cpp" line="677"/>
+        <location filename="../../setting/energywidget.cpp" line="699"/>
+        <location filename="../../setting/energywidget.cpp" line="737"/>
+        <location filename="../../setting/energywidget.cpp" line="772"/>
+        <location filename="../../setting/energywidget.cpp" line="822"/>
+        <location filename="../../setting/energywidget.cpp" line="844"/>
         <source>Half an hour</source>
         <translation>半小时</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="590"/>
-        <location filename="../../setting/energywidget.cpp" line="612"/>
-        <location filename="../../setting/energywidget.cpp" line="650"/>
-        <location filename="../../setting/energywidget.cpp" line="685"/>
-        <location filename="../../setting/energywidget.cpp" line="735"/>
-        <location filename="../../setting/energywidget.cpp" line="757"/>
+        <location filename="../../setting/energywidget.cpp" line="677"/>
+        <location filename="../../setting/energywidget.cpp" line="699"/>
+        <location filename="../../setting/energywidget.cpp" line="737"/>
+        <location filename="../../setting/energywidget.cpp" line="772"/>
+        <location filename="../../setting/energywidget.cpp" line="822"/>
+        <location filename="../../setting/energywidget.cpp" line="844"/>
         <source>1 hour</source>
         <translation>1 小时</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="590"/>
-        <location filename="../../setting/energywidget.cpp" line="612"/>
-        <location filename="../../setting/energywidget.cpp" line="735"/>
-        <location filename="../../setting/energywidget.cpp" line="757"/>
+        <location filename="../../setting/energywidget.cpp" line="677"/>
+        <location filename="../../setting/energywidget.cpp" line="699"/>
+        <location filename="../../setting/energywidget.cpp" line="822"/>
+        <location filename="../../setting/energywidget.cpp" line="844"/>
         <source>2 hours</source>
         <translation>2 小时</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="590"/>
-        <location filename="../../setting/energywidget.cpp" line="612"/>
-        <location filename="../../setting/energywidget.cpp" line="650"/>
-        <location filename="../../setting/energywidget.cpp" line="735"/>
-        <location filename="../../setting/energywidget.cpp" line="757"/>
+        <location filename="../../setting/energywidget.cpp" line="677"/>
+        <location filename="../../setting/energywidget.cpp" line="699"/>
+        <location filename="../../setting/energywidget.cpp" line="737"/>
+        <location filename="../../setting/energywidget.cpp" line="822"/>
+        <location filename="../../setting/energywidget.cpp" line="844"/>
         <source>never</source>
         <translation>从不</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="650"/>
-        <location filename="../../setting/energywidget.cpp" line="685"/>
+        <location filename="../../setting/energywidget.cpp" line="737"/>
+        <location filename="../../setting/energywidget.cpp" line="772"/>
         <source>1 minute</source>
         <translation>1 分钟</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="650"/>
-        <location filename="../../setting/energywidget.cpp" line="685"/>
+        <location filename="../../setting/energywidget.cpp" line="737"/>
+        <location filename="../../setting/energywidget.cpp" line="772"/>
         <source>2 minutes</source>
         <translation>2 分钟</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="650"/>
-        <location filename="../../setting/energywidget.cpp" line="685"/>
+        <location filename="../../setting/energywidget.cpp" line="737"/>
+        <location filename="../../setting/energywidget.cpp" line="772"/>
         <source>3 minutes</source>
         <translation>3 分钟</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="685"/>
+        <location filename="../../setting/energywidget.cpp" line="772"/>
         <source>30 seconds</source>
         <translation>30 秒</translation>
     </message>
     <message>
-        <location filename="../../setting/energywidget.cpp" line="685"/>
+        <location filename="../../setting/energywidget.cpp" line="772"/>
         <source>Turn off the screen</source>
         <translation>关闭屏幕</translation>
     </message>
@@ -2550,46 +2570,46 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>ProcessDialog</name>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="158"/>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="161"/>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="175"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="156"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="159"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="173"/>
         <source>End process</source>
         <translation>结束进程</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="158"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="156"/>
         <source>Ending a process may destroy data, break the session or introduce a security risk. Only unresponsive processes should be ended.
 Are you sure to continue?</source>
         <translation>结束进程可能导致数据损坏，中断会话或带来安全风险。您应该只结束无响应的进程。
 您确定要继续该操作？</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="160"/>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="166"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="158"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="164"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="164"/>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="167"/>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="177"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="162"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="165"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="175"/>
         <source>Kill process</source>
         <translation>杀死进程</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="164"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="162"/>
         <source>Killing a process may destroy data, break the session or introduce a security risk. Only unresponsive processes should be killed.
 Are you sure to continue?</source>
         <translation>杀死进程可能导致数据损坏，中断会话或带来安全风险。您应该只杀死无响应的进程。
 您确定要继续该操作？</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="171"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="169"/>
         <source>Stop process</source>
         <translation>停止进程</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="173"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="171"/>
         <source>Continue process</source>
         <translation>继续进程</translation>
     </message>
@@ -2622,7 +2642,7 @@ Are you sure to continue?</source>
         <translation type="vanished">改变优先级</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="202"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="200"/>
         <source>Properties</source>
         <translation>属性</translation>
     </message>
@@ -2723,29 +2743,29 @@ Are you sure to continue?</source>
 <context>
     <name>PropertiesDialog</name>
     <message>
-        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="75"/>
         <source>User name</source>
-        <translation>用户</translation>
+        <translation type="vanished">用户</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="87"/>
         <source>Process name</source>
-        <translation>进程名</translation>
+        <translation type="vanished">进程名</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="99"/>
         <source>Command line</source>
-        <translation>命令行</translation>
+        <translation type="vanished">命令行</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="115"/>
         <source>CPU Time</source>
-        <translation>CPU 时间</translation>
+        <translation type="vanished">CPU 时间</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="128"/>
         <source>Started Time</source>
-        <translation>开始于</translation>
+        <translation type="vanished">开始于</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="125"/>
+        <source>OK</source>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
@@ -2755,52 +2775,52 @@ Are you sure to continue?</source>
         <translation type="vanished">麒麟助手运行中</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="223"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="201"/>
         <source>Running</source>
         <translation>运行中</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="227"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="205"/>
         <source>Stopped</source>
         <translation>已停止</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="231"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="209"/>
         <source>Zombie</source>
         <translation>僵死</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="235"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="213"/>
         <source>Uninterruptible</source>
         <translation>不可中断</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="239"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="217"/>
         <source>Sleeping</source>
         <translation>睡眠中</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="249"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="227"/>
         <source>Very High</source>
         <translation>非常高</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="251"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="229"/>
         <source>High</source>
         <translation>高</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="253"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="231"/>
         <source>Normal</source>
         <translation>普通</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="255"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="233"/>
         <source>Low</source>
         <translation>低</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="257"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="235"/>
         <source>Very Low</source>
         <translation>非常低</translation>
     </message>
@@ -3615,6 +3635,31 @@ Are you sure to continue?</source>
         <source>%1days</source>
         <translation>%1天</translation>
     </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="151"/>
+        <source>User name:</source>
+        <translation>用户名：</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="151"/>
+        <source>Process name:</source>
+        <translation>进程名：</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="151"/>
+        <source>Command line:</source>
+        <translation>命令行：</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="151"/>
+        <source>CPU Time:</source>
+        <translation>CPU 时间：</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="151"/>
+        <source>Started Time:</source>
+        <translation>开始于：</translation>
+    </message>
 </context>
 <context>
     <name>QUIBO</name>
@@ -3917,6 +3962,45 @@ Are you sure to continue?</source>
         <location filename="../../setting/soundwidget.cpp" line="139"/>
         <source>Input feedback sounds</source>
         <translation>输入反馈声音</translation>
+    </message>
+</context>
+<context>
+    <name>StartupManager</name>
+    <message>
+        <source>Kylin Startup Manager</source>
+        <translation type="vanished">麒麟启动项管理器</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/startupmanager/startupmanager.cpp" line="59"/>
+        <source>Startup Manager</source>
+        <translation>启动项管理器</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/startupmanager/startupmanager.cpp" line="64"/>
+        <source>Help user to manager application startup items</source>
+        <translation>帮助用户管理应用程序开机启动项</translation>
+    </message>
+</context>
+<context>
+    <name>StartupTitleWidget</name>
+    <message>
+        <location filename="../../plugins/startupmanager/startuptitlewidget.cpp" line="95"/>
+        <source>Kylin Startup Manager</source>
+        <translation>麒麟启动项管理器</translation>
+    </message>
+</context>
+<context>
+    <name>StartupWorker</name>
+    <message>
+        <location filename="../../plugins/startupmanager/startupworker.cpp" line="521"/>
+        <source>No name</source>
+        <translation>无名称</translation>
+    </message>
+    <message>
+        <location filename="../../plugins/startupmanager/startupworker.cpp" line="494"/>
+        <location filename="../../plugins/startupmanager/startupworker.cpp" line="526"/>
+        <source>No description</source>
+        <translation>无描述</translation>
     </message>
 </context>
 <context>

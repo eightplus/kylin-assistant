@@ -56,7 +56,7 @@ QString StartupManager::getGuid()
 
  QString StartupManager::getName()
 {
-    return tr("Kylin Startup Manager");
+    return tr("Startup Manager");
 }
 
 QString StartupManager::getDescribe()

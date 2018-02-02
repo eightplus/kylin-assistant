@@ -70,7 +70,6 @@ StartupItem::StartupItem(StartupData info, QWidget *parent) : QWidget(parent)
     switcher->switchedOn = info.enabled;
 //    connect(switcher, SIGNAL(clicked()), this, SLOT()
     connect(switcher, &KylinSwitcher::clicked, [=] () {
-        qDebug() << switcher->switchedOn;
         //changeAutoStartAppStatus
         emit changeStartup(info.exec, switcher->switchedOn);
     });
