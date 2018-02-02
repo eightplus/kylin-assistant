@@ -28,6 +28,7 @@
 #include <QStandardPaths>
 #include <QLibraryInfo>
 #include <QApplication>
+#include <QFileSystemWatcher>
 #include <fstream>
 #include <qdiriterator.h>
 #include <sstream>
@@ -44,7 +45,12 @@ inline QStringList autoStartupDirectorys()
     QStringList dirList;
     const gchar *config_dir = g_get_user_config_dir();
     std::string formatted_result(make_string(g_strdup(config_dir)));//std::string formatted_result = make_string(g_strdup(config_dir));
-    dirList.append(QString::fromStdString(formatted_result));
+    QString userdirPath = QString::fromStdString(formatted_result);
+    if (userdirPath.endsWith("/"))
+        userdirPath = QString("%1autostart").arg(userdirPath);
+    else
+        userdirPath = QString("%1/autostart").arg(userdirPath);
+    dirList.append(userdirPath);
 
     const char * const *system_config_dirs;
     const char * const *system_data_dirs;
@@ -87,10 +93,11 @@ StartupListWidget::StartupListWidget(QWidget *parent) : QListWidget(parent)
             qDebug() << fileItem->getAppName();
         });
 
+    //this->m_watherList = new QList<QFileSystemWatcher*>();
 
     m_startupWorker = new StartupWorker;
     m_startupWorker->moveToThread(qApp->thread());
-
+    connect(m_startupWorker, SIGNAL(refreshUI()), this, SLOT(onRefreshUI()), Qt::QueuedConnection);
 
     //gsp_app_manager_fill
     QStringList autoDir = autoStartupDirectorys();
@@ -100,7 +107,7 @@ StartupListWidget::StartupListWidget(QWidget *parent) : QListWidget(parent)
         qDebug() << *it;
     }*/
     foreach (auto dir, autoDir) {
-//        qDebug() << "dir="<<dir;
+        qDebug() << "dir="<<dir;
         GspXdgDir xdgDir;
         if (m_startupWorker->getDirIndex(dir) >= 0) {
             i++;
@@ -108,8 +115,10 @@ StartupListWidget::StartupListWidget(QWidget *parent) : QListWidget(parent)
         }
         xdgDir.dir = dir;
         xdgDir.index = i;
+        xdgDir.wather = m_startupWorker->createFileSystemMonitor(xdgDir.dir);
         i++;
-        m_startupWorker->AddDirWithIndex(xdgDir);//append dir
+//        m_startupWorker->appendXdgDirData(xdgDir);//append dir
+
         listAllDesktopFileFromDir(xdgDir);
 //        GspXdgDir *xdgdir;
 //        if (gsp_app_manager_get_dir_index (manager, autostart_dirs[i]) >= 0) {
@@ -121,15 +130,8 @@ StartupListWidget::StartupListWidget(QWidget *parent) : QListWidget(parent)
     }
 
     this->clear();
-    for (StartupData info : m_startupWorker->getStartupInfoList()) {
-        //show or hide
-        if (!info.hidden && info.shown && !info.no_display) {
-            //show
-            loadItem(info);
-        }
-    }
-    this->verticalScrollBar()->setValue(0);
 
+    this->displayAutoStartupItems();
 //    qDebug()<<"GenericDataLocation=" << QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
 //    qDebug()<<"ConfigLocation=" << QStandardPaths::standardLocations(QStandardPaths::ConfigLocation);
 //    qDebug()<<"DocumentsLocation1=" << QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
@@ -158,8 +160,36 @@ StartupListWidget::StartupListWidget(QWidget *parent) : QListWidget(parent)
 
 StartupListWidget::~StartupListWidget()
 {
+    /*qDeleteAll(this->m_watherList->begin(), this->m_watherList->end());
+    this->m_watherList->clear();
+    delete this->m_watherList;*/
+
+    /*for (int i=0; i<m_watherList.count(); i++) {
+        QFileSystemWatcher *wather = m_watherList.at(i);
+//        wather->removePath(m_monitorFile);
+        delete wather;
+        wather = NULL;
+    }
+    m_watherList.clear();*/
+
+//    QMap<QString,QVariant>::iterator it; //遍历map
+//    for (it = m_watherMap.begin(); it != m_watherMap.end(); ++it) {
+//        QString path = it.key();
+//        QFileSystemWatcher *wather = static_cast<QFileSystemWatcher *>(it.value());
+//        wather->removePath(path);
+//        delete wather;
+//        wather = NULL;
+//    }
+//    m_watherMap.clear();
+
     m_startupWorker->deleteLater();
 
+    this->clearUI();
+//    this->clear();
+}
+
+void StartupListWidget::clearUI()
+{
     for(int i = 0; i < this->count(); i++) {
         QListWidgetItem *listItem = item(i);
         StartupItem *item = static_cast<StartupItem *>(itemWidget(listItem));
@@ -167,21 +197,158 @@ StartupListWidget::~StartupListWidget()
             item->deleteLater();
         }
     }
+    this->clear();
 }
+
+void StartupListWidget::onRefreshUI()
+{
+    this->clearUI();
+//    this->clear();
+    this->displayAutoStartupItems();
+}
+
+void StartupListWidget::displayAutoStartupItems()
+{
+    for (StartupData info : m_startupWorker->getStartupInfoList()) {
+        //show or hide
+        if (!info.hidden && info.shown && !info.no_display) {
+            //show
+            loadItem(info);
+        }
+    }
+    this->verticalScrollBar()->setValue(0);
+}
+
+///*QFileSystemWatcher **/void StartupListWidget::createFileSystemMonitor(const QString &path)
+//{
+//    /*int fd = inotify_init();
+//    int wd = inotify_add_watch (fd, path, mask);
+////    int ret = inotify_rm_watch (fd, wd);*/
+
+
+//    QFileSystemWatcher *m_fileSystemMonitor = new QFileSystemWatcher(this);
+//    m_fileSystemMonitor->addPath(path);
+////    QFileInfo info(m_monitorFile);
+////    m_fileSystemMonitor->addPath(info.absoluteFilePath());
+
+//    connect(m_fileSystemMonitor, &QFileSystemWatcher::directoryChanged, [=] (const QString &path) {
+//        qDebug()<< "directoryChanged path===================="<<path;
+//    });
+////    m_watherList.append(m_fileSystemMonitor);
+//    if (m_watherMap.contains(path))
+//        m_watherMap.insert(path, m_fileSystemMonitor);
+
+////    return m_fileSystemMonitor;
+
+
+////    connect(m_fileSystemMonitor, &QFileSystemWatcher::fileChanged, [=] (const QString &path) {
+////        qDebug()<< "fileChanged path===================="<<path;
+////    });
+//}
+
+//static gboolean
+//gsp_app_manager_xdg_dir_monitor (GFileMonitor      *monitor,
+//                                 GFile             *child,
+//                                 GFile             *other_file,
+//                                 GFileMonitorEvent  flags,
+//                                 gpointer           data)
+//{
+//        GspAppManager *manager;
+//        GspApp        *old_app;
+//        GspApp        *app;
+//        GFile         *parent;
+//        char          *basename;
+//        char          *dir;
+//        char          *path;
+//        int            index;
+
+//        manager = GSP_APP_MANAGER (data);
+
+//        basename = g_file_get_basename (child);
+//        if (!g_str_has_suffix (basename, ".desktop")) {
+//                /* not a desktop file, we can ignore */
+//                g_free (basename);
+//                return TRUE;
+//        }
+//        old_app = gsp_app_manager_find_app_with_basename (manager, basename);
+
+//        parent = g_file_get_parent (child);
+//        dir = g_file_get_path (parent);
+//        g_object_unref (parent);
+
+//        index = gsp_app_manager_get_dir_index (manager, dir);
+//        if (index < 0) {
+//                /* not a directory we know; should never happen, though */
+//                g_free (dir);
+//                return TRUE;
+//        }
+//        path = g_file_get_path (child);
+
+//        switch (flags) {
+//        case G_FILE_MONITOR_EVENT_CHANGED:
+//        case G_FILE_MONITOR_EVENT_CREATED:
+//                /* we just do as if it was a new file: GspApp is clever enough
+//                 * to do the right thing */
+//                app = gsp_app_new (path, (unsigned int) index);
+
+//                /* we didn't have this app before, so add it */
+//                if (old_app == NULL && app != NULL) {
+//                        gsp_app_manager_add (manager, app);
+//                        g_object_unref (app);
+//                }
+//                /* else: it was just updated, GspApp took care of
+//                 * sending the event */
+//                break;
+//        case G_FILE_MONITOR_EVENT_DELETED:
+//                if (!old_app) {
+//                        /* it got deleted, but we don't know about it, so
+//                         * nothing to do */
+//                        break;
+//                }
+
+//                _gsp_app_manager_handle_delete (manager, old_app,
+//                                                basename, index);
+//                break;
+//        default:
+//                break;
+//        }
+
+//        g_free (path);
+//        g_free (dir);
+//        g_free (basename);
+
+//        return TRUE;
+//}
 
 //_gsp_app_manager_fill_from_dir
 void StartupListWidget::listAllDesktopFileFromDir(GspXdgDir xdgDir)
 {
-    QDirIterator dir(xdgDir.dir, QDirIterator::Subdirectories);
+    //start to call monitor
+//    GFile      *file;
+//    GDir       *dir;
+//    const char *name;
+//    file = g_file_new_for_path (xdgDir.dir.toStdString().data());
+//    xdgdir->monitor = g_file_monitor_directory (file, G_FILE_MONITOR_NONE,NULL, NULL);
+//    g_object_unref (file);
+//    if (xdgdir->monitor) {
+//            g_signal_connect (xdgdir->monitor, "changed",G_CALLBACK (gsp_app_manager_xdg_dir_monitor),manager);
+//    }
 
+//    m_startupWorker->createFileSystemMonitor(xdgDir.dir);
+
+    xdgDir.fileList.clear();
+
+    QDirIterator dir(xdgDir.dir, QDirIterator::Subdirectories);
     while(dir.hasNext()) {
         if (dir.fileInfo().suffix() == "desktop") {
             QString desktopFile = dir.filePath();//dir.fileName().toLower()
 //            qDebug() << "desktopFile="<<desktopFile;
+            xdgDir.fileList.append(desktopFile);
             m_startupWorker->newStartupInfo(desktopFile, xdgDir.index);
         }
         dir.next();
     }
+    m_startupWorker->appendXdgDirData(xdgDir);//append xdgdir
 }
 
 //gsp_app_set_enabled (gboolean enabled)

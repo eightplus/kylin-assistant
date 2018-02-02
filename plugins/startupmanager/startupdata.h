@@ -25,7 +25,27 @@
 #include <QString>
 #include <QMap>
 #include <QSharedPointer>
+#include <QFileSystemWatcher>
 #include <glib.h>
+
+
+class GspXdgDir
+{
+public:
+    QString dir;
+    int index;
+    QFileSystemWatcher *wather;
+    QStringList fileList;
+};
+
+//typedef QSharedPointer<GspXdgDir>  GspXdgDirPtr;
+//typedef QList<GspXdgDirPtr>  GspXdgDirPtrList;
+//Q_DECLARE_METATYPE(GspXdgDir)
+//Q_DECLARE_METATYPE(GspXdgDirPtr)
+//Q_DECLARE_METATYPE(GspXdgDirPtrList)
+
+
+
 
 class StartupData/* : public QObject*/
 {

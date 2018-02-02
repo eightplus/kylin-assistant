@@ -23,6 +23,7 @@
 
 #include <QObject>
 #include <QMap>
+#include <QFileSystemWatcher>
 
 #include "startupdata.h"
 
@@ -56,11 +57,13 @@
 #define SAVE_MASK_NO_DISPLAY 0x0020
 #define SAVE_MASK_ALL        0xffff
 
-typedef struct {
+/*typedef struct {
         QString dir;
         int index;
+        QFileSystemWatcher *wather;
+        QStringList fileList;
 //        GFileMonitor *monitor;
-} GspXdgDir;
+} GspXdgDir;*/
 
 class StartupWorker : public QObject
 {
@@ -73,6 +76,11 @@ public:
     bool isExecContains(const QString &exec);
     QList<StartupData> getStartupInfoList() const;
     StartupData getStartupInfo(const QString &exec);
+    StartupData getStartupInfoAccordDestkopFile(const QString &desktopFile);
+
+    QFileSystemWatcher *createFileSystemMonitor(const QString &path);
+    void updateGspXdgDir(const QString &dir, QStringList fileList);
+    QString getStringValueAccordKeyFromDesktopFile(const gchar *key, const QString &desktopFile, bool isLocale = false);
 
 //    void gsp_key_file_ensure_C_key(QString filename, QString key, QString locale);
 
@@ -83,10 +91,10 @@ public:
     void updateOldSystemPath(const QString &exec, QString old_system_path);
     void updatePath(const QString &exec, QString path);
 
-    void AddDirWithIndex(GspXdgDir dir);
+    void appendXdgDirData(GspXdgDir xdgDir);
     int getDirIndex(QString dir);
     QString gsp_app_manager_get_dir(unsigned int index);
-    QList<GspXdgDir> getAllDirs() { return dirs; }
+    QList<GspXdgDir> getAllDirs() { /*return dirs;*/ return this->m_xdgMap.values(); }
 
     void _gsp_ensure_user_autostart_dir(void);
     void _gsp_app_save_done_success (StartupData info);
@@ -96,9 +104,13 @@ public:
     void _gsp_app_queue_save(StartupData info);
     StartupData gsp_app_manager_find_app_with_basename(QString &basename);
 
+signals:
+    void refreshUI();
+
 private:
     QMap<QString, StartupData> m_startupInfoList;
     QList<GspXdgDir> dirs;
+    QMap<QString, GspXdgDir> m_xdgMap;
 };
 
 #endif // STARTUPWORKER_H

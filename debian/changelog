@@ -13,5 +13,7 @@ kylin-assistant (1.0.0-0ubuntu1) bionic; urgency=low
   * Add memory rate.
   * Add cpu rate and idle rate.
   * Add processes, resources and file system manager.
+  * Add auto startup manager.
+  * Add monitor for auto startup manager.
 
  -- lixiang <lixiang@kylinos.cn>  Mon, 29 Jan 2018 17:54:44 +0800

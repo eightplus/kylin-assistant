@@ -292,7 +292,7 @@ PropertiesDialog::~PropertiesDialog()
             child->widget()->deleteLater();
         delete child;
     }
-
+    m_labelList.clear();
     delete m_infoFrame;
     /*delete userTitleLabel;
     delete userLabel;

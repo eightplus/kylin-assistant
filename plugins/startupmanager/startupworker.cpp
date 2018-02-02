@@ -22,6 +22,7 @@
 #include <QSettings>
 #include <QDebug>
 #include <QFileInfo>
+#include <QDirIterator>
 
 #include <glib.h>
 #include <sys/stat.h>
@@ -302,8 +303,13 @@ static gboolean _gsp_str_equal (const char *a,
 //        return TRUE;
 //}
 
+//GFile      *file;
+//GDir       *dir;
+//const char *name;
+//file = g_file_new_for_path (xdgdir->dir);
 //GFileMonitor *monitor;
 //monitor = g_file_monitor_directory (file, G_FILE_MONITOR_NONE, NULL, NULL);
+//g_object_unref (file);
 //if (monitor) {
 //    g_signal_connect (monitor, "changed", G_CALLBACK (gsp_app_manager_xdg_dir_monitor), manager);
 //}
@@ -395,17 +401,75 @@ StartupWorker::StartupWorker(QObject *parent)
 StartupWorker::~StartupWorker()
 {
     m_startupInfoList.clear();
-    this->dirs.clear();
+
+//    foreach (GspXdgDir item, this->dirs) {
+//        QFileSystemWatcher *wather = item.wather;
+//        wather->removePath(item.dir);
+//        delete wather;
+//        wather = NULL;
+//    }
+//    this->dirs.clear();
+    foreach (GspXdgDir item, this->m_xdgMap.values()) {
+        QFileSystemWatcher *wather = item.wather;
+        wather->removePath(item.dir);
+        delete wather;
+        wather = NULL;
+    }
+    this->m_xdgMap.clear();
 }
 
-void StartupWorker::AddDirWithIndex(GspXdgDir dir)
+QFileSystemWatcher *StartupWorker::createFileSystemMonitor(const QString &path)
 {
-    this->dirs.append(dir);
+    /*int fd = inotify_init();
+    int wd = inotify_add_watch (fd, path, mask);
+//    int ret = inotify_rm_watch (fd, wd);*/
+
+//    qDebug() << "wather path="<<path;
+    QFileSystemWatcher *m_fileSystemMonitor = new QFileSystemWatcher(this);
+    m_fileSystemMonitor->addPath(path);
+//    QFileInfo info(m_monitorFile);
+//    m_fileSystemMonitor->addPath(info.absoluteFilePath());
+
+    connect(m_fileSystemMonitor, &QFileSystemWatcher::directoryChanged, [=] (const QString &path) {
+        qDebug()<< "directoryChanged path===================="<<path;
+        QStringList fileList;
+        QDirIterator dir(path, QDirIterator::Subdirectories);
+        while(dir.hasNext()) {
+            if (dir.fileInfo().suffix() == "desktop") {
+                QString desktopFile = dir.filePath();
+                fileList.append(desktopFile);
+            }
+            dir.next();
+        }
+//        qDebug() << "fileList="<<fileList<<    fileList.length();
+        this->updateGspXdgDir(path, fileList);
+    });
+//    m_watherList.append(m_fileSystemMonitor);
+//    if (m_watherMap.contains(path))
+//        m_watherMap.insert(path, m_fileSystemMonitor);
+
+    return m_fileSystemMonitor;
+
+
+//    connect(m_fileSystemMonitor, &QFileSystemWatcher::fileChanged, [=] (const QString &path) {
+//        qDebug()<< "fileChanged path===================="<<path;
+//    });
+}
+
+void StartupWorker::appendXdgDirData(GspXdgDir xdgDir)
+{
+//    this->dirs.append(xdgDir);
+    m_xdgMap.insert(xdgDir.dir, xdgDir);
 }
 
 int StartupWorker::getDirIndex(QString dir)
 {
-    foreach (GspXdgDir item, this->dirs) {
+//    foreach (GspXdgDir item, this->dirs) {
+//        if (item.dir == dir) {
+//            return item.index;
+//        }
+//    }
+    foreach (GspXdgDir item, this->m_xdgMap.values()) {
         if (item.dir == dir) {
             return item.index;
         }
@@ -415,7 +479,12 @@ int StartupWorker::getDirIndex(QString dir)
 
 QString StartupWorker::gsp_app_manager_get_dir(unsigned int index)
 {
-    foreach (GspXdgDir item, this->dirs) {
+//    foreach (GspXdgDir item, this->dirs) {
+//        if (item.index == index) {
+//            return item.dir;
+//        }
+//    }
+    foreach (GspXdgDir item, this->m_xdgMap.values()) {
         if (item.index == index) {
             return item.dir;
         }
@@ -434,6 +503,73 @@ StartupData StartupWorker::gsp_app_manager_find_app_with_basename(QString &basen
     }
 
     return StartupData();
+}
+
+void StartupWorker::updateGspXdgDir(const QString &dir, QStringList fileList)
+{
+    if (this->m_xdgMap.keys().contains(dir)) {
+        qDebug() << "before    this->m_xdgMap[dir].fileList=" << this->m_xdgMap[dir].fileList.length();
+
+        //start auto start, remove the desktop file which in user config dir
+        foreach (QString orgFileAbsPath, this->m_xdgMap.value(dir).fileList) {
+            qDebug() << "orgFileAbsPath="<<orgFileAbsPath;
+            if (!fileList.contains(orgFileAbsPath)) {
+                qDebug() << "11111 orgFileAbsPath="<<orgFileAbsPath;
+                //had removed
+                StartupData info = getStartupInfoAccordDestkopFile(orgFileAbsPath);
+                if (info.exec.isEmpty() && info.name.isEmpty())
+                    continue;
+                qDebug() << "okokok";
+                info.enabled = true;
+                info.save_mask |= SAVE_MASK_ENABLED;
+                this->updateEnable(info.exec, info.enabled);
+                this->updateSaveMask(info.exec, info.save_mask);
+                this->_gsp_app_queue_save(info);
+            }
+        }
+
+        //canel auto start, add the desktop file to user config dir
+        foreach (QString nowFileAbsPath, fileList) {
+            qDebug() << "nowFileAbsPath="<<nowFileAbsPath;
+            if (!this->m_xdgMap[dir].fileList.contains(nowFileAbsPath)) {
+                qDebug() << "222222222222 nowFileAbsPath="<<nowFileAbsPath;
+                //new added
+                this->newStartupInfo(nowFileAbsPath, this->m_xdgMap.value(dir).index);
+            }
+        }
+
+        this->m_xdgMap[dir].fileList.clear();
+        this->m_xdgMap[dir].fileList = fileList;
+        qDebug() << "after    this->m_xdgMap[dir].fileList=" << this->m_xdgMap[dir].fileList.length();
+        emit this->refreshUI();
+    }
+}
+
+QString StartupWorker::getStringValueAccordKeyFromDesktopFile(const gchar *key, const QString &desktopFile, bool isLocale)
+{
+    qDebug() << "aaa" << desktopFile;
+    GKeyFile *keyfile;
+    keyfile = g_key_file_new ();
+    if (!g_key_file_load_from_file (keyfile, desktopFile.toStdString().c_str(), G_KEY_FILE_NONE, NULL)) {
+        g_key_file_free (keyfile);
+        qDebug() << "bbb";
+        return QString();
+    }
+
+    if (isLocale) {
+        std::string formatted_result(make_string(gsp_key_file_get_locale_string (keyfile, key)));
+        QString result = QString::fromStdString(formatted_result);
+        g_key_file_free (keyfile);
+        return result;
+    }
+    else {
+        qDebug() << "ccc";
+        std::string formatted_result = make_string(gsp_key_file_get_string (keyfile, key));
+        QString result = QString::fromStdString(formatted_result);
+        g_key_file_free (keyfile);
+        qDebug() << "ddd" << result;
+        return result;
+    }
 }
 
 void StartupWorker::newStartupInfo(const QString &desktopFile, unsigned int xdg_position)
@@ -582,6 +718,15 @@ QList<StartupData> StartupWorker::getStartupInfoList() const
 StartupData StartupWorker::getStartupInfo(const QString &exec)
 {
     return m_startupInfoList.value(exec, StartupData());//nullptr
+}
+
+StartupData StartupWorker::getStartupInfoAccordDestkopFile(const QString &desktopFile)
+{
+    foreach (StartupData data, m_startupInfoList.values()) {
+        if (data.path == desktopFile)
+            return data;
+    }
+    return StartupData();
 }
 
 void StartupWorker::updateEnable(const QString &exec, bool enabled)

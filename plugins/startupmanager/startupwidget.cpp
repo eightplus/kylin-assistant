@@ -53,6 +53,24 @@ QDataStream &operator>>(QDataStream &dataStream, StartupDataPtr &object)
     return dataStream;
 }
 
+//QDataStream &operator<<(QDataStream &dataStream, const GspXdgDirPtr &object)
+//{
+//    auto ptr = object.data();
+//    auto ptrval = reinterpret_cast<qulonglong>(ptr);
+//    auto var = QVariant::fromValue(ptrval);
+//    dataStream << var;
+//    return  dataStream;
+//}
+
+//QDataStream &operator>>(QDataStream &dataStream, GspXdgDirPtr &object)
+//{
+//    QVariant var;
+//    dataStream >> var;
+//    qulonglong ptrval = var.toULongLong();
+//    auto ptr = reinterpret_cast<GspXdgDir *>(ptrval);
+//    object = GspXdgDirPtr(ptr);
+//    return dataStream;
+//}
 
 StartupWidget::StartupWidget(QWidget *parent)
     : QFrame(parent)
@@ -63,6 +81,11 @@ StartupWidget::StartupWidget(QWidget *parent)
     qRegisterMetaType<StartupDataPtrList>();
     qRegisterMetaType<QList<StartupData>>();
 
+
+//    qRegisterMetaType<GspXdgDirPtr>();
+//    qRegisterMetaTypeStreamOperators<GspXdgDirPtr>();
+//    qRegisterMetaType<GspXdgDirPtrList>();
+//    qRegisterMetaType<QList<GspXdgDir>>();
 
     this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);//去掉边框
     this->setAttribute(Qt::WA_TranslucentBackground);//背景透明

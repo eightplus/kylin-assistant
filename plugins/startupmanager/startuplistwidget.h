@@ -26,6 +26,7 @@
 
 #include <QListWidget>
 
+class QFileSystemWatcher;
 class StartupWorker;
 class StartupData;
 
@@ -37,18 +38,25 @@ public:
     StartupListWidget(QWidget *parent=0);
     ~StartupListWidget();
 
+    void displayAutoStartupItems();
+    void clearUI();
     void loadItem(StartupData info);
     void loadItems(QStringList items, int scrollValue);
 
     void listAllDesktopFileFromDir(GspXdgDir xdgDir);
     void setAppAutoStartup(/*StartupData info,*/const QString &exec, bool enabled);
 
+//    /*QFileSystemWatcher **/void createFileSystemMonitor(const QString &path);
+
 public slots:
     void onChangeStartup(const QString &exec, bool active);
     void onMouseEnter();
+    void onRefreshUI();
 
 private:
     StartupWorker *m_startupWorker = nullptr;
+//    QList <QFileSystemWatcher*> m_watherList;//QList<QFileSystemWatcher*> *m_watherList;
+//    QMap<QString, QFileSystemWatcher*> m_watherMap;
 };
 
 #endif // STARTUPLISTWIDGET_H
