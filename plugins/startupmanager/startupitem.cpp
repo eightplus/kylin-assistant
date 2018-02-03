@@ -18,7 +18,7 @@
  */
 
 #include "startupitem.h"
-#include "../../component/kylinswitcher.h"
+#include "../../component/myswitcher.h"
 #include "startupdata.h"
 
 #include <QApplication>
@@ -66,15 +66,13 @@ StartupItem::StartupItem(StartupData info, QWidget *parent) : QWidget(parent)
     m_appDescLabel = new QLabel();
     m_appDescLabel->setText(info.comment);
 
-    switcher = new KylinSwitcher();
-    switcher->switchedOn = info.enabled;
-//    connect(switcher, SIGNAL(clicked()), this, SLOT()
-    connect(switcher, &KylinSwitcher::clicked, [=] () {
-        //changeAutoStartAppStatus
-        emit changeStartup(info.exec, switcher->switchedOn);
+    switcher = new MySwitcher();
+    switcher->setOnStatus(info.enabled);
+    connect(switcher, &MySwitcher::statusChanged, [=] (const bool b) {
+        emit changeStartup(info.exec, b);
     });
-    m_switchLayout->addWidget(switcher, 0, Qt::AlignCenter);
 
+    m_switchLayout->addWidget(switcher, 0, Qt::AlignCenter);
     m_leftLayout->addWidget(m_appIcon);
 
     m_labelWidget = new QWidget();
@@ -88,6 +86,13 @@ StartupItem::StartupItem(StartupData info, QWidget *parent) : QWidget(parent)
     m_layout->addLayout(m_switchLayout);
     m_layout->setContentsMargins(10, 0, 10, 0);
     this->setLayout(m_layout);
+}
+
+void StartupItem::setSwitcherOn(const bool b)
+{
+    switcher->blockSignals(true);
+    switcher->setOnStatus(b);
+    switcher->blockSignals(false);
 }
 
 QListWidgetItem* StartupItem::getItem()
@@ -133,10 +138,9 @@ void StartupItem::paintEvent(QPaintEvent *event)
 
         QPainterPath path;
         path.addRoundedRect(QRectF(rect()), 2, 2);
-        painter.fillPath(path, QColor(135, 206, 250, 127));
+        painter.setOpacity(0.1);
+        painter.fillPath(path, QColor("#2bb6ea"));
     }
 
     QWidget::paintEvent(event);
 }
-
-

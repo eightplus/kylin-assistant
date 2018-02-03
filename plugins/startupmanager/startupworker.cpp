@@ -1,20 +1,30 @@
 /*
+ *
+ * Copyright (C) 2008, 2009 Novell, Inc.
+ * Copyright (C) 1999 Free Software Foundation, Inc.
+ * Copyright (C) 2007, 2009 Vincent Untz.
+ * Copyright (C) 2008 Lucas Rocha.
+ * Copyright (C) 2008 William Jon McCann <jmccann@redhat.com>
  * Copyright (C) 2013 ~ 2018 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
- * Authors:
- *  Kobe Lee    xiangli@ubuntukylin.com/kobe24_lixiang@126.com
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 3.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ *
+ * Authors:
+ *  Vincent Untz <vuntz@gnome.org>
+ *  Kobe Lee    xiangli@ubuntukylin.com/kobe24_lixiang@126.com
  */
 
 #include "startupworker.h"
@@ -30,200 +40,6 @@
 #include "util.h"
 
 
-#define gsp_key_file_get_string(key_file, key) \
-         g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, key, NULL)
-#define gsp_key_file_get_locale_string(key_file, key) \
-         g_key_file_get_locale_string(key_file, G_KEY_FILE_DESKTOP_GROUP, key, NULL, NULL)
-
-#define gsp_key_file_set_boolean(key_file, key, value) \
-         g_key_file_set_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, key, value)
-#define gsp_key_file_set_string(key_file, key, value) \
-         g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP, key, value)
-
-gboolean gsp_key_file_get_boolean (GKeyFile    *keyfile,
-                          const gchar *key,
-                          gboolean     default_value)
-{
-        GError   *error;
-        gboolean  retval;
-
-        error = NULL;
-        retval = g_key_file_get_boolean (keyfile, G_KEY_FILE_DESKTOP_GROUP,
-                                         key, &error);
-        if (error != NULL) {
-                retval = default_value;
-                g_error_free (error);
-        }
-
-        return retval;
-}
-
-gboolean gsp_key_file_to_file (GKeyFile     *keyfile,
-                      const gchar  *path,
-                      GError      **error)
-{
-        GError  *write_error;
-        gchar   *data;
-        gsize    length;
-        gboolean res;
-
-        g_return_val_if_fail (keyfile != NULL, FALSE);
-        g_return_val_if_fail (path != NULL, FALSE);
-
-        write_error = NULL;
-        data = g_key_file_to_data (keyfile, &length, &write_error);
-
-        if (write_error) {
-                g_propagate_error (error, write_error);
-                return FALSE;
-        }
-
-        res = g_file_set_contents (path, data, length, &write_error);
-        g_free (data);
-
-        if (write_error) {
-                g_propagate_error (error, write_error);
-                return FALSE;
-        }
-
-        return res;
-}
-
-void gsp_key_file_populate (GKeyFile *keyfile)
-{
-        gsp_key_file_set_string (keyfile,
-                                 G_KEY_FILE_DESKTOP_KEY_TYPE,
-                                 "Application");
-
-        gsp_key_file_set_string (keyfile,
-                                 G_KEY_FILE_DESKTOP_KEY_EXEC,
-                                 "/bin/false");
-}
-
-void gsp_key_file_set_locale_string (GKeyFile    *keyfile,
-                                const gchar *key,
-                                const gchar *value)
-{
-        const char         *locale;
-        const char * const *langs_pointer;
-        int                 i;
-
-        if (value == NULL) {
-                value = "";
-        }
-
-        locale = NULL;
-        langs_pointer = g_get_language_names ();
-        for (i = 0; langs_pointer[i] != NULL; i++) {
-                /* find first without encoding  */
-                if (strchr (langs_pointer[i], '.') == NULL) {
-                        locale = langs_pointer[i];
-                        break;
-                }
-        }
-
-        if (locale != NULL) {
-                g_key_file_set_locale_string (keyfile, G_KEY_FILE_DESKTOP_GROUP,
-                                              key, locale, value);
-        } else {
-                g_key_file_set_string (keyfile, G_KEY_FILE_DESKTOP_GROUP,
-                                       key, value);
-        }
-}
-
-gboolean gsp_key_file_get_shown (GKeyFile   *keyfile,
-                        const char *current_desktop)
-{
-        char     **only_show_in, **not_show_in;
-        gboolean   found;
-        int        i;
-
-        if (!current_desktop)
-                return TRUE;
-
-        only_show_in = g_key_file_get_string_list (keyfile, G_KEY_FILE_DESKTOP_GROUP,
-                                                   G_KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN,
-                                                   NULL, NULL);
-
-        if (only_show_in) {
-                found = FALSE;
-                for (i = 0; only_show_in[i] != NULL; i++) {
-                        if (g_strcmp0 (current_desktop, only_show_in[i]) == 0) {
-                                found = TRUE;
-                                break;
-                        }
-                }
-
-                g_strfreev (only_show_in);
-
-                if (!found)
-                        return FALSE;
-        }
-
-        not_show_in = g_key_file_get_string_list (keyfile, G_KEY_FILE_DESKTOP_GROUP,
-                                                  G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN,
-                                                  NULL, NULL);
-        if (not_show_in) {
-                found = FALSE;
-                for (i = 0; not_show_in[i] != NULL; i++) {
-                        if (g_strcmp0 (current_desktop, not_show_in[i]) == 0) {
-                                found = TRUE;
-                                break;
-                        }
-                }
-
-                g_strfreev (not_show_in);
-
-                if (found)
-                        return FALSE;
-        }
-
-        return TRUE;
-}
-
-static char *_gsp_get_current_desktop ()
-{
-        static char *current_desktop = NULL;
-
-        /* Support XDG_CURRENT_DESKTOP environment variable; this can be used
-         * to abuse gnome-session in non-GNOME desktops. */
-        if (!current_desktop) {
-               const char *desktop;
-
-                desktop = g_getenv ("XDG_CURRENT_DESKTOP");
-
-                /* Note: if XDG_CURRENT_DESKTOP is set but empty, do as if it
-                 * was not set */
-                if (!desktop || desktop[0] == '\0')
-                        current_desktop = g_strdup ("GNOME");
-                else
-                        current_desktop = g_strdup (desktop);
-        }
-
-        /* Using "*" means skipping desktop-related checks */
-        if (g_strcmp0 (current_desktop, "*") == 0)
-                return NULL;
-
-        return current_desktop;
-}
-
-static gboolean _gsp_str_equal (const char *a,
-                const char *b)
-{
-        if (g_strcmp0 (a, b) == 0) {
-                return TRUE;
-        }
-
-        if (a && !b && a[0] == '\0') {
-                return TRUE;
-        }
-
-        if (b && !a && b[0] == '\0') {
-                return TRUE;
-        }
-
-        return FALSE;
-}
 
 
 
@@ -253,7 +69,7 @@ static gboolean _gsp_str_equal (const char *a,
 //                g_free (basename);
 //                return TRUE;
 //        }
-//        old_app = gsp_app_manager_find_app_with_basename (manager, basename);
+//        old_app = getAppStartupDataAccrodDesktopFileName (manager, basename);
 
 //        parent = g_file_get_parent (child);
 //        dir = g_file_get_path (parent);
@@ -318,7 +134,7 @@ static gboolean _gsp_str_equal (const char *a,
 //monitor = NULL;
 
 
-void gsp_key_file_ensure_C_key (GKeyFile   *keyfile, const char *key)
+void ensureCKeyInDesktopFil (GKeyFile   *keyfile, const char *key)
 {
         char *C_value;
         char *buffer;
@@ -327,11 +143,11 @@ void gsp_key_file_ensure_C_key (GKeyFile   *keyfile, const char *key)
          * This is so that if the user logs into another locale they get their
          * own description there rather then empty. It is not the C locale
          * however, but the user created this entry herself so it's OK */
-        C_value = gsp_key_file_get_string (keyfile, key);
+        C_value = kylin_start_manager_key_file_get_string (keyfile, key);
         if (C_value == NULL || C_value [0] == '\0') {
-                buffer = gsp_key_file_get_locale_string (keyfile, key);
+                buffer = kylin_start_manager_key_file_get_locale_string (keyfile, key);
                 if (buffer) {
-                        gsp_key_file_set_string (keyfile, key, buffer);
+                        kylin_start_manager_key_file_set_string (keyfile, key, buffer);
                         g_free (buffer);
                 }
         }
@@ -402,18 +218,18 @@ StartupWorker::~StartupWorker()
 {
     m_startupInfoList.clear();
 
-//    foreach (GspXdgDir item, this->dirs) {
-//        QFileSystemWatcher *wather = item.wather;
-//        wather->removePath(item.dir);
-//        delete wather;
-//        wather = NULL;
+//    foreach (MonitorData item, this->m_monitorList) {
+//        QFileSystemWatcher *watcher = item.watcher;
+//        watcher->removePath(item.dir);
+//        delete watcher;
+//        watcher = NULL;
 //    }
-//    this->dirs.clear();
-    foreach (GspXdgDir item, this->m_xdgMap.values()) {
-        QFileSystemWatcher *wather = item.wather;
-        wather->removePath(item.dir);
-        delete wather;
-        wather = NULL;
+//    this->m_monitorList.clear();
+    foreach (MonitorData item, this->m_xdgMap.values()) {
+        QFileSystemWatcher *watcher = item.watcher;
+        watcher->removePath(item.dir);
+        delete watcher;
+        watcher = NULL;
     }
     this->m_xdgMap.clear();
 }
@@ -424,14 +240,14 @@ QFileSystemWatcher *StartupWorker::createFileSystemMonitor(const QString &path)
     int wd = inotify_add_watch (fd, path, mask);
 //    int ret = inotify_rm_watch (fd, wd);*/
 
-//    qDebug() << "wather path="<<path;
+//    qDebug() << "watcher path="<<path;
     QFileSystemWatcher *m_fileSystemMonitor = new QFileSystemWatcher(this);
     m_fileSystemMonitor->addPath(path);
 //    QFileInfo info(m_monitorFile);
 //    m_fileSystemMonitor->addPath(info.absoluteFilePath());
 
     connect(m_fileSystemMonitor, &QFileSystemWatcher::directoryChanged, [=] (const QString &path) {
-        qDebug()<< "directoryChanged path===================="<<path;
+        //qDebug()<< "directoryChanged path===================="<<path;
         QStringList fileList;
         QDirIterator dir(path, QDirIterator::Subdirectories);
         while(dir.hasNext()) {
@@ -441,35 +257,34 @@ QFileSystemWatcher *StartupWorker::createFileSystemMonitor(const QString &path)
             }
             dir.next();
         }
-//        qDebug() << "fileList="<<fileList<<    fileList.length();
+
         this->updateGspXdgDir(path, fileList);
     });
-//    m_watherList.append(m_fileSystemMonitor);
-//    if (m_watherMap.contains(path))
-//        m_watherMap.insert(path, m_fileSystemMonitor);
+//    m_watcherList.append(m_fileSystemMonitor);
+//    if (m_watcherMap.contains(path))
+//        m_watcherMap.insert(path, m_fileSystemMonitor);
 
     return m_fileSystemMonitor;
-
 
 //    connect(m_fileSystemMonitor, &QFileSystemWatcher::fileChanged, [=] (const QString &path) {
 //        qDebug()<< "fileChanged path===================="<<path;
 //    });
 }
 
-void StartupWorker::appendXdgDirData(GspXdgDir xdgDir)
+void StartupWorker::appendMonitorXdgDirData(MonitorData monitorData)
 {
-//    this->dirs.append(xdgDir);
-    m_xdgMap.insert(xdgDir.dir, xdgDir);
+//    this->m_monitorList.append(monitorData);
+    m_xdgMap.insert(monitorData.dir, monitorData);
 }
 
 int StartupWorker::getDirIndex(QString dir)
 {
-//    foreach (GspXdgDir item, this->dirs) {
+//    foreach (MonitorData item, this->m_monitorList) {
 //        if (item.dir == dir) {
 //            return item.index;
 //        }
 //    }
-    foreach (GspXdgDir item, this->m_xdgMap.values()) {
+    foreach (MonitorData item, this->m_xdgMap.values()) {
         if (item.dir == dir) {
             return item.index;
         }
@@ -477,14 +292,14 @@ int StartupWorker::getDirIndex(QString dir)
     return -1;
 }
 
-QString StartupWorker::gsp_app_manager_get_dir(unsigned int index)
+QString StartupWorker::getMonitorDirectoryAccordXdgSystemPosition(unsigned int index)
 {
-//    foreach (GspXdgDir item, this->dirs) {
+//    foreach (MonitorData item, this->m_monitorList) {
 //        if (item.index == index) {
 //            return item.dir;
 //        }
 //    }
-    foreach (GspXdgDir item, this->m_xdgMap.values()) {
+    foreach (MonitorData item, this->m_xdgMap.values()) {
         if (item.index == index) {
             return item.dir;
         }
@@ -494,7 +309,7 @@ QString StartupWorker::gsp_app_manager_get_dir(unsigned int index)
 }
 
 
-StartupData StartupWorker::gsp_app_manager_find_app_with_basename(QString &basename)
+StartupData StartupWorker::getAppStartupDataAccrodDesktopFileName(QString &basename)
 {
     for (StartupData info : this->getStartupInfoList()) {
         if (info.basename == basename) {
@@ -508,31 +323,24 @@ StartupData StartupWorker::gsp_app_manager_find_app_with_basename(QString &basen
 void StartupWorker::updateGspXdgDir(const QString &dir, QStringList fileList)
 {
     if (this->m_xdgMap.keys().contains(dir)) {
-        qDebug() << "before    this->m_xdgMap[dir].fileList=" << this->m_xdgMap[dir].fileList.length();
-
         //start auto start, remove the desktop file which in user config dir
         foreach (QString orgFileAbsPath, this->m_xdgMap.value(dir).fileList) {
-            qDebug() << "orgFileAbsPath="<<orgFileAbsPath;
             if (!fileList.contains(orgFileAbsPath)) {
-                qDebug() << "11111 orgFileAbsPath="<<orgFileAbsPath;
                 //had removed
                 StartupData info = getStartupInfoAccordDestkopFile(orgFileAbsPath);
                 if (info.exec.isEmpty() && info.name.isEmpty())
                     continue;
-                qDebug() << "okokok";
                 info.enabled = true;
                 info.save_mask |= SAVE_MASK_ENABLED;
                 this->updateEnable(info.exec, info.enabled);
                 this->updateSaveMask(info.exec, info.save_mask);
-                this->_gsp_app_queue_save(info);
+                this->readySaveDesktopInfo(info);
             }
         }
 
         //canel auto start, add the desktop file to user config dir
         foreach (QString nowFileAbsPath, fileList) {
-            qDebug() << "nowFileAbsPath="<<nowFileAbsPath;
             if (!this->m_xdgMap[dir].fileList.contains(nowFileAbsPath)) {
-                qDebug() << "222222222222 nowFileAbsPath="<<nowFileAbsPath;
                 //new added
                 this->newStartupInfo(nowFileAbsPath, this->m_xdgMap.value(dir).index);
             }
@@ -540,34 +348,30 @@ void StartupWorker::updateGspXdgDir(const QString &dir, QStringList fileList)
 
         this->m_xdgMap[dir].fileList.clear();
         this->m_xdgMap[dir].fileList = fileList;
-        qDebug() << "after    this->m_xdgMap[dir].fileList=" << this->m_xdgMap[dir].fileList.length();
+
         emit this->refreshUI();
     }
 }
 
 QString StartupWorker::getStringValueAccordKeyFromDesktopFile(const gchar *key, const QString &desktopFile, bool isLocale)
 {
-    qDebug() << "aaa" << desktopFile;
     GKeyFile *keyfile;
     keyfile = g_key_file_new ();
     if (!g_key_file_load_from_file (keyfile, desktopFile.toStdString().c_str(), G_KEY_FILE_NONE, NULL)) {
         g_key_file_free (keyfile);
-        qDebug() << "bbb";
         return QString();
     }
 
     if (isLocale) {
-        std::string formatted_result(make_string(gsp_key_file_get_locale_string (keyfile, key)));
+        std::string formatted_result(make_string(kylin_start_manager_key_file_get_locale_string (keyfile, key)));
         QString result = QString::fromStdString(formatted_result);
         g_key_file_free (keyfile);
         return result;
     }
     else {
-        qDebug() << "ccc";
-        std::string formatted_result = make_string(gsp_key_file_get_string (keyfile, key));
+        std::string formatted_result = make_string(kylin_start_manager_key_file_get_string (keyfile, key));
         QString result = QString::fromStdString(formatted_result);
         g_key_file_free (keyfile);
-        qDebug() << "ddd" << result;
         return result;
     }
 }
@@ -577,7 +381,7 @@ void StartupWorker::newStartupInfo(const QString &desktopFile, unsigned int xdg_
     bool isNew;
     QString basename = QFileInfo(desktopFile).fileName();
 
-    StartupData info = gsp_app_manager_find_app_with_basename(basename);
+    StartupData info = getAppStartupDataAccrodDesktopFileName(basename);
     if (info.basename.isEmpty() && info.name.isEmpty() && info.exec.isEmpty())
         isNew = true;
     else
@@ -585,14 +389,6 @@ void StartupWorker::newStartupInfo(const QString &desktopFile, unsigned int xdg_
 
     if (!isNew) {
         //qDebug() << "is not new!!!!";
-        if (info.xdg_position == xdg_position) {
-//            if (app->priv->skip_next_monitor_event) {
-//                app->priv->skip_next_monitor_event = FALSE;
-//                return;
-//            }
-            /* else: the file got changed but not by us, we'll
-             * update our data from disk */
-        }
         if (info.xdg_position < xdg_position) {
             /* we don't really care about this file, since we
              * already have something with a higher priority, or
@@ -604,25 +400,25 @@ void StartupWorker::newStartupInfo(const QString &desktopFile, unsigned int xdg_
         }
     }
 
-    GKeyFile      *keyfile;
+    GKeyFile *keyfile;
     keyfile = g_key_file_new ();
     if (!g_key_file_load_from_file (keyfile, desktopFile.toStdString().c_str(), G_KEY_FILE_NONE, NULL)) {
-        g_key_file_free (keyfile);
+        g_key_file_free(keyfile);
         return;
     }
 
-    bool hidden = gsp_key_file_get_boolean (keyfile, G_KEY_FILE_DESKTOP_KEY_HIDDEN, FALSE);
-    bool no_display = gsp_key_file_get_boolean (keyfile,G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY,FALSE);
-    bool enabled = gsp_key_file_get_boolean (keyfile, KEY_FILE_DESKTOP_KEY_AUTOSTART_ENABLED,TRUE);
-    bool shown = gsp_key_file_get_shown (keyfile,_gsp_get_current_desktop ());
+    bool hidden = get_boolean_from_desktop_file (keyfile, G_KEY_FILE_DESKTOP_KEY_HIDDEN, FALSE);
+    bool no_display = get_boolean_from_desktop_file (keyfile,G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY,FALSE);
+    bool enabled = get_boolean_from_desktop_file (keyfile, KEY_FILE_DESKTOP_KEY_AUTOSTART_ENABLED,TRUE);
+    bool shown = get_shown_from_desktop_file (keyfile,get_current_desktop_env ());
 
-    std::string formatted_result(make_string(gsp_key_file_get_locale_string (keyfile, G_KEY_FILE_DESKTOP_KEY_NAME)));
+    std::string formatted_result(make_string(kylin_start_manager_key_file_get_locale_string (keyfile, G_KEY_FILE_DESKTOP_KEY_NAME)));
     QString name = QString::fromStdString(formatted_result);
-    formatted_result = make_string(gsp_key_file_get_string (keyfile, G_KEY_FILE_DESKTOP_KEY_EXEC));
+    formatted_result = make_string(kylin_start_manager_key_file_get_string (keyfile, G_KEY_FILE_DESKTOP_KEY_EXEC));
     QString exec = QString::fromStdString(formatted_result);
-    formatted_result = make_string(gsp_key_file_get_locale_string (keyfile, G_KEY_FILE_DESKTOP_KEY_COMMENT));
+    formatted_result = make_string(kylin_start_manager_key_file_get_locale_string (keyfile, G_KEY_FILE_DESKTOP_KEY_COMMENT));
     QString comment = QString::fromStdString(formatted_result);
-    formatted_result = make_string(gsp_key_file_get_locale_string (keyfile, G_KEY_FILE_DESKTOP_KEY_ICON));
+    formatted_result = make_string(kylin_start_manager_key_file_get_locale_string (keyfile, G_KEY_FILE_DESKTOP_KEY_ICON));
     QString icon = QString::fromStdString(formatted_result);
     if (name.isEmpty() || name.isNull())
         name = exec;
@@ -731,8 +527,6 @@ StartupData StartupWorker::getStartupInfoAccordDestkopFile(const QString &deskto
 
 void StartupWorker::updateEnable(const QString &exec, bool enabled)
 {
-//    m_startupInfoList.value(exec).enabled = enabled;
-//    m_startupInfoList.value(exec).setEnabled(enabled);
     if (m_startupInfoList.contains(exec)) {
         m_startupInfoList[exec].enabled = enabled;//m_startupInfoList[exec].setEnabled(enabled);
     }
@@ -773,31 +567,27 @@ void StartupWorker::updatePath(const QString &exec, QString path)
     }
 }
 
-void StartupWorker::_gsp_ensure_user_autostart_dir (void)
+void StartupWorker::ensureUserAutostartupDirExists(void)
 {
     char *dir;
     dir = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
-    g_mkdir_with_parents(dir, S_IRWXU);
-//    printf("ensure dir=%s\n", dir);
+    g_mkdir_with_parents(dir, S_IRWXU);//S_IRWXU 00700 权限，代表该文件所有者具有可读、可写及可执行的权限
     g_free(dir);
 
 //    QDir dir;
 //    if(!dir.exists("aa")){
 //        dir.mkdir("aa");
 //    }
-
-
     /*const gchar *config_dir = g_get_user_config_dir();
     std::string formatted_result(make_string(g_strdup(config_dir)));//std::string formatted_result = make_string(g_strdup(config_dir));
     QString dir = QString::fromStdString(formatted_result);
-    //S_IRWXU 00700 权限，代表该文件所有者具有可读、可写及可执行的权限
-    if (dir.endsWith("/"))
+    if (dir.endsWith(QLatin1String("/")))
         g_mkdir_with_parents (dir + "autostart", S_IRWXU);//if (g_mkdir_with_parents (dir, 0755) == 0)
     else
         g_mkdir_with_parents (dir + "/autostart", S_IRWXU);*/
 }
 
-void StartupWorker::_gsp_app_save_done_success (StartupData info)
+void StartupWorker::changeSaveFlagsWhenDoneSuccess(StartupData info)
 {
     info.save_mask = 0;
     this->updateSaveMask(info.exec, info.save_mask);
@@ -807,114 +597,97 @@ void StartupWorker::_gsp_app_save_done_success (StartupData info)
     }
 }
 
-bool StartupWorker::_gsp_app_user_equal_system (StartupData info, char **system_path)
+/*
+ *判断desktop文件是否同时存在于用户的启动配置目录下和系统的启动配置目录下，
+ *如果同时存在，说明已经禁止了自启动，否则该应用程序是开机自启动的
+*/
+bool StartupWorker::isDesktopFileInUserAndSystemConfiguDir(StartupData info, char **system_path)
 {
-        QString system_dir;
-        char          *path;
-        char          *str;
-        GKeyFile      *keyfile;
+    QString system_dir;
+    char          *path;
+    char          *str;
+    GKeyFile      *keyfile;
 
-        system_dir = gsp_app_manager_get_dir(info.xdg_system_position);
-        if (system_dir.isEmpty()) {
-//            qDebug() << "PPP 111";
+    system_dir = getMonitorDirectoryAccordXdgSystemPosition(info.xdg_system_position);
+    if (system_dir.isEmpty()) {
+        return false;
+    }
+
+    path = g_build_filename(system_dir.toStdString().c_str(), info.basename.toStdString().c_str(), NULL);
+    keyfile = g_key_file_new();
+    if (!g_key_file_load_from_file(keyfile, path, G_KEY_FILE_NONE, NULL)) {
+        g_free(path);
+        g_key_file_free(keyfile);
+        return false;
+    }
+
+    if (get_boolean_from_desktop_file(keyfile, G_KEY_FILE_DESKTOP_KEY_HIDDEN, FALSE) != info.hidden ||
+        get_boolean_from_desktop_file(keyfile, KEY_FILE_DESKTOP_KEY_AUTOSTART_ENABLED, TRUE) != info.enabled ||
+        get_shown_from_desktop_file (keyfile, get_current_desktop_env()) != info.shown) {
+        g_free(path);
+        g_key_file_free(keyfile);
+        return false;
+    }
+    if (get_boolean_from_desktop_file(keyfile, G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, FALSE) != info.no_display) {
+        g_free(path);
+        g_key_file_free(keyfile);
+        return false;
+    }
+
+    str = kylin_start_manager_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_KEY_NAME);
+    if (!is_str_equal (str, info.name.toStdString().c_str())) {
+            g_free(str);
+            g_free(path);
+            g_key_file_free(keyfile);
             return false;
-        }
+    }
+    g_free(str);
 
-        path = g_build_filename(system_dir.toStdString().c_str(), info.basename.toStdString().c_str(), NULL);
-//        printf("_gsp_app_user_equal_system path=%s\n", path);///etc/xdg/autostart/indicator-china-weather.desktop
-
-        keyfile = g_key_file_new();
-        if (!g_key_file_load_from_file(keyfile, path, G_KEY_FILE_NONE, NULL)) {
-//            qDebug() << "PPP 222";
-            g_free (path);
-            g_key_file_free (keyfile);
+    str = kylin_start_manager_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_KEY_COMMENT);
+    if (!is_str_equal(str, info.comment.toStdString().c_str())) {
+            g_free(str);
+            g_free(path);
+            g_key_file_free(keyfile);
             return false;
-        }
+    }
+    g_free(str);
 
-        if (gsp_key_file_get_boolean (keyfile,
-                                      G_KEY_FILE_DESKTOP_KEY_HIDDEN,
-                                      FALSE) != info.hidden ||
-            gsp_key_file_get_boolean (keyfile,
-                                      KEY_FILE_DESKTOP_KEY_AUTOSTART_ENABLED,
-                                      TRUE) != info.enabled ||
-            gsp_key_file_get_shown (keyfile,
-                                    _gsp_get_current_desktop ()) != info.shown) {
-//                qDebug() << "PPP 333";
-                g_free (path);
-                g_key_file_free (keyfile);
-                return false;
-        }
-        if (gsp_key_file_get_boolean (keyfile,
-                                      G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY,
-                                      FALSE) != info.no_display) {
-//            qDebug() << "PPP 444";
-                g_free (path);
-                g_key_file_free (keyfile);
-                return false;
-        }
+    str = kylin_start_manager_key_file_get_string(keyfile, G_KEY_FILE_DESKTOP_KEY_EXEC);
+    if (!is_str_equal(str, info.exec.toStdString().c_str())) {
+        g_free(str);
+        g_free(path);
+        g_key_file_free(keyfile);
+        return false;
+    }
+    g_free(str);
 
-        str = gsp_key_file_get_locale_string (keyfile, G_KEY_FILE_DESKTOP_KEY_NAME);
-        if (!_gsp_str_equal (str, info.name.toStdString().c_str())) {
-//            qDebug() << "PPP 555";
-                g_free (str);
-                g_free (path);
-                g_key_file_free (keyfile);
-                return false;
-        }
-        g_free (str);
+    str = kylin_start_manager_key_file_get_locale_string(keyfile, G_KEY_FILE_DESKTOP_KEY_ICON);
+    if (!is_str_equal(str, info.icon.toStdString().c_str())) {//info.icon.toStdString().data()
+        g_free(str);
+        g_free(path);
+        g_key_file_free(keyfile);
+        return false;
+    }
+    g_free(str);
 
-        str = gsp_key_file_get_locale_string (keyfile, G_KEY_FILE_DESKTOP_KEY_COMMENT);
-        if (!_gsp_str_equal (str, info.comment.toStdString().c_str())) {
-//            qDebug() << "PPP 666";
-                g_free (str);
-                g_free (path);
-                g_key_file_free (keyfile);
-                return false;
-        }
-        g_free (str);
+    g_key_file_free(keyfile);
+    *system_path = path;
 
-        str = gsp_key_file_get_string (keyfile,
-                                       G_KEY_FILE_DESKTOP_KEY_EXEC);
-        if (!_gsp_str_equal (str, info.exec.toStdString().c_str())) {
-//            qDebug() << "PPP 777";
-                g_free (str);
-                g_free (path);
-                g_key_file_free (keyfile);
-                return false;
-        }
-        g_free (str);
-        str = gsp_key_file_get_locale_string (keyfile,
-                                              G_KEY_FILE_DESKTOP_KEY_ICON);
-        if (!_gsp_str_equal (str, info.icon.toStdString().c_str())) {//info.icon.toStdString().data()
-//            qDebug() << "PPP 888";
-            g_free (str);
-            g_free (path);
-            g_key_file_free (keyfile);
-            return false;
-        }
-        g_free (str);
-
-        g_key_file_free (keyfile);
-//        qDebug() << "PPP 999";
-        *system_path = path;
-
-        return true;
+    return true;
 }
 
-/*bool StartupWorker::_gsp_app_user_equal_system (StartupData info, QString &system_path, QString locale)
+/*bool StartupWorker::isDesktopFileInUserAndSystemConfiguDir (StartupData info, QString &system_path, QString locale)
 {
     QString system_dir;
     QString path;
     QString str;
 
-    qDebug() << "info.xdg_system_position="<<info.xdg_system_position;
-    system_dir = gsp_app_manager_get_dir(info.xdg_system_position);
+    system_dir = getMonitorDirectoryAccordXdgSystemPosition(info.xdg_system_position);
     if (system_dir.isEmpty()) {
         return false;
     }
 
     path = QString("%1/%2").arg(system_dir).arg(info.basename);
-    qDebug() << "_gsp_app_user_equal_system path="<<path;
 
     QSettings setting(path, QSettings::IniFormat);
     setting.setIniCodec("UTF-8");
@@ -961,7 +734,7 @@ bool StartupWorker::_gsp_app_user_equal_system (StartupData info, char **system_
     return true;
 }*/
 
-//void StartupWorker::gsp_key_file_ensure_C_key(QString filename, QString key, QString locale)
+//void StartupWorker::ensureCKeyInDesktopFil(QString filename, QString key, QString locale)
 //{
 //    QSettings setting(filename, QSettings::IniFormat);
 //    setting.setIniCodec("UTF-8");
@@ -982,134 +755,86 @@ bool StartupWorker::_gsp_app_user_equal_system (StartupData info, char **system_
 //    setting.sync();
 //}
 
-
-
-bool StartupWorker::_gsp_app_save(StartupData info)
+bool StartupWorker::saveAppDesktopInfo(StartupData info)
 {
-    char     *use_path;
+    char     *desktop_path;
     GKeyFile *keyfile;
     GError   *error;
 
     /* first check if removing the data from the user dir and using the
      * data from the system dir is enough -- this helps us keep clean the
      * user config dir by removing unneeded files */
-    if (_gsp_app_user_equal_system (info, &use_path)) {//由关闭到开启的转换过程
-//            if (g_file_test(info.path.toStdString().c_str(), G_FILE_TEST_EXISTS)) {
-//                g_remove(info.path.toStdString().c_str());
-//            }
-//            printf("system use_path=%s\n", use_path);///etc/xdg/autostart/indicator-china-weather.desktop
-//            qDebug() << "tttt info.path="<<info.path;///home/lixiang/.config/autostart/indicator-china-weather.desktop
-            QFile file(info.path);
-            if (file.exists()) {
-                file.remove();
-            }
-            std::string formatted_result(make_string(g_strdup(use_path)));
-            info.path = QString::fromStdString(formatted_result);
-            this->updatePath(info.exec, info.path);
-            //printf("start info.xdg_position===%d\n", info.xdg_position);
-            info.xdg_position = info.xdg_system_position;
-            this->updateXdgPosition(info.exec, info.xdg_position);
-            //printf("end info.xdg_position===%d\n", info.xdg_position);
-            _gsp_app_save_done_success(info);
-//            qDebug() << "yyy info.path="<<info.path;///etc/xdg/autostart/indicator-china-weather.desktop
-            return false;
+    if (isDesktopFileInUserAndSystemConfiguDir(info, &desktop_path)) {//由关闭到开启的转换过程
+        QFile file(info.path);
+        if (file.exists()) {
+            file.remove();
+        }
+        std::string formatted_result(make_string(g_strdup(desktop_path)));
+        info.path = QString::fromStdString(formatted_result);
+        this->updatePath(info.exec, info.path);
+        info.xdg_position = info.xdg_system_position;
+        this->updateXdgPosition(info.exec, info.xdg_position);
+        changeSaveFlagsWhenDoneSuccess(info);
+        return false;
     }
+
     //由开启到关闭的转换过程
     if (!info.old_system_path.isEmpty()) {
-        //qDebug() << "111 info.old_system_path="<<info.old_system_path;
-        use_path = g_strdup(info.old_system_path.toStdString().c_str());
+        desktop_path = g_strdup(info.old_system_path.toStdString().c_str());
     }
     else {
-        //qDebug() << "222 info.path="<<info.path;
-        use_path = g_strdup(info.path.toStdString().c_str());
+        desktop_path = g_strdup(info.path.toStdString().c_str());
     }
 
-    //printf("normal use_path=%s\n", use_path);///etc/xdg/autostart/indicator-china-weather.desktop
-    //qDebug() << "~~~~info.path="<<info.path;
     keyfile = g_key_file_new();
-
-    /*if (g_file_test(use_path, G_FILE_TEST_EXISTS)) {
-        qDebug() << "normal use_path exists";
-    }
-    else
-        qDebug() << "normal use_path does not exists";
-
-    QFile file(info.path);
-    if (file.exists()) {
-        qDebug() << "info.path " << info.path << " exists";
-    }
-    else
-        qDebug() << "info.path " << info.path << " does not exists";*/
-
     error = NULL;
     GKeyFileFlags flags;
     flags = G_KEY_FILE_KEEP_COMMENTS | G_KEY_FILE_KEEP_TRANSLATIONS;
-    g_key_file_load_from_file(keyfile, use_path, flags, &error);
-    g_free(use_path);
+    g_key_file_load_from_file(keyfile, desktop_path, flags, &error);
+    g_free(desktop_path);
 
     if (error) {
-        qDebug() << "=======error=======";
-        g_error_free (error);
-        gsp_key_file_populate(keyfile);
+        qDebug() << "=======save app desktop error=======";
+        g_error_free(error);
+        write_default_error_info_to_desktop_file(keyfile);
     }
 
-    //以下操作对文件use_path的内容只做缓存修改处理，修改后的数据不写入文件use_path，而是将改动后的use_path的所有文件内容写入info.path文件中
+    //以下操作对文件desktop_path的内容只做缓存修改处理，修改后的数据不写入文件desktop_path，而是将改动后的desktop_path的所有文件内容写入info.path文件中
     if (info.save_mask & SAVE_MASK_HIDDEN) {
-        qDebug() << "AAA";
-            gsp_key_file_set_boolean (keyfile,
-                                      G_KEY_FILE_DESKTOP_KEY_HIDDEN,
-                                      info.hidden);
+        kylin_start_manager_key_file_set_boolean(keyfile, G_KEY_FILE_DESKTOP_KEY_HIDDEN, info.hidden);
     }
 
     if (info.save_mask & SAVE_MASK_NO_DISPLAY) {
-        qDebug() << "BBB";
-            gsp_key_file_set_boolean (keyfile,
-                                      G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY,
-                                      info.no_display);
+        kylin_start_manager_key_file_set_boolean(keyfile, G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, info.no_display);
     }
 
     if (info.save_mask & SAVE_MASK_ENABLED) {
-        qDebug() << "CCC";
-            gsp_key_file_set_boolean (keyfile,
-                                      KEY_FILE_DESKTOP_KEY_AUTOSTART_ENABLED,
-                                      info.enabled);
+        kylin_start_manager_key_file_set_boolean(keyfile, KEY_FILE_DESKTOP_KEY_AUTOSTART_ENABLED, info.enabled);
     }
 
     if (info.save_mask & SAVE_MASK_NAME) {
-        qDebug() << "DDD";
-            gsp_key_file_set_locale_string (keyfile,
-                                            G_KEY_FILE_DESKTOP_KEY_NAME,
-                                            info.name.toStdString().c_str());
-            gsp_key_file_ensure_C_key (keyfile, G_KEY_FILE_DESKTOP_KEY_NAME);
+        set_locale_string_into_desktop_file(keyfile, G_KEY_FILE_DESKTOP_KEY_NAME, info.name.toStdString().c_str());
+        ensureCKeyInDesktopFil(keyfile, G_KEY_FILE_DESKTOP_KEY_NAME);
     }
     if (info.save_mask & SAVE_MASK_COMMENT) {
-        qDebug() << "EEE";
-            gsp_key_file_set_locale_string (keyfile,
-                                            G_KEY_FILE_DESKTOP_KEY_COMMENT,
-                                            info.comment.toStdString().c_str());
-            gsp_key_file_ensure_C_key (keyfile, G_KEY_FILE_DESKTOP_KEY_COMMENT);
+        set_locale_string_into_desktop_file(keyfile, G_KEY_FILE_DESKTOP_KEY_COMMENT, info.comment.toStdString().c_str());
+        ensureCKeyInDesktopFil(keyfile, G_KEY_FILE_DESKTOP_KEY_COMMENT);
     }
 
     if (info.save_mask & SAVE_MASK_EXEC) {
-        qDebug() << "FFF";
-            gsp_key_file_set_string (keyfile,
-                                     G_KEY_FILE_DESKTOP_KEY_EXEC,
-                                     info.exec.toStdString().c_str());
+        kylin_start_manager_key_file_set_string(keyfile, G_KEY_FILE_DESKTOP_KEY_EXEC, info.exec.toStdString().c_str());
     }
 
-    _gsp_ensure_user_autostart_dir ();
-    if (gsp_key_file_to_file (keyfile, info.path.toStdString().c_str(), NULL)) {//将改动后的use_path的所有文件内容写入info.path文件中
-        _gsp_app_save_done_success(info);
-    } else {
+    ensureUserAutostartupDirExists();
+    if (write_contents_into_desktop_file(keyfile, info.path.toStdString().c_str(), NULL)) {//将改动后的use_path的所有文件内容写入info.path文件中
+        changeSaveFlagsWhenDoneSuccess(info);
+    }
+    else {
         qDebug() << QString("Could not save %1 file").arg(info.path);
     }
-
-    g_key_file_free (keyfile);
+    g_key_file_free(keyfile);
 
     return false;
-
-
-
 
 
 
@@ -1122,7 +847,7 @@ bool StartupWorker::_gsp_app_save(StartupData info)
     //first check if removing the data from the user dir and using the
     //data from the system dir is enough -- this helps us keep clean the
     //user config dir by removing unneeded files
-    if (_gsp_app_user_equal_system(info, use_path, locale)) {
+    if (isDesktopFileInUserAndSystemConfiguDir(info, use_path, locale)) {
         qDebug() << "system use_path="<<use_path;
         QFile file(info.path);
         if (file.exists()) {
@@ -1132,7 +857,7 @@ bool StartupWorker::_gsp_app_save(StartupData info)
         this->updatePath(info.exec, info.path);
         info.xdg_position = info.xdg_system_position;
         this->updateXdgPosition(info.exec, info.xdg_position);
-        _gsp_app_save_done_success(info);
+        changeSaveFlagsWhenDoneSuccess(info);
         return false;
     }
 
@@ -1175,60 +900,50 @@ bool StartupWorker::_gsp_app_save(StartupData info)
     }
     if (info.save_mask & SAVE_MASK_NAME) {
         setting.setValue(QString("%1\[%2\]").arg(KEY_FILE_DESKTOP_KEY_NAME).arg(locale), info.name);
-//        gsp_key_file_ensure_C_key(use_path, KEY_FILE_DESKTOP_KEY_NAME, locale);
+//        ensureCKeyInDesktopFil(use_path, KEY_FILE_DESKTOP_KEY_NAME, locale);
     }
     if (info.save_mask & SAVE_MASK_COMMENT) {
         setting.setValue(QString("%1\[%2\]").arg(KEY_FILE_DESKTOP_KEY_COMMENT).arg(locale), info.comment);
-//        gsp_key_file_ensure_C_key(use_path, KEY_FILE_DESKTOP_KEY_NAME, locale);
+//        ensureCKeyInDesktopFil(use_path, KEY_FILE_DESKTOP_KEY_NAME, locale);
     }
     if (info.save_mask & SAVE_MASK_EXEC) {
         setting.setValue(KEY_FILE_DESKTOP_KEY_EXEC, info.exec);
     }
-    _gsp_ensure_user_autostart_dir();
+    ensureUserAutostartupDirExists();
 
     setting.endGroup();
     setting.sync();
-    _gsp_app_save_done_success(info);
+    changeSaveFlagsWhenDoneSuccess(info);
 
     return false;*/
 }
 
 
-void StartupWorker::_gsp_app_queue_save(StartupData info)
+void StartupWorker::readySaveDesktopInfo(StartupData info)
 {
     /* if the file was not in the user directory, then we'll create a copy
      * there */
-    printf("22222 info.xdg_position===%d\n", info.xdg_position);
     if (info.xdg_position != 0) {//当desktop文件不存在于用户配置目录下时
         info.xdg_position = 0;
         this->updateXdgPosition(info.exec, info.xdg_position);
-        qDebug() << "KK info.path=" << info.path;
         if (info.old_system_path.isEmpty()) {
                 info.old_system_path = info.path;//将desktop文件当前路径记录到old_system_path中
-                qDebug() << "KK 111 info.old_system_path="<<info.old_system_path;
                 this->updateOldSystemPath(info.exec, info.old_system_path);
                 /* if old_system_path was not NULL, then it means we
                  * tried to save and we failed; in that case, we want
                  * to try again and use the old file as a basis again */
         }
-        else
-            qDebug() << "KK 222 info.old_system_path="<<info.old_system_path;
+
         //生成一个用户配置目录的desktop文件路径
         const gchar *config_dir = g_get_user_config_dir();
         std::string formatted_result(make_string(g_strdup(config_dir)));
         QString tmpPath = QString::fromStdString(formatted_result);
-        if (tmpPath.endsWith("/"))
+        if (tmpPath.endsWith(QLatin1String("/")))
             info.path = QString("%1/autostart/%2").arg(tmpPath).arg(info.basename);
         else
             info.path = QString("%1/autostart/%2").arg(tmpPath).arg(info.basename);
-//        QFile file(info.path);
-//        if (file.exists()) {
-//            qDebug() << "WTF Yes";
-//        }
-//        else
-//            qDebug() << "WTF NO";
 
         this->updatePath(info.exec, info.path);
     }
-    _gsp_app_save(info);
+    saveAppDesktopInfo(info);
 }

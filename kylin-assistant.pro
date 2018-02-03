@@ -2,7 +2,8 @@ TEMPLATE = subdirs
 SUBDIRS = \
     src \
     plugins \
-    backends
+    backends \
+    qdbusservice
 
 TRANSLATIONS += \
     src/translation/kylin-assistant_zh_CN.ts \

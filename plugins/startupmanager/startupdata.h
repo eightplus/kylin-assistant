@@ -28,23 +28,21 @@
 #include <QFileSystemWatcher>
 #include <glib.h>
 
-
-class GspXdgDir
-{
-public:
+/*typedef struct {
     QString dir;
     int index;
-    QFileSystemWatcher *wather;
+    QFileSystemWatcher *watcher;
     QStringList fileList;
+} MonitorData;*/
+
+class MonitorData
+{
+public:
+    QString dir;//监控目录
+    int index;
+    QFileSystemWatcher *watcher;//监控器
+    QStringList fileList;//监控目录下的文件列表
 };
-
-//typedef QSharedPointer<GspXdgDir>  GspXdgDirPtr;
-//typedef QList<GspXdgDirPtr>  GspXdgDirPtrList;
-//Q_DECLARE_METATYPE(GspXdgDir)
-//Q_DECLARE_METATYPE(GspXdgDirPtr)
-//Q_DECLARE_METATYPE(GspXdgDirPtrList)
-
-
 
 
 class StartupData/* : public QObject*/

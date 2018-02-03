@@ -28,6 +28,39 @@
 //#include "cameramanager.h"
 #include "../component/threadpool.h"
 #include "dataworker.h"
+#include "../qdbusservice/systemdbus/data/systemdbusproxy.h"
+#include "../qdbusservice/systemdbus/customdata.h"
+#include "../qdbusservice/systemdbus/customdatalist.h"
+
+
+//QDBusPendingCallWatcher *m_getAllPendingCallWatcher;
+//    QDBusError m_lastExtendedError;
+
+//QPointer<Sink> m_defaultSink;
+//if (m_defaultSink) m_defaultSink->deleteLater();
+//m_defaultSink = new Sink("com.deepin.daemon.Audio", path.path(), QDBusConnection::sessionBus(), this);
+//connect(m_defaultSink, &Sink::ActivePortChanged, this, &SoundWorker::activeSinkPortChanged);
+
+//void activeSinkPortChanged(const AudioPort &activeSinkPort);
+//void activeSourcePortChanged(const AudioPort &activeSourcePort);
+//void SoundWorker::activeSinkPortChanged(const AudioPort &activeSinkPort)
+//{
+//    qDebug() << "active sink port changed to: " << activeSinkPort.name;
+//}
+//void SoundWorker::activeSourcePortChanged(const AudioPort &activeSourcePort)
+//{
+//    qDebug() << "active source port changed to: " << activeSourcePort.name;
+//}
+
+
+
+
+
+
+
+
+
+
 
 QString GlobalData::globalarch = ""; // add by hebing, just for transmit var
 
@@ -39,6 +72,9 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
     ,display_count(d_count)
 {
     GlobalData::globalarch = this->arch;
+
+    registerCustomDataMetaType();
+    registerCustomDataListMetaType();
 
     this->osName = accessOSName();
 //    char *dsk;
@@ -218,6 +254,11 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
     this->initAnimation();
 
     this->hide();
+    m_qSystemDbus = new SystemDbusProxy;
+    connect(m_qSystemDbus, &SystemDbusProxy::reportAlert, this, [ = ](int ret, const QString &description) {
+        qDebug() <<"ret="<<ret<<",description="<<description;
+    });
+
     this->startDbusDaemon();
 
     // 添加阴影
@@ -230,6 +271,8 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
 
 MainWindow::~MainWindow()
 {
+    delete m_qSystemDbus;
+
     if (m_dataWorker) {
         m_dataWorker->deleteLater();
     }
@@ -331,7 +374,9 @@ void MainWindow::onInitDataFinished()
 
     this->displayMainWindow();
 
+    qDebug() << "m_qSystemDbus->demoInfo()===="<<m_qSystemDbus->demoInfo();
 
+    qDebug() << m_qSystemDbus->getCustomData().hash;
     //bind setting notify signal
 //    connect(m_dataWorker, SIGNAL(string_value_notify(QString,QString)), setting_widget, SIGNAL(string_value_notify(QString,QString)));
 //    connect(m_dataWorker, SIGNAL(bool_value_notify(QString,bool)), setting_widget, SIGNAL(bool_value_notify(QString,bool)));

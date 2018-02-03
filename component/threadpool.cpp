@@ -36,12 +36,9 @@ ThreadPool *ThreadPool::Instance()
     return &threadPool;
 }
 
-
-
 QThread *ThreadPool::newThread()
 {
     QThread *thread = new QThread;
-//    qDebug() << "add <<<<<<<" << thread;
     thread_pool.push_back(thread);
     return thread;
 }
@@ -52,8 +49,6 @@ void ThreadPool::moveToNewThread(QObject *obj)
     obj->moveToThread(work);
     work->start();
 }
-
-
 
 //QThread *ThreadPool::createNewThread()
 //{

@@ -27,6 +27,8 @@
 #include "filesystemdata.h"
 #include "filesystemworker.h"
 
+#include "filesystemwatcher.h"
+
 FileSystemDialog::FileSystemDialog(QList<bool> toBeDisplayedColumns, QSettings *settings, QWidget *parent)
     :QWidget(parent)
     ,proSettings(settings)
@@ -61,10 +63,18 @@ FileSystemDialog::FileSystemDialog(QList<bool> toBeDisplayedColumns, QSettings *
 
     this->refreshFileSysList();
 
-    //refresh file system info every 5 minutes
+    m_fileSystemWatcher = FileSystemWatcher::instance();
+    connect(m_fileSystemWatcher, &FileSystemWatcher::deviceAdded, this, [=] (const QString &dev) {
+        this->refreshFileSysList();
+    });
+    connect(m_fileSystemWatcher, &FileSystemWatcher::deviceRemoved, this, [=] (const QString &dev) {
+        this->refreshFileSysList();
+    });
+
+    //refresh file system info every 10 minutes
     m_timer = new QTimer(this);
     connect(m_timer,SIGNAL(timeout()),this,SLOT(refreshFileSysList()));
-    m_timer->start(5000);
+    m_timer->start(10000);
 }
 
 FileSystemDialog::~FileSystemDialog()
@@ -89,9 +99,7 @@ FileSystemDialog::~FileSystemDialog()
 
 void FileSystemDialog::refreshFileSysList()
 {
-
     m_fileSystemWorker->onFileSystemListChanged();
-
 
     QList<FileSystemListItem*> items;
     for (FileSystemData *info : m_fileSystemWorker->diskInfoList()) {

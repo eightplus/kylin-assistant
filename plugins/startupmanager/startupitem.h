@@ -25,7 +25,7 @@
 #include <QLabel>
 #include <QListWidgetItem>
 
-class KylinSwitcher;
+class MySwitcher;
 class StartupData;
 
 class StartupItem : public QWidget
@@ -41,9 +41,10 @@ public:
 
     void setItemHovered();
     void unsetItemHovered();
+    void setSwitcherOn(const bool b);
 
 signals:
-    void changeStartup(const QString &exec, bool active);
+    void changeStartup(const QString &exec, const bool active);
     void enter();
 
 protected:
@@ -58,8 +59,7 @@ private:
     QLabel *m_appIcon = nullptr;
     QLabel *m_appNameLabel = nullptr;
     QLabel *m_appDescLabel = nullptr;
-    KylinSwitcher *switcher = nullptr;
-
+    MySwitcher *switcher = nullptr;
     QWidget *m_labelWidget = nullptr;
 
     QHBoxLayout *m_switchLayout = nullptr;

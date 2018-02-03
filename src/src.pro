@@ -110,8 +110,6 @@ SOURCES += main.cpp\
     ../dbusproxy/youkersessiondbus.cpp \
     ../info/devicemanager.cpp \
     ../component/settingaction.cpp \
-    autostartwidget.cpp \
-    ../component/autogroup.cpp \
     kthread.cpp \
     aboutdialog.cpp \
     ../cleaner/cleanlistwidget.cpp \
@@ -128,7 +126,11 @@ SOURCES += main.cpp\
     ../component/normalcard.cpp \
     shadowwidget.cpp \
     ../component/basewidget.cpp \
-    dataworker.cpp
+    dataworker.cpp \
+    ../qdbusservice/systemdbus/data/systemdbusproxy.cpp \
+    ../qdbusservice/systemdbus/data/systeminterface.cpp \
+    ../qdbusservice/systemdbus/customdata.cpp \
+    ../qdbusservice/systemdbus/customdatalist.cpp
 
 HEADERS  += mainwindow.h \
     kpplication.h \
@@ -197,8 +199,6 @@ HEADERS  += mainwindow.h \
     ../dbusproxy/youkersessiondbus.h \
     ../info/devicemanager.h \
     ../component/settingaction.h \
-    autostartwidget.h \
-    ../component/autogroup.h \
     kthread.h \
     aboutdialog.h \
     ../cleaner/cleanlistwidget.h \
@@ -215,13 +215,16 @@ HEADERS  += mainwindow.h \
     ../component/normalcard.h \
     shadowwidget.h \
     ../component/basewidget.h \
-    dataworker.h
+    dataworker.h \
+    ../qdbusservice/systemdbus/data/systemdbusproxy.h \
+    ../qdbusservice/systemdbus/data/systeminterface.h \
+    ../qdbusservice/systemdbus/data/systemdbushandler.h \
+    ../qdbusservice/systemdbus/customdata.h \
+    ../qdbusservice/systemdbus/customdatalist.h
 
 FORMS    += \
     ../component/quibo.ui \
     ../component/alertdialog.ui \
-    autostartwidget.ui \
-#    aboutdialog.ui \
     ../cleaner/cleanlistwidget.ui \
     ../cleaner/cleanerdetailwidget.ui \
     ../component/itemcard.ui \

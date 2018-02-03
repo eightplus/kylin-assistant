@@ -18,14 +18,20 @@
  */
 
 #include <glib.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include <iostream>
 #include <map>
 #include <QString>
+#include <QSet>
+#include <QFile>
+#include <QTextStream>
 #include <QObject>
 #include <QPainter>
 
 #define MONITOR_TITLE_WIDGET_HEIGHT 77
 #define TITLE_WIDGET_HEIGHT 39
+#define DEVICE_MOUNT_PONINT_RECORD_FILE "/proc/mounts"
 
 using std::string;
 
@@ -39,3 +45,6 @@ QString formatUnitSize(double v, const char** orders, int nb_orders);
 QString formatByteCount(double v);
 void setFontSize(QPainter &painter, int textSize);
 QString formatDurationForDisplay(unsigned centiseconds);
+QString getDeviceMountedPointPath(const QString &line);
+QString getFileContent(const QString &filePath);
+QSet<QString> getFileContentsLineByLine(const QString &filePath);

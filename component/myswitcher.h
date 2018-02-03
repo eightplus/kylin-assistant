@@ -17,32 +17,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STARTUPTITLEWIDGET_H
-#define STARTUPTITLEWIDGET_H
+#ifndef MYSWITCHER_H
+#define MYSWITCHER_H
 
 #include <QFrame>
-#include <QTimer>
+#include <QPixmap>
 
-class QHBoxLayout;
-
-class StartupTitleWidget : public QFrame
+class MySwitcher : public QFrame
 {
     Q_OBJECT
-public:
-    StartupTitleWidget(QWidget *parent);
-    ~StartupTitleWidget();
-    void initLeftContent();
-    void initRightContent();
-    void initWidgets();
 
-//protected:
-//    void paintEvent(QPaintEvent *e) override;
+public:
+    explicit MySwitcher(QWidget *parent = 0);
+
+    bool isOn() const;
+
+public slots:
+    void setOnStatus(bool b);
+
+signals:
+    void statusChanged(bool b);
+
+protected:
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
 private:
-//    QColor m_topBorderColor;
-    QHBoxLayout *m_layout;
-    QHBoxLayout *m_lLayout;
-    QHBoxLayout *m_rLayout;
+    bool m_isOn;
+    QPixmap m_onImage;
+    QPixmap m_offImage;
 };
 
-#endif // STARTUPTITLEWIDGET_H
+#endif // MYSWITCHER_H

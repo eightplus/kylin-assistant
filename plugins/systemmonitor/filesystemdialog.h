@@ -23,10 +23,9 @@
 #include <QFileSystemWatcher>
 #include "filesystemlistwidget.h"
 
-//class DiskItemList;
-//class DiskModel;
 class FileSystemData;
 class FileSystemWorker;
+class FileSystemWatcher;
 class QVBoxLayout;
 class QHBoxLayout;
 
@@ -38,7 +37,7 @@ public:
     explicit FileSystemDialog(QList<bool> toBeDisplayedColumns, QSettings *settings, QWidget* parent = 0);
     ~FileSystemDialog();
 
-    FileSystemListWidget* getFileSysView();
+    FileSystemListWidget *getFileSysView();
     void initFileSystemMonitor();
 
 public slots:
@@ -53,9 +52,6 @@ signals:
 //    bool event(QEvent *event);
 
 private:
-//    QVBoxLayout *m_centralLayout = nullptr;
-//    DiskItemList *m_diskItemList;
-//    DiskModel *m_diskModelList;
     FileSystemWorker *m_fileSystemWorker = nullptr;
 //    QFileSystemWatcher *m_fileSystemMonitor = nullptr;
 //    QString m_monitorFile;
@@ -65,4 +61,5 @@ private:
     QMenu *m_menu = nullptr;
     QVBoxLayout *m_layout = nullptr;
     QTimer *m_timer = nullptr;
+    FileSystemWatcher *m_fileSystemWatcher = nullptr;
 };

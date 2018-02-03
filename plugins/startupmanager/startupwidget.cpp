@@ -40,7 +40,7 @@ QDataStream &operator<<(QDataStream &dataStream, const StartupDataPtr &object)
     auto ptrval = reinterpret_cast<qulonglong>(ptr);
     auto var = QVariant::fromValue(ptrval);
     dataStream << var;
-    return  dataStream;
+    return dataStream;
 }
 
 QDataStream &operator>>(QDataStream &dataStream, StartupDataPtr &object)
@@ -53,25 +53,6 @@ QDataStream &operator>>(QDataStream &dataStream, StartupDataPtr &object)
     return dataStream;
 }
 
-//QDataStream &operator<<(QDataStream &dataStream, const GspXdgDirPtr &object)
-//{
-//    auto ptr = object.data();
-//    auto ptrval = reinterpret_cast<qulonglong>(ptr);
-//    auto var = QVariant::fromValue(ptrval);
-//    dataStream << var;
-//    return  dataStream;
-//}
-
-//QDataStream &operator>>(QDataStream &dataStream, GspXdgDirPtr &object)
-//{
-//    QVariant var;
-//    dataStream >> var;
-//    qulonglong ptrval = var.toULongLong();
-//    auto ptr = reinterpret_cast<GspXdgDir *>(ptrval);
-//    object = GspXdgDirPtr(ptr);
-//    return dataStream;
-//}
-
 StartupWidget::StartupWidget(QWidget *parent)
     : QFrame(parent)
     , mousePressed(false)
@@ -80,12 +61,6 @@ StartupWidget::StartupWidget(QWidget *parent)
     qRegisterMetaTypeStreamOperators<StartupDataPtr>();
     qRegisterMetaType<StartupDataPtrList>();
     qRegisterMetaType<QList<StartupData>>();
-
-
-//    qRegisterMetaType<GspXdgDirPtr>();
-//    qRegisterMetaTypeStreamOperators<GspXdgDirPtr>();
-//    qRegisterMetaType<GspXdgDirPtrList>();
-//    qRegisterMetaType<QList<GspXdgDir>>();
 
     this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);//去掉边框
     this->setAttribute(Qt::WA_TranslucentBackground);//背景透明
@@ -96,17 +71,18 @@ StartupWidget::StartupWidget(QWidget *parent)
     this->setFixedSize(500, 645);
 
     m_titleWidget = new StartupTitleWidget(this);
-    m_titleWidget->setFixedSize(this->width(), 39);
+    m_titleWidget->setFixedSize(this->width() - 2, 39);
 
     m_layout = new QVBoxLayout();
     m_layout->setSpacing(0);
     m_layout->setMargin(0);
-    m_layout->setContentsMargins(0,0,0,0);
-    setLayout(m_layout);
+    m_layout->setContentsMargins(1,1,1,1);
 
     m_startupView = new StartupListWidget(this);
     m_layout->addWidget(m_titleWidget, 0, Qt::AlignTop);
     m_layout->addWidget(m_startupView, 0, Qt::AlignHCenter);
+
+    this->setLayout(m_layout);
 
     this->moveCenter();
 }
@@ -147,16 +123,6 @@ void StartupWidget::closeEvent(QCloseEvent *event)
     event->accept();
 }
 
-void StartupWidget::paintEvent(QPaintEvent *)
-{
-    QPainter painter(this);
-
-    QPainterPath path;
-    path.addRect(QRectF(rect()));
-    painter.setOpacity(1);
-    painter.fillPath(path, QColor("#FFFFFF"));
-}
-
 void StartupWidget::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
@@ -183,3 +149,25 @@ void StartupWidget::mouseMoveEvent(QMouseEvent *event)
 
     QFrame::mouseMoveEvent(event);
 }
+
+void StartupWidget::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+
+    //绘制圆角矩形
+    painter.setPen(QPen(QColor("#0d87ca"), 0));//边框颜色 #3f96e4
+    painter.setBrush(QColor("#e9eef0"));//背景色
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setOpacity(1);
+    QRectF r(0 / 2.0, 0 / 2.0, width() - 0, height() - 0);//左边 上边 右边 下边
+    painter.drawRoundedRect(r, 4, 4);
+
+    //绘制背景色
+//    QPainterPath path;
+//    path.addRect(QRectF(rect()));
+//    painter.setOpacity(1);
+//    painter.fillPath(path, QColor("#ffffff"));
+
+    QFrame::paintEvent(event);
+}
+

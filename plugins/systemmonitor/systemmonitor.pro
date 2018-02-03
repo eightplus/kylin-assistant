@@ -64,7 +64,8 @@ HEADERS += \
     resourcesindicator.h \
     resourcescategory.h \
     filesystemlistwidget.h \
-    filesystemlistitem.h
+    filesystemlistitem.h \
+    filesystemwatcher.h
 
 SOURCES += \
     systemmonitor.cpp \
@@ -100,7 +101,8 @@ SOURCES += \
     resourcesindicator.cpp \
     resourcescategory.cpp \
     filesystemlistwidget.cpp \
-    filesystemlistitem.cpp
+    filesystemlistitem.cpp \
+    filesystemwatcher.cpp
 
 OTHER_FILES += \
     systemmonitor.json

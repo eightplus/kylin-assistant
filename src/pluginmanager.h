@@ -9,7 +9,7 @@ private:
     ~PluginManager();
 
 public:
-    static PluginManager* Instance();
+    static PluginManager *Instance();
     bool loadPlugin(QString plugin_path);
     bool unloadPlugin(QString plugin_guid);
 

@@ -2,6 +2,8 @@
 #
 # Project created by QtCreator 2015-01-26T09:16:38
 #
+# Functional code references "gnome-session" (gnome-session-properties)
+#
 #-------------------------------------------------
 
 QT += core
@@ -35,7 +37,7 @@ HEADERS += \
     ../widgets/mytristatebutton.h \
     startuplistwidget.h \
     startupitem.h \
-    ../../component/kylinswitcher.h \
+    ../../component/myswitcher.h \
     startupworker.h \
     startupdata.h \
     util.h
@@ -47,9 +49,8 @@ SOURCES += \
     ../widgets/mytristatebutton.cpp \
     startuplistwidget.cpp \
     startupitem.cpp \
-    ../../component/kylinswitcher.cpp \
+    ../../component/myswitcher.cpp \
     startupworker.cpp \
-#    startupdata.cpp \
     util.cpp
 
 OTHER_FILES += \

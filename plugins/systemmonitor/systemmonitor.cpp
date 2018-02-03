@@ -91,14 +91,14 @@ SystemMonitor::~SystemMonitor()
 void SystemMonitor::resizeEvent(QResizeEvent *e)
 {
     if (m_titleWidget) {
-        m_titleWidget->resize(width(), MONITOR_TITLE_WIDGET_HEIGHT);
+        m_titleWidget->resize(width() - 2, MONITOR_TITLE_WIDGET_HEIGHT);
         if (e->oldSize()  != e->size()) {
             emit m_titleWidget->updateMaxBtn();
         }
     }
     if (m_sysMonitorStack) {
-        m_sysMonitorStack->resize(width(), this->height() - MONITOR_TITLE_WIDGET_HEIGHT);
-        m_sysMonitorStack->move(0, MONITOR_TITLE_WIDGET_HEIGHT);
+        m_sysMonitorStack->resize(width() - 2, this->height() - MONITOR_TITLE_WIDGET_HEIGHT - 2);
+        m_sysMonitorStack->move(1, MONITOR_TITLE_WIDGET_HEIGHT + 1);
     }
 }
 
@@ -210,8 +210,8 @@ void SystemMonitor::initPanelStack()
     m_sysMonitorStack = new QStackedWidget(this);
     m_sysMonitorStack->setStyleSheet("QStackedWidget{background: rgb(255, 255, 255);}");
     m_sysMonitorStack->setObjectName("SystemMonitorStack");
-    m_sysMonitorStack->resize(width(), this->height() - TITLE_WIDGET_HEIGHT);
-    m_sysMonitorStack->move(0, TITLE_WIDGET_HEIGHT);
+    m_sysMonitorStack->resize(width() - 2, this->height() - TITLE_WIDGET_HEIGHT);
+    m_sysMonitorStack->move(1, TITLE_WIDGET_HEIGHT);
 
     m_sysMonitorStack->setMouseTracking(false);
     m_sysMonitorStack->installEventFilter(this);
@@ -236,8 +236,8 @@ void SystemMonitor::initPanelStack()
 void SystemMonitor::initTitleWidget()
 {
     m_titleWidget = new MonitorTitleWidget(proSettings, this);
-    m_titleWidget->resize(width(), MONITOR_TITLE_WIDGET_HEIGHT);
-    m_titleWidget->move(0, 0);
+    m_titleWidget->resize(width() - 2, MONITOR_TITLE_WIDGET_HEIGHT);
+    m_titleWidget->move(1, 1);
 }
 
 void SystemMonitor::initConnections()
@@ -368,12 +368,13 @@ void SystemMonitor::paintEvent(QPaintEvent *event)
 //    painter.setOpacity(1);
 //    painter.fillPath(path, QColor("#FFFFFF"));
 
-    //绘制圆角矩形
-    painter.setPen(QPen(QColor("#e9eef0"), 0));//边框颜色   QColor(255, 255, 255, 153)
-    painter.setBrush(QColor("#ffffff"));//背景色   #0d87ca
+
+    painter.setPen(QPen(QColor("#0d87ca"), 0));//边框颜色 #3f96e4
+    painter.setBrush(QColor("#e9eef0"));//背景色
+    painter.setRenderHint(QPainter::Antialiasing, true);
     painter.setOpacity(1);
-    QRectF r(1, 1, width() - 2, height() - 2);//左边 上边 右边 下边
-    painter.drawRoundedRect(r, 5, 5);
+    QRectF r(0 / 2.0, 0 / 2.0, width() - 0, height() - 0);//左边 上边 右边 下边
+    painter.drawRoundedRect(r, 4, 4);
 
     QFrame::paintEvent(event);
 }

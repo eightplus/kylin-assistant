@@ -21,49 +21,11 @@
 #ifndef STARTUPWORKER_H
 #define STARTUPWORKER_H
 
+#include "startupdata.h"
+
 #include <QObject>
 #include <QMap>
 #include <QFileSystemWatcher>
-
-#include "startupdata.h"
-
-#define KEY_FILE_DESKTOP_GROUP "Desktop Entry"
-#define KEY_FILE_DESKTOP_KEY_HIDDEN "Hidden"
-#define KEY_FILE_DESKTOP_KEY_NO_DISPLAY "NoDisplay"
-#define KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN "OnlyShowIn"
-#define KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN "NotShowIn"
-#define KEY_FILE_DESKTOP_KEY_AUTOSTART_ENABLED "X-GNOME-Autostart-enabled"
-#define KEY_FILE_DESKTOP_KEY_NAME "Name"
-#define KEY_FILE_DESKTOP_KEY_EXEC "Exec"
-#define KEY_FILE_DESKTOP_KEY_TRY_EXEC "TryExec"
-#define KEY_FILE_DESKTOP_KEY_COMMENT "Comment"
-#define KEY_FILE_DESKTOP_KEY_ICON "Icon"
-#define KEY_FILE_DESKTOP_KEY_TYPE "Type"
-#define KEY_FILE_DESKTOP_TYPE_APPLICATION "Application"
-#define KEY_FILE_DESKTOP_TYPE_LINK "Link"
-#define KEY_FILE_DESKTOP_KEY_URL "URL"
-#define KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY "StartupNotify"
-#define KEY_FILE_DESKTOP_KEY_CATEGORIES "Categories"
-#define KEY_FILE_DESKTOP_KEY_MIME_TYPE "MimeType"
-#define KEY_FILE_DESKTOP_KEY_TERMINAL "Terminal"
-#define KEY_FILE_DESKTOP_TYPE_DIRECTORY "Directory"
-
-
-#define SAVE_MASK_HIDDEN     0x0001
-#define SAVE_MASK_ENABLED    0x0002
-#define SAVE_MASK_NAME       0x0004
-#define SAVE_MASK_EXEC       0x0008
-#define SAVE_MASK_COMMENT    0x0010
-#define SAVE_MASK_NO_DISPLAY 0x0020
-#define SAVE_MASK_ALL        0xffff
-
-/*typedef struct {
-        QString dir;
-        int index;
-        QFileSystemWatcher *wather;
-        QStringList fileList;
-//        GFileMonitor *monitor;
-} GspXdgDir;*/
 
 class StartupWorker : public QObject
 {
@@ -72,6 +34,7 @@ class StartupWorker : public QObject
 public:
     explicit StartupWorker(QObject *parent = 0);
     ~StartupWorker();
+
     void newStartupInfo(const QString &desktopFile, unsigned int xdg_position);
     bool isExecContains(const QString &exec);
     QList<StartupData> getStartupInfoList() const;
@@ -82,8 +45,6 @@ public:
     void updateGspXdgDir(const QString &dir, QStringList fileList);
     QString getStringValueAccordKeyFromDesktopFile(const gchar *key, const QString &desktopFile, bool isLocale = false);
 
-//    void gsp_key_file_ensure_C_key(QString filename, QString key, QString locale);
-
     void updateEnable(const QString &exec, bool enabled);
     void updateSaveMask(const QString &exec, unsigned int save_mask);
     void updateXdgPosition(const QString &exec, unsigned int xdg_position);
@@ -91,26 +52,25 @@ public:
     void updateOldSystemPath(const QString &exec, QString old_system_path);
     void updatePath(const QString &exec, QString path);
 
-    void appendXdgDirData(GspXdgDir xdgDir);
+    void appendMonitorXdgDirData(MonitorData monitorData);
     int getDirIndex(QString dir);
-    QString gsp_app_manager_get_dir(unsigned int index);
-    QList<GspXdgDir> getAllDirs() { /*return dirs;*/ return this->m_xdgMap.values(); }
+    QString getMonitorDirectoryAccordXdgSystemPosition(unsigned int index);
+    QList<MonitorData> getAllDirs() { /*return m_monitorList;*/ return this->m_xdgMap.values(); }
 
-    void _gsp_ensure_user_autostart_dir(void);
-    void _gsp_app_save_done_success (StartupData info);
-//    bool _gsp_app_user_equal_system (StartupData info, QString &system_path, QString locale);
-    bool _gsp_app_user_equal_system (StartupData info, char **system_path);
-    bool _gsp_app_save(StartupData info);
-    void _gsp_app_queue_save(StartupData info);
-    StartupData gsp_app_manager_find_app_with_basename(QString &basename);
+    void ensureUserAutostartupDirExists(void);
+    void changeSaveFlagsWhenDoneSuccess (StartupData info);
+//    bool isDesktopFileInUserAndSystemConfiguDir (StartupData info, QString &system_path, QString locale);//Qt
+    bool isDesktopFileInUserAndSystemConfiguDir (StartupData info, char **system_path);//glibc
+    bool saveAppDesktopInfo(StartupData info);
+    void readySaveDesktopInfo(StartupData info);
+    StartupData getAppStartupDataAccrodDesktopFileName(QString &basename);
 
 signals:
     void refreshUI();
 
 private:
     QMap<QString, StartupData> m_startupInfoList;
-    QList<GspXdgDir> dirs;
-    QMap<QString, GspXdgDir> m_xdgMap;
+    QMap<QString, MonitorData> m_xdgMap;//QList<MonitorData> m_monitorList;
 };
 
 #endif // STARTUPWORKER_H

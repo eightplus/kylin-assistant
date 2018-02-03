@@ -34,7 +34,7 @@ StartupTitleWidget::StartupTitleWidget(QWidget *parent)
     setMouseTracking(true);
     setFixedHeight(39);
 
-    m_topBorderColor = QColor(255, 255, 255, 153);
+//    m_topBorderColor = QColor(255, 255, 255, 153);
     this->setAutoFillBackground(true);
     QPalette palette;
     palette.setColor(QPalette::Background, QColor("#0d87ca"));
@@ -61,7 +61,7 @@ StartupTitleWidget::~StartupTitleWidget()
     delete m_layout;
 }
 
-void StartupTitleWidget::paintEvent(QPaintEvent *e)
+/*void StartupTitleWidget::paintEvent(QPaintEvent *e)
 {
 
     QFrame::paintEvent(e);
@@ -76,7 +76,7 @@ void StartupTitleWidget::paintEvent(QPaintEvent *e)
     tPath.lineTo(QPointF(x() + width(), y() + borderHeight - 0.5));
     p.setPen(QPen(tc));
     p.drawPath(tPath);
-}
+}*/
 
 void StartupTitleWidget::initLeftContent()
 {

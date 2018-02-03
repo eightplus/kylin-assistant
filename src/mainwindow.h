@@ -56,6 +56,8 @@ class ShadowWidget;
 //#include "cameramanager.h"
 
 class DataWorker;
+class SystemDbusProxy;
+class SessionDbusProxy;
 
 //class MainWindow : public QDialog
 class MainWindow : public QMainWindow
@@ -174,7 +176,8 @@ private:
 
 
 
-    DataWorker *m_dataWorker;
+    DataWorker *m_dataWorker = nullptr;
+    SystemDbusProxy *m_qSystemDbus = nullptr;
 };
 
 class GlobalData // define by hebing,just for transmit var

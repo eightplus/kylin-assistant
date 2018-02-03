@@ -262,3 +262,30 @@ QString formatByteCount(double v)
     return formatUnitSize(v, orders, sizeof(orders)/sizeof(orders[0]));
 }
 
+QString getDeviceMountedPointPath(const QString &line)
+{
+    const QStringList items = line.split(" ");
+    if (items.length() > 4) {
+        return items.at(1);
+    }
+    else {
+        return "";
+    }
+}
+
+QString getFileContent(const QString &filePath)
+{
+    QFile fd(filePath);
+    QString fileContent = "";
+    if (fd.open(QFile::ReadOnly)) {
+        fileContent = QLatin1String(fd.readAll());
+        fd.close();
+    }
+    return fileContent;
+}
+
+QSet<QString> getFileContentsLineByLine(const QString &filePath)
+{
+    QString fileContent = getFileContent(filePath);
+    return QSet<QString>::fromList(fileContent.split("\n"));
+}
