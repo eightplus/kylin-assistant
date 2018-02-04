@@ -173,11 +173,7 @@ private:
 //    QStringList skinlist;
     ShadowWidget *shadow_widget;
     int display_count;
-
-
-
     DataWorker *m_dataWorker = nullptr;
-    SystemDbusProxy *m_qSystemDbus = nullptr;
 };
 
 class GlobalData // define by hebing,just for transmit var

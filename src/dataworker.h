@@ -23,6 +23,10 @@
 #include <QScopedPointer>
 #include <QDBusInterface>
 
+#include "../qdbusservice/systemdbus/data/systemdbusproxy.h"
+#include "../qdbusservice/systemdbus/customdata.h"
+#include "../qdbusservice/systemdbus/customdatalist.h"
+
 class QTimer;
 class SessionDispatcher;
 class SystemDispatcher;
@@ -328,9 +332,10 @@ signals:
     void sendFileManagerData(bool locationReplacePathbar, bool autoMountMedia, bool autoOpenFolder, bool promptAutorunPrograms, int thumbnailIconSize, int thumbnailCacheTime, int thumbnailCacheSize);
 
 private:
-    QDBusInterface *iface = nullptr;
-    SessionDispatcher *sessioninterface = nullptr;
-    SystemDispatcher *systeminterface = nullptr;
+    QDBusInterface *m_powerIface = nullptr;
+    SessionDispatcher *m_sessionInterface = nullptr;
+    SystemDispatcher *m_systemInterface = nullptr;
+    SystemDbusProxy *m_qSystemDbus = nullptr;
     QString desktop;
 
     bool m_existBattery;

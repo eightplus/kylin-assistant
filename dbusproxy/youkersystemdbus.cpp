@@ -48,7 +48,6 @@ SystemDispatcher::~SystemDispatcher() {
         clean_thread = NULL;
     }
 
-    qDebug() << "system dbus destroy..............";
     this->exit_qt();
     if (systemiface != NULL) {
         delete systemiface;

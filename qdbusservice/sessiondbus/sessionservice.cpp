@@ -36,7 +36,6 @@ SessionService::~SessionService()
     this->exitService();
 }
 
-
 QString SessionService::demoInfo()
 {
     return "QtSessionDbus";

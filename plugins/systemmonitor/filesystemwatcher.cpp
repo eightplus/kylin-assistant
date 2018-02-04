@@ -66,6 +66,7 @@ bool FileSystemWatcher::clearWatcher()
         return false;
     }
 }
+
 void FileSystemWatcher::onMountDeviceFileContentsChanged()
 {
     QSet<QString> nowFileSet = getFileContentsLineByLine(DEVICE_MOUNT_PONINT_RECORD_FILE);

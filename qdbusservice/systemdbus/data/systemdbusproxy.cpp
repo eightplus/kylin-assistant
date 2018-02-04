@@ -18,6 +18,7 @@ SystemDbusProxy::SystemDbusProxy(QObject *parent) :
 
 SystemDbusProxy::~SystemDbusProxy()
 {
+    this->exitService();
     m_handler->deleteLater();
 }
 

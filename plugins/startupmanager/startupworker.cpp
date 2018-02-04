@@ -33,106 +33,12 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QDirIterator>
+#include <QSet>
 
 #include <glib.h>
 #include <sys/stat.h>
 #include <string.h>
 #include "util.h"
-
-
-
-
-
-
-//#include <gio/gio.h>
-//static gboolean
-//gsp_app_manager_xdg_dir_monitor (GFileMonitor      *monitor,
-//                                 GFile             *child,
-//                                 GFile             *other_file,
-//                                 GFileMonitorEvent  flags,
-//                                 gpointer           data)
-//{
-////        GspAppManager *manager;
-////        GspApp        *old_app;
-////        GspApp        *app;
-//        GFile         *parent;
-//        char          *basename;
-//        char          *dir;
-//        char          *path;
-//        int            index;
-
-//        manager = GSP_APP_MANAGER (data);
-
-//        basename = g_file_get_basename (child);
-//        if (!g_str_has_suffix (basename, ".desktop")) {
-//                /* not a desktop file, we can ignore */
-//                g_free (basename);
-//                return TRUE;
-//        }
-//        old_app = getAppStartupDataAccrodDesktopFileName (manager, basename);
-
-//        parent = g_file_get_parent (child);
-//        dir = g_file_get_path (parent);
-//        g_object_unref (parent);
-
-//        index = gsp_app_manager_get_dir_index (manager, dir);
-//        if (index < 0) {
-//                /* not a directory we know; should never happen, though */
-//                g_free (dir);
-//                return TRUE;
-//        }
-
-//        path = g_file_get_path (child);
-//        switch (flags) {
-//        case G_FILE_MONITOR_EVENT_CHANGED:
-//        case G_FILE_MONITOR_EVENT_CREATED:
-//                /* we just do as if it was a new file: GspApp is clever enough
-//                 * to do the right thing */
-//                app = gsp_app_new (path, (unsigned int) index);
-
-//                /* we didn't have this app before, so add it */
-//                if (old_app == NULL && app != NULL) {
-//                        gsp_app_manager_add (manager, app);
-//                        g_object_unref (app);
-//                }
-//                /* else: it was just updated, GspApp took care of
-//                 * sending the event */
-//                break;
-//        case G_FILE_MONITOR_EVENT_DELETED:
-//                if (!old_app) {
-//                        /* it got deleted, but we don't know about it, so
-//                         * nothing to do */
-//                        break;
-//                }
-
-//                _gsp_app_manager_handle_delete (manager, old_app,
-//                                                basename, index);
-//                break;
-//        default:
-//                break;
-//        }
-
-//        g_free (path);
-//        g_free (dir);
-//        g_free (basename);
-
-//        return TRUE;
-//}
-
-//GFile      *file;
-//GDir       *dir;
-//const char *name;
-//file = g_file_new_for_path (xdgdir->dir);
-//GFileMonitor *monitor;
-//monitor = g_file_monitor_directory (file, G_FILE_MONITOR_NONE, NULL, NULL);
-//g_object_unref (file);
-//if (monitor) {
-//    g_signal_connect (monitor, "changed", G_CALLBACK (gsp_app_manager_xdg_dir_monitor), manager);
-//}
-//g_file_monitor_cancel (monitor);
-//g_object_unref (monitor);
-//monitor = NULL;
-
 
 void ensureCKeyInDesktopFil (GKeyFile   *keyfile, const char *key)
 {
@@ -143,15 +49,15 @@ void ensureCKeyInDesktopFil (GKeyFile   *keyfile, const char *key)
          * This is so that if the user logs into another locale they get their
          * own description there rather then empty. It is not the C locale
          * however, but the user created this entry herself so it's OK */
-        C_value = kylin_start_manager_key_file_get_string (keyfile, key);
+        C_value = kylin_start_manager_key_file_get_string(keyfile, key);
         if (C_value == NULL || C_value [0] == '\0') {
-                buffer = kylin_start_manager_key_file_get_locale_string (keyfile, key);
-                if (buffer) {
-                        kylin_start_manager_key_file_set_string (keyfile, key, buffer);
-                        g_free (buffer);
-                }
+            buffer = kylin_start_manager_key_file_get_locale_string(keyfile, key);
+            if (buffer) {
+                kylin_start_manager_key_file_set_string(keyfile, key, buffer);
+                g_free(buffer);
+            }
         }
-        g_free (C_value);
+        g_free(C_value);
 }
 
 inline QString getCurrentDesktopEnvironment()
@@ -320,12 +226,37 @@ StartupData StartupWorker::getAppStartupDataAccrodDesktopFileName(QString &basen
     return StartupData();
 }
 
+/*
+ * dir:被监控的目录      fileList:被监控目录下的文件列表
+*/
 void StartupWorker::updateGspXdgDir(const QString &dir, QStringList fileList)
 {
     if (this->m_xdgMap.keys().contains(dir)) {
+        QSet<QString> nowAutoStartSet = QSet<QString>::fromList(fileList);
+        //canel auto start, add the desktop file to user config dir
+        for(const QString &startupItem: nowAutoStartSet - QSet<QString>::fromList(this->m_xdgMap.value(dir).fileList)) {
+            //qDebug() << "Add startupItem===="<<startupItem;
+            this->newStartupInfo(startupItem, this->m_xdgMap.value(dir).index);
+        }
+
+        //start auto start, remove the desktop file which in user config dir
+        for(const QString &startupItem: QSet<QString>::fromList(this->m_xdgMap.value(dir).fileList) - nowAutoStartSet) {
+            //qDebug() << "Removed startupItem===="<<startupItem;
+            StartupData info = getStartupInfoAccordDestkopFile(startupItem);
+            if (info.exec.isEmpty() && info.name.isEmpty())
+                continue;
+            info.enabled = true;
+            info.save_mask |= SAVE_MASK_ENABLED;
+            this->updateEnable(info.exec, info.enabled);
+            this->updateSaveMask(info.exec, info.save_mask);
+            this->readySaveDesktopInfo(info);
+        }
+
+        /*
         //start auto start, remove the desktop file which in user config dir
         foreach (QString orgFileAbsPath, this->m_xdgMap.value(dir).fileList) {
             if (!fileList.contains(orgFileAbsPath)) {
+                qDebug() << "had removed orgFileAbsPath="<<orgFileAbsPath;
                 //had removed
                 StartupData info = getStartupInfoAccordDestkopFile(orgFileAbsPath);
                 if (info.exec.isEmpty() && info.name.isEmpty())
@@ -342,9 +273,11 @@ void StartupWorker::updateGspXdgDir(const QString &dir, QStringList fileList)
         foreach (QString nowFileAbsPath, fileList) {
             if (!this->m_xdgMap[dir].fileList.contains(nowFileAbsPath)) {
                 //new added
+                qDebug() << "add new nowFileAbsPath="<<nowFileAbsPath;
                 this->newStartupInfo(nowFileAbsPath, this->m_xdgMap.value(dir).index);
             }
         }
+        */
 
         this->m_xdgMap[dir].fileList.clear();
         this->m_xdgMap[dir].fileList = fileList;

@@ -28,10 +28,6 @@
 //#include "cameramanager.h"
 #include "../component/threadpool.h"
 #include "dataworker.h"
-#include "../qdbusservice/systemdbus/data/systemdbusproxy.h"
-#include "../qdbusservice/systemdbus/customdata.h"
-#include "../qdbusservice/systemdbus/customdatalist.h"
-
 
 //QDBusPendingCallWatcher *m_getAllPendingCallWatcher;
 //    QDBusError m_lastExtendedError;
@@ -254,11 +250,6 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
     this->initAnimation();
 
     this->hide();
-    m_qSystemDbus = new SystemDbusProxy;
-    connect(m_qSystemDbus, &SystemDbusProxy::reportAlert, this, [ = ](int ret, const QString &description) {
-        qDebug() <<"ret="<<ret<<",description="<<description;
-    });
-
     this->startDbusDaemon();
 
     // 添加阴影
@@ -271,7 +262,7 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
 
 MainWindow::~MainWindow()
 {
-    delete m_qSystemDbus;
+//    delete m_qSystemDbus;
 
     if (m_dataWorker) {
         m_dataWorker->deleteLater();
@@ -374,9 +365,6 @@ void MainWindow::onInitDataFinished()
 
     this->displayMainWindow();
 
-    qDebug() << "m_qSystemDbus->demoInfo()===="<<m_qSystemDbus->demoInfo();
-
-    qDebug() << m_qSystemDbus->getCustomData().hash;
     //bind setting notify signal
 //    connect(m_dataWorker, SIGNAL(string_value_notify(QString,QString)), setting_widget, SIGNAL(string_value_notify(QString,QString)));
 //    connect(m_dataWorker, SIGNAL(bool_value_notify(QString,bool)), setting_widget, SIGNAL(bool_value_notify(QString,bool)));
@@ -960,7 +948,7 @@ void MainWindow::startDbusDaemon()
 //    systeminterface = new SystemDispatcher;
 
     m_dataWorker = new DataWorker(this->desktop);
-    QThread *w_thread = ThreadPool::Instance()->newThread();
+    QThread *w_thread = ThreadPool::Instance()->createNewThread();
     m_dataWorker->moveToThread(w_thread);
     connect(w_thread, SIGNAL(started()), m_dataWorker, SLOT(doWork()));
     connect(m_dataWorker, SIGNAL(dataLoadFinished()), this, SLOT(onInitDataFinished()));

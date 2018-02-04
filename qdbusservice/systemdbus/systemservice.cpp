@@ -69,5 +69,6 @@ void SystemService::sendCustomData(const CustomData &message)
 
 void SystemService::exitService()
 {
+    qDebug() << "ready to exit service";
     qApp->exit(0);
 }
