@@ -155,6 +155,13 @@ int main(int argc, char *argv[])
     qDebug() << "debug mode";
 #endif
 
+#ifdef QT_NO_INOTIFY
+    qDebug() << "QT_NO_INOTIFY mode";
+#else
+    qDebug() << "NO QT_NO_INOTIFY";
+#endif
+
+
     //单程序运行处理
 //    QSharedMemory mem("KA");
 //    if (!mem.create(1)) {

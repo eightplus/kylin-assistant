@@ -29,34 +29,6 @@
 #include "../component/threadpool.h"
 #include "dataworker.h"
 
-//QDBusPendingCallWatcher *m_getAllPendingCallWatcher;
-//    QDBusError m_lastExtendedError;
-
-//QPointer<Sink> m_defaultSink;
-//if (m_defaultSink) m_defaultSink->deleteLater();
-//m_defaultSink = new Sink("com.deepin.daemon.Audio", path.path(), QDBusConnection::sessionBus(), this);
-//connect(m_defaultSink, &Sink::ActivePortChanged, this, &SoundWorker::activeSinkPortChanged);
-
-//void activeSinkPortChanged(const AudioPort &activeSinkPort);
-//void activeSourcePortChanged(const AudioPort &activeSourcePort);
-//void SoundWorker::activeSinkPortChanged(const AudioPort &activeSinkPort)
-//{
-//    qDebug() << "active sink port changed to: " << activeSinkPort.name;
-//}
-//void SoundWorker::activeSourcePortChanged(const AudioPort &activeSourcePort)
-//{
-//    qDebug() << "active source port changed to: " << activeSourcePort.name;
-//}
-
-
-
-
-
-
-
-
-
-
 
 QString GlobalData::globalarch = ""; // add by hebing, just for transmit var
 
@@ -98,11 +70,16 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
         this->setWindowTitle(tr("Kylin Assistant"));
     }*/
 
-    this->setWindowTitle(tr("Kylin Assistant"));
+
+    this->setWindowFlags(Qt::FramelessWindowHint);
+    this->setAutoFillBackground(true);
     this->setMouseTracking(true);
+
+    this->setWindowTitle(tr("Kylin Assistant"));
+    /*this->setMouseTracking(true);
     this->setAutoFillBackground(true);
 //    QWidget::setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);//去掉边框
+    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);//去掉边框*/
 //    this->setAttribute(Qt::WA_TranslucentBackground);//背景透明
 //    this->setMinimumSize(900, 600);
 //    this->resize(900, 600);

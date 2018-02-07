@@ -106,10 +106,10 @@ void DataWorker::initDataWorker()
     m_qSystemDbus = new SystemDbusProxy;
     ThreadPool::Instance()->moveObjectToThread(m_qSystemDbus);
     connect(m_qSystemDbus, &SystemDbusProxy::reportAlert, this, [ = ](int ret, const QString &description) {
-        qDebug() <<"ret="<<ret<<",description="<<description;
+        //qDebug() <<"ret="<<ret<<",description="<<description;
     });
-    qDebug() << "m_qSystemDbus->demoInfo()===="<<m_qSystemDbus->demoInfo();
-    qDebug() << m_qSystemDbus->getCustomData().hash;
+    //qDebug() << "m_qSystemDbus->demoInfo()===="<<m_qSystemDbus->demoInfo();
+    //qDebug() << m_qSystemDbus->getCustomData().hash;
 }
 
 void DataWorker::doWork()
