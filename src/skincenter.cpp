@@ -86,8 +86,8 @@ SkinCenter::SkinCenter(QWidget *parent, QString skin, QString arch, QString os)
     sysBtn->setObjectName("transparentButton");
     customBtn->setFocusPolicy(Qt::NoFocus);
     customBtn->setObjectName("transparentButton");
-    sysBtn->setStyleSheet("QPushButton{background:transparent;text-align:center;font-family: 方正黑体_GBK;font-size:14px;color:#ffffff;}");//QPushButton:hover{color:#666666;}
-    customBtn->setStyleSheet("QPushButton{background:transparent;text-align:center;font-family: 方正黑体_GBK;font-size:14px;color:#ffffff;}");//QPushButton:hover{color:#666666;}
+    sysBtn->setStyleSheet("QPushButton{border:none;text-align:center;font-family: 方正黑体_GBK;font-size:14px;color:#ffffff;}");//QPushButton:hover{color:#666666;} background:transparent
+    customBtn->setStyleSheet("QPushButton{border:none;text-align:center;font-family: 方正黑体_GBK;font-size:14px;color:#ffffff;}");//QPushButton:hover{color:#666666;} background:transparent
 
 //    QVBoxLayout *layout  = new QVBoxLayout();
 //    layout->addWidget(title_bar);

@@ -20,6 +20,8 @@ PKGCONFIG += glib-2.0 gobject-2.0
 
 QMAKE_CXXFLAGS += -fpermissive
 
+#DEFINES += QT_NO_INOTIFY
+
 target.path = $${PREFIX}/lib/kylin-assistant/plugins/
 INSTALLS += target
 

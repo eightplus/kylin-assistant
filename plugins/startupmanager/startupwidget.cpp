@@ -87,6 +87,15 @@ StartupWidget::StartupWidget(QWidget *parent)
     this->setLayout(m_layout);
 
     this->moveCenter();
+
+
+
+//#ifdef QT_NO_INOTIFY
+//    qDebug() << "QT_NO_INOTIFY mode";
+//#else
+//    qDebug() << "NO QT_NO_INOTIFY";
+//#endif
+
 }
 
 StartupWidget::~StartupWidget()

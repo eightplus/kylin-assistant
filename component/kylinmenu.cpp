@@ -116,10 +116,10 @@ void KylinMenu::createActions()
     help_button = new QPushButton();
     feedback_button = new QPushButton();
     about_button = new QPushButton();
-    check_button->setStyleSheet("QPushButton{background:transparent;text-align:left;font-family: 方正黑体_GBK;font-size:14px;color:#666666;}QPushButton:hover{color:#0396DC;}");
-    help_button->setStyleSheet("QPushButton{background:transparent;text-align:left;font-family: 方正黑体_GBK;font-size:14px;color:#666666;}QPushButton:hover{color:#0396DC;}");
-    feedback_button->setStyleSheet("QPushButton{background:transparent;text-align:left;font-family: 方正黑体_GBK;font-size:14px;color:#666666;}QPushButton:hover{color:#0396DC;}");
-    about_button->setStyleSheet("QPushButton{background:transparent;text-align:left;font-family: 方正黑体_GBK;font-size:14px;color:#666666;}QPushButton:hover{color:#0396DC;}");
+    check_button->setStyleSheet("QPushButton{background:#ffffff;border:none;text-align:left;font-family: 方正黑体_GBK;font-size:14px;color:#666666;}QPushButton:hover{color:#0396DC;}");//background:transparent;
+    help_button->setStyleSheet("QPushButton{background:#ffffff;border:none;text-align:left;font-family: 方正黑体_GBK;font-size:14px;color:#666666;}QPushButton:hover{color:#0396DC;}");//background:transparent;
+    feedback_button->setStyleSheet("QPushButton{background:#ffffff;border:none;text-align:left;font-family: 方正黑体_GBK;font-size:14px;color:#666666;}QPushButton:hover{color:#0396DC;}");//background:transparent;
+    about_button->setStyleSheet("QPushButton{background:#ffffff;border:none;text-align:left;font-family: 方正黑体_GBK;font-size:14px;color:#666666;}QPushButton:hover{color:#0396DC;}");//background:transparent;
 
     QPixmap check_pixmap(":/tool/res/menu/upgrade.png");
     check_label->setPixmap(check_pixmap);

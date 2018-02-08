@@ -219,7 +219,16 @@ void StartupListWidget::listAllDesktopFileInDirectory(MonitorData monitorData)
 {
     monitorData.fileList.clear();
 
-    QDirIterator dir(monitorData.dir, QDirIterator::Subdirectories);
+    QDir dir(monitorData.dir);
+    foreach(QFileInfo info, dir.entryInfoList()) {
+        if (info.isFile() && info.suffix() == "desktop") {
+            QString desktopFile = info.absoluteFilePath();
+            monitorData.fileList.append(desktopFile);
+            m_startupWorker->newStartupInfo(desktopFile, monitorData.index);
+        }
+    }
+
+    /*QDirIterator dir(monitorData.dir, QDirIterator::Subdirectories);
     while(dir.hasNext()) {
         if (dir.fileInfo().suffix() == "desktop") {
             QString desktopFile = dir.filePath();//dir.fileName().toLower()
@@ -227,7 +236,7 @@ void StartupListWidget::listAllDesktopFileInDirectory(MonitorData monitorData)
             m_startupWorker->newStartupInfo(desktopFile, monitorData.index);
         }
         dir.next();
-    }
+    }*/
     m_startupWorker->appendMonitorXdgDirData(monitorData);
 }
 

@@ -225,6 +225,7 @@
         <file>res/wave_front_small.png</file>
         <file>res/wave_back.png</file>
         <file>res/wave_back_small.png</file>
+        <file>res/autostart-default.png</file>
     </qresource>
     <qresource prefix="/sys">
         <file>res/sysBtn/close_button.png</file>

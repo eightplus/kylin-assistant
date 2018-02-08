@@ -28,7 +28,13 @@
 
 inline QPixmap getAppIconPix(const QString &iconName, int iconSize)
 {
-    QIcon defaultExecutableIcon = QIcon::fromTheme("application-x-executable");
+    QIcon defaultExecutableIcon = QIcon::fromTheme("application-x-executable");//gnome-mine-application-x-executable
+    if (defaultExecutableIcon.isNull()) {
+        defaultExecutableIcon = QIcon("/usr/share/icons/kylin-icon-theme/48x48/mimetypes/application-x-executable.png");
+        if (defaultExecutableIcon.isNull())
+            defaultExecutableIcon = QIcon(":/res/autostart-default.png");
+    }
+
     QIcon icon;
 
     if (iconName.contains("/")) {

@@ -135,8 +135,8 @@ AboutDialog::AboutDialog(QWidget *parent, /*const QString &version, */QString sk
     aboutBtn->setObjectName("transparentButton");
     contributorBtn->setFocusPolicy(Qt::NoFocus);
     contributorBtn->setObjectName("transparentButton");
-    aboutBtn->setStyleSheet("QPushButton{background:transparent;text-align:center;font-family: 方正黑体_GBK;font-size:14px;color:#ffffff;}");//QPushButton:hover{color:#666666;}
-    contributorBtn->setStyleSheet("QPushButton{background:transparent;text-align:center;font-family: 方正黑体_GBK;font-size:14px;color:#ffffff;}");//QPushButton:hover{color:#666666;}
+    aboutBtn->setStyleSheet("QPushButton{border:none;text-align:center;font-family: 方正黑体_GBK;font-size:14px;color:#ffffff;}");//QPushButton:hover{color:#666666;}//background:transparent;
+    contributorBtn->setStyleSheet("QPushButton{border:none;text-align:center;font-family: 方正黑体_GBK;font-size:14px;color:#ffffff;}");//QPushButton:hover{color:#666666;}//background:transparent;
 //    aboutEdit->setStyleSheet("QLineEdit{border:1px solid #bebebe;}");
 //    contributorEdit->setStyleSheet("QLineEdit{border:1px solid #bebebe;}");
     aboutEdit->setStyleSheet("QTextBrowser{border:none;font-family: 方正黑体_GBK;font-size:14px;}");

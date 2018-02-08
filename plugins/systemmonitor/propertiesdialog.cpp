@@ -341,7 +341,17 @@ void PropertiesDialog::initProcproperties()
 
         QPixmap icon_pixmap;
         int iconSize = 48 * qApp->devicePixelRatio();
-        QPixmap defaultPixmap = QIcon::fromTheme("application-x-executable").pixmap(iconSize, iconSize);
+
+
+
+        QIcon defaultExecutableIcon = QIcon::fromTheme("application-x-executable");//gnome-mine-application-x-executable
+        if (defaultExecutableIcon.isNull()) {
+            defaultExecutableIcon = QIcon("/usr/share/icons/kylin-icon-theme/48x48/mimetypes/application-x-executable.png");
+            if (defaultExecutableIcon.isNull())
+                defaultExecutableIcon = QIcon(":/res/autostart-default.png");
+        }
+        QPixmap defaultPixmap = defaultExecutableIcon.pixmap(iconSize, iconSize);
+//        QPixmap defaultPixmap = QIcon::fromTheme("application-x-executable").pixmap(iconSize, iconSize);
         if (desktopFile.size() == 0) {
             icon_pixmap = defaultPixmap;
             icon_pixmap.setDevicePixelRatio(qApp->devicePixelRatio());

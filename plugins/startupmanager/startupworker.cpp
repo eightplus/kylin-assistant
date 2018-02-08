@@ -34,6 +34,7 @@
 #include <QFileInfo>
 #include <QDirIterator>
 #include <QSet>
+//#include <QPollingFileSystemWatcherEngine>
 
 #include <glib.h>
 #include <sys/stat.h>
@@ -155,14 +156,27 @@ QFileSystemWatcher *StartupWorker::createFileSystemMonitor(const QString &path)
     connect(m_fileSystemMonitor, &QFileSystemWatcher::directoryChanged, [=] (const QString &path) {
         //qDebug()<< "directoryChanged path===================="<<path;
         QStringList fileList;
-        QDirIterator dir(path, QDirIterator::Subdirectories);
+        QDir dir(path);
+        foreach(QFileInfo info, dir.entryInfoList()) {
+            if (info.isFile() && info.suffix() == "desktop") {
+                fileList.append(info.absoluteFilePath());
+            }
+        }
+
+        /*QDirIterator dir(path, QDirIterator::Subdirectories);
         while(dir.hasNext()) {
-            if (dir.fileInfo().suffix() == "desktop") {
-                QString desktopFile = dir.filePath();
-                fileList.append(desktopFile);
+            if (file.exists()) {
+            }
+            QFileInfo info = dir.fileInfo();
+            if (info.isFile()) {
+                if (info.suffix() == "desktop") {
+//                if (dir.fileInfo().suffix() == "desktop") {
+                    QString desktopFile = dir.filePath();
+                    fileList.append(desktopFile);
+                }
             }
             dir.next();
-        }
+        }*/
 
         this->updateGspXdgDir(path, fileList);
     });
@@ -284,6 +298,8 @@ void StartupWorker::updateGspXdgDir(const QString &dir, QStringList fileList)
 
         emit this->refreshUI();
     }
+    else
+        qDebug() << "WTF........";
 }
 
 QString StartupWorker::getStringValueAccordKeyFromDesktopFile(const gchar *key, const QString &desktopFile, bool isLocale)
