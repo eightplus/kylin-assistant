@@ -55,7 +55,7 @@ MiddleWidget::MiddleWidget(QWidget *parent, QString arch, QString os)
         signal_mapper->setMapping(tool_button, QString::number(i, 10));
         button_layout->addWidget(tool_button, 0, Qt::AlignBottom);
     }
-    this->switchSelectedPageIndex(0);
+    this->switchSelectedPageIndex("0");
     connect(signal_mapper, SIGNAL(mapped(QString)), this, SLOT(switchSelectedPageIndex(QString)));
 
     button_layout->addStretch();
@@ -76,11 +76,6 @@ MiddleWidget::~MiddleWidget()
         btn = NULL;
     }
     button_list.clear();
-}
-
-void MiddleWidget::initConnect()
-{
-//    connect(this, SIGNAL(turnCurrentPage(int)), p_mainwindow, SLOT(setCurrentPageIndex(int)));
 }
 
 void MiddleWidget::switchSelectedPageIndex(QString index)
@@ -105,10 +100,11 @@ void MiddleWidget::switchSelectedPageIndex(QString index)
 
 void MiddleWidget::showBoxTool()
 {
+    qDebug() << "showBoxTool.................";
 //    if(this->cur_arch == "aarch64" || this->osname == "Kylin" || this->osname == "YHKylin") {
 //        this->switchSelectedPageIndex("3");
 //    }
 //    else {
-//        this->switchSelectedPageIndex("4");
+    this->switchSelectedPageIndex("4");
 //    }
 }

@@ -91,9 +91,6 @@ public slots:
     void startDbusDaemon();
     void onInitDataFinished();
 
-signals:
-    void chanegBoxToolStatus();
-
 private:
     QStackedWidget *m_topStack = nullptr;
     QStackedWidget *m_bottomStack = nullptr;

@@ -69,7 +69,8 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent/*, Qt::Win
     if(this->desktop.isEmpty())
         this->desktop = qgetenv("XDG_SESSION_DESKTOP");
 
-    this->setWindowFlags(Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);
+    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//Attention: Qt::WindowCloseButtonHint make showMinimized() valid
+//    this->setWindowFlags(Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
     this->setAutoFillBackground(true);
     this->setMouseTracking(true);
@@ -178,8 +179,12 @@ void MainWindow::initWidgets()
 
     //top
     m_mainTopWidget = new MainTopWidget(true, mSettings, this);
+//    m_mainTopWidget->setParentWindow(this);
     connect(m_mainTopWidget, SIGNAL(showMenu()), this, SLOT(showMainMenu()));
-    connect(m_mainTopWidget, SIGNAL(showMin()), this, SLOT(showMinimized()));
+//    connect(m_mainTopWidget, SIGNAL(showMin()), this, SLOT(showMinimized()));
+    connect(m_mainTopWidget, &MainTopWidget::showMin, this, [=] {
+        this->showMinimized();
+    });
     connect(m_mainTopWidget, SIGNAL(closeApp()), this, SLOT(closeYoukerAssistant()));
     m_mainTopWidget->setPalette(palette_back);
     m_topStack->addWidget(m_mainTopWidget);
@@ -221,12 +226,11 @@ void MainWindow::initWidgets()
     //middle
     m_middleWidget = new MiddleWidget(this, this->arch, this->osName);
     m_middleWidget->setFixedSize(MAIN_WINDOW_WIDTH, 47);
-    m_middleWidget->setParentWindow(this);
     connect(m_middleWidget, SIGNAL(turnCurrentPage(int)), this, SLOT(setCurrentPageIndex(int)));
-    m_middleWidget->initConnect();
 
     //bottom
     m_mainBottomWidget = new MainBottomWidget(this, this->arch, this->osName);
+    connect(m_mainBottomWidget, SIGNAL(sendSignal()), m_middleWidget, SLOT(showBoxTool()));
     m_bottomStack->addWidget(m_mainBottomWidget);
 
     cleaner_widget = new CleanerWidget();

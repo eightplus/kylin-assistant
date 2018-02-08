@@ -18,11 +18,12 @@
  */
 
 #include "mainbottomwidget.h"
-#include <QSignalMapper>
-#include <QDebug>
-#include "mainwindow.h"
 #include "../component/toolbutton.h"
 #include "../component/utils.h"
+
+#include <QApplication>
+#include <QSignalMapper>
+#include <QDebug>
 
 MainBottomWidget::MainBottomWidget(QWidget *parent, QString arch, QString os/*, const QString &version*/) :
     QWidget(parent), osarch(arch), osname(os)
@@ -95,7 +96,7 @@ MainBottomWidget::MainBottomWidget(QWidget *parent, QString arch, QString os/*, 
     box_logo->setPixmap(QPixmap("://res/box.png"));
 
     this->initUI();
-
+    this->initConnect();
     this->setLanguage();
 
 }
@@ -174,52 +175,6 @@ void MainBottomWidget::initUI()
     layout4->setSpacing(5);
     layout4->setContentsMargins(0,0,0,0);
 
-
-
-
-    /*QStringList icon_list;
-//    icon_list<<"://res/ubuntukylin-software-center"<<"://res/boot"<<"://res/camera";
-    icon_list<<"://res/boot" << "://res/more.png";
-    QStringList text_list;
-//    text_list<< tr("Youker Softeware Center") << tr("Boot Manager") << tr("Camera");
-    text_list << tr("Boot Manager") << tr("More");
-    QHBoxLayout *button_layout = new QHBoxLayout();
-    QSignalMapper *signal_mapper = new QSignalMapper(this);
-    for(int i=0; i<icon_list.size(); i++)
-    {
-        ToolButton *tool_button = new ToolButton;
-        tool_button->setFocusPolicy(Qt::NoFocus);
-        tool_button->setIcon(icon_list.at(i));
-        tool_button->setText(text_list.at(i));
-        connect(tool_button, SIGNAL(clicked()), signal_mapper, SLOT(map()));
-        signal_mapper->setMapping(tool_button, QString::number(i, 10));
-        button_layout->addWidget(tool_button);
-        item_list.append(tool_button);
-    }
-    connect(signal_mapper, SIGNAL(mapped(QString)), this, SLOT(switchPageIndex(QString)));
-*/
-
-//    more_btn->setFocusPolicy(Qt::NoFocus);
-//    QPixmap pixmap("://res/more.png");
-//    more_btn->setIcon(pixmap);
-//    more_btn->setIconSize(pixmap.size());
-
-//    QVBoxLayout *more_layout = new QVBoxLayout();
-////    more_layout->addStretch();
-//    more_layout->addWidget(more_btn);
-//    more_layout->addWidget(more_text_btn);
-////    more_layout->addStretch();
-//    more_layout->setSpacing(0);
-//    more_layout->setMargin(0);
-//    more_layout->setContentsMargins(0, 8, 0, 0);
-
-//    button_layout->addStretch();
-//    button_layout->addLayout(more_layout);
-////    button_layout->addWidget(more_btn, 0, Qt::AlignTop);
-//    button_layout->setSpacing(20);
-//    button_layout->setMargin(0);
-//    button_layout->setContentsMargins(0, 0, 0, 0);
-
     QHBoxLayout *layout5 = new QHBoxLayout();
     layout5->addWidget(box_logo);
     layout5->addLayout(layout4);
@@ -228,8 +183,6 @@ void MainBottomWidget::initUI()
     layout5->setMargin(0);
     layout5->setSpacing(5);
     layout5->setContentsMargins(0,0,0,0);
-
-
 
     QVBoxLayout *main_layout = new QVBoxLayout();
     main_layout->addLayout(layout3);
@@ -243,14 +196,7 @@ void MainBottomWidget::initUI()
 
 void MainBottomWidget::initConnect()
 {
-    connect(this, SIGNAL(moreSignal()), p_mainwindow, SIGNAL(chanegBoxToolStatus()));
-//    connect(more_btn, SIGNAL(clicked()), p_mainwindow, SLOT(showBoxWidget()));
-//    connect(more_btn, SIGNAL(clicked()), p_mainwindow, SIGNAL(chanegBoxToolStatus()));
-//    connect(more_text_btn, SIGNAL(clicked()), p_mainwindow, SLOT(showBoxWidget()));
-//    connect(more_text_btn, SIGNAL(clicked()), p_mainwindow, SIGNAL(chanegBoxToolStatus()));
-//    connect(check_btn, SIGNAL(clicked()), this, SLOT(checkLastestVersion()));
     connect(check_btn, SIGNAL(clicked()), this, SLOT(onCheckBtnClicked()));
-    connect(this, SIGNAL(sendSignal()), p_mainwindow, SIGNAL(chanegBoxToolStatus()));
     connect(box_title, SIGNAL(clicked()), this, SIGNAL(sendSignal()));
 }
 
@@ -290,59 +236,7 @@ void MainBottomWidget::hideBackedBtn()
     check_btn->hide();
 }
 
-//void HomePage::checkLastestVersion()
-//{
-//    QStringList version_list = sessionProxy->checkNewVersion();
-//    if(version_list.length() == 1) {
-//        version_label->setText(version_list.at(0));
-//    }
-//    if(version_list.length() == 4) {
-//         version_label->setText(version_list.at(2));
-//        if(version_list.at(3) == "1") {
-//            qDebug() << "Neet to UPdate......";
-//            p_mainwindow->openUpgradePage(version_list);
-////            systemProxy->update_myself();
-//        }
-//        else {
-//            qDebug() << "Unneccesary to UPdate......";
-//            p_mainwindow->openUpgradePage(version_list);
-//        }
-//    }
-//    else {
-//        version_label->setText("");
-//    }
-//}
-
 void MainBottomWidget::switchPageIndex(QString index)
 {
 
 }
-
-//bool HomePage::eventFilter(QObject *obj, QEvent *event)
-//{
-//    if(obj == box_title){
-//        if(event->type() == QEvent::MouseButtonRelease){
-//            emit this->sendSignal();
-////            p_mainwindow->showBoxWidget();
-//        }
-////        if(event->type() == QEvent::Enter){
-////            ui->btn_close->setPixmap(QPixmap(":/pixmap/image/closeBtn_hover.png"));
-////        }else if(event->type() == QEvent::Leave){
-////            ui->btn_close->setPixmap(QPixmap(":/pixmap/image/closeBtn.png"));
-////        }else if(event->type() == QEvent::MouseButtonPress){
-////            ui->btn_close->setPixmap(QPixmap(":/pixmap/image/closeBtn_hover.png"));
-////        }else if(event->type() == QEvent::MouseButtonRelease){
-////            QMouseEvent *me = (QMouseEvent *)event;
-////            QLabel *lb = (QLabel *)obj;
-////            if(me->x() > 0 && me->x() < lb->width() && me->y() > 0 && me->y() < lb->height()){
-////                this->close();
-////                this->destroy();
-////            }else{
-////                ui->btn_close->setPixmap(QPixmap(":/pixmap/image/closeBtn.png"));
-////            }
-////        } else {
-////            return QObject::eventFilter(obj, event);
-////        }
-//    }
-//    return QObject::eventFilter(obj, event);
-//}

@@ -16,7 +16,9 @@ MyDialog::MyDialog(const QString &title, const QString &message, QWidget *parent
     QDialog(parent)
    , mousePressed(false)
 {
-    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);
+//    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint/*  | Qt::WindowCloseButtonHint*/);
+    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//Attention: Qt::WindowCloseButtonHint make showMinimized() valid
+
     this->setAttribute(Qt::WA_TranslucentBackground);
 //    this->setAttribute(Qt::WA_DeleteOnClose, false);
     this->setAttribute(Qt::WA_Resized, false);

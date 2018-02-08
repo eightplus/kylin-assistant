@@ -33,8 +33,6 @@
 #include "../component/loadinglabel.h"
 
 class MainWindow;
-//class SessionDispatcher;
-//class SystemDispatcher;
 
 class MainTopWidget : public QWidget
 {
@@ -43,8 +41,6 @@ public:
     explicit MainTopWidget(bool isMain = false, QSettings *mSettings = 0, QWidget *parent = 0);
     ~MainTopWidget();
     void setParentWindow(MainWindow* window) { p_mainwindow = window;}
-//    void setSessionDbusProxy(SessionDispatcher* dispatcher) { sessionProxy = dispatcher;}
-//    void setSystemDbusProxy(SystemDispatcher* dispatcher) { systemProxy = dispatcher;}
     void initConnect();
     void setLanguage();
     void writeFixCleanDate();
@@ -53,9 +49,6 @@ public:
     void writeSafeScanDate();
     QString getSafeScanDate();
     QString getOneKeyFlag();
-
-//    void enableSanButton();
-
 
     void initTitlebarLeftContent();
     void initTitlebarRightContent();
@@ -112,9 +105,6 @@ private:
     QPushButton *clean_button = nullptr;
     QPushButton *back_button = nullptr;
 
-    MainWindow *p_mainwindow;
-//    SystemDispatcher *systemProxy;
-//    SessionDispatcher *sessionProxy;
     QString trace;
     QString cookies;
     QString garbage;
@@ -123,7 +113,6 @@ private:
     QString workFlag;
     QString scanFinishTime;
 
-
     QVBoxLayout *m_layout = nullptr;
     QHBoxLayout *m_topLayout = nullptr;
     QHBoxLayout *m_titleRightLayout = nullptr;
@@ -131,6 +120,8 @@ private:
     QHBoxLayout *m_titleLeftLayout = nullptr;
     QHBoxLayout *m_toolLeftLayout = nullptr;
     QHBoxLayout *m_toolRightLayout = nullptr;
+
+    MainWindow *p_mainwindow = nullptr;
 
     bool m_isMain;
 };

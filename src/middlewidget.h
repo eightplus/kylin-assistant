@@ -30,16 +30,12 @@
 #include "../component/kylinbutton.h"
 #include "../component/kylintoolbutton.h"
 
-class MainWindow;
-
 class MiddleWidget : public QWidget
 {
     Q_OBJECT
 public:
     explicit MiddleWidget(QWidget *parent = 0, QString arch = "", QString os = "");
     ~MiddleWidget();
-    void setParentWindow(MainWindow* window) { p_mainwindow = window;}
-    void initConnect();
 
 signals:
     void turnCurrentPage(int index);
@@ -52,7 +48,6 @@ private:
     QPoint press_point;//鼠标按下去的点
     bool is_move;
     QList<KylinToolButton *> button_list;
-    MainWindow *p_mainwindow;
     QString cur_arch;
     QString osname;
 };

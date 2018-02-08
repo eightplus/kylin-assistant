@@ -40,7 +40,10 @@ MainTopWidget::MainTopWidget(bool isMain, QSettings *mSettings, QWidget *parent)
     : QWidget(parent)
     , pSettings(mSettings)
     , m_isMain(isMain)
+//    , p_mainwindow(parent)
 {
+//    p_mainwindow = static_cast<MainWindow *>(parent);
+
     if (m_isMain)
         this->setFixedSize(900, 227);
     else
@@ -195,8 +198,10 @@ void MainTopWidget::initTitlebarRightContent()
 //            //openSkinCenter()
 //        }
 //    });
-    connect(min_button, &SystemButton::clicked, this, [=] {
+    connect(min_button, &SystemButton::clicked, [=] (const bool b) {
         emit this->showMin();
+//        if (p_mainwindow)
+//            p_mainwindow->showMinimized();
 //        if (parentWidget()) {
 //            parentWidget()->showMinimized();
 //        }
@@ -205,12 +210,6 @@ void MainTopWidget::initTitlebarRightContent()
         emit this->closeApp();
 //        window()->close();
     });
-
-
-//    connect(min_button, SIGNAL(clicked()), p_mainwindow, SLOT(showMinimized()));
-//    connect(close_button, SIGNAL(clicked()), this, SIGNAL(closeApp()));
-//    connect(skin_button, SIGNAL(clicked()), p_mainwindow, SLOT(openSkinCenter()));
-//    connect(main_menu_button, SIGNAL(clicked()), p_mainwindow, SLOT(showMainMenu()));
 }
 
 void MainTopWidget::initContentLeftContent()
@@ -252,15 +251,19 @@ void MainTopWidget::initContentLeftContent()
 
     QVBoxLayout *layout1 = new QVBoxLayout();
     layout1->addStretch();
-    layout1->addWidget(suggest_label);
-    if (scan_result_label)
-        layout1->addWidget(scan_result_label);
-    layout1->addWidget(doing_label);
-    if (result_label)
-        layout1->addWidget(result_label);
+    if (m_isMain) {
+        layout1->addWidget(suggest_label, 0, Qt::AlignVCenter);
+        layout1->addWidget(scan_result_label, 0, Qt::AlignVCenter);
+        layout1->addWidget(doing_label, 0, Qt::AlignVCenter);
+        layout1->addWidget(result_label, 0, Qt::AlignVCenter);
+    }
+    else {
+        layout1->addWidget(suggest_label, 0, Qt::AlignVCenter);
+        layout1->addWidget(doing_label, 0, Qt::AlignVCenter);
+    }
     layout1->addStretch();
     layout1->setSpacing(15);
-    layout1->setContentsMargins(0, 20, 0, 0);
+    layout1->setContentsMargins(0, 0, 0, 0);
 
     m_toolLeftLayout->addStretch();
     m_toolLeftLayout->addWidget(loading_label, 0, Qt::AlignHCenter);
@@ -275,7 +278,7 @@ void MainTopWidget::initActionRightContent()
 {
     QWidget *w = new QWidget;
     m_toolRightLayout = new QHBoxLayout(w);
-    m_toolRightLayout->setContentsMargins(0, 3, 6, 10);
+    m_toolRightLayout->setContentsMargins(0, 3, 30, 10);
     m_toolRightLayout->setSpacing(5);
 
     scan_button = new QPushButton(this);

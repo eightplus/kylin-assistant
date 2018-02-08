@@ -26,7 +26,6 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
-class MainWindow;
 class ToolButton;
 
 class MainBottomWidget : public QWidget
@@ -38,15 +37,10 @@ public:
     void setLanguage();
     void initBoxTool();
     void initConnect();
-    void setParentWindow(MainWindow* window) { p_mainwindow = window;}
     void initUI();
-
-//protected:
-//    bool eventFilter(QObject *obj, QEvent *event);
 
 public slots:
     void switchPageIndex(QString index);
-//    void checkLastestVersion();
     void displayBackedBtn(bool flag);
     void onCheckBtnClicked();
     void hideBackedBtn();
@@ -54,7 +48,6 @@ public slots:
 signals:
     void sendSubIndex(int index);
     void sendSignal();
-    void moreSignal();
     void sendOpenUpgrade();
 
 private:
@@ -66,7 +59,6 @@ private:
     QLabel *box_logo;
     QPushButton *box_title;
     QLabel *box_tip;
-    MainWindow *p_mainwindow;
     QString current_version;
     QString osname;
     QString osarch;
