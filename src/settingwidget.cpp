@@ -25,12 +25,12 @@
 #include "../setting/settingmodel.h"
 #include "../setting/settingdelegate.h"
 
-SettingWidget::SettingWidget(QStringList cpulist, QString cpu, QString cur_desktop, bool has_battery, QWidget *parent) :
+SettingWidget::SettingWidget(/*QStringList cpulist, QString cpu, */QString cur_desktop, /*bool has_battery, */QWidget *parent) :
     QWidget(parent)
-    ,m_cpuList(cpulist)
-    ,m_currentCpu(cpu)
+//    ,m_cpuList(cpulist)
+//    ,m_currentCpu(cpu)
     ,desktop(cur_desktop)
-    ,battery(has_battery)
+//    ,battery(has_battery)
 {
     this->setFixedSize(900, 403);
 //    setStyleSheet("background-color: rgba(155, 255, 255, .238);");
@@ -75,8 +75,6 @@ SettingWidget::SettingWidget(QStringList cpulist, QString cpu, QString cur_deskt
     stacked_widget->setFixedSize(900, 403);
 //    stacked_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     stacked_widget->setVisible(false);
-
-    this->initUI();
 
     //this->qtui = NULL;
 }
@@ -130,8 +128,12 @@ void SettingWidget::onSettingItemEntered(const QModelIndex &index)
     qDebug() << "onSettingItemEntered:" << index.data().toString();*/
 }
 
-void SettingWidget::initUI(/*QString skin*/)
+void SettingWidget::initSettingsUI(QStringList cpulist, QString cpu, bool has_battery/*, QString skin*/)
 {
+    m_cpuList = cpulist;
+    m_currentCpu = cpu;
+    battery = has_battery;
+
     theme_widget = new ThemeWidget(this);
     icon_widget = new IconWidget(this, desktop);
     mouse_widget = new MouseWidget(this, desktop);

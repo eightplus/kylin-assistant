@@ -483,23 +483,23 @@ void UpgradeDialog::mousePressEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton)
     {
-        mouse_press = true;
-        drag_pos = event->globalPos() - this->frameGeometry().topLeft();
+        m_mousePressed = true;
+        m_dragPosition = event->globalPos() - this->frameGeometry().topLeft();
         event->accept();
     }
 }
 
 void UpgradeDialog::mouseReleaseEvent(QMouseEvent *)
 {
-    mouse_press = false;
+    m_mousePressed = false;
 }
 
 void UpgradeDialog::mouseMoveEvent(QMouseEvent *event)
 {
-    if(mouse_press)
+    if(m_mousePressed)
     {
         QPoint move_pos = event->globalPos();
-        move(move_pos - drag_pos);
+        move(move_pos - m_dragPosition);
         event->accept();
     }
 }

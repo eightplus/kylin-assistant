@@ -140,6 +140,20 @@ bool DataWorker::copyAppointedFile(QString filename)
     return result;
 }
 
+
+//---------------scan on homepage
+void DataWorker::onStartOneKeyScan(const QStringList &categorys)
+{
+    m_sessionInterface->onekey_scan_function_qt(categorys);
+}
+
+//---------------clean on homepage
+void DataWorker::onStartOneKeyClean()
+{
+    m_systemInterface->set_user_homedir_qt();
+    m_systemInterface->clean_by_main_one_key_qt();
+}
+
 //---------------scan
 void DataWorker::onStartScanSystem(QMap<QString, QVariant> itemsMap)
 {

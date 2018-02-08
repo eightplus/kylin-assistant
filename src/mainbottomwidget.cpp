@@ -17,14 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "homepage.h"
+#include "mainbottomwidget.h"
 #include <QSignalMapper>
 #include <QDebug>
 #include "mainwindow.h"
 #include "../component/toolbutton.h"
 #include "../component/utils.h"
 
-HomePage::HomePage(QWidget *parent, QString arch, QString os/*, const QString &version*/) :
+MainBottomWidget::MainBottomWidget(QWidget *parent, QString arch, QString os/*, const QString &version*/) :
     QWidget(parent), osarch(arch), osname(os)
 {
     this->setFixedSize(900, 326);
@@ -94,12 +94,13 @@ HomePage::HomePage(QWidget *parent, QString arch, QString os/*, const QString &v
     box_logo->setFixedSize(65, 65);
     box_logo->setPixmap(QPixmap("://res/box.png"));
 
-
+    this->initUI();
 
     this->setLanguage();
+
 }
 
-HomePage::~HomePage()
+MainBottomWidget::~MainBottomWidget()
 {
     if(version_logo != NULL) {
         delete version_logo;
@@ -138,7 +139,7 @@ HomePage::~HomePage()
 //    item_list.clear();
 }
 
-void HomePage::initUI()
+void MainBottomWidget::initUI()
 {
     QHBoxLayout *layout1 = new QHBoxLayout();
     layout1->addWidget(version_title);
@@ -240,7 +241,7 @@ void HomePage::initUI()
     this->setLayout(main_layout);
 }
 
-void HomePage::initConnect()
+void MainBottomWidget::initConnect()
 {
     connect(this, SIGNAL(moreSignal()), p_mainwindow, SIGNAL(chanegBoxToolStatus()));
 //    connect(more_btn, SIGNAL(clicked()), p_mainwindow, SLOT(showBoxWidget()));
@@ -253,7 +254,7 @@ void HomePage::initConnect()
     connect(box_title, SIGNAL(clicked()), this, SIGNAL(sendSignal()));
 }
 
-void HomePage::setLanguage()
+void MainBottomWidget::setLanguage()
 {
     version_title->setText(tr("Current Version Number") + "    " + current_version);
     version_tip->setText(tr("Update to the lastest version, make it work better"));
@@ -264,18 +265,18 @@ void HomePage::setLanguage()
 //    more_btn->setToolTip(tr("More"));
 }
 
-void HomePage::initBoxTool()
+void MainBottomWidget::initBoxTool()
 {
 
 }
 
-void HomePage::onCheckBtnClicked()
+void MainBottomWidget::onCheckBtnClicked()
 {
     emit this->sendOpenUpgrade();
     check_btn->hide();
 }
 
-void HomePage::displayBackedBtn(bool flag)
+void MainBottomWidget::displayBackedBtn(bool flag)
 {
     if(flag)
         check_btn->setText(tr("Upgrade is complete"));
@@ -284,7 +285,7 @@ void HomePage::displayBackedBtn(bool flag)
     check_btn->show();
 }
 
-void HomePage::hideBackedBtn()
+void MainBottomWidget::hideBackedBtn()
 {
     check_btn->hide();
 }
@@ -312,13 +313,13 @@ void HomePage::hideBackedBtn()
 //    }
 //}
 
-void HomePage::switchPageIndex(QString index)
+void MainBottomWidget::switchPageIndex(QString index)
 {
 //    bool ok;
 //    int current_index = index.toInt(&ok, 10);
 
-    if(index == "0")
-        emit this->sendSubIndex(0);
+//    if(index == "0")
+//        emit this->sendSubIndex(0);
 //    else if(index == "-1")
 //        if(this->osarch == "aarch64" || this->osname == "Kylin" || this->osname == "YHKylin")
 //            sessionProxy->runApp("cheese");

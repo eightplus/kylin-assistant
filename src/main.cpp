@@ -135,6 +135,9 @@ bool registerSingleInstance(const QString &path)
 
 int main(int argc, char *argv[])
 {
+    //find . | xargs -x touch
+    //linguist: sudo apt-get install qt4-dev-tools
+
 //    QApplication app(argc, argv);
     Kpplication app("kylin-assistant", argc, argv);
     app.setQuitOnLastWindowClosed(false);
@@ -242,6 +245,7 @@ int main(int argc, char *argv[])
     #endif*/
 
         w.setTranslator(&translator);
+//        w.show();
 
     //    if (sCount > 1) {
     //        w.setGeometry(desktop->screenGeometry(1));

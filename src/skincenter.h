@@ -78,9 +78,9 @@ protected:
 
 private:
     MainWindow *mainwindow;
-    QPoint drag_pos; //移动的距离
+    QPoint m_dragPosition; //移动的距离
 //    bool mouse_enter;
-    bool mouse_press; //按下鼠标左键
+    bool m_mousePressed; //按下鼠标左键
     QWidget *baseWidget;
     SystemButton *close_btn;
     QLabel *indicator;

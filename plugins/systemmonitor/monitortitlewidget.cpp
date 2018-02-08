@@ -293,7 +293,7 @@ void MonitorTitleWidget::initToolbarLeftContent()
     w->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_toolLeftLayout = new QHBoxLayout(w);
     m_toolLeftLayout->setContentsMargins(0, 0, 0, 0);
-    m_toolLeftLayout->setSpacing(0);
+    m_toolLeftLayout->setSpacing(10);
 
     MyUnderLineButton *processButton = new MyUnderLineButton();
     processButton->setName(tr("Processes"));
@@ -336,8 +336,6 @@ void MonitorTitleWidget::initToolbarLeftContent()
         emit canelSearchEditFocus();
     });
 
-    m_toolLeftLayout->setContentsMargins(0, 0, 0, 0);
-    m_toolLeftLayout->setSpacing(10);
     m_toolLeftLayout->addStretch();
     m_toolLeftLayout->addWidget(processButton);
     m_toolLeftLayout->addWidget(resourcesButton);

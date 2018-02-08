@@ -51,6 +51,11 @@ public slots:
     void doWork();
     void updateSensorValue();
 
+    //scan on homepage
+    void onStartOneKeyScan(const QStringList &categorys);
+    //clean on homepage
+    void onStartOneKeyClean();
+
     //scan
     void onStartScanSystem(QMap<QString, QVariant> itemsMap);
     //clean

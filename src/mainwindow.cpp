@@ -19,25 +19,48 @@
 
 #include "mainwindow.h"
 #include <QDebug>
+#include <QApplication>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QDesktopWidget>
 #include <QGraphicsDropShadowEffect>
+#include <QStackedLayout>
 #include "shadowwidget.h"
 #include "../component/utils.h"
 //#include "cameramanager.h"
 #include "../component/threadpool.h"
 #include "dataworker.h"
+#include "../component/utils.h"
 
+#include "maintopwidget.h"
+#include "middlewidget.h"
+#include "mainbottomwidget.h"
+#include "topbasewidget.h"
+#include <QtMath>
 
 QString GlobalData::globalarch = ""; // add by hebing, just for transmit var
 
+inline bool isRunningInstalled() {
+    static bool installed = (QCoreApplication::applicationDirPath() ==
+                             QDir(("/usr/bin")).canonicalPath());
+    return installed;
+}
+
+inline QString getPluginsDirectory() {
+    if (isRunningInstalled()) {
+        return QString("/usr/lib/kylin-assistant/plugins/");
+    } else {
+        return QString(QCoreApplication::applicationDirPath() + "/plugins/");
+    }
+}
+
 //MainWindow::MainWindow(QString cur_arch, int d_count, QWidget *parent) :
 //    QDialog(parent), arch(cur_arch), display_count(d_count)/*skin_center(parent),*/
-MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::WindowFlags flags)
-    : QMainWindow( parent, flags )
-    ,arch(cur_arch)
-    ,display_count(d_count)
+MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent/*, Qt::WindowFlags flags*/)
+    : QMainWindow(parent/*, flags*/)
+    , m_mousePressed(false)
+    , arch(cur_arch)
+    , display_count(d_count)
 {
     GlobalData::globalarch = this->arch;
 
@@ -83,8 +106,10 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
 //    this->setAttribute(Qt::WA_TranslucentBackground);//背景透明
 //    this->setMinimumSize(900, 600);
 //    this->resize(900, 600);
-    this->setFixedSize(900, 600);
 
+
+    this->setFixedSize(MAIN_WINDOW_WIDTH+SHADOW_LEFT_TOP_PADDING+SHADOW_RIGHT_BOTTOM_PADDING, MAIN_WINDOW_HEIGHT+SHADOW_LEFT_TOP_PADDING+SHADOW_RIGHT_BOTTOM_PADDING);
+//    this->setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
 //    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint | Qt::WindowSystemMenuHint);
 ////    this->setAttribute(Qt::WA_TranslucentBackground, true);
 
@@ -98,11 +123,6 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
     status = HOMEPAGE;
     statusFlag = false;
 
-    /*QGraphicsDropShadowEffect *shadow_effect = new QGraphicsDropShadowEffect(this);
-    shadow_effect->setBlurRadius(15.0);
-    shadow_effect->setColor(QColor(0, 0, 0, 100));//shadow_effect->setColor(Qt::gray);
-    shadow_effect->setOffset(1.0);//shadow_effect->setOffset(-5, 5);
-    this->setGraphicsEffect(shadow_effect);*/
 
 //    sessioninterface = NULL;
 //    systeminterface = NULL;
@@ -110,7 +130,8 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
     mSettings = new QSettings(KYLIN_COMPANY_SETTING, KYLIN_SETTING_FILE_NAME_SETTING);
     mSettings->setIniCodec("UTF-8");
 
-
+    last_skin_path = ":/background/res/skin/1.png";
+    /*
     //judge has skin or not in /var/lib/kylin-assistant-daemon/default/
     mSettings->beginGroup("Background");
     last_skin_path = mSettings->value("Path").toString();
@@ -136,12 +157,12 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
     }
 
     mSettings->endGroup();
-    mSettings->sync();
+    mSettings->sync();*/
     main_skin_pixmap.load(last_skin_path);
 
-    skin_center = NULL;
+//    skin_center = NULL;
 
-    home_page = NULL;
+//    home_page = NULL;
     info_widget = NULL;
     cleaner_widget = NULL;
     setting_widget = NULL;
@@ -149,57 +170,62 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
     aboutDlg = NULL;
 
 //    auto_start = NULL;
-    upgrade_dialog = NULL;
+//    upgrade_dialog = NULL;
 //    camera_manager = NULL;
 
     spreadGroup = NULL;
     gatherGroup = NULL;
 
-    home_action_widget = NULL;
-    info_action_widget = NULL;
+//    home_action_widget = NULL;
+//    info_action_widget = NULL;
     cleaner_action_widget = NULL;
     setting_action_widget = NULL;
     box_action_widget = NULL;
 
+//    toolKits = new Toolkits(0, this->width(), this->height());
     toolKits = new Toolkits(0, this->width(), this->height());
 
 
-    shadow_widget = new ShadowWidget(this);
+    /*shadow_widget = new ShadowWidget(this);
     shadow_widget->setGeometry(rect());
 //    shadow_widget->setColor(QColor(Qt::gray));
-    shadow_widget->setColor(QColor("#e9eef0"));
+    shadow_widget->setColor(QColor("#e9eef0"));*/
 
-    default_action_widget = new ActionWidget(this);
-    default_action_widget->setGeometry(QRect(0, 0, 900, 227));
+    /*default_action_widget = new ActionWidget(this);
+//    default_action_widget->setGeometry(QRect(0, 0, 900, 227));
+    default_action_widget->setGeometry(QRect(SHADOW_PADDING, SHADOW_PADDING, 900, 227));
     default_action_widget->setFixedHeight(227);
     other_action_widget = new ActionWidget(this);
-    other_action_widget->setGeometry(QRect(0, -150, 900, 150));
+//    other_action_widget->setGeometry(QRect(0, -150, 900, 150));
+    other_action_widget->setGeometry(QRect(SHADOW_PADDING, -150, 900, 150));
     other_action_widget->setFixedHeight(150);
-    topStack = new QStackedWidget(other_action_widget);
-    topStack->setGeometry(other_action_widget->rect());
+//    m_topStack = new QStackedWidget(other_action_widget);
+//    m_topStack->setGeometry(other_action_widget->rect());
 
     //设置在最底层，方便title_widget的显示
 //    default_action_widget->lower();
     QPalette palette_back;
     palette_back.setBrush(QPalette::Background, QBrush(QPixmap(last_skin_path)));
     default_action_widget->setPalette(palette_back);
-    other_action_widget->setPalette(palette_back);
+    other_action_widget->setPalette(palette_back);*/
 
-    tool_widget = new ToolWidget(this, this->arch, this->osName);
-    tool_widget->setGeometry(QRect(0, 227, 900, 47));
+    /*tool_widget = new ToolWidget(this, this->arch, this->osName);
+//    tool_widget->setGeometry(QRect(0, 227, 900, 47));
+    tool_widget->setGeometry(QRect(SHADOW_PADDING, 227+SHADOW_PADDING, 900, 47));
     tool_widget->setParentWindow(this);
     connect(this, SIGNAL(chanegBoxToolStatus()), tool_widget, SLOT(showBoxTool()));
     tool_widget->initConnect();
 
     title_widget = new TitleWidget(this, this->arch, this->osName);
 //    if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin")
-    title_widget->move(756, 0);
+//    title_widget->move(756, 0);
+    title_widget->move(756, SHADOW_PADDING);
 //    else {
 //        title_widget->move(0, 0);
 //    }
     connect(title_widget, SIGNAL(closeApp()), this, SLOT(closeYoukerAssistant()));
     title_widget->setParentWindow(this);
-    title_widget->initConnect();
+    title_widget->initConnect();*/
 
 //    login_widget = new LoginWidget(this);
 //    if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin")
@@ -208,33 +234,47 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent, Qt::Windo
 //        login_widget->move(585, 0);//900 - login_widget(220) - right_align(15) = 665
 //    }
 
-    default_content_widget = new BottomContentWidget(this);
-    default_content_widget->setGeometry(QRect(0, 274, 900, 326));
+    /*default_content_widget = new BottomContentWidget(this);
+//    default_content_widget->setGeometry(QRect(0, 274, 900, 326));
+    default_content_widget->setGeometry(QRect(SHADOW_PADDING, 274+SHADOW_PADDING, 900, 326));
     default_content_widget->setFixedHeight(326);
     other_content_widget = new BottomContentWidget(this);
-    other_content_widget->setGeometry(QRect(0, 600, 900, 403));
+//    other_content_widget->setGeometry(QRect(0, 600, 900, 403));
+    other_content_widget->setGeometry(QRect(SHADOW_PADDING, 600+SHADOW_PADDING, 900, 403));
     other_content_widget->setFixedHeight(403);
-    bottomStack = new QStackedWidget(other_content_widget);
-    bottomStack->setGeometry(other_content_widget->rect());
+//    m_bottomStack = new QStackedWidget(other_content_widget);
+//    m_bottomStack->setGeometry(other_content_widget->rect());
 //    top_grid_layout = NULL;
-//    bottom_grid_layout = NULL;
+//    bottom_grid_layout = NULL;*/
 
     main_menu = new KylinMenu(this);
     main_menu->setParentWindow(this);
     main_menu->initConnect();
 
-    this->initHomePage();
-    this->initAnimation();
+
+    this->initWidgets();
+
+//    this->initHomePage();
+//    this->initAnimation();
 
     this->hide();
     this->startDbusDaemon();
 
     // 添加阴影
-    /*auto effect = new QGraphicsDropShadowEffect(bottomStack);
+    /*auto effect = new QGraphicsDropShadowEffect(m_bottomStack);
     effect->setOffset(0, 3);
     effect->setColor(QColor(178, 34, 34, 127));
     effect->setBlurRadius(10);//阴影的大小
-    bottomStack->setGraphicsEffect(effect);*/
+    m_bottomStack->setGraphicsEffect(effect);*/
+
+
+
+
+//    QGraphicsDropShadowEffect *shadow_effect = new QGraphicsDropShadowEffect(this);
+//    shadow_effect->setBlurRadius(15.0);
+//    shadow_effect->setColor(QColor(255, 0, 0));//shadow_effect->setColor(QColor("#fca71d"));//
+//    shadow_effect->setOffset(-10, 10);
+//    this->setGraphicsEffect(shadow_effect);
 }
 
 MainWindow::~MainWindow()
@@ -247,11 +287,11 @@ MainWindow::~MainWindow()
     ThreadPool::Instance()->deleteLater();
 
 
-    if (home_page != NULL)
-    {
-        delete home_page;
-        home_page = NULL;
-    }
+//    if (home_page != NULL)
+//    {
+//        delete home_page;
+//        home_page = NULL;
+//    }
     if (info_widget != NULL)
     {
         delete info_widget;
@@ -272,11 +312,11 @@ MainWindow::~MainWindow()
         delete box_widget;
         box_widget = NULL;
     }
-    if (setting_action_widget != NULL)
-    {
-        delete setting_action_widget;
-        setting_action_widget = NULL;
-    }
+//    if (setting_action_widget != NULL)
+//    {
+//        delete setting_action_widget;
+//        setting_action_widget = NULL;
+//    }
 //    if (sessioninterface != NULL)
 //    {
 //        delete sessioninterface;
@@ -321,16 +361,119 @@ MainWindow::~MainWindow()
 //        delete camera_manager;
 //        camera_manager = NULL;
 //    }
-    if(skin_center != NULL)
-    {
-        delete skin_center;
-        skin_center = NULL;
+//    if(skin_center != NULL)
+//    {
+//        delete skin_center;
+//        skin_center = NULL;
+//    }
+//    if(upgrade_dialog != NULL)
+//    {
+//        delete upgrade_dialog;
+//        upgrade_dialog = NULL;
+//    }
+
+
+    if (centralWidget != NULL) {
+        delete centralWidget;
+        centralWidget = nullptr;
     }
-    if(upgrade_dialog != NULL)
-    {
-        delete upgrade_dialog;
-        upgrade_dialog = NULL;
-    }
+}
+
+void MainWindow::initWidgets()
+{
+    QPalette palette_back;
+    palette_back.setBrush(QPalette::Background, QBrush(QPixmap(last_skin_path)));
+
+    m_topStack = new QStackedWidget(this);
+    m_bottomStack = new QStackedWidget(this);
+
+    //top
+    m_mainTopWidget = new MainTopWidget(true, mSettings, this);
+    connect(m_mainTopWidget, SIGNAL(showMenu()), this, SLOT(showMainMenu()));
+    connect(m_mainTopWidget, SIGNAL(showMin()), this, SLOT(showMinimized()));
+    connect(m_mainTopWidget, SIGNAL(closeApp()), this, SLOT(closeYoukerAssistant()));
+    m_mainTopWidget->setPalette(palette_back);
+    m_topStack->addWidget(m_mainTopWidget);
+
+    cleaner_action_widget = new MainTopWidget(false, mSettings, this);
+    connect(cleaner_action_widget, SIGNAL(showMenu()), this, SLOT(showMainMenu()));
+    connect(cleaner_action_widget, SIGNAL(showMin()), this, SLOT(showMinimized()));
+    connect(cleaner_action_widget, SIGNAL(closeApp()), this, SLOT(closeYoukerAssistant()));
+    cleaner_action_widget->setPalette(palette_back);
+    m_topStack->addWidget(cleaner_action_widget);
+
+    info_action_widget = new TopBaseWidget(this);
+    connect(info_action_widget, SIGNAL(showMenu()), this, SLOT(showMainMenu()));
+    connect(info_action_widget, SIGNAL(showMin()), this, SLOT(showMinimized()));
+    connect(info_action_widget, SIGNAL(closeApp()), this, SLOT(closeYoukerAssistant()));
+    info_action_widget->setPalette(palette_back);
+    info_action_widget->setImage("://res/systeminfo.png");
+    info_action_widget->setTipMessage(tr("Understand hardware information, provide more convenient channel to obtain hardware information"));
+    m_topStack->addWidget(info_action_widget);
+
+    setting_action_widget = new TopBaseWidget(this);
+    connect(setting_action_widget, SIGNAL(showMenu()), this, SLOT(showMainMenu()));
+    connect(setting_action_widget, SIGNAL(showMin()), this, SLOT(showMinimized()));
+    connect(setting_action_widget, SIGNAL(closeApp()), this, SLOT(closeYoukerAssistant()));
+    setting_action_widget->setPalette(palette_back);
+    setting_action_widget->setImage("://res/systemset.png");
+    setting_action_widget->setTipMessage(tr("You can perform a full range of customized systems based on personal preferences"));
+    m_topStack->addWidget(setting_action_widget);
+
+    box_action_widget = new TopBaseWidget(this);
+    connect(box_action_widget, SIGNAL(showMenu()), this, SLOT(showMainMenu()));
+    connect(box_action_widget, SIGNAL(showMin()), this, SLOT(showMinimized()));
+    connect(box_action_widget, SIGNAL(closeApp()), this, SLOT(closeYoukerAssistant()));
+    box_action_widget->setPalette(palette_back);
+    box_action_widget->setImage("://res/toolkits.png");
+    box_action_widget->setTipMessage(tr("Provide a practical and lightweight tool, create fast and convenient experience for you"));
+    m_topStack->addWidget(box_action_widget);
+
+    //middle
+    m_middleWidget = new MiddleWidget(this, this->arch, this->osName);
+    m_middleWidget->setFixedSize(MAIN_WINDOW_WIDTH, 47);
+    m_middleWidget->setParentWindow(this);
+    connect(m_middleWidget, SIGNAL(turnCurrentPage(int)), this, SLOT(setCurrentPageIndex(int)));
+    m_middleWidget->initConnect();
+
+    //bottom
+    m_mainBottomWidget = new MainBottomWidget(this, this->arch, this->osName);
+    m_bottomStack->addWidget(m_mainBottomWidget);
+
+    cleaner_widget = new CleanerWidget();
+    m_bottomStack->addWidget(cleaner_widget);
+    cleaner_widget->setToolKits(toolKits);
+    cleaner_widget->setParentWindow(this);
+    cleaner_widget->initUI(last_skin_path);
+    connect(cleaner_action_widget, SIGNAL(showDetailData()),cleaner_widget, SLOT(displayDetailPage()));
+    connect(cleaner_action_widget, SIGNAL(showMainData()),cleaner_widget, SLOT(displayMainPage()));
+    connect(cleaner_action_widget, SIGNAL(sendCleanSignal()),cleaner_widget, SIGNAL(transCleanSignal()));
+
+    info_widget = new InfoWidget(this->arch);
+    m_bottomStack->addWidget(info_widget);
+
+    setting_widget = new SettingWidget(this->desktop);
+    setting_widget->setParentWindow(this);
+    connect(setting_widget, SIGNAL(changeActionPage(QString)), setting_action_widget, SLOT(displayActionSubPage(QString)));
+    connect(setting_action_widget, SIGNAL(notifyContentPageToMain()), setting_widget, SLOT(displaySettingHomePage()));
+    m_bottomStack->addWidget(setting_widget);
+
+    box_widget = new BoxWidget(this, this->arch, this->osName, getPluginsDirectory());
+    m_bottomStack->addWidget(box_widget);
+
+    centralWidget = new QWidget;
+    QVBoxLayout *contentLayout = new QVBoxLayout(centralWidget);
+    this->setCentralWidget(centralWidget);
+    this->setContentsMargins(SHADOW_LEFT_TOP_PADDING,SHADOW_LEFT_TOP_PADDING,SHADOW_RIGHT_BOTTOM_PADDING,SHADOW_RIGHT_BOTTOM_PADDING);
+    contentLayout->setContentsMargins(0, 0, 0, 0);
+    contentLayout->setMargin(0);
+    contentLayout->setSpacing(0);
+
+    contentLayout->addWidget(m_topStack);
+    contentLayout->addWidget(m_middleWidget);
+    contentLayout->addWidget(m_bottomStack);
+    m_topStack->setCurrentWidget(m_mainTopWidget);
+    m_bottomStack->setCurrentWidget(m_mainBottomWidget);
 }
 
 void MainWindow::onInitDataFinished()
@@ -340,7 +483,88 @@ void MainWindow::onInitDataFinished()
     this->m_cpulist = m_dataWorker->cpuModeList();
     this->m_currentCpuMode = m_dataWorker->cpuCurrentMode();
 
-    this->displayMainWindow();
+    connect(m_mainTopWidget, SIGNAL(startOneKeyScan(QStringList)), m_dataWorker, SLOT(onStartOneKeyScan(QStringList)));//Qt::QueuedConnection
+    connect(m_mainTopWidget, SIGNAL(startOneKeyClean()), m_dataWorker, SLOT(onStartOneKeyClean()));
+    connect(m_dataWorker, SIGNAL(isScanning(QString)), m_mainTopWidget, SLOT(getScanResult(QString))/*, Qt::BlockingQueuedConnection*/);
+    connect(m_dataWorker, SIGNAL(finishScanWork(QString)), m_mainTopWidget, SLOT(finishScanResult(QString))/*, Qt::BlockingQueuedConnection*/);
+    connect(m_dataWorker, SIGNAL(tellScanResult(QString,QString)) ,m_mainTopWidget, SLOT(getScanAllResult(QString,QString))/*, Qt::BlockingQueuedConnection*/);
+    connect(m_dataWorker, SIGNAL(finishCleanWorkMain(QString)), m_mainTopWidget, SLOT(getCleanResult(QString))/*, Qt::BlockingQueuedConnection*/);
+    connect(m_dataWorker, SIGNAL(finishCleanWorkMainError(QString)), m_mainTopWidget, SLOT(finishCleanError(QString))/*, Qt::BlockingQueuedConnection*/);
+    connect(m_dataWorker, SIGNAL(quickCleanProcess(QString,QString)), m_mainTopWidget, SLOT(getCleaningMessage(QString,QString))/*, Qt::QueuedConnection*/);
+
+    connect(cleaner_action_widget, SIGNAL(showDetailData()),cleaner_widget, SLOT(displayDetailPage()));
+    connect(cleaner_action_widget, SIGNAL(showMainData()),cleaner_widget, SLOT(displayMainPage()));
+    connect(cleaner_action_widget, SIGNAL(sendCleanSignal()),cleaner_widget, SIGNAL(transCleanSignal()));
+
+    connect(m_dataWorker, SIGNAL(tellCleanerDetailData(QStringList)), cleaner_widget, SIGNAL(tellCleanerDetailData(QStringList)));
+    connect(m_dataWorker, SIGNAL(tellCleanerDetailStatus(QString)), cleaner_widget, SIGNAL(tellCleanerDetailStatus(QString)));
+
+    connect(m_dataWorker, SIGNAL(tellCleanerDetailStatus(QString)), cleaner_action_widget, SLOT(showCleanReciveStatus(QString)));
+    connect(m_dataWorker, SIGNAL(tellCleanerDetailError(QString)), cleaner_action_widget, SLOT(showCleanReciveError(QString)));
+
+    connect(m_dataWorker, SIGNAL(sendCleanOverSignal()), cleaner_widget, SLOT(displayMainPage()));
+    connect(m_dataWorker, SIGNAL(sendCleanOverSignal()), cleaner_action_widget, SLOT(displayOrgPage()));
+    connect(m_dataWorker, SIGNAL(sendCleanOverSignal()), cleaner_action_widget, SLOT(showCleanOverStatus()));
+    connect(m_dataWorker, SIGNAL(policykitCleanSignal(bool)), cleaner_action_widget, SLOT(receivePolicyKitSignal(bool)));
+    connect(m_dataWorker, SIGNAL(tellCleanerMainData(QStringList)), cleaner_action_widget, SLOT(showCleanerData(QStringList)));
+    connect(m_dataWorker, SIGNAL(tellCleanerMainStatus(QString, QString)), cleaner_action_widget, SLOT(showCleanerStatus(QString, QString)));
+    connect(m_dataWorker, SIGNAL(sendCleanErrorSignal(QString)), cleaner_action_widget, SLOT(showCleanerError(QString)));
+
+    connect(cleaner_widget, SIGNAL(startScanSystem(QMap<QString,QVariant>)), m_dataWorker, SLOT(onStartScanSystem(QMap<QString,QVariant>)));
+    connect(cleaner_widget, SIGNAL(startCleanSystem(QMap<QString,QVariant>)), m_dataWorker, SLOT(onStartCleanSystem(QMap<QString,QVariant>)));
+
+    connect(cleaner_action_widget, SIGNAL(sendScanSignal()),cleaner_widget, SIGNAL(transScanSignal()));
+    connect(cleaner_widget, SIGNAL(tranActionAnimaitonSignal()),cleaner_action_widget, SLOT(displayAnimation()));
+    connect(cleaner_widget, SIGNAL(tranScanOverSignal(bool)),cleaner_action_widget, SLOT(accordScanOverStatusToChange(bool)));
+
+    connect(info_widget, SIGNAL(requestupdateSystemRunnedTime()), m_dataWorker, SLOT(onUpdateSystemRunnedTime()));
+    connect(info_widget, SIGNAL(requestRefreshSystemInfo()), m_dataWorker, SLOT(onRequestRefreshSystemInfo()));
+    connect(m_dataWorker, SIGNAL(sendSystemInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendSystemInfo(QMap<QString,QVariant>)));
+
+    //desktop info
+    connect(info_widget, SIGNAL(requestDesktopInfo()), m_dataWorker, SLOT(onRequestDesktopInfo()));
+    connect(m_dataWorker, SIGNAL(sendDesktopInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendDesktopInfo(QMap<QString,QVariant>)));
+
+    //cpu info
+    connect(info_widget, SIGNAL(requestCpuInfo()), m_dataWorker, SLOT(onRequestCpuInfo()));
+    connect(m_dataWorker, SIGNAL(sendCpuInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendCpuInfo(QMap<QString,QVariant>)));
+
+    //memory info
+    connect(info_widget, SIGNAL(requestMemoryInfo()), m_dataWorker, SLOT(onRequestMemoryInfo()));
+    connect(m_dataWorker, SIGNAL(sendMemoryInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendMemoryInfo(QMap<QString,QVariant>)));
+
+    //board info
+    connect(info_widget, SIGNAL(requestBoardInfo()), m_dataWorker, SLOT(onRequestBoardInfo()));
+    connect(m_dataWorker, SIGNAL(sendBoardInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendBoardInfo(QMap<QString,QVariant>)));
+
+    //hd info
+    connect(info_widget, SIGNAL(requestHDInfo()), m_dataWorker, SLOT(onRequestHDInfo()));
+    connect(m_dataWorker, SIGNAL(sendHDInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendHDInfo(QMap<QString,QVariant>)));
+
+    //nic info
+    connect(info_widget, SIGNAL(requestNicInfo()), m_dataWorker, SLOT(onRequestNicInfo()));
+    connect(m_dataWorker, SIGNAL(sendNicInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendNicInfo(QMap<QString,QVariant>)));
+
+    //monitor info
+    connect(info_widget, SIGNAL(requestMonitorInfo()), m_dataWorker, SLOT(onRequestMonitorInfo()));
+    connect(m_dataWorker, SIGNAL(sendMonitorInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendMonitorInfo(QMap<QString,QVariant>)));
+
+    //audio info
+    connect(info_widget, SIGNAL(requestAudioInfo()), m_dataWorker, SLOT(onRequestAudioInfo()));
+    connect(m_dataWorker, SIGNAL(sendAudioInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendAudioInfo(QMap<QString,QVariant>)));
+
+    //battery info
+    connect(info_widget, SIGNAL(requestBatteryInfo()), m_dataWorker, SLOT(onRequestBatteryInfo()));
+    connect(m_dataWorker, SIGNAL(sendBatteryInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendBatteryInfo(QMap<QString,QVariant>)));
+
+    //sensor info
+    connect(info_widget, SIGNAL(requestSensorInfo()), m_dataWorker, SLOT(onRequestSensorInfo()));
+    connect(m_dataWorker, SIGNAL(sendSensorInfo(QMap<QString,QVariant>)), info_widget, SLOT(onSendSensorInfo(QMap<QString,QVariant>)));
+
+
+//    connect(setting_widget, SIGNAL(changeActionPage(QString)), setting_action_widget, SLOT(displayActionSubPage(QString)));
+//    connect(setting_action_widget, SIGNAL(notifyContentPageToMain()), setting_widget, SLOT(displaySettingHomePage()));
+
 
     //bind setting notify signal
 //    connect(m_dataWorker, SIGNAL(string_value_notify(QString,QString)), setting_widget, SIGNAL(string_value_notify(QString,QString)));
@@ -355,12 +579,12 @@ void MainWindow::onInitDataFinished()
     connect(m_dataWorker, SIGNAL(double_value_notify(QString,double)), setting_widget, SLOT(on_double_value_notify(QString,double)));
 */
 
-    connect(m_dataWorker, SIGNAL(isScanning(QString)), home_action_widget, SLOT(getScanResult(QString)));
-    connect(m_dataWorker, SIGNAL(finishScanWork(QString)), home_action_widget, SLOT(finishScanResult(QString)));
-    connect(m_dataWorker, SIGNAL(tellScanResult(QString,QString)) ,home_action_widget, SLOT(getScanAllResult(QString,QString)));
-    connect(m_dataWorker, SIGNAL(finishCleanWorkMain(QString)), home_action_widget, SLOT(getCleanResult(QString)));
-    connect(m_dataWorker, SIGNAL(finishCleanWorkMainError(QString)), home_action_widget, SLOT(finishCleanError(QString)));
-    connect(m_dataWorker, SIGNAL(quickCleanProcess(QString,QString)), home_action_widget, SLOT(getCleaningMessage(QString,QString)));
+//    connect(m_dataWorker, SIGNAL(isScanning(QString)), home_action_widget, SLOT(getScanResult(QString)));
+//    connect(m_dataWorker, SIGNAL(finishScanWork(QString)), home_action_widget, SLOT(finishScanResult(QString)));
+//    connect(m_dataWorker, SIGNAL(tellScanResult(QString,QString)) ,home_action_widget, SLOT(getScanAllResult(QString,QString)));
+//    connect(m_dataWorker, SIGNAL(finishCleanWorkMain(QString)), home_action_widget, SLOT(getCleanResult(QString)));
+//    connect(m_dataWorker, SIGNAL(finishCleanWorkMainError(QString)), home_action_widget, SLOT(finishCleanError(QString)));
+//    connect(m_dataWorker, SIGNAL(quickCleanProcess(QString,QString)), home_action_widget, SLOT(getCleaningMessage(QString,QString)));
 
     //theme
     connect(setting_widget, SIGNAL(changeSystemTheme(QString)), m_dataWorker, SLOT(onChangeSystemTheme(QString)));
@@ -508,7 +732,34 @@ void MainWindow::onInitDataFinished()
     connect(setting_widget, SIGNAL(resetThumbnailIconSize(int)), m_dataWorker, SLOT(onResetThumbnailIconSize(int)));
     connect(setting_widget, SIGNAL(resetThumbnailCacheTime(int)), m_dataWorker, SLOT(onResetThumbnailCacheTime(int)));
     connect(setting_widget, SIGNAL(resetThumbnailCacheSize(int)), m_dataWorker, SLOT(onResetThumbnailCacheSize(int)));
+
+
+    info_widget->initInfoUI(this->battery, this->sensor);
+    setting_widget->initSettingsUI(this->m_cpulist, this->m_currentCpuMode, this->battery/*, last_skin_path*/);
+    this->moveCenter();
+//    this->displayMainWindow();
 }
+
+void MainWindow::moveCenter()
+{
+    QPoint pos = QCursor::pos();
+    QRect primaryGeometry;
+    for (QScreen *screen : qApp->screens()) {
+        if (screen->geometry().contains(pos)) {
+            primaryGeometry = screen->geometry();
+        }
+    }
+
+    if (primaryGeometry.isEmpty()) {
+        primaryGeometry = qApp->primaryScreen()->geometry();
+    }
+
+    this->move(primaryGeometry.x() + (primaryGeometry.width() - this->width())/2,
+               primaryGeometry.y() + (primaryGeometry.height() - this->height())/2);
+    this->show();
+    this->raise();
+}
+
 
 QString MainWindow::accessOSName()
 {
@@ -664,7 +915,7 @@ QStringList MainWindow::filterSkin()
 
 void MainWindow::initAnimation()
 {
-    QPoint origPoint(0, 227);
+    /*QPoint origPoint(0, 227);
     QPoint needPoint(0, 150);
     QPoint origPoint1(0, 0);
     QPoint needPoint1(0, -227);
@@ -701,10 +952,10 @@ void MainWindow::initAnimation()
     mainContentAnimation2->setStartValue(origPoint4);
     mainContentAnimation2->setEndValue(needPoint4);
 
-    QPropertyAnimation  *m_toTrans = new QPropertyAnimation(shadow_widget, "opacity");
-    m_toTrans->setDuration(200);
-    m_toTrans->setStartValue(1);
-    m_toTrans->setEndValue(0);
+//    QPropertyAnimation  *m_toTrans = new QPropertyAnimation(shadow_widget, "opacity");
+//    m_toTrans->setDuration(200);
+//    m_toTrans->setStartValue(1);
+//    m_toTrans->setEndValue(0);
 
     spreadGroup = new QParallelAnimationGroup(this);
     spreadGroup->addAnimation(mainActionAnimation);
@@ -712,7 +963,7 @@ void MainWindow::initAnimation()
     spreadGroup->addAnimation(mainToolAnimation);
     spreadGroup->addAnimation(mainContentAnimation);
     spreadGroup->addAnimation(mainContentAnimation2);
-    spreadGroup->addAnimation(m_toTrans);
+//    spreadGroup->addAnimation(m_toTrans);
 
     QPropertyAnimation *mainActionBackAnimation2 = new QPropertyAnimation(other_action_widget, "pos");
     mainActionBackAnimation2->setDuration(500);
@@ -740,10 +991,10 @@ void MainWindow::initAnimation()
     mainContentBackAnimation2->setStartValue(needPoint4);
     mainContentBackAnimation2->setEndValue(origPoint4);
 
-    QPropertyAnimation  *m_toGray = new QPropertyAnimation(shadow_widget, "opacity");
-    m_toGray->setDuration(200);
-    m_toGray->setStartValue(0);
-    m_toGray->setEndValue(1);
+//    QPropertyAnimation  *m_toGray = new QPropertyAnimation(shadow_widget, "opacity");
+//    m_toGray->setDuration(200);
+//    m_toGray->setStartValue(0);
+//    m_toGray->setEndValue(1);
 
     gatherGroup = new QParallelAnimationGroup(this);
     gatherGroup->addAnimation(mainActionBackAnimation);
@@ -751,18 +1002,18 @@ void MainWindow::initAnimation()
     gatherGroup->addAnimation(mainToolBackAnimation);
     gatherGroup->addAnimation(mainContentBackAnimation);
     gatherGroup->addAnimation(mainContentBackAnimation2);
-    gatherGroup->addAnimation(m_toGray);
+//    gatherGroup->addAnimation(m_toGray);
 
     connect(spreadGroup, SIGNAL(finished()), this, SLOT(upAnimFinished()));
-    connect(gatherGroup, SIGNAL(finished()), this, SLOT(closeAnimFinished()));
+    connect(gatherGroup, SIGNAL(finished()), this, SLOT(closeAnimFinished()));*/
 }
 
 void MainWindow::upAnimFinished()
 {
-    tool_widget->show();
-    shadow_widget->hide();
-    if(title_widget->isHidden())
-        title_widget->show();
+    m_middleWidget->show();
+//    shadow_widget->hide();
+//    if(title_widget->isHidden())
+//        title_widget->show();
 //    if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin")
 //    {
 //        if(status == BOXPAGE && login_widget->isHidden()) {
@@ -776,19 +1027,19 @@ void MainWindow::upAnimFinished()
 
 void MainWindow::closeAnimFinished()
 {
-    tool_widget->show();
-    if(title_widget->isHidden())
-        title_widget->show();
+    m_middleWidget->show();
+//    if(title_widget->isHidden())
+//        title_widget->show();
 //    if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isHidden())
 //    {
 //        login_widget->show();
 //    }
-    shadow_widget->hide();
+//    shadow_widget->hide();
 }
 
 void MainWindow::setTranslator(QTranslator* translator)
 {
-    this->translator = translator;
+//    this->translator = translator;
 }
 
 void MainWindow::changeLanguage(LANGUAGE language)
@@ -830,83 +1081,71 @@ void MainWindow::changeLanguage(LANGUAGE language)
 //	system_tray->translateLanguage();
 }
 
-void MainWindow::displayMainWindow(/*int count*/)
-{
-    //20180101
-    /*
-    this->battery = sessioninterface->judge_power_is_exists_qt();
-    this->sensor = systeminterface->judge_sensors_exists_qt();
+//void MainWindow::displayMainWindow(/*int count*/)
+//{
+//    //20180101
+//    /*
+//    this->battery = sessioninterface->judge_power_is_exists_qt();
+//    this->sensor = systeminterface->judge_sensors_exists_qt();
 
-//    login_widget->setSessionDbusProxy(sessioninterface);
-//    if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin")
-//        sessioninterface->check_user_qt();
-//    connect(sessioninterface, SIGNAL(ssoSuccessSignal(QString, QString)), login_widget, SLOT(showLoginInfo(QString,QString)));
-//    connect(sessioninterface, SIGNAL(ssoLoginLogoutSignal(bool)), login_widget, SLOT(showLoginAndLogoutStatus(bool)));*/
-//    home_action_widget->setSessionDbusProxy(sessioninterface);
-//    home_action_widget->setSystemDbusProxy(systeminterface);
-    home_action_widget->enableSanButton();
+////    login_widget->setSessionDbusProxy(sessioninterface);
+////    if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin")
+////        sessioninterface->check_user_qt();
+////    connect(sessioninterface, SIGNAL(ssoSuccessSignal(QString, QString)), login_widget, SLOT(showLoginInfo(QString,QString)));
+////    connect(sessioninterface, SIGNAL(ssoLoginLogoutSignal(bool)), login_widget, SLOT(showLoginAndLogoutStatus(bool)));*/
+////    home_action_widget->setSessionDbusProxy(sessioninterface);
+////    home_action_widget->setSystemDbusProxy(systeminterface);
+////    home_action_widget->enableSanButton();
 
-    //20180101
-    /*connect(sessioninterface, SIGNAL(isScanning(QString)), home_action_widget, SLOT(getScanResult(QString)));
-    connect(sessioninterface, SIGNAL(finishScanWork(QString)), home_action_widget, SLOT(finishScanResult(QString)));
-    connect(sessioninterface, SIGNAL(tellScanResult(QString,QString)) ,home_action_widget, SLOT(getScanAllResult(QString,QString)));
-    connect(systeminterface, SIGNAL(finishCleanWorkMain(QString)), home_action_widget, SLOT(getCleanResult(QString)));
-    connect(systeminterface, SIGNAL(finishCleanWorkMainError(QString)), home_action_widget, SLOT(finishCleanError(QString)));
-    connect(systeminterface, SIGNAL(quickCleanProcess(QString,QString)), home_action_widget, SLOT(getCleaningMessage(QString,QString)));
-    home_page->setSessionDbusProxy(sessioninterface);
-    home_page->setSystemDbusProxy(systeminterface);*/
+//    //20180101
+//    /*connect(sessioninterface, SIGNAL(isScanning(QString)), home_action_widget, SLOT(getScanResult(QString)));
+//    connect(sessioninterface, SIGNAL(finishScanWork(QString)), home_action_widget, SLOT(finishScanResult(QString)));
+//    connect(sessioninterface, SIGNAL(tellScanResult(QString,QString)) ,home_action_widget, SLOT(getScanAllResult(QString,QString)));
+//    connect(systeminterface, SIGNAL(finishCleanWorkMain(QString)), home_action_widget, SLOT(getCleanResult(QString)));
+//    connect(systeminterface, SIGNAL(finishCleanWorkMainError(QString)), home_action_widget, SLOT(finishCleanError(QString)));
+//    connect(systeminterface, SIGNAL(quickCleanProcess(QString,QString)), home_action_widget, SLOT(getCleaningMessage(QString,QString)));
+//    home_page->setSessionDbusProxy(sessioninterface);
+//    home_page->setSystemDbusProxy(systeminterface);*/
 
-    this->initOtherPages();
+////    this->initOtherPages();
 
+//    info_widget->initInfoUI(this->battery, this->sensor);
+//    setting_widget->initSettingsUI(this->m_cpulist, this->m_currentCpuMode, this->battery/*, last_skin_path*/);
 
-//    if (this->isHidden()) {
-    int windowWidth, windowHeight = 0;
-    if (this->display_count < 2) {
-        windowWidth = QApplication::desktop()->width();
-        windowHeight = QApplication::desktop()->height();
-        this->move((windowWidth - this->width()) / 2,(windowHeight - this->height()) / 2);
-    }
-    else {
-        /*this->setGeometry(QApplication::desktop()->screenGeometry(1));
-        int a_width = 0;
-        for (int i=0;i<count;i++) {
-            if (i != 1)
-                a_width += QApplication::desktop()->screenGeometry(i).width();//QRect QApplication::desktop->screenGeometry(1);根据当前的屏幕序号获取屏幕宽高等属性
-        }
-        windowWidth = QApplication::desktop()->width() - a_width;//QApplication::desktop()->width();获取虚拟屏幕全宽，注意这个比较猛，是获取的总宽度，对于横向扩展屏来说，也就是 屏幕1+ 屏幕2 + ... 的宽度
-        windowHeight = QApplication::desktop()->screenGeometry(1).height();
-        qDebug() << windowWidth;//3286   1024   1920  1366
-        qDebug() << windowHeight;//1080   768    1080  768
-        qDebug() << this->width();//900
-        qDebug() << this->height();//600
-        this->move((windowWidth - this->width()) / 2,(windowHeight - this->height()) / 2);*/
-        windowWidth = QApplication::desktop()->screenGeometry(0).width();
-        windowHeight = QApplication::desktop()->screenGeometry(0).height();
-        this->move((windowWidth - this->width()) / 2,(windowHeight - this->height()) / 2);
-    }
-
-    this->show();
-    this->raise();
-//    QTimer::singleShot(100, this, SLOT(startDbusDaemon()));
+////    if (this->isHidden()) {
+//    int windowWidth, windowHeight = 0;
+//    if (this->display_count < 2) {
+//        windowWidth = QApplication::desktop()->width();
+//        windowHeight = QApplication::desktop()->height();
+//        this->move((windowWidth - this->width()) / 2,(windowHeight - this->height()) / 2);
 //    }
 //    else {
-//        this->hide();
+//        /*this->setGeometry(QApplication::desktop()->screenGeometry(1));
+//        int a_width = 0;
+//        for (int i=0;i<count;i++) {
+//            if (i != 1)
+//                a_width += QApplication::desktop()->screenGeometry(i).width();//QRect QApplication::desktop->screenGeometry(1);根据当前的屏幕序号获取屏幕宽高等属性
+//        }
+//        windowWidth = QApplication::desktop()->width() - a_width;//QApplication::desktop()->width();获取虚拟屏幕全宽，注意这个比较猛，是获取的总宽度，对于横向扩展屏来说，也就是 屏幕1+ 屏幕2 + ... 的宽度
+//        windowHeight = QApplication::desktop()->screenGeometry(1).height();
+//        qDebug() << windowWidth;//3286   1024   1920  1366
+//        qDebug() << windowHeight;//1080   768    1080  768
+//        qDebug() << this->width();//900
+//        qDebug() << this->height();//600
+//        this->move((windowWidth - this->width()) / 2,(windowHeight - this->height()) / 2);*/
+//        windowWidth = QApplication::desktop()->screenGeometry(0).width();
+//        windowHeight = QApplication::desktop()->screenGeometry(0).height();
+//        this->move((windowWidth - this->width()) / 2,(windowHeight - this->height()) / 2);
 //    }
-}
 
-inline bool isRunningInstalled() {
-    static bool installed = (QCoreApplication::applicationDirPath() ==
-                             QDir(("/usr/bin")).canonicalPath());
-    return installed;
-}
-
-inline QString getPluginsDirectory() {
-    if (isRunningInstalled()) {
-        return QString("/usr/lib/kylin-assistant/plugins/");
-    } else {
-        return QString(QCoreApplication::applicationDirPath() + "/plugins/");
-    }
-}
+//    this->show();
+//    this->raise();
+////    QTimer::singleShot(100, this, SLOT(startDbusDaemon()));
+////    }
+////    else {
+////        this->hide();
+////    }
+//}
 
 void MainWindow::startDbusDaemon()
 {
@@ -924,12 +1163,22 @@ void MainWindow::startDbusDaemon()
 
 //    systeminterface = new SystemDispatcher;
 
+//    qDebug() << "mainwindow thread id=" << QThread::currentThreadId();
+
     m_dataWorker = new DataWorker(this->desktop);
     QThread *w_thread = ThreadPool::Instance()->createNewThread();
     m_dataWorker->moveToThread(w_thread);
-    connect(w_thread, SIGNAL(started()), m_dataWorker, SLOT(doWork()));
-    connect(m_dataWorker, SIGNAL(dataLoadFinished()), this, SLOT(onInitDataFinished()));
+//    connect(w_thread, SIGNAL(started()), m_dataWorker, SLOT(doWork()));
+//    connect(m_dataWorker, SIGNAL(dataLoadFinished()), this, SLOT(onInitDataFinished()));
+//    connect(w_thread, &QThread::finished, w_thread, &QThread::deleteLater, Qt::QueuedConnection);
+    connect(w_thread, &QThread::started, m_dataWorker, &DataWorker::doWork);
+    connect(m_dataWorker, &DataWorker::dataLoadFinished, this, &MainWindow::onInitDataFinished);
+    connect(w_thread, &QThread::finished, this, [=] {
+        w_thread->deleteLater();
+        qDebug() << "DataWorker thread finished......";
+    });
     w_thread->start();
+
 
 
     /*sessioninterface = new SessionDispatcher(this);
@@ -960,18 +1209,18 @@ void MainWindow::startDbusDaemon()
 
 void MainWindow::initOtherPages()
 {
-    if(cleaner_action_widget == NULL)
+    /*if(cleaner_action_widget == NULL)
         cleaner_action_widget = new CleanerActionWidget(this);
-    topStack->addWidget(cleaner_action_widget);
+    m_topStack->addWidget(cleaner_action_widget);
     if(info_action_widget == NULL)
         info_action_widget = new InfoActionWidget(this);
-    topStack->addWidget(info_action_widget);
+    m_topStack->addWidget(info_action_widget);
     if(setting_action_widget == NULL)
         setting_action_widget = new SettingActionWidget();
-    topStack->addWidget(setting_action_widget);
+    m_topStack->addWidget(setting_action_widget);
     if(box_action_widget == NULL)
         box_action_widget = new BoxActionWidget(this);
-    topStack->addWidget(box_action_widget);
+    m_topStack->addWidget(box_action_widget);
 
     if(cleaner_widget == NULL)
         cleaner_widget = new CleanerWidget();
@@ -999,7 +1248,7 @@ void MainWindow::initOtherPages()
     connect(m_dataWorker, SIGNAL(sendCleanErrorSignal(QString)), cleaner_action_widget, SLOT(showCleanerError(QString)));
 
     connect(cleaner_widget, SIGNAL(startScanSystem(QMap<QString,QVariant>)), m_dataWorker, SLOT(onStartScanSystem(QMap<QString,QVariant>)));
-    connect(cleaner_widget, SIGNAL(startCleanSystem(QMap<QString,QVariant>)), m_dataWorker, SLOT(onStartCleanSystem(QMap<QString,QVariant>)));
+    connect(cleaner_widget, SIGNAL(startCleanSystem(QMap<QString,QVariant>)), m_dataWorker, SLOT(onStartCleanSystem(QMap<QString,QVariant>)));*/
 
 
 
@@ -1016,10 +1265,10 @@ void MainWindow::initOtherPages()
 //    connect(sessioninterface, SIGNAL(tellCleanerDetailStatus(QString)), cleaner_action_widget, SLOT(showCleanReciveStatus(QString)));
 //    connect(sessioninterface, SIGNAL(tellCleanerDetailError(QString)), cleaner_action_widget, SLOT(showCleanReciveError(QString)));
 
-    connect(cleaner_action_widget, SIGNAL(sendScanSignal()),cleaner_widget, SIGNAL(transScanSignal()));
+    /*connect(cleaner_action_widget, SIGNAL(sendScanSignal()),cleaner_widget, SIGNAL(transScanSignal()));
     connect(cleaner_widget, SIGNAL(tranActionAnimaitonSignal()),cleaner_action_widget, SLOT(displayAnimation()));
     connect(cleaner_widget, SIGNAL(tranScanOverSignal(bool)),cleaner_action_widget, SLOT(accordScanOverStatusToChange(bool)));
-    bottomStack->addWidget(cleaner_widget);
+    m_bottomStack->addWidget(cleaner_widget);
 
     if(info_widget == NULL)
         info_widget = new InfoWidget(this->arch);
@@ -1034,7 +1283,7 @@ void MainWindow::initOtherPages()
 //    connect(m_dataWorker, SIGNAL(sendSystemRunnedTime(int)), info_widget, SLOT(onSendSystemRunnedTime(int)));
 
     info_widget->initUI(this->battery, this->sensor);//20180101
-    bottomStack->addWidget(info_widget);
+    m_bottomStack->addWidget(info_widget);
 
     //desktop info
     connect(info_widget, SIGNAL(requestDesktopInfo()), m_dataWorker, SLOT(onRequestDesktopInfo()));
@@ -1089,8 +1338,6 @@ void MainWindow::initOtherPages()
 
     //driver info
 
-
-
     if(setting_widget == NULL)
         setting_widget = new SettingWidget(this->m_cpulist, this->m_currentCpuMode, this->desktop, this->battery);//20180101
     setting_widget->setParentWindow(this);
@@ -1099,13 +1346,18 @@ void MainWindow::initOtherPages()
 //    setting_widget->initUI(last_skin_path);
     connect(setting_widget, SIGNAL(changeActionPage(QString)), setting_action_widget, SLOT(displayActionSubPage(QString)));
     connect(setting_action_widget, SIGNAL(notifyContentPageToMain()), setting_widget, SLOT(displaySettingHomePage()));
-    bottomStack->addWidget(setting_widget);
+    m_bottomStack->addWidget(setting_widget);
 
     if(box_widget == NULL)
         box_widget = new BoxWidget(this, this->arch, this->osName, getPluginsDirectory());
 //    box_widget->setSessionDbusProxy(sessioninterface);
 //    connect(box_widget, SIGNAL(sendSubIndex(int)), this, SLOT(displaySubPage(int)));
-    bottomStack->addWidget(box_widget);
+    m_bottomStack->addWidget(box_widget);
+
+
+
+
+*/
 }
 
 int MainWindow::getCurrentBackgroundIndex()
@@ -1157,8 +1409,8 @@ void MainWindow::restoreSkin()
   main_skin_pixmap.load(last_skin_path);
   QPalette palette_back;
   palette_back.setBrush(QPalette::Background, main_skin_pixmap);
-  default_action_widget->setPalette(palette_back);
-  other_action_widget->setPalette(palette_back);
+//  default_action_widget->setPalette(palette_back);
+//  other_action_widget->setPalette(palette_back);
 }
 
 
@@ -1172,8 +1424,8 @@ void MainWindow::changeSkin(QString pciture)
     main_skin_pixmap.load(pciture);
     QPalette palette;
     palette.setBrush(QPalette::Background, main_skin_pixmap);
-    default_action_widget->setPalette(palette);
-    other_action_widget->setPalette(palette);
+//    default_action_widget->setPalette(palette);
+//    other_action_widget->setPalette(palette);
 
     mSettings->beginGroup("Background");
     mSettings->setValue("Path", pciture);
@@ -1195,9 +1447,9 @@ void MainWindow::changeSkin(QString pciture)
     if(aboutDlg != NULL) {
         aboutDlg->resetTitleSkin(last_skin_path);
     }
-    if(upgrade_dialog != NULL) {
-        upgrade_dialog->resetTitleSkin(last_skin_path);
-    }
+//    if(upgrade_dialog != NULL) {
+//        upgrade_dialog->resetTitleSkin(last_skin_path);
+//    }
 }
 
 void MainWindow::reViewThePointSkin(QString pciture)
@@ -1209,8 +1461,8 @@ void MainWindow::reViewThePointSkin(QString pciture)
     review_skin_pixmap.load(pciture);
     QPalette palette_back;
     palette_back.setBrush(QPalette::Background, review_skin_pixmap);
-    default_action_widget->setPalette(palette_back);
-    other_action_widget->setPalette(palette_back);
+//    default_action_widget->setPalette(palette_back);
+//    other_action_widget->setPalette(palette_back);
 }
 
 void MainWindow::reViewTheOrgSkin()
@@ -1222,8 +1474,8 @@ void MainWindow::reViewTheOrgSkin()
     review_skin_pixmap.load(last_skin_path);
     QPalette palette_back;
     palette_back.setBrush(QPalette::Background, review_skin_pixmap);
-    default_action_widget->setPalette(palette_back);
-    other_action_widget->setPalette(palette_back);
+//    default_action_widget->setPalette(palette_back);
+//    other_action_widget->setPalette(palette_back);
 }
 
 void MainWindow::showMainMenu() {
@@ -1267,16 +1519,53 @@ void MainWindow::closeEvent(QCloseEvent *)
 
 void MainWindow::setCurrentPageIndex(int index)
 {
+    if (index == 0 && status != HOMEPAGE) {
+        m_topStack->setCurrentWidget(m_mainTopWidget);
+        m_bottomStack->setCurrentWidget(m_mainBottomWidget);
+        m_topStack->setFixedSize(m_mainTopWidget->size());
+        m_bottomStack->setFixedSize(m_mainBottomWidget->size());
+        status = HOMEPAGE;
+    }
+    else if (index == 1 && status != CLEANPAGE) {
+        m_topStack->setCurrentWidget(cleaner_action_widget);
+        m_bottomStack->setCurrentWidget(cleaner_widget);
+        m_topStack->setFixedSize(cleaner_action_widget->size());
+        m_bottomStack->setFixedSize(cleaner_widget->size());
+        status = CLEANPAGE;
+    }
+    else if (index == 2 && status != INFOPAGE) {
+        m_topStack->setCurrentWidget(info_action_widget);
+        m_bottomStack->setCurrentWidget(info_widget);
+        m_topStack->setFixedSize(info_action_widget->size());
+        m_bottomStack->setFixedSize(info_widget->size());
+        status = INFOPAGE;
+    }
+    else if (index == 3 && status != SETTINGPAGE) {
+        m_topStack->setCurrentWidget(setting_action_widget);
+        m_bottomStack->setCurrentWidget(setting_widget);
+        m_topStack->setFixedSize(setting_action_widget->size());
+        m_bottomStack->setFixedSize(setting_widget->size());
+        status = SETTINGPAGE;
+    }
+    else if (index == 4 && status != BOXPAGE) {
+        m_topStack->setCurrentWidget(box_action_widget);
+        m_bottomStack->setCurrentWidget(box_widget);
+        m_topStack->setFixedSize(box_action_widget->size());
+        m_bottomStack->setFixedSize(box_widget->size());
+        status = BOXPAGE;
+    }
+
+/*
     if(index == 0)
     {
 //        if (this->arch == "aarch64" || this->osName == "Kylin" || this->osName == "YHKylin")
 //            login_widget->hide();
         if (status != HOMEPAGE) {
             statusFlag = true;
-            shadow_widget->show();
-            tool_widget->hide();
-            if(title_widget->isVisible())
-                title_widget->hide();
+//            shadow_widget->show();
+            m_middleWidget->hide();
+//            if(title_widget->isVisible())
+//                title_widget->hide();
 //            if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible())
 //            {
 //                login_widget->hide();
@@ -1298,17 +1587,17 @@ void MainWindow::setCurrentPageIndex(int index)
             statusFlag = false;
         }
         if (status != CLEANPAGE && statusFlag) {
-            shadow_widget->show();
-            tool_widget->hide();
-            if(title_widget->isVisible())
-                title_widget->hide();
+//            shadow_widget->show();
+            m_middleWidget->hide();
+//            if(title_widget->isVisible())
+//                title_widget->hide();
 //            if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
 //                login_widget->hide();
 //            }
-//            topStack->setCurrentIndex(0);
-//            bottomStack->setCurrentIndex(0);
-            topStack->setCurrentWidget(cleaner_action_widget);
-            bottomStack->setCurrentWidget(cleaner_widget);
+//            m_topStack->setCurrentIndex(0);
+//            m_bottomStack->setCurrentIndex(0);
+            m_topStack->setCurrentWidget(cleaner_action_widget);
+            m_bottomStack->setCurrentWidget(cleaner_widget);
             spreadGroup->start();
             status = CLEANPAGE;
         }
@@ -1316,10 +1605,10 @@ void MainWindow::setCurrentPageIndex(int index)
 //            if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
 //                login_widget->hide();
 //            }
-//            topStack->setCurrentIndex(0);
-//            bottomStack->setCurrentIndex(0);
-            topStack->setCurrentWidget(cleaner_action_widget);
-            bottomStack->setCurrentWidget(cleaner_widget);
+//            m_topStack->setCurrentIndex(0);
+//            m_bottomStack->setCurrentIndex(0);
+            m_topStack->setCurrentWidget(cleaner_action_widget);
+            m_bottomStack->setCurrentWidget(cleaner_widget);
         }
     }
     else if(index == 2)
@@ -1333,17 +1622,17 @@ void MainWindow::setCurrentPageIndex(int index)
             statusFlag = false;
         }
         if (status != INFOPAGE && statusFlag) {
-            shadow_widget->show();
-            tool_widget->hide();
-            if(title_widget->isVisible())
-                title_widget->hide();
+//            shadow_widget->show();
+            m_middleWidget->hide();
+//            if(title_widget->isVisible())
+//                title_widget->hide();
 //            if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
 //                login_widget->hide();
 //            }
-//            topStack->setCurrentIndex(1);
-//            bottomStack->setCurrentIndex(1);
-            topStack->setCurrentWidget(info_action_widget);
-            bottomStack->setCurrentWidget(info_widget);
+//            m_topStack->setCurrentIndex(1);
+//            m_bottomStack->setCurrentIndex(1);
+            m_topStack->setCurrentWidget(info_action_widget);
+            m_bottomStack->setCurrentWidget(info_widget);
             spreadGroup->start();
             status = INFOPAGE;
         }
@@ -1351,10 +1640,10 @@ void MainWindow::setCurrentPageIndex(int index)
 //            if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
 //                login_widget->hide();
 //            }
-//            topStack->setCurrentIndex(1);
-//            bottomStack->setCurrentIndex(1);
-            topStack->setCurrentWidget(info_action_widget);
-            bottomStack->setCurrentWidget(info_widget);
+//            m_topStack->setCurrentIndex(1);
+//            m_bottomStack->setCurrentIndex(1);
+            m_topStack->setCurrentWidget(info_action_widget);
+            m_bottomStack->setCurrentWidget(info_widget);
         }
     }
     else if(index == 3)
@@ -1371,34 +1660,34 @@ void MainWindow::setCurrentPageIndex(int index)
 //                tool_widget->hide();
 //                if(title_widget->isVisible())
 //                    title_widget->hide();
-//    //            topStack->setCurrentIndex(3);
-//    //            bottomStack->setCurrentIndex(3);
-//                topStack->setCurrentWidget(box_action_widget);
-//                bottomStack->setCurrentWidget(box_widget);
+//    //            m_topStack->setCurrentIndex(3);
+//    //            m_bottomStack->setCurrentIndex(3);
+//                m_topStack->setCurrentWidget(box_action_widget);
+//                m_bottomStack->setCurrentWidget(box_widget);
 //                spreadGroup->start();
 //                status = BOXPAGE;
 //            }
 //            else {
-//    //            topStack->setCurrentIndex(3);
-//    //            bottomStack->setCurrentIndex(3);
-//                topStack->setCurrentWidget(box_action_widget);
-//                bottomStack->setCurrentWidget(box_widget);
+//    //            m_topStack->setCurrentIndex(3);
+//    //            m_bottomStack->setCurrentIndex(3);
+//                m_topStack->setCurrentWidget(box_action_widget);
+//                m_bottomStack->setCurrentWidget(box_widget);
 //            }
 //        }
 //        else
 //        {
             if (status != SETTINGPAGE && statusFlag) {
-                shadow_widget->show();
-                tool_widget->hide();
-                if(title_widget->isVisible())
-                    title_widget->hide();
+//                shadow_widget->show();
+                m_middleWidget->hide();
+//                if(title_widget->isVisible())
+//                    title_widget->hide();
 //                if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
 //                    login_widget->hide();
 //                }
-    //            topStack->setCurrentIndex(2);
-    //            bottomStack->setCurrentIndex(2);
-                topStack->setCurrentWidget(setting_action_widget);
-                bottomStack->setCurrentWidget(setting_widget);
+    //            m_topStack->setCurrentIndex(2);
+    //            m_bottomStack->setCurrentIndex(2);
+                m_topStack->setCurrentWidget(setting_action_widget);
+                m_bottomStack->setCurrentWidget(setting_widget);
                 spreadGroup->start();
                 status = SETTINGPAGE;
             }
@@ -1406,10 +1695,10 @@ void MainWindow::setCurrentPageIndex(int index)
 //                if (this->arch != "aarch64" && this->osName != "Kylin" && this->osName != "YHKylin" && login_widget->isVisible()) {
 //                    login_widget->hide();
 //                }
-    //            topStack->setCurrentIndex(2);
-    //            bottomStack->setCurrentIndex(2);
-                topStack->setCurrentWidget(setting_action_widget);
-                bottomStack->setCurrentWidget(setting_widget);
+    //            m_topStack->setCurrentIndex(2);
+    //            m_bottomStack->setCurrentIndex(2);
+                m_topStack->setCurrentWidget(setting_action_widget);
+                m_bottomStack->setCurrentWidget(setting_widget);
             }
 //        }
     }
@@ -1422,17 +1711,17 @@ void MainWindow::setCurrentPageIndex(int index)
             else
                 statusFlag = false;
             if (status != BOXPAGE && statusFlag) {
-                shadow_widget->show();
-                tool_widget->hide();
-                if(title_widget->isVisible())
-                    title_widget->hide();
+//                shadow_widget->show();
+                m_middleWidget->hide();
+//                if(title_widget->isVisible())
+//                    title_widget->hide();
 //                if (login_widget->isVisible()) {
 //                    login_widget->hide();
 //                }
-    //            topStack->setCurrentIndex(3);
-    //            bottomStack->setCurrentIndex(3);
-                topStack->setCurrentWidget(box_action_widget);
-                bottomStack->setCurrentWidget(box_widget);
+    //            m_topStack->setCurrentIndex(3);
+    //            m_bottomStack->setCurrentIndex(3);
+                m_topStack->setCurrentWidget(box_action_widget);
+                m_bottomStack->setCurrentWidget(box_widget);
                 spreadGroup->start();
                 status = BOXPAGE;
             }
@@ -1440,49 +1729,49 @@ void MainWindow::setCurrentPageIndex(int index)
 //                if (login_widget->isHidden()) {
 //                    login_widget->show();
 //                }
-    //            topStack->setCurrentIndex(3);
-    //            bottomStack->setCurrentIndex(3);
-                topStack->setCurrentWidget(box_action_widget);
-                bottomStack->setCurrentWidget(box_widget);
+    //            m_topStack->setCurrentIndex(3);
+    //            m_bottomStack->setCurrentIndex(3);
+                m_topStack->setCurrentWidget(box_action_widget);
+                m_bottomStack->setCurrentWidget(box_widget);
             }
 //        }
-    }
+    }*/
 }
 
 void MainWindow::initHomePage()
 {
-    if(home_action_widget == NULL)
-    {
-//        if(top_grid_layout == NULL )
-        QGridLayout *home_top_grid_layout = new QGridLayout();
-//        home_action_widget = new HomeActionWidget(this, mSettings);
-        home_action_widget = new HomeActionWidget(0, mSettings);
-        home_top_grid_layout->addWidget(home_action_widget,0,0);
-        default_action_widget->setLayout(home_top_grid_layout);
-        home_top_grid_layout->setSpacing(0);
-        home_top_grid_layout->setContentsMargins(0, 0, 0, 0);
-    }
+//    if(home_action_widget == NULL)
+//    {
+////        if(top_grid_layout == NULL )
+//        QGridLayout *home_top_grid_layout = new QGridLayout();
+////        home_action_widget = new HomeActionWidget(this, mSettings);
+//        home_action_widget = new HomeActionWidget(0, mSettings);
+//        home_top_grid_layout->addWidget(home_action_widget,0,0);
+//        default_action_widget->setLayout(home_top_grid_layout);
+//        home_top_grid_layout->setSpacing(0);
+//        home_top_grid_layout->setContentsMargins(0, 0, 0, 0);
+//    }
 
-    if(home_page == NULL)
-    {
-//        if( bottom_grid_layout == NULL )
-        QGridLayout *home_bottom_grid_layout = new QGridLayout();
-//        home_page = new HomePage(0/*, version*/);
-        home_page = new HomePage(this, this->arch, this->osName/*, version*/);
-        connect(home_page, SIGNAL(sendSubIndex(int)), this, SLOT(displaySubPage(int)));
-        home_page->setParentWindow(this);
-        home_page->initUI();
-        home_page->initConnect();
+//    if(home_page == NULL)
+//    {
+////        if( bottom_grid_layout == NULL )
+//        QGridLayout *home_bottom_grid_layout = new QGridLayout();
+////        home_page = new HomePage(0/*, version*/);
+//        home_page = new HomePage(this, this->arch, this->osName/*, version*/);
+//        connect(home_page, SIGNAL(sendSubIndex(int)), this, SLOT(displaySubPage(int)));
+//        home_page->setParentWindow(this);
+//        home_page->initUI();
+//        home_page->initConnect();
 
-        home_bottom_grid_layout->addWidget(home_page,0,0);
-        default_content_widget->setLayout(home_bottom_grid_layout);
-        home_bottom_grid_layout->setSpacing(0);
-        home_bottom_grid_layout->setContentsMargins(0, 0, 0, 0);
-    }
+//        home_bottom_grid_layout->addWidget(home_page,0,0);
+//        default_content_widget->setLayout(home_bottom_grid_layout);
+//        home_bottom_grid_layout->setSpacing(0);
+//        home_bottom_grid_layout->setContentsMargins(0, 0, 0, 0);
+//    }
 }
 
 void MainWindow::openSkinCenter() {
-    if(skin_center == NULL) {
+    /*if(skin_center == NULL) {
         skin_center = new SkinCenter(0, last_skin_path, this->arch, this->osName);//20161228
         skin_center->setParentWindow(this);
         skin_center->initSysBackgroundList();
@@ -1498,7 +1787,7 @@ void MainWindow::openSkinCenter() {
         skin_center->move(w_x, w_y);
         skin_center->show();
         skin_center->raise();
-    }
+    }*/
 }
 
 void MainWindow::openUpgradePage(/*QStringList version_list*/)
@@ -1532,14 +1821,14 @@ void MainWindow::openUpgradePage(/*QStringList version_list*/)
     }*/
 }
 
-void MainWindow::openUpgradePageAgain()
-{
-    int w_x = this->frameGeometry().topLeft().x() + (900 / 2) - (334  / 2);
-    int w_y = this->frameGeometry().topLeft().y() + (600 /2) - (470  / 2);
-    upgrade_dialog->move(w_x, w_y);
-    upgrade_dialog->show();
-    upgrade_dialog->raise();
-}
+//void MainWindow::openUpgradePageAgain()
+//{
+//    int w_x = this->frameGeometry().topLeft().x() + (900 / 2) - (334  / 2);
+//    int w_y = this->frameGeometry().topLeft().y() + (600 /2) - (470  / 2);
+//    upgrade_dialog->move(w_x, w_y);
+//    upgrade_dialog->show();
+//    upgrade_dialog->raise();
+//}
 
 void MainWindow::displaySubPage(int index)
 {
@@ -1631,71 +1920,61 @@ void MainWindow::aboutUs()
     aboutDlg->show();
 }
 
-
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-//    if(event->button() == Qt::LeftButton)
-//    {
-//        mouse_press = true;
-//        drag_pos = event->globalPos() - this->frameGeometry().topLeft();
-//        event->accept();
-//    }
-    if(event->button() == Qt::LeftButton)
+    /*if(event->button() == Qt::LeftButton)
     {
-        mouse_press = true;
-        drag_pos = event->globalPos() - pos();
+        m_mousePressed = true;
+        m_dragPosition = event->globalPos() - pos();
+    }*/
+    if (event->button() == Qt::LeftButton) {
+        this->m_dragPosition = event->globalPos() - frameGeometry().topLeft();
+        this->m_mousePressed = true;
     }
+
+    QMainWindow::mousePressEvent(event);
 }
 
-void MainWindow::mouseReleaseEvent(QMouseEvent *)
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
-    mouse_press = false;
+    /*m_mousePressed = false;
+    setWindowOpacity(1);*/
+    this->m_mousePressed = false;
     setWindowOpacity(1);
+
+    QMainWindow::mouseReleaseEvent(event);
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
-    if(mouse_press)
+    /*if(m_mousePressed)
     {
         QPoint move_pos = event->globalPos();
-        move(move_pos - drag_pos);
+        move(move_pos - m_dragPosition);
         setWindowOpacity(0.9);
 //        event->accept();
+    }*/
+    if (this->m_mousePressed) {
+        move(event->globalPos() - this->m_dragPosition);
+        setWindowOpacity(0.9);
     }
+
+    QMainWindow::mouseMoveEvent(event);
 }
 
-/*void MainWindow::paintEvent(QPaintEvent *event)
+void MainWindow::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.setOpacity(0.05);
 
     int penWidth = 1;
     QPainterPath framePath;
-    framePath.addRoundedRect(QRect(rect().x() + penWidth, rect().y() + penWidth, rect().width() - penWidth * 2, rect().height() - penWidth * 2), 4, 4);//背景弧度
+    framePath.addRoundedRect(QRect(rect().x() + penWidth, rect().y() + penWidth, rect().width() - penWidth * 2, rect().height() - penWidth * 2), 3, 3);//背景弧度
     painter.setClipPath(framePath);
 
     QPen framePen;
-    framePen.setColor(QColor("#F5F5F5"));
+    framePen.setColor(QColor("#fca71d"));
     painter.setOpacity(0.2);
     painter.drawPath(framePath);
-//    QPainterPath path;
-//    path.setFillRule(Qt::WindingFill);
-//    path.addRect(10, 10, this->width()-20, this->height()-20);
-
-//    QPainter painter(this);
-//    painter.setRenderHint(QPainter::Antialiasing, true);
-//    painter.fillPath(path, QBrush(Qt::white));
-
-//    QColor color(0, 0, 0, 50);
-//    for(int i=0; i<10; i++)
-//    {
-//        QPainterPath path;
-//        path.setFillRule(Qt::WindingFill);
-//        path.addRect(10-i, 10-i, this->width()-(10-i)*2, this->height()-(10-i)*2);
-//        color.setAlpha(150 - qSqrt(i)*50);
-//        painter.setPen(color);
-//        painter.drawPath(path);
-//    }
-}*/
+}

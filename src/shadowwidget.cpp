@@ -19,9 +19,12 @@
 
 #include "shadowwidget.h"
 #include <QPainter>
+#include <QtMath>
+#include <QPen>
 
 ShadowWidget::ShadowWidget(QWidget *parent) :
     QWidget(parent)
+    ,widget_color(QColor("#fca71d"))
 {
     widget_opacity = 1;
 }
@@ -32,11 +35,61 @@ void ShadowWidget::setOpacity(qreal opacity)
     update();
 }
 
+void ShadowWidget::mousePressEvent(QMouseEvent *event)
+{
+//    if(event->button() == Qt::LeftButton)
+//    {
+//        m_mousePressed = true;
+//        m_dragPosition = event->globalPos() - this->frameGeometry().topLeft();
+//        event->accept();
+//    }
+    if(event->button() == Qt::LeftButton)
+    {
+        m_mousePressed = true;
+        m_dragPosition = event->globalPos() - pos();
+    }
+}
+
+void ShadowWidget::mouseReleaseEvent(QMouseEvent *)
+{
+    m_mousePressed = false;
+    setWindowOpacity(1);
+}
+
+void ShadowWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    if(m_mousePressed)
+    {
+        QPoint move_pos = event->globalPos();
+        move(move_pos - m_dragPosition);
+        setWindowOpacity(0.9);
+//        event->accept();
+    }
+}
+
 void ShadowWidget::paintEvent(QPaintEvent *)
 {
+//    QPainter painter(this);
+//    painter.setOpacity(widget_opacity);
+//    painter.setBrush(widget_color);
+//    painter.setPen(Qt::NoPen);
+//    painter.drawRect(rect());
+
+    QPainterPath path;
+    path.setFillRule(Qt::WindingFill);
+    path.addRect(10,10,this->width()-20,this->height()-20);
     QPainter painter(this);
-    painter.setOpacity(widget_opacity);
-    painter.setBrush(widget_color);
-    painter.setPen(Qt::NoPen);
-    painter.drawRect(rect());
+    painter.setRenderHint(QPainter::Antialiasing,true);
+    painter.fillPath(path,QBrush(Qt::white));
+//    QColor color(0,0,0,50);
+    QColor color(widget_color);
+    for(int i = 0 ; i < 10 ; ++i)
+    {
+        QPainterPath path;
+        path.setFillRule(Qt::WindingFill);
+        path.addRect(10-i,10-i,this->width()-(10-i)*2,this->height()-(10-i)*2);
+        color.setAlpha(150 - qSqrt(i)*50);
+        painter.setPen(color);
+        painter.drawPath(path);
+    }
 }

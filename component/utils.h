@@ -27,11 +27,18 @@
 #define ITEMVSPACE 5
 #define PAGESPACE 20
 #define ITEMWIDTH 650
+#define SHADOW_LEFT_TOP_PADDING 1
+#define SHADOW_RIGHT_BOTTOM_PADDING 2
+#define MAIN_WINDOW_WIDTH 900
+#define MAIN_WINDOW_HEIGHT 600
+//const int windowShadowPadding = 10;
 
 //#define VERSION "2.4.1"
 
 const QString KYLIN_COMPANY_SETTING = "kylin/kylin-assistant";
 const QString KYLIN_SETTING_FILE_NAME_SETTING = "kylin-assistant";
+
+
 
 typedef enum{
     YOUKER_EN,

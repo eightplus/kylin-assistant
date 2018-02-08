@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="zh_CN">
+<TS version="2.0" language="zh_CN">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -65,64 +65,52 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     <name>AudioWidget</name>
     <message>
         <source>Audio Info</source>
-        <translation type="vanished">声卡信息</translation>
+        <translation type="obsolete">声卡信息</translation>
     </message>
     <message>
         <source>Audio Info %1</source>
-        <translation type="vanished">声卡信息%1</translation>
+        <translation type="obsolete">声卡信息%1</translation>
     </message>
 </context>
 <context>
     <name>AutoStartWidget</name>
     <message>
-        <location filename="../autostartwidget.cpp" line="57"/>
         <source>AutoStart Items:</source>
-        <translation>自启动选项：</translation>
+        <translation type="obsolete">自启动选项：</translation>
     </message>
     <message>
-        <location filename="../autostartwidget.cpp" line="58"/>
         <source>App</source>
-        <translation>应用程序</translation>
+        <translation type="obsolete">应用程序</translation>
     </message>
     <message>
-        <location filename="../autostartwidget.cpp" line="59"/>
         <source>Status</source>
-        <translation>状态</translation>
+        <translation type="obsolete">状态</translation>
     </message>
     <message>
-        <location filename="../autostartwidget.cpp" line="61"/>
         <source>ON Items:</source>
-        <translation>已开启数目：</translation>
+        <translation type="obsolete">已开启数目：</translation>
     </message>
     <message>
-        <location filename="../autostartwidget.cpp" line="62"/>
         <source>OFF Items:</source>
-        <translation>已关闭数目：</translation>
+        <translation type="obsolete">已关闭数目：</translation>
     </message>
     <message>
-        <location filename="../autostartwidget.cpp" line="39"/>
-        <location filename="../autostartwidget.cpp" line="256"/>
         <source>Boot Manager</source>
-        <translation>启动项管理</translation>
-    </message>
-    <message>
-        <location filename="../autostartwidget.ui" line="14"/>
-        <source>Dialog</source>
-        <translation></translation>
+        <translation type="obsolete">启动项管理</translation>
     </message>
 </context>
 <context>
     <name>BatteryWidget</name>
     <message>
         <source>Battery Info</source>
-        <translation type="vanished">电池信息</translation>
+        <translation type="obsolete">电池信息</translation>
     </message>
 </context>
 <context>
     <name>BoardWidget</name>
     <message>
         <source>Board Info</source>
-        <translation type="vanished">主板信息</translation>
+        <translation type="obsolete">主板信息</translation>
     </message>
 </context>
 <context>
@@ -148,7 +136,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     </message>
     <message>
         <source>Boot Manager</source>
-        <translation type="vanished">启动项管理</translation>
+        <translation type="obsolete">启动项管理</translation>
     </message>
     <message>
         <source>Camera</source>
@@ -159,11 +147,11 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     <name>CDRowWidget</name>
     <message>
         <source>CDROM Info</source>
-        <translation type="vanished">光驱信息</translation>
+        <translation type="obsolete">光驱信息</translation>
     </message>
     <message>
         <source>CDROM Info %1</source>
-        <translation type="vanished">光驱信息 %1</translation>
+        <translation type="obsolete">光驱信息 %1</translation>
     </message>
 </context>
 <context>
@@ -598,11 +586,11 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     <name>ComputerPage</name>
     <message>
         <source> Minutes</source>
-        <translation type="vanished"> 分钟</translation>
+        <translation type="obsolete"> 分钟</translation>
     </message>
     <message>
         <source> Hours </source>
-        <translation type="vanished"> 小时</translation>
+        <translation type="obsolete"> 小时</translation>
     </message>
     <message>
         <source>%1 cores</source>
@@ -610,589 +598,589 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     </message>
     <message>
         <source>Audio Model</source>
-        <translation type="vanished">声卡型号</translation>
+        <translation type="obsolete">声卡型号</translation>
     </message>
     <message>
         <source>Vendor</source>
-        <translation type="vanished">制造商</translation>
+        <translation type="obsolete">制造商</translation>
     </message>
     <message>
         <source>Bus Address</source>
-        <translation type="vanished">总线地址</translation>
+        <translation type="obsolete">总线地址</translation>
     </message>
     <message>
         <source>Audio Driver</source>
-        <translation type="vanished">声卡驱动</translation>
+        <translation type="obsolete">声卡驱动</translation>
     </message>
     <message>
         <source>Device Name</source>
-        <translation type="vanished">设备名</translation>
+        <translation type="obsolete">设备名</translation>
     </message>
     <message>
         <source>Manufacturer</source>
-        <translation type="vanished">发行商</translation>
+        <translation type="obsolete">发行商</translation>
     </message>
     <message>
         <source>Model</source>
-        <translation type="vanished">型号</translation>
+        <translation type="obsolete">型号</translation>
     </message>
     <message>
         <source>Technology</source>
-        <translation type="vanished">技术</translation>
+        <translation type="obsolete">技术</translation>
     </message>
     <message>
         <source>Voltage</source>
-        <translation type="vanished">电压</translation>
+        <translation type="obsolete">电压</translation>
     </message>
     <message>
         <source>Energy Designed</source>
-        <translation type="vanished">能量（设计）</translation>
+        <translation type="obsolete">能量（设计）</translation>
     </message>
     <message>
         <source>Energy Full</source>
-        <translation type="vanished">满时能量</translation>
+        <translation type="obsolete">满时能量</translation>
     </message>
     <message>
         <source>Energy Now</source>
-        <translation type="vanished">能量</translation>
+        <translation type="obsolete">能量</translation>
     </message>
     <message>
         <source>Serial Number</source>
-        <translation type="vanished">序列号</translation>
+        <translation type="obsolete">序列号</translation>
     </message>
     <message>
         <source>Motherboard Model</source>
-        <translation type="vanished">主板型号</translation>
+        <translation type="obsolete">主板型号</translation>
     </message>
     <message>
         <source>Motherboard Vendor</source>
-        <translation type="vanished">主板产商</translation>
+        <translation type="obsolete">主板产商</translation>
     </message>
     <message>
         <source>BIOS Vendor</source>
-        <translation type="vanished">BIOS产商</translation>
+        <translation type="obsolete">BIOS产商</translation>
     </message>
     <message>
         <source>BIOS Version</source>
-        <translation type="vanished">BIOS版本</translation>
+        <translation type="obsolete">BIOS版本</translation>
     </message>
     <message>
         <source>Release Date</source>
-        <translation type="vanished">发布日期</translation>
+        <translation type="obsolete">发布日期</translation>
     </message>
     <message>
         <source>CD-ROM Model</source>
-        <translation type="vanished">光驱型号</translation>
+        <translation type="obsolete">光驱型号</translation>
     </message>
     <message>
         <source>Firmware Version</source>
-        <translation type="vanished">固件版本</translation>
+        <translation type="obsolete">固件版本</translation>
     </message>
     <message>
         <source>CPU</source>
-        <translation type="vanished">处理器</translation>
+        <translation type="obsolete">处理器</translation>
     </message>
     <message>
         <source>Socket/Slot</source>
-        <translation type="vanished">插座/插槽</translation>
+        <translation type="obsolete">插座/插槽</translation>
     </message>
     <message>
         <source>Maximum Frequency</source>
-        <translation type="vanished">最大主频</translation>
+        <translation type="obsolete">最大主频</translation>
     </message>
     <message>
         <source>Current Frequency</source>
-        <translation type="vanished">当前主频</translation>
+        <translation type="obsolete">当前主频</translation>
     </message>
     <message>
         <source>FSB</source>
-        <translation type="vanished">前端总线</translation>
+        <translation type="obsolete">前端总线</translation>
     </message>
     <message>
         <source>Core Number</source>
-        <translation type="vanished">核心数目</translation>
+        <translation type="obsolete">核心数目</translation>
     </message>
     <message>
         <source>Thread</source>
-        <translation type="vanished">线程</translation>
+        <translation type="obsolete">线程</translation>
     </message>
     <message>
         <source>L1 Cache</source>
-        <translation type="vanished">１级缓存</translation>
+        <translation type="obsolete">１级缓存</translation>
     </message>
     <message>
         <source>L2 Cache</source>
-        <translation type="vanished">２级缓存</translation>
+        <translation type="obsolete">２级缓存</translation>
     </message>
     <message>
         <source>phytium</source>
-        <translation type="vanished">飞腾</translation>
+        <translation type="obsolete">飞腾</translation>
     </message>
     <message>
         <source>4 cores</source>
-        <translation type="vanished">4核</translation>
+        <translation type="obsolete">4核</translation>
     </message>
     <message>
         <source>4 thread/core</source>
-        <translation type="vanished">4线程/核</translation>
+        <translation type="obsolete">4线程/核</translation>
     </message>
     <message>
         <source>Desktop Environment</source>
-        <translation type="vanished">桌面环境</translation>
+        <translation type="obsolete">桌面环境</translation>
     </message>
     <message>
         <source>Host Name</source>
-        <translation type="vanished">主机名</translation>
+        <translation type="obsolete">主机名</translation>
     </message>
     <message>
         <source>Memery Capacity</source>
-        <translation type="vanished">内存容量</translation>
+        <translation type="obsolete">内存容量</translation>
     </message>
     <message>
         <source>Terminal</source>
-        <translation type="vanished">用户命令解释器</translation>
+        <translation type="obsolete">用户命令解释器</translation>
     </message>
     <message>
         <source>32bit</source>
-        <translation type="vanished">32位</translation>
+        <translation type="obsolete">32位</translation>
     </message>
     <message>
         <source>64bit</source>
-        <translation type="vanished">64位</translation>
+        <translation type="obsolete">64位</translation>
     </message>
     <message>
         <source>YHKylin community</source>
-        <translation type="vanished">银河麒麟社区版</translation>
+        <translation type="obsolete">银河麒麟社区版</translation>
     </message>
     <message>
         <source>Memory reference voltage</source>
-        <translation type="vanished">内存参考电压</translation>
+        <translation type="obsolete">内存参考电压</translation>
     </message>
     <message>
         <source>SATA controller voltage</source>
-        <translation type="vanished">SATA控制器电压</translation>
+        <translation type="obsolete">SATA控制器电压</translation>
     </message>
     <message>
         <source>Memory voltage</source>
-        <translation type="vanished">内存电压</translation>
+        <translation type="obsolete">内存电压</translation>
     </message>
     <message>
         <source>CPU pin voltage</source>
-        <translation type="vanished">CPU管脚电压</translation>
+        <translation type="obsolete">CPU管脚电压</translation>
     </message>
     <message>
         <source>Bridge voltage</source>
-        <translation type="vanished">桥片电压</translation>
+        <translation type="obsolete">桥片电压</translation>
     </message>
     <message>
         <source>CPU core voltage</source>
-        <translation type="vanished">CPU核电压</translation>
+        <translation type="obsolete">CPU核电压</translation>
     </message>
     <message>
         <source>CPU temperature</source>
-        <translation type="vanished">CPU温度</translation>
+        <translation type="obsolete">CPU温度</translation>
     </message>
     <message>
         <source>Motherboard temperature</source>
-        <translation type="vanished">主板温度</translation>
+        <translation type="obsolete">主板温度</translation>
     </message>
     <message>
         <source>CPU fan speed</source>
-        <translation type="vanished">CPU风扇转速</translation>
+        <translation type="obsolete">CPU风扇转速</translation>
     </message>
     <message>
         <source>%1 64bit</source>
-        <translation type="vanished">%1 64位</translation>
+        <translation type="obsolete">%1 64位</translation>
     </message>
     <message>
         <source>%1 </source>
-        <translation type="vanished">%1 </translation>
+        <translation type="obsolete">%1 </translation>
     </message>
     <message>
         <source>Ondemand</source>
-        <translation type="vanished">自动调频</translation>
+        <translation type="obsolete">自动调频</translation>
     </message>
     <message>
         <source>Powersave</source>
-        <translation type="vanished">省电模式</translation>
+        <translation type="obsolete">省电模式</translation>
     </message>
     <message>
         <source>Performance</source>
-        <translation type="vanished">性能模式</translation>
+        <translation type="obsolete">性能模式</translation>
     </message>
     <message>
         <source>CPU FM mode</source>
-        <translation type="vanished">CPU调频模式</translation>
+        <translation type="obsolete">CPU调频模式</translation>
     </message>
     <message>
         <source>Distribution</source>
-        <translation type="vanished">发行版</translation>
+        <translation type="obsolete">发行版</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation type="vanished">语言</translation>
+        <translation type="obsolete">语言</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="vanished">用户</translation>
+        <translation type="obsolete">用户</translation>
     </message>
     <message>
         <source>Home Folder</source>
-        <translation type="vanished">用户主目录</translation>
+        <translation type="obsolete">用户主目录</translation>
     </message>
     <message>
         <source>Host bridge</source>
-        <translation type="vanished">主桥</translation>
+        <translation type="obsolete">主桥</translation>
     </message>
     <message>
         <source>VGA Model</source>
-        <translation type="vanished">VGA兼容控制器</translation>
+        <translation type="obsolete">VGA兼容控制器</translation>
     </message>
     <message>
         <source>USB Model</source>
-        <translation type="vanished">USB控制器</translation>
+        <translation type="obsolete">USB控制器</translation>
     </message>
     <message>
         <source>Communication Model</source>
-        <translation type="vanished">通信控制器</translation>
+        <translation type="obsolete">通信控制器</translation>
     </message>
     <message>
         <source>Ethernet Model</source>
-        <translation type="vanished">以太网控制器</translation>
+        <translation type="obsolete">以太网控制器</translation>
     </message>
     <message>
         <source>PCI bridge</source>
-        <translation type="vanished">PCI桥</translation>
+        <translation type="obsolete">PCI桥</translation>
     </message>
     <message>
         <source>ISA bridge</source>
-        <translation type="vanished">ISA桥</translation>
+        <translation type="obsolete">ISA桥</translation>
     </message>
     <message>
         <source>SATA Model</source>
-        <translation type="vanished">SATA控制器</translation>
+        <translation type="obsolete">SATA控制器</translation>
     </message>
     <message>
         <source>SMBus</source>
-        <translation type="vanished">系统管理总线</translation>
+        <translation type="obsolete">系统管理总线</translation>
     </message>
     <message>
         <source>System peripheral</source>
-        <translation type="vanished">系统外围</translation>
+        <translation type="obsolete">系统外围</translation>
     </message>
     <message>
         <source>Driver in use</source>
-        <translation type="vanished">使用的驱动</translation>
+        <translation type="obsolete">使用的驱动</translation>
     </message>
     <message>
         <source>existing drivers</source>
-        <translation type="vanished">可选的驱动</translation>
+        <translation type="obsolete">可选的驱动</translation>
     </message>
     <message>
         <source>IDE interface</source>
-        <translation type="vanished">IDE接口</translation>
+        <translation type="obsolete">IDE接口</translation>
     </message>
     <message>
         <source>SP controller</source>
-        <translation type="vanished">信号处理控制器</translation>
+        <translation type="obsolete">信号处理控制器</translation>
     </message>
     <message>
         <source>Network controller</source>
-        <translation type="vanished">网络控制器</translation>
+        <translation type="obsolete">网络控制器</translation>
     </message>
     <message>
         <source>Multimedia audio controller</source>
-        <translation type="vanished">多媒体音频控制器</translation>
+        <translation type="obsolete">多媒体音频控制器</translation>
     </message>
     <message>
         <source>HDD Model</source>
-        <translation type="vanished">硬盘型号</translation>
+        <translation type="obsolete">硬盘型号</translation>
     </message>
     <message>
         <source>HDD Vendor</source>
-        <translation type="vanished">硬盘厂商</translation>
+        <translation type="obsolete">硬盘厂商</translation>
     </message>
     <message>
         <source>HDD Capacity</source>
-        <translation type="vanished">硬盘容量</translation>
+        <translation type="obsolete">硬盘容量</translation>
     </message>
     <message>
         <source>Slot Number</source>
-        <translation type="vanished">插槽号</translation>
+        <translation type="obsolete">插槽号</translation>
     </message>
     <message>
         <source>Memory Model</source>
-        <translation type="vanished">内存型号</translation>
+        <translation type="obsolete">内存型号</translation>
     </message>
     <message>
         <source>Memory Size</source>
-        <translation type="vanished">内存大小</translation>
+        <translation type="obsolete">内存大小</translation>
     </message>
     <message>
         <source>Data Width</source>
-        <translation type="vanished">数据宽度</translation>
+        <translation type="obsolete">数据宽度</translation>
     </message>
     <message>
         <source>Memory Info</source>
-        <translation type="vanished">内存条信息</translation>
+        <translation type="obsolete">内存条信息</translation>
     </message>
     <message>
         <source>Graphics Card Model</source>
-        <translation type="vanished">显卡型号</translation>
+        <translation type="obsolete">显卡型号</translation>
     </message>
     <message>
         <source>Current Graphics Card</source>
-        <translation type="vanished">当前显卡</translation>
+        <translation type="obsolete">当前显卡</translation>
     </message>
     <message>
         <source>Graphics Card Vendor</source>
-        <translation type="vanished">显卡制造商</translation>
+        <translation type="obsolete">显卡制造商</translation>
     </message>
     <message>
         <source>Graphics Driver</source>
-        <translation type="vanished">显卡驱动</translation>
+        <translation type="obsolete">显卡驱动</translation>
     </message>
     <message>
         <source>Gamma</source>
-        <translation type="vanished">伽马值</translation>
+        <translation type="obsolete">伽马值</translation>
     </message>
     <message>
         <source>Screen Size(inch)</source>
-        <translation type="vanished">屏幕尺寸（英寸）</translation>
+        <translation type="obsolete">屏幕尺寸（英寸）</translation>
     </message>
     <message>
         <source>Max Resolution</source>
-        <translation type="vanished">最大分辨率</translation>
+        <translation type="obsolete">最大分辨率</translation>
     </message>
     <message>
         <source>Current Interface</source>
-        <translation type="vanished">当前接口</translation>
+        <translation type="obsolete">当前接口</translation>
     </message>
     <message>
         <source>Monitor Model</source>
-        <translation type="vanished">显示器型号</translation>
+        <translation type="obsolete">显示器型号</translation>
     </message>
     <message>
         <source>Visual Area</source>
-        <translation type="vanished">可视面积</translation>
+        <translation type="obsolete">可视面积</translation>
     </message>
     <message>
         <source>Support Interface</source>
-        <translation type="vanished">支持接口</translation>
+        <translation type="obsolete">支持接口</translation>
     </message>
     <message>
         <source>Monitor Manufacturers</source>
-        <translation type="vanished">显示器制造商</translation>
+        <translation type="obsolete">显示器制造商</translation>
     </message>
     <message>
         <source>Date of production/Week</source>
-        <translation type="vanished">生产日期/周</translation>
+        <translation type="obsolete">生产日期/周</translation>
     </message>
     <message>
         <source>Date of production/Year</source>
-        <translation type="vanished">生产日期/年</translation>
+        <translation type="obsolete">生产日期/年</translation>
     </message>
     <message>
         <source>NIC Model</source>
-        <translation type="vanished">网卡型号</translation>
+        <translation type="obsolete">网卡型号</translation>
     </message>
     <message>
         <source>NIC Driver</source>
-        <translation type="vanished">网卡驱动</translation>
+        <translation type="obsolete">网卡驱动</translation>
     </message>
     <message>
         <source>IP Address</source>
-        <translation type="vanished">IP地址</translation>
+        <translation type="obsolete">IP地址</translation>
     </message>
     <message>
         <source>Mac Address</source>
-        <translation type="vanished">MAC地址</translation>
+        <translation type="obsolete">MAC地址</translation>
     </message>
     <message>
         <source>Connection Status</source>
-        <translation type="vanished">连接状态</translation>
+        <translation type="obsolete">连接状态</translation>
     </message>
     <message>
         <source>Max Bandwidth</source>
-        <translation type="vanished">最大带宽</translation>
+        <translation type="obsolete">最大带宽</translation>
     </message>
     <message>
         <source>WLan NIC Driver</source>
-        <translation type="vanished">无线网卡驱动</translation>
+        <translation type="obsolete">无线网卡驱动</translation>
     </message>
     <message>
         <source>WLan NIC Model</source>
-        <translation type="vanished">网卡型号</translation>
+        <translation type="obsolete">网卡型号</translation>
     </message>
     <message>
         <source>Device Name:</source>
-        <translation type="vanished">设备名称：</translation>
+        <translation type="obsolete">设备名称：</translation>
     </message>
     <message>
         <source>VNIC</source>
-        <translation type="vanished">虚拟网卡</translation>
+        <translation type="obsolete">虚拟网卡</translation>
     </message>
     <message>
         <source>NetType</source>
-        <translation type="vanished">网卡类型</translation>
+        <translation type="obsolete">网卡类型</translation>
     </message>
     <message>
         <source>Ethernet interface</source>
-        <translation type="vanished">以太网接口</translation>
+        <translation type="obsolete">以太网接口</translation>
     </message>
     <message>
         <source>Wireless interface</source>
-        <translation type="vanished">无线网接口</translation>
+        <translation type="obsolete">无线网接口</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation type="vanished">电脑版本</translation>
+        <translation type="obsolete">电脑版本</translation>
     </message>
     <message>
         <source>Hostname</source>
-        <translation type="vanished">主机名</translation>
+        <translation type="obsolete">主机名</translation>
     </message>
     <message>
         <source>Running Time</source>
-        <translation type="vanished">持续运行时间</translation>
+        <translation type="obsolete">持续运行时间</translation>
     </message>
     <message>
         <source>OS Types</source>
-        <translation type="vanished">操作系统类型</translation>
+        <translation type="obsolete">操作系统类型</translation>
     </message>
     <message>
         <source>OS Version</source>
-        <translation type="vanished">操作系统版本</translation>
+        <translation type="obsolete">操作系统版本</translation>
     </message>
     <message>
         <source>Kernel Bit</source>
-        <translation type="vanished">系统位数</translation>
+        <translation type="obsolete">系统位数</translation>
     </message>
     <message>
         <source>Kernel Version</source>
-        <translation type="vanished">内核版本</translation>
+        <translation type="obsolete">内核版本</translation>
     </message>
     <message>
         <source>Kernel Arch</source>
-        <translation type="vanished">内核架构</translation>
+        <translation type="obsolete">内核架构</translation>
     </message>
 </context>
 <context>
     <name>ConserveWidget</name>
     <message>
         <source>Adjust gamma</source>
-        <translation type="vanished">调整伽马值</translation>
+        <translation type="obsolete">调整伽马值</translation>
     </message>
     <message>
         <source>Adjust brightness</source>
-        <translation type="vanished">调整屏幕亮度</translation>
+        <translation type="obsolete">调整屏幕亮度</translation>
     </message>
     <message>
         <source>Time before session is considered idle</source>
-        <translation type="vanished">在此时间范围内无操作则关闭屏幕</translation>
+        <translation type="obsolete">在此时间范围内无操作则关闭屏幕</translation>
     </message>
     <message>
         <source>Lock screen</source>
-        <translation type="vanished">锁定屏幕</translation>
+        <translation type="obsolete">锁定屏幕</translation>
     </message>
     <message>
         <source>Lock delay</source>
-        <translation type="vanished">锁定延时</translation>
+        <translation type="obsolete">锁定延时</translation>
     </message>
     <message>
         <source>Battery critical low action</source>
-        <translation type="vanished">电池严重不足时</translation>
+        <translation type="obsolete">电池严重不足时</translation>
     </message>
     <message>
         <source>Laptop lid close action on battery</source>
-        <translation type="vanished">使用电池合上盖子时</translation>
+        <translation type="obsolete">使用电池合上盖子时</translation>
     </message>
     <message>
         <source>Laptop lid close action on AC</source>
-        <translation type="vanished">使用电源合上盖子时</translation>
+        <translation type="obsolete">使用电源合上盖子时</translation>
     </message>
     <message>
         <source>Sleep timeout PC when on battery</source>
-        <translation type="vanished">使用电池，空闲此时间后电脑转入睡眠</translation>
+        <translation type="obsolete">使用电池，空闲此时间后电脑转入睡眠</translation>
     </message>
     <message>
         <source>Sleep timeout PC when on AC</source>
-        <translation type="vanished">使用电源，空闲此时间后电脑转入睡眠</translation>
+        <translation type="obsolete">使用电源，空闲此时间后电脑转入睡眠</translation>
     </message>
     <message>
         <source>Sleep timeout display when on battery</source>
-        <translation type="vanished">使用电池，空闲此时间后屏幕转入睡眠</translation>
+        <translation type="obsolete">使用电池，空闲此时间后屏幕转入睡眠</translation>
     </message>
     <message>
         <source>Sleep timeout display when on AC</source>
-        <translation type="vanished">使用电源，空闲此时间后屏幕转入睡眠</translation>
+        <translation type="obsolete">使用电源，空闲此时间后屏幕转入睡眠</translation>
     </message>
     <message>
         <source>suspend</source>
-        <translation type="vanished">挂起</translation>
+        <translation type="obsolete">挂起</translation>
     </message>
     <message>
         <source>shutdown</source>
-        <translation type="vanished">电源关闭</translation>
+        <translation type="obsolete">电源关闭</translation>
     </message>
     <message>
         <source>nothing</source>
-        <translation type="vanished">不处理</translation>
+        <translation type="obsolete">不处理</translation>
     </message>
     <message>
         <source>1 minute</source>
-        <translation type="vanished">1 分钟</translation>
+        <translation type="obsolete">1 分钟</translation>
     </message>
     <message>
         <source>2 minutes</source>
-        <translation type="vanished">2 分钟</translation>
+        <translation type="obsolete">2 分钟</translation>
     </message>
     <message>
         <source>3 minutes</source>
-        <translation type="vanished">3 分钟</translation>
+        <translation type="obsolete">3 分钟</translation>
     </message>
     <message>
         <source>5 minutes</source>
-        <translation type="vanished">5 分钟</translation>
+        <translation type="obsolete">5 分钟</translation>
     </message>
     <message>
         <source>10 minutes</source>
-        <translation type="vanished">10 分钟</translation>
+        <translation type="obsolete">10 分钟</translation>
     </message>
     <message>
         <source>Half an hour</source>
-        <translation type="vanished">半小时</translation>
+        <translation type="obsolete">半小时</translation>
     </message>
     <message>
         <source>1 hour</source>
-        <translation type="vanished">1 小时</translation>
+        <translation type="obsolete">1 小时</translation>
     </message>
     <message>
         <source>never</source>
-        <translation type="vanished">从不</translation>
+        <translation type="obsolete">从不</translation>
     </message>
     <message>
         <source>30 seconds</source>
-        <translation type="vanished">30 秒</translation>
+        <translation type="obsolete">30 秒</translation>
     </message>
     <message>
         <source>Turn off the screen</source>
-        <translation type="vanished">关闭屏幕</translation>
+        <translation type="obsolete">关闭屏幕</translation>
     </message>
     <message>
         <source>20 minutes</source>
-        <translation type="vanished">20 分钟</translation>
+        <translation type="obsolete">20 分钟</translation>
     </message>
     <message>
         <source>2 hours</source>
-        <translation type="vanished">2 小时</translation>
+        <translation type="obsolete">2 小时</translation>
     </message>
 </context>
 <context>
     <name>CpuOccupancyRate</name>
     <message>
         <source>CPU</source>
-        <translation type="vanished">处理器</translation>
+        <translation type="obsolete">处理器</translation>
     </message>
 </context>
 <context>
@@ -1227,21 +1215,21 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     <name>CpuWidget</name>
     <message>
         <source>CPU Info</source>
-        <translation type="vanished">处理器信息</translation>
+        <translation type="obsolete">处理器信息</translation>
     </message>
 </context>
 <context>
     <name>DesktopWidget</name>
     <message>
         <source>Desktop Info</source>
-        <translation type="vanished">桌面环境信息</translation>
+        <translation type="obsolete">桌面环境信息</translation>
     </message>
 </context>
 <context>
     <name>DriverWidget</name>
     <message>
         <source>Driver Info</source>
-        <translation type="vanished">驱动信息</translation>
+        <translation type="obsolete">驱动信息</translation>
     </message>
 </context>
 <context>
@@ -1479,7 +1467,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>FileSystemDialog</name>
     <message>
-        <location filename="../../plugins/systemmonitor/filesystemdialog.cpp" line="58"/>
+        <location filename="../../plugins/systemmonitor/filesystemdialog.cpp" line="60"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
@@ -1595,254 +1583,201 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     <name>HDWidget</name>
     <message>
         <source>HardWare Info</source>
-        <translation type="vanished">硬盘信息</translation>
+        <translation type="obsolete">硬盘信息</translation>
     </message>
     <message>
         <source>HardWare Info %1</source>
-        <translation type="vanished">硬盘信息 %1</translation>
+        <translation type="obsolete">硬盘信息 %1</translation>
     </message>
 </context>
 <context>
     <name>HomeActionWidget</name>
     <message>
-        <location filename="../homeactionwidget.cpp" line="144"/>
-        <location filename="../homeactionwidget.cpp" line="326"/>
         <source>The lastest cleanup time is </source>
-        <translation>上一次清理时间是</translation>
+        <translation type="obsolete">上一次清理时间是</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="150"/>
-        <location filename="../homeactionwidget.cpp" line="436"/>
         <source>The lastest scan time is </source>
-        <translation>上一次扫描时间是</translation>
+        <translation type="obsolete">上一次扫描时间是</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="154"/>
         <source>You have not implemented the one key scan and clean-up operation.</source>
-        <translation>您还没有执行过一键扫描和一键清理操作。</translation>
+        <translation type="obsolete">您还没有执行过一键扫描和一键清理操作。</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="190"/>
         <source>Quick clean up system trash, saving disk space and improving the system efficiency!</source>
-        <translation>一键清理系统垃圾，帮您节省磁盘空间，让系统运行更加有效率！</translation>
+        <translation type="obsolete">一键清理系统垃圾，帮您节省磁盘空间，让系统运行更加有效率！</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="191"/>
         <source>Start Scan</source>
-        <translation>开始扫描</translation>
+        <translation type="obsolete">开始扫描</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="192"/>
         <source>Start Cleanup</source>
-        <translation>开始清理</translation>
+        <translation type="obsolete">开始清理</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="193"/>
         <source>Back</source>
-        <translation>返回</translation>
+        <translation type="obsolete">返回</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="194"/>
-        <location filename="../homeactionwidget.cpp" line="408"/>
         <source>Scanning......</source>
-        <translation>正在扫描.....</translation>
+        <translation type="obsolete">正在扫描.....</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="205"/>
         <source>Scanning:</source>
-        <translation>正在扫描：</translation>
+        <translation type="obsolete">正在扫描：</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="195"/>
         <source>Scan Over</source>
-        <translation>扫描完成</translation>
+        <translation type="obsolete">扫描完成</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="221"/>
-        <location filename="../homeactionwidget.cpp" line="225"/>
-        <location filename="../homeactionwidget.cpp" line="236"/>
         <source> history trace; </source>
-        <translation> 条历史痕迹；</translation>
+        <translation type="obsolete"> 条历史痕迹；</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="221"/>
-        <location filename="../homeactionwidget.cpp" line="246"/>
         <source> browser cookies.</source>
-        <translation> 条浏览器Cookies。</translation>
+        <translation type="obsolete"> 条浏览器Cookies。</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="225"/>
-        <location filename="../homeactionwidget.cpp" line="250"/>
         <source> browser cookies; </source>
-        <translation> 条浏览器Cookies；</translation>
+        <translation type="obsolete"> 条浏览器Cookies；</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="225"/>
-        <location filename="../homeactionwidget.cpp" line="236"/>
-        <location filename="../homeactionwidget.cpp" line="250"/>
-        <location filename="../homeactionwidget.cpp" line="261"/>
         <source> garbage.</source>
-        <translation> 垃圾。</translation>
+        <translation type="obsolete"> 垃圾。</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="232"/>
         <source> history trace.</source>
-        <translation> 条历史痕迹。</translation>
+        <translation type="obsolete"> 条历史痕迹。</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="266"/>
         <source>No garbage.</source>
-        <translation>没有扫描到垃圾。</translation>
+        <translation type="obsolete">没有扫描到垃圾。</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="311"/>
         <source>Cleaning......</source>
-        <translation>正在清理.......</translation>
+        <translation type="obsolete">正在清理.......</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="315"/>
         <source>Garbage Cleanup OK......</source>
-        <translation>垃圾清理完成......</translation>
+        <translation type="obsolete">垃圾清理完成......</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="318"/>
         <source>History Cleanup OK......</source>
-        <translation>历史记录清理完成......</translation>
+        <translation type="obsolete">历史记录清理完成......</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="321"/>
         <source>Cookies Cleanup OK......</source>
-        <translation>Cookies清理完成......</translation>
+        <translation type="obsolete">Cookies清理完成......</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="327"/>
         <source>Cleanup Cookies:</source>
-        <translation>清理了Cookies：</translation>
+        <translation type="obsolete">清理了Cookies：</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="327"/>
         <source>; Garbage:</source>
-        <translation>；垃圾：</translation>
+        <translation type="obsolete">；垃圾：</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="327"/>
         <source>; Historical records:</source>
-        <translation>；历史记录：</translation>
+        <translation type="obsolete">；历史记录：</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="358"/>
         <source>Cleaning up history trace of Firefox...</source>
-        <translation>正在清理Firefox浏览器的历史痕迹......</translation>
+        <translation type="obsolete">正在清理Firefox浏览器的历史痕迹......</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="361"/>
         <source>Firefox history trace had been cleared!</source>
-        <translation>Firefox浏览器历史痕迹清理完成！</translation>
+        <translation type="obsolete">Firefox浏览器历史痕迹清理完成！</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="366"/>
         <source>Cleaning up history trace of Chromium...</source>
-        <translation>正在清理Chromium浏览器的历史痕迹......</translation>
+        <translation type="obsolete">正在清理Chromium浏览器的历史痕迹......</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="369"/>
         <source>Chromium history trace had been cleared!</source>
-        <translation>Chromium浏览器的历史痕迹清理完成！</translation>
+        <translation type="obsolete">Chromium浏览器的历史痕迹清理完成！</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="374"/>
         <source>Cleaning up Cookies of Firefox...</source>
-        <translation>正在清理Firefox浏览器的Cookies......</translation>
+        <translation type="obsolete">正在清理Firefox浏览器的Cookies......</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="377"/>
         <source>Firefox Cookies had been cleared!</source>
-        <translation>Firefox浏览器的Cookies清理完成！</translation>
+        <translation type="obsolete">Firefox浏览器的Cookies清理完成！</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="382"/>
         <source>Cleaning up Cookies of Chromium...</source>
-        <translation>正在清理Chromium浏览器的Cookies......</translation>
+        <translation type="obsolete">正在清理Chromium浏览器的Cookies......</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="385"/>
         <source>Chromium Cookies had been cleared!</source>
-        <translation>Chromium浏览器的Cookies清理完成！</translation>
+        <translation type="obsolete">Chromium浏览器的Cookies清理完成！</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="390"/>
         <source>Apt cache had been cleared!</source>
-        <translation>Apt缓存清理完成！</translation>
+        <translation type="obsolete">Apt缓存清理完成！</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="393"/>
         <source>Cleaning up Apt cache: </source>
-        <translation>正在清理Apt缓存：</translation>
+        <translation type="obsolete">正在清理Apt缓存：</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="398"/>
         <source>Software Center cache had been cleared!</source>
-        <translation>软件中心缓存清理完成！</translation>
+        <translation type="obsolete">软件中心缓存清理完成！</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="401"/>
         <source>Cleaning up Software Center cache: </source>
-        <translation>正在清理软件中心缓存：</translation>
+        <translation type="obsolete">正在清理软件中心缓存：</translation>
     </message>
     <message>
-        <location filename="../homeactionwidget.cpp" line="428"/>
         <source>Ready to Cleanup......</source>
-        <translation>准备清理......</translation>
+        <translation type="obsolete">准备清理......</translation>
     </message>
 </context>
 <context>
     <name>HomePage</name>
     <message>
         <source>Boot Manager</source>
-        <translation type="vanished">启动项管理</translation>
+        <translation type="obsolete">启动项管理</translation>
     </message>
     <message>
         <source>Camera</source>
         <translation type="obsolete">摄像头</translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="258"/>
         <source>Current Version Number</source>
-        <translation>当前版本号</translation>
+        <translation type="obsolete">当前版本号</translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="259"/>
         <source>Update to the lastest version, make it work better</source>
-        <translation>更新至最新版本，使软件更好用</translation>
+        <translation type="obsolete">更新至最新版本，使软件更好用</translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="260"/>
         <source>updating on the backend</source>
-        <translation>正在后台升级</translation>
+        <translation type="obsolete">正在后台升级</translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="281"/>
         <source>Upgrade is complete</source>
-        <translation>升级完成</translation>
+        <translation type="obsolete">升级完成</translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="283"/>
         <source>Updating on the backend</source>
-        <translation>正在后台升级</translation>
+        <translation type="obsolete">正在后台升级</translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="261"/>
         <source>Common toolbox</source>
-        <translation>工具箱</translation>
+        <translation type="obsolete">工具箱</translation>
     </message>
     <message>
-        <location filename="../homepage.cpp" line="262"/>
         <source>Fast and practical, making the system more personalized</source>
-        <translation>更快更好，让系统更具个性化</translation>
+        <translation type="obsolete">更快更好，让系统更具个性化</translation>
     </message>
     <message>
         <source>More</source>
-        <translation type="vanished">更多</translation>
+        <translation type="obsolete">更多</translation>
     </message>
 </context>
 <context>
@@ -2015,7 +1950,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     </message>
     <message>
         <source>CD-ROM</source>
-        <translation type="vanished">光驱</translation>
+        <translation type="obsolete">光驱</translation>
     </message>
     <message>
         <location filename="../infowidget.cpp" line="137"/>
@@ -2135,68 +2070,435 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     <name>LauncherWidget</name>
     <message>
         <source>Launcher icon size</source>
-        <translation type="vanished">启动器图标尺寸</translation>
+        <translation type="obsolete">启动器图标尺寸</translation>
     </message>
     <message>
         <source>Launcher hide mode</source>
-        <translation type="vanished">启动器自动隐藏</translation>
+        <translation type="obsolete">启动器自动隐藏</translation>
     </message>
     <message>
         <source>Display desktop icon</source>
-        <translation type="vanished">显示桌面图标</translation>
+        <translation type="obsolete">显示桌面图标</translation>
     </message>
     <message>
         <source>Launcher Transparency</source>
-        <translation type="vanished">启动器透明度</translation>
+        <translation type="obsolete">启动器透明度</translation>
     </message>
     <message>
         <source>Icon Background</source>
-        <translation type="vanished">图标背景</translation>
+        <translation type="obsolete">图标背景</translation>
     </message>
     <message>
         <source>Top panel icon size</source>
-        <translation type="vanished">顶部面板图标大小</translation>
+        <translation type="obsolete">顶部面板图标大小</translation>
     </message>
     <message>
         <source>Top panel auto hide</source>
-        <translation type="vanished">顶部面板自动隐藏</translation>
+        <translation type="obsolete">顶部面板自动隐藏</translation>
     </message>
     <message>
         <source>Bottom panel icon size</source>
-        <translation type="vanished">底部面板图标大小</translation>
+        <translation type="obsolete">底部面板图标大小</translation>
     </message>
     <message>
         <source>Bottom panel auto hide</source>
-        <translation type="vanished">底部面板自动隐藏</translation>
+        <translation type="obsolete">底部面板自动隐藏</translation>
     </message>
     <message>
         <source>Launcher position</source>
-        <translation type="vanished">启动器位置</translation>
+        <translation type="obsolete">启动器位置</translation>
     </message>
 </context>
 <context>
     <name>LoginWidget</name>
     <message>
-        <location filename="../loginwidget.cpp" line="139"/>
         <source>Login Kylin Account</source>
-        <translation>登录麒麟帐号</translation>
+        <translation type="obsolete">登录麒麟帐号</translation>
     </message>
     <message>
-        <location filename="../loginwidget.cpp" line="140"/>
         <source>Logout</source>
-        <translation>注销</translation>
+        <translation type="obsolete">注销</translation>
+    </message>
+</context>
+<context>
+    <name>MainBottomWidget</name>
+    <message>
+        <location filename="../mainbottomwidget.cpp" line="259"/>
+        <source>Current Version Number</source>
+        <translation>当前版本号</translation>
+    </message>
+    <message>
+        <location filename="../mainbottomwidget.cpp" line="260"/>
+        <source>Update to the lastest version, make it work better</source>
+        <translation>更新至最新版本，使软件更好用</translation>
+    </message>
+    <message>
+        <location filename="../mainbottomwidget.cpp" line="261"/>
+        <source>updating on the backend</source>
+        <translation>正在后台升级</translation>
+    </message>
+    <message>
+        <location filename="../mainbottomwidget.cpp" line="262"/>
+        <source>Common toolbox</source>
+        <translation>工具箱</translation>
+    </message>
+    <message>
+        <location filename="../mainbottomwidget.cpp" line="263"/>
+        <source>Fast and practical, making the system more personalized</source>
+        <translation>更快更好，让系统更具个性化</translation>
+    </message>
+    <message>
+        <location filename="../mainbottomwidget.cpp" line="282"/>
+        <source>Upgrade is complete</source>
+        <translation>升级完成</translation>
+    </message>
+    <message>
+        <location filename="../mainbottomwidget.cpp" line="284"/>
+        <source>Updating on the backend</source>
+        <translation>正在后台升级</translation>
+    </message>
+</context>
+<context>
+    <name>MainTopWidget</name>
+    <message>
+        <location filename="../maintopwidget.cpp" line="68"/>
+        <location filename="../maintopwidget.cpp" line="651"/>
+        <source>The lastest cleanup time is </source>
+        <translation>上一次清理时间是</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="74"/>
+        <location filename="../maintopwidget.cpp" line="786"/>
+        <source>The lastest scan time is </source>
+        <translation>上一次扫描时间是</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="78"/>
+        <source>You have not implemented the one key scan and clean-up operation.</source>
+        <translation>您还没有执行过一键扫描和一键清理操作。</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="154"/>
+        <source>Kylin Assistant</source>
+        <translation>麒麟助手</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="350"/>
+        <source>Start Scan</source>
+        <translation>开始扫描</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="351"/>
+        <source>Start Cleanup</source>
+        <translation>开始清理</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="352"/>
+        <source>Back</source>
+        <translation>返回</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="353"/>
+        <location filename="../maintopwidget.cpp" line="744"/>
+        <source>Scanning......</source>
+        <translation>正在扫描.....</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="356"/>
+        <source>Quick clean up system trash, saving disk space and improving the system efficiency!</source>
+        <translation>一键清理系统垃圾，帮您节省磁盘空间，让系统运行更加有效率！</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="357"/>
+        <source>Scan Over</source>
+        <translation>扫描完成</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="360"/>
+        <source>Regular cleaning, let your computer remains the relaxed state</source>
+        <translation>经常清理，让电脑保持最轻松的状态</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="377"/>
+        <source>Clean OK</source>
+        <translation>清理完毕</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="384"/>
+        <source>Cleaning: </source>
+        <translation>正在清理：</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="388"/>
+        <source>, Percent is: </source>
+        <translation>，进度为：</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="388"/>
+        <source>%, Status is: </source>
+        <translation>%，状态为：</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="396"/>
+        <source>Clean Firefox history......</source>
+        <translation>清理Firefox浏览器历史记录......</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="400"/>
+        <source>Clean Chromium history......</source>
+        <translation>清理Chromium浏览器历史记录......</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="404"/>
+        <source>Clean system history......</source>
+        <translation>清理系统历史痕迹......</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="409"/>
+        <source>Clean apt......</source>
+        <translation>清理Apt......</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="413"/>
+        <source>Start clean apt......</source>
+        <translation>开始清理Apt......</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="418"/>
+        <source>Clean Firefox Cookie:</source>
+        <translation>清理Firefox浏览器Cookie：</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="422"/>
+        <source>Clean Chromium Cookie:</source>
+        <translation>清理Chromium浏览器Cookie：</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="431"/>
+        <location filename="../maintopwidget.cpp" line="515"/>
+        <source> does not exist</source>
+        <translation>不存在</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="435"/>
+        <source>Chromium Browser is running......</source>
+        <translation>Chromium浏览器正在运行中......</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="443"/>
+        <source>Cache Scan OK</source>
+        <translation>缓存扫描完成</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="447"/>
+        <source>Cookies Scan OK</source>
+        <translation>Cookies扫描完成</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="451"/>
+        <source>History Scan OK</source>
+        <translation>历史记录扫描完成</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="455"/>
+        <source>Packages Scan OK</source>
+        <translation>包扫描完成</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="474"/>
+        <location filename="../maintopwidget.cpp" line="485"/>
+        <source>Scaning......</source>
+        <translation>正在扫描.....</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="499"/>
+        <source>Error: </source>
+        <translation>错误：</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="502"/>
+        <source>Firefox Browser does not be installed</source>
+        <translation>没有安装Firefox浏览器</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="506"/>
+        <source>Chromium Browser does not be installed</source>
+        <translation>没有安装Chromium浏览器</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="510"/>
+        <source>Chromium Browser is running</source>
+        <translation>Chromium浏览器正在运行中</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="530"/>
+        <source>Scanning:</source>
+        <translation>正在扫描：</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="546"/>
+        <location filename="../maintopwidget.cpp" line="550"/>
+        <location filename="../maintopwidget.cpp" line="561"/>
+        <source> history trace; </source>
+        <translation> 条历史痕迹；</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="546"/>
+        <location filename="../maintopwidget.cpp" line="571"/>
+        <source> browser cookies.</source>
+        <translation> 条浏览器Cookies。</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="550"/>
+        <location filename="../maintopwidget.cpp" line="575"/>
+        <source> browser cookies; </source>
+        <translation> 条浏览器Cookies；</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="550"/>
+        <location filename="../maintopwidget.cpp" line="561"/>
+        <location filename="../maintopwidget.cpp" line="575"/>
+        <location filename="../maintopwidget.cpp" line="586"/>
+        <source> garbage.</source>
+        <translation> 垃圾。</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="557"/>
+        <source> history trace.</source>
+        <translation> 条历史痕迹。</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="591"/>
+        <source>No garbage.</source>
+        <translation>没有扫描到垃圾。</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="636"/>
+        <source>Cleaning......</source>
+        <translation>正在清理.......</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="640"/>
+        <source>Garbage Cleanup OK......</source>
+        <translation>垃圾清理完成......</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="643"/>
+        <source>History Cleanup OK......</source>
+        <translation>历史记录清理完成......</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="646"/>
+        <source>Cookies Cleanup OK......</source>
+        <translation>Cookies清理完成......</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="652"/>
+        <source>Cleanup Cookies:</source>
+        <translation>清理了Cookies：</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="652"/>
+        <source>; Garbage:</source>
+        <translation>；垃圾：</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="652"/>
+        <source>; Historical records:</source>
+        <translation>；历史记录：</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="683"/>
+        <source>Cleaning up history trace of Firefox...</source>
+        <translation>正在清理Firefox浏览器的历史痕迹......</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="686"/>
+        <source>Firefox history trace had been cleared!</source>
+        <translation>Firefox浏览器历史痕迹清理完成！</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="691"/>
+        <source>Cleaning up history trace of Chromium...</source>
+        <translation>正在清理Chromium浏览器的历史痕迹......</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="694"/>
+        <source>Chromium history trace had been cleared!</source>
+        <translation>Chromium浏览器的历史痕迹清理完成！</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="699"/>
+        <source>Cleaning up Cookies of Firefox...</source>
+        <translation>正在清理Firefox浏览器的Cookies......</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="702"/>
+        <source>Firefox Cookies had been cleared!</source>
+        <translation>Firefox浏览器的Cookies清理完成！</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="707"/>
+        <source>Cleaning up Cookies of Chromium...</source>
+        <translation>正在清理Chromium浏览器的Cookies......</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="710"/>
+        <source>Chromium Cookies had been cleared!</source>
+        <translation>Chromium浏览器的Cookies清理完成！</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="715"/>
+        <source>Apt cache had been cleared!</source>
+        <translation>Apt缓存清理完成！</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="718"/>
+        <source>Cleaning up Apt cache: </source>
+        <translation>正在清理Apt缓存：</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="723"/>
+        <source>Software Center cache had been cleared!</source>
+        <translation>软件中心缓存清理完成！</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="726"/>
+        <source>Cleaning up Software Center cache: </source>
+        <translation>正在清理软件中心缓存：</translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="771"/>
+        <location filename="../maintopwidget.cpp" line="825"/>
+        <source>Ready to Cleanup......</source>
+        <translation>准备清理......</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="69"/>
+        <location filename="../mainwindow.cpp" line="101"/>
         <source>Kylin Assistant</source>
         <translation>麒麟助手</translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="411"/>
+        <source>Understand hardware information, provide more convenient channel to obtain hardware information</source>
+        <translation>了解电脑硬件详细信息，为用户提供更加方便的获取硬件信息渠道</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="420"/>
+        <source>You can perform a full range of customized systems based on personal preferences</source>
+        <translation>您可以根据个人喜好对系统进行全方位的定制</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="429"/>
+        <source>Provide a practical and lightweight tool, create fast and convenient experience for you</source>
+        <translation>提供轻巧使用工具，为您打造快捷方便的体验</translation>
+    </message>
+    <message>
         <source>Youker Assistant</source>
-        <translation type="vanished">优客助手</translation>
+        <translation type="obsolete">优客助手</translation>
     </message>
 </context>
 <context>
@@ -2235,11 +2537,11 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     <name>MemoryWidget</name>
     <message>
         <source>Memory Info</source>
-        <translation type="vanished">内存条信息</translation>
+        <translation type="obsolete">内存条信息</translation>
     </message>
     <message>
         <source>Memory Info %1</source>
-        <translation type="vanished">内存信息 %1</translation>
+        <translation type="obsolete">内存信息 %1</translation>
     </message>
     <message>
         <location filename="../../plugins/systemmonitor/memorywidget.cpp" line="18"/>
@@ -2248,7 +2550,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     </message>
     <message>
         <source>Used %1(%2), Total %3</source>
-        <translation type="vanished">已使用 %1(%2), 共 %3</translation>
+        <translation type="obsolete">已使用 %1(%2), 共 %3</translation>
     </message>
 </context>
 <context>
@@ -2305,6 +2607,34 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     </message>
 </context>
 <context>
+    <name>MiddleWidget</name>
+    <message>
+        <location filename="../middlewidget.cpp" line="43"/>
+        <source>Home</source>
+        <translation>麒麟首页</translation>
+    </message>
+    <message>
+        <location filename="../middlewidget.cpp" line="43"/>
+        <source>Cleanup</source>
+        <translation>系统清理</translation>
+    </message>
+    <message>
+        <location filename="../middlewidget.cpp" line="43"/>
+        <source>Sysinfo</source>
+        <translation>系统信息</translation>
+    </message>
+    <message>
+        <location filename="../middlewidget.cpp" line="43"/>
+        <source>Feature</source>
+        <translation>系统美化</translation>
+    </message>
+    <message>
+        <location filename="../middlewidget.cpp" line="43"/>
+        <source>Toolkits</source>
+        <translation>功能大全</translation>
+    </message>
+</context>
+<context>
     <name>MonitorTitleWidget</name>
     <message>
         <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="239"/>
@@ -2327,12 +2657,12 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
         <translation>文件系统</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="360"/>
+        <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="358"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="374"/>
+        <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="372"/>
         <source>Enter the relevant info of process</source>
         <translation>输入进程相关信息</translation>
     </message>
@@ -2341,11 +2671,11 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     <name>MonitorWidget</name>
     <message>
         <source>Monitor Info</source>
-        <translation type="vanished">显示器和显卡信息</translation>
+        <translation type="obsolete">显示器和显卡信息</translation>
     </message>
     <message>
         <source>Monitor Info %1</source>
-        <translation type="vanished">显示器和显卡信息 %1</translation>
+        <translation type="obsolete">显示器和显卡信息 %1</translation>
     </message>
 </context>
 <context>
@@ -2375,38 +2705,38 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     <name>NautilusWidget</name>
     <message>
         <source>Display entry location</source>
-        <translation type="vanished">路径输入框取代路径栏</translation>
+        <translation type="obsolete">路径输入框取代路径栏</translation>
     </message>
     <message>
         <source>Automatically mount media</source>
-        <translation type="vanished">自动挂载媒体</translation>
+        <translation type="obsolete">自动挂载媒体</translation>
     </message>
     <message>
         <source>Automatically open a folder</source>
-        <translation type="vanished">自动打开文件夹</translation>
+        <translation type="obsolete">自动打开文件夹</translation>
     </message>
     <message>
         <source>Prompt autorun programs</source>
-        <translation type="vanished">提示自动运行的程序</translation>
+        <translation type="obsolete">提示自动运行的程序</translation>
     </message>
     <message>
         <source>Thumbnail icon size (pixels)</source>
-        <translation type="vanished">缩略图图标尺寸（像素）</translation>
+        <translation type="obsolete">缩略图图标尺寸（像素）</translation>
     </message>
     <message>
         <source>Thumbnail cache time (days)</source>
-        <translation type="vanished">缩略图缓存时间（天数）</translation>
+        <translation type="obsolete">缩略图缓存时间（天数）</translation>
     </message>
     <message>
         <source>Maximum thumbnail cache size (MB)</source>
-        <translation type="vanished">最大缩略图缓存尺寸（MB）</translation>
+        <translation type="obsolete">最大缩略图缓存尺寸（MB）</translation>
     </message>
 </context>
 <context>
     <name>NetworkFlow</name>
     <message>
         <source>Network</source>
-        <translation type="vanished">网络</translation>
+        <translation type="obsolete">网络</translation>
     </message>
     <message>
         <location filename="../../plugins/systemmonitor/networkflow.cpp" line="274"/>
@@ -2451,11 +2781,11 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     <name>NicWidget</name>
     <message>
         <source>NIC Info</source>
-        <translation type="vanished">网卡信息</translation>
+        <translation type="obsolete">网卡信息</translation>
     </message>
     <message>
         <source>NIC Info %1</source>
-        <translation type="vanished">网卡信息 %1</translation>
+        <translation type="obsolete">网卡信息 %1</translation>
     </message>
 </context>
 <context>
@@ -2615,31 +2945,31 @@ Are you sure to continue?</source>
     </message>
     <message>
         <source>Very High</source>
-        <translation type="vanished">非常高</translation>
+        <translation type="obsolete">非常高</translation>
     </message>
     <message>
         <source>High</source>
-        <translation type="vanished">高</translation>
+        <translation type="obsolete">高</translation>
     </message>
     <message>
         <source>Normal</source>
-        <translation type="vanished">普通</translation>
+        <translation type="obsolete">普通</translation>
     </message>
     <message>
         <source>Low</source>
-        <translation type="vanished">低</translation>
+        <translation type="obsolete">低</translation>
     </message>
     <message>
         <source>Very Low</source>
-        <translation type="vanished">非常低</translation>
+        <translation type="obsolete">非常低</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="vanished">自定义</translation>
+        <translation type="obsolete">自定义</translation>
     </message>
     <message>
         <source>Change Priority</source>
-        <translation type="vanished">改变优先级</translation>
+        <translation type="obsolete">改变优先级</translation>
     </message>
     <message>
         <location filename="../../plugins/systemmonitor/processdialog.cpp" line="200"/>
@@ -2744,23 +3074,23 @@ Are you sure to continue?</source>
     <name>PropertiesDialog</name>
     <message>
         <source>User name</source>
-        <translation type="vanished">用户</translation>
+        <translation type="obsolete">用户</translation>
     </message>
     <message>
         <source>Process name</source>
-        <translation type="vanished">进程名</translation>
+        <translation type="obsolete">进程名</translation>
     </message>
     <message>
         <source>Command line</source>
-        <translation type="vanished">命令行</translation>
+        <translation type="obsolete">命令行</translation>
     </message>
     <message>
         <source>CPU Time</source>
-        <translation type="vanished">CPU 时间</translation>
+        <translation type="obsolete">CPU 时间</translation>
     </message>
     <message>
         <source>Started Time</source>
-        <translation type="vanished">开始于</translation>
+        <translation type="obsolete">开始于</translation>
     </message>
     <message>
         <location filename="../../plugins/systemmonitor/propertiesdialog.cpp" line="125"/>
@@ -2772,110 +3102,110 @@ Are you sure to continue?</source>
     <name>QObject</name>
     <message>
         <source>kylin-assistant had already running!</source>
-        <translation type="vanished">麒麟助手运行中</translation>
+        <translation type="obsolete">麒麟助手运行中</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="201"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="207"/>
         <source>Running</source>
         <translation>运行中</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="205"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="211"/>
         <source>Stopped</source>
         <translation>已停止</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="209"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="215"/>
         <source>Zombie</source>
         <translation>僵死</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="213"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="219"/>
         <source>Uninterruptible</source>
         <translation>不可中断</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="217"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="223"/>
         <source>Sleeping</source>
         <translation>睡眠中</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="227"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="233"/>
         <source>Very High</source>
         <translation>非常高</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="229"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="235"/>
         <source>High</source>
         <translation>高</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="231"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="237"/>
         <source>Normal</source>
         <translation>普通</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="233"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="239"/>
         <source>Low</source>
         <translation>低</translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="235"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="241"/>
         <source>Very Low</source>
         <translation>非常低</translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="41"/>
+        <location filename="../topbasewidget.cpp" line="65"/>
         <source>Choose the theme what you want</source>
         <translation>选择您需要的主题</translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="42"/>
+        <location filename="../topbasewidget.cpp" line="66"/>
         <source>Set the desktop icon theme and the visibility of desktop icons</source>
         <translation>设置桌面图标主题和桌面图标的可见性</translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="43"/>
+        <location filename="../topbasewidget.cpp" line="67"/>
         <source>Replace the theme and size of the mouse pointer, and theme change need to restart system</source>
         <translation>更换鼠标指针主题和大小，主题更改需要重启系统才能生效</translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="44"/>
+        <location filename="../topbasewidget.cpp" line="68"/>
         <source>Set the sound theme you want</source>
         <translation>设置您需要的声音主题</translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="45"/>
+        <location filename="../topbasewidget.cpp" line="69"/>
         <source>Setting the panel mode of auto hide and icon size</source>
         <translation>设置面板自动隐藏模式和面板图标大小</translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="46"/>
+        <location filename="../topbasewidget.cpp" line="70"/>
         <source>Manage display of the start menu</source>
         <translation>管理启动菜单的显示</translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="47"/>
+        <location filename="../topbasewidget.cpp" line="71"/>
         <source>Window Manager settings</source>
         <translation>窗口管理器设置</translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="48"/>
+        <location filename="../topbasewidget.cpp" line="72"/>
         <source>According to personal preferences to set the system default font, click the  &apos;Restore&apos; button, can be restored to the state before the font settings</source>
         <translation>根据个人喜好设置系统默认字体，单击＂恢复默认＂按钮，可以将对应的字体恢复到设置前状态</translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="49"/>
+        <location filename="../topbasewidget.cpp" line="73"/>
         <source>Setting the relevant properties of your touchpad,make the operation more convenient</source>
         <translation>通过调整您触摸板的相关设置，使操作更加便捷</translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="50"/>
+        <location filename="../topbasewidget.cpp" line="74"/>
         <source>Save energy to let the computer longer standby time</source>
         <translation>节省电量，让电脑待机时间更长</translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="51"/>
+        <location filename="../topbasewidget.cpp" line="75"/>
         <source>Manage the file manager. Tips: if the thumbnail&apos;s cache time or size is set to -1, it will not be checked</source>
         <translation>管理文件管理器。注意：如果缩略图缓存时间或尺寸被设置为-1，缩略图将不会被清理</translation>
     </message>
@@ -3515,19 +3845,19 @@ Are you sure to continue?</source>
     </message>
     <message>
         <source>bits</source>
-        <translation type="vanished">位</translation>
+        <translation type="obsolete">位</translation>
     </message>
     <message>
         <source>bits/s</source>
-        <translation type="vanished">位/秒</translation>
+        <translation type="obsolete">位/秒</translation>
     </message>
     <message>
         <source>bit</source>
-        <translation type="vanished">位</translation>
+        <translation type="obsolete">位</translation>
     </message>
     <message>
         <source>bit/s</source>
-        <translation type="vanished">位/秒</translation>
+        <translation type="obsolete">位/秒</translation>
     </message>
     <message>
         <location filename="../../plugins/systemmonitor/memorycircle.cpp" line="24"/>
@@ -3691,167 +4021,164 @@ Are you sure to continue?</source>
     <name>SensorWieget</name>
     <message>
         <source>Hardware sensor information</source>
-        <translation type="vanished">硬件传感检测信息</translation>
+        <translation type="obsolete">硬件传感检测信息</translation>
     </message>
 </context>
 <context>
     <name>SettingAction</name>
     <message>
-        <location filename="../../component/settingaction.cpp" line="80"/>
         <source>Back</source>
-        <translation>返回</translation>
+        <translation type="obsolete">返回</translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="164"/>
         <source>There may be a mistake.</source>
-        <translation>可能发生了错误。</translation>
+        <translation type="obsolete">可能发生了错误。</translation>
     </message>
     <message>
         <source>Choose the theme what you want</source>
-        <translation type="vanished">选择您需要的主题</translation>
+        <translation type="obsolete">选择您需要的主题</translation>
     </message>
     <message>
         <source>Set the desktop icon theme and the visibility of desktop icons</source>
-        <translation type="vanished">设置桌面图标主题和桌面图标的可见性</translation>
+        <translation type="obsolete">设置桌面图标主题和桌面图标的可见性</translation>
     </message>
     <message>
         <source>Set the sound theme you want</source>
-        <translation type="vanished">设置您需要的声音主题</translation>
+        <translation type="obsolete">设置您需要的声音主题</translation>
     </message>
     <message>
         <source>Replace the theme and size of the mouse pointer, and theme change need to restart system</source>
-        <translation type="vanished">更换鼠标指针主题和大小，主题更改需要重启系统才能生效</translation>
+        <translation type="obsolete">更换鼠标指针主题和大小，主题更改需要重启系统才能生效</translation>
     </message>
     <message>
         <source>Setting the panel mode of auto hide and icon size</source>
-        <translation type="vanished">设置面板自动隐藏模式和面板图标大小</translation>
+        <translation type="obsolete">设置面板自动隐藏模式和面板图标大小</translation>
     </message>
     <message>
         <source>Setting the Launcher display mode, Icon size</source>
-        <translation type="vanished">设置启动器的显示模式、图标尺寸</translation>
+        <translation type="obsolete">设置启动器的显示模式、图标尺寸</translation>
     </message>
     <message>
         <source>Manage display of the start menu</source>
-        <translation type="vanished">管理启动菜单的显示</translation>
+        <translation type="obsolete">管理启动菜单的显示</translation>
     </message>
     <message>
         <source>Manage Dash and Panel menu settings</source>
-        <translation type="vanished">管理Dash搜索和面板菜单的设置</translation>
+        <translation type="obsolete">管理Dash搜索和面板菜单的设置</translation>
     </message>
     <message>
         <source>Window Manager settings</source>
-        <translation type="vanished">窗口管理器设置</translation>
+        <translation type="obsolete">窗口管理器设置</translation>
     </message>
     <message>
         <source>According to personal preferences to set the system default font, click the  &apos;Restore&apos; button, can be restored to the state before the font settings</source>
-        <translation type="vanished">根据个人喜好设置系统默认字体，单击＂恢复默认＂按钮，可以将对应的字体恢复到设置前状态</translation>
+        <translation type="obsolete">根据个人喜好设置系统默认字体，单击＂恢复默认＂按钮，可以将对应的字体恢复到设置前状态</translation>
     </message>
     <message>
         <source>Setting the relevant properties of your touchpad,make the operation more convenient</source>
-        <translation type="vanished">通过调整您触摸板的相关设置，使操作更加便捷</translation>
+        <translation type="obsolete">通过调整您触摸板的相关设置，使操作更加便捷</translation>
     </message>
     <message>
         <source>Monitor Check</source>
-        <translation type="vanished">坏点检测</translation>
+        <translation type="obsolete">坏点检测</translation>
     </message>
     <message>
         <source>Save energy to let the computer longer standby time</source>
-        <translation type="vanished">节省电量，让电脑待机时间更长</translation>
+        <translation type="obsolete">节省电量，让电脑待机时间更长</translation>
     </message>
     <message>
         <source>Manage the Caja file manager. Tips: if the thumbnail&apos;s cache time or size is set to -1, it will not be checked</source>
-        <translation type="vanished">管理Caja文件管理器。注意：如果缩略图缓存时间或尺寸被设置为-1，缩略图将不会被清理</translation>
+        <translation type="obsolete">管理Caja文件管理器。注意：如果缩略图缓存时间或尺寸被设置为-1，缩略图将不会被清理</translation>
     </message>
     <message>
         <source>Manage the Nautilus file manager. Tips: if the thumbnail&apos;s cache time or size is set to -1, it will not be checked</source>
-        <translation type="vanished">管理Nautilus文件管理器。注意：如果缩略图缓存时间或尺寸被设置为-1，缩略图将不会被清理</translation>
+        <translation type="obsolete">管理Nautilus文件管理器。注意：如果缩略图缓存时间或尺寸被设置为-1，缩略图将不会被清理</translation>
     </message>
 </context>
 <context>
     <name>SettingActionWidget</name>
     <message>
-        <location filename="../settingactionwidget.cpp" line="251"/>
         <source>You can perform a full range of customized systems based on personal preferences</source>
-        <translation>您可以根据个人喜好对系统进行全方位的定制</translation>
+        <translation type="obsolete">您可以根据个人喜好对系统进行全方位的定制</translation>
     </message>
 </context>
 <context>
     <name>SettingWidget</name>
     <message>
         <source>Personalize</source>
-        <translation type="vanished">个性化</translation>
+        <translation type="obsolete">个性化</translation>
     </message>
     <message>
         <source>ThemeSetting</source>
-        <translation type="vanished">主题设置</translation>
+        <translation type="obsolete">主题设置</translation>
     </message>
     <message>
         <source>IconSetting</source>
-        <translation type="vanished">图标设置</translation>
+        <translation type="obsolete">图标设置</translation>
     </message>
     <message>
         <source>MousePointer</source>
-        <translation type="vanished">鼠标设置</translation>
+        <translation type="obsolete">鼠标设置</translation>
     </message>
     <message>
         <source>SoundEffect</source>
-        <translation type="vanished">声音效果</translation>
+        <translation type="obsolete">声音效果</translation>
     </message>
     <message>
         <source>Desktop</source>
-        <translation type="vanished">桌面</translation>
+        <translation type="obsolete">桌面</translation>
     </message>
     <message>
         <source>Panel</source>
-        <translation type="vanished">面板</translation>
+        <translation type="obsolete">面板</translation>
     </message>
     <message>
         <source>StartMenu</source>
-        <translation type="vanished">启动菜单</translation>
+        <translation type="obsolete">启动菜单</translation>
     </message>
     <message>
         <source>Custom Launcher</source>
-        <translation type="vanished">自定义启动器</translation>
+        <translation type="obsolete">自定义启动器</translation>
     </message>
     <message>
         <source>Dash &amp; Panel</source>
-        <translation type="vanished">搜索和面板</translation>
+        <translation type="obsolete">搜索和面板</translation>
     </message>
     <message>
         <source>Window</source>
-        <translation type="vanished">窗口</translation>
+        <translation type="obsolete">窗口</translation>
     </message>
     <message>
         <source>Font</source>
-        <translation type="vanished">字体</translation>
+        <translation type="obsolete">字体</translation>
     </message>
     <message>
         <source>FontSetting</source>
-        <translation type="vanished">字体设置</translation>
+        <translation type="obsolete">字体设置</translation>
     </message>
     <message>
         <source>Sys options</source>
-        <translation type="vanished">系统选项</translation>
+        <translation type="obsolete">系统选项</translation>
     </message>
     <message>
         <source>Touchpad</source>
-        <translation type="vanished">触摸板</translation>
+        <translation type="obsolete">触摸板</translation>
     </message>
     <message>
         <source>Dead pixel check</source>
-        <translation type="vanished">坏点检测</translation>
+        <translation type="obsolete">坏点检测</translation>
     </message>
     <message>
         <source>Energy saving</source>
-        <translation type="vanished">省电设置</translation>
+        <translation type="obsolete">省电设置</translation>
     </message>
     <message>
         <source>Others</source>
-        <translation type="vanished">其他</translation>
+        <translation type="obsolete">其他</translation>
     </message>
     <message>
         <source>File manager</source>
-        <translation type="vanished">文件管理器</translation>
+        <translation type="obsolete">文件管理器</translation>
     </message>
 </context>
 <context>
@@ -3881,7 +4208,7 @@ Are you sure to continue?</source>
     </message>
     <message>
         <source>Allfile(*)</source>
-        <translation type="vanished">所有文件(*)</translation>
+        <translation type="obsolete">所有文件(*)</translation>
     </message>
     <message>
         <location filename="../../plugins/shredmanager/shreddialog.cpp" line="235"/>
@@ -3915,30 +4242,24 @@ Are you sure to continue?</source>
 <context>
     <name>SkinCenter</name>
     <message>
-        <location filename="../skincenter.cpp" line="37"/>
-        <location filename="../skincenter.cpp" line="66"/>
         <source>Skin Setting</source>
-        <translation>皮肤设置</translation>
+        <translation type="obsolete">皮肤设置</translation>
     </message>
     <message>
-        <location filename="../skincenter.cpp" line="77"/>
         <source>Default</source>
-        <translation>默认皮肤</translation>
+        <translation type="obsolete">默认皮肤</translation>
     </message>
     <message>
-        <location filename="../skincenter.cpp" line="80"/>
         <source>Custom</source>
-        <translation>自定义</translation>
+        <translation type="obsolete">自定义</translation>
     </message>
     <message>
-        <location filename="../skincenter.cpp" line="503"/>
         <source>Open File</source>
-        <translation>打开文件</translation>
+        <translation type="obsolete">打开文件</translation>
     </message>
     <message>
-        <location filename="../skincenter.cpp" line="504"/>
         <source>Files(*.png *.jpg)</source>
-        <translation>文件(*.png *.jpg)</translation>
+        <translation type="obsolete">文件(*.png *.jpg)</translation>
     </message>
 </context>
 <context>
@@ -3968,7 +4289,7 @@ Are you sure to continue?</source>
     <name>StartupManager</name>
     <message>
         <source>Kylin Startup Manager</source>
-        <translation type="vanished">麒麟启动项管理器</translation>
+        <translation type="obsolete">麒麟启动项管理器</translation>
     </message>
     <message>
         <location filename="../../plugins/startupmanager/startupmanager.cpp" line="59"/>
@@ -3992,13 +4313,13 @@ Are you sure to continue?</source>
 <context>
     <name>StartupWorker</name>
     <message>
-        <location filename="../../plugins/startupmanager/startupworker.cpp" line="521"/>
+        <location filename="../../plugins/startupmanager/startupworker.cpp" line="402"/>
         <source>No name</source>
         <translation>无名称</translation>
     </message>
     <message>
-        <location filename="../../plugins/startupmanager/startupworker.cpp" line="494"/>
-        <location filename="../../plugins/startupmanager/startupworker.cpp" line="526"/>
+        <location filename="../../plugins/startupmanager/startupworker.cpp" line="375"/>
+        <location filename="../../plugins/startupmanager/startupworker.cpp" line="407"/>
         <source>No description</source>
         <translation>无描述</translation>
     </message>
@@ -4007,15 +4328,15 @@ Are you sure to continue?</source>
     <name>SystemWidget</name>
     <message>
         <source>Computer Base Info</source>
-        <translation type="vanished">电脑概述</translation>
+        <translation type="obsolete">电脑概述</translation>
     </message>
     <message>
         <source> Minutes</source>
-        <translation type="vanished"> 分钟</translation>
+        <translation type="obsolete"> 分钟</translation>
     </message>
     <message>
         <source> Hours </source>
-        <translation type="vanished"> 小时</translation>
+        <translation type="obsolete"> 小时</translation>
     </message>
 </context>
 <context>
@@ -4043,26 +4364,26 @@ Are you sure to continue?</source>
     <name>TitleWidget</name>
     <message>
         <source>Kylin System Monitor</source>
-        <translation type="vanished">麒麟系统监视器</translation>
+        <translation type="obsolete">麒麟系统监视器</translation>
     </message>
 </context>
 <context>
     <name>ToolBar</name>
     <message>
         <source>Processes</source>
-        <translation type="vanished">进程</translation>
+        <translation type="obsolete">进程</translation>
     </message>
     <message>
         <source>Resources</source>
-        <translation type="vanished">资源</translation>
+        <translation type="obsolete">资源</translation>
     </message>
     <message>
         <source>File Systems</source>
-        <translation type="vanished">文件系统</translation>
+        <translation type="obsolete">文件系统</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">取消</translation>
+        <translation type="obsolete">取消</translation>
     </message>
 </context>
 <context>
@@ -4099,6 +4420,24 @@ Are you sure to continue?</source>
         <location filename="../toolwidget.cpp" line="46"/>
         <source>Toolkits</source>
         <translation>功能大全</translation>
+    </message>
+</context>
+<context>
+    <name>TopBaseWidget</name>
+    <message>
+        <location filename="../topbasewidget.cpp" line="188"/>
+        <source>There may be a mistake.</source>
+        <translation>可能发生了错误。</translation>
+    </message>
+    <message>
+        <location filename="../topbasewidget.cpp" line="204"/>
+        <source>Kylin Assistant</source>
+        <translation>麒麟助手</translation>
+    </message>
+    <message>
+        <location filename="../topbasewidget.cpp" line="292"/>
+        <source>Back</source>
+        <translation>返回</translation>
     </message>
 </context>
 <context>
@@ -4152,137 +4491,111 @@ Are you sure to continue?</source>
 <context>
     <name>UpgradeDialog</name>
     <message>
-        <location filename="../upgradedialog.cpp" line="61"/>
         <source>check and update</source>
-        <translation>检查更新</translation>
+        <translation type="obsolete">检查更新</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="103"/>
-        <location filename="../upgradedialog.cpp" line="398"/>
         <source>Current verison:</source>
-        <translation>当前版本：</translation>
+        <translation type="obsolete">当前版本：</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="139"/>
         <source>Official version</source>
-        <translation>正式版</translation>
+        <translation type="obsolete">正式版</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="162"/>
         <source>An error occurred!</source>
-        <translation>出错了！无法升级</translation>
+        <translation type="obsolete">出错了！无法升级</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="163"/>
         <source>Network or local sources anomaly</source>
-        <translation>网络或源地址连接失败，升级未成功</translation>
+        <translation type="obsolete">网络或源地址连接失败，升级未成功</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="164"/>
-        <location filename="../upgradedialog.cpp" line="278"/>
         <source>Testing network and local sources...</source>
-        <translation>正在检查网络和本地源...</translation>
+        <translation type="obsolete">正在检查网络和本地源...</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="172"/>
         <source>Retry</source>
-        <translation>重试</translation>
+        <translation type="obsolete">重试</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="185"/>
         <source>Finish</source>
-        <translation>完成</translation>
+        <translation type="obsolete">完成</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="192"/>
         <source>Upgrade</source>
-        <translation>升级</translation>
+        <translation type="obsolete">升级</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="254"/>
-        <location filename="../upgradedialog.cpp" line="337"/>
         <source>Start to update the local sources</source>
-        <translation>开始更新本地源</translation>
+        <translation type="obsolete">开始更新本地源</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="333"/>
         <source>Start to download</source>
-        <translation>开始下载</translation>
+        <translation type="obsolete">开始下载</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="382"/>
         <source>Updating local sources...</source>
-        <translation>正在更新本地源...</translation>
+        <translation type="obsolete">正在更新本地源...</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="397"/>
         <source>Kylin Assistant is the latest version</source>
-        <translation>麒麟助手已经是最新的版本</translation>
+        <translation type="obsolete">麒麟助手已经是最新的版本</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="410"/>
         <source>Start to install</source>
-        <translation>开始安装</translation>
+        <translation type="obsolete">开始安装</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="344"/>
         <source>Download completely</source>
-        <translation>下载完成</translation>
+        <translation type="obsolete">下载完成</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="355"/>
         <source>Local sources updated</source>
-        <translation>源更新完毕</translation>
+        <translation type="obsolete">源更新完毕</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="365"/>
         <source>Found a new version</source>
-        <translation>发现新版本</translation>
+        <translation type="obsolete">发现新版本</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="153"/>
         <source>New version:</source>
-        <translation>新版本号：</translation>
+        <translation type="obsolete">新版本号：</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="167"/>
         <source>you can visit the&lt;a style=&apos;color: #3f96e4;&apos; href = http://www.ubuntukylin.com&gt; UK official website&lt;/a&gt; to download the lastest deb package</source>
-        <translation>您可以访问 &lt;a style=&apos;color: #3f96e4;&apos; href = http://www.ubuntukylin.com&gt; UK 官网&lt;/a&gt; 下载最新的deb包</translation>
+        <translation type="obsolete">您可以访问 &lt;a style=&apos;color: #3f96e4;&apos; href = http://www.ubuntukylin.com&gt; UK 官网&lt;/a&gt; 下载最新的deb包</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="360"/>
-        <location filename="../upgradedialog.cpp" line="374"/>
         <source>Not found</source>
-        <translation>没有发现新版本</translation>
+        <translation type="obsolete">没有发现新版本</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="418"/>
         <source>Upgrading the main program...</source>
-        <translation>正在升级主程序...</translation>
+        <translation type="obsolete">正在升级主程序...</translation>
     </message>
     <message>
-        <location filename="../upgradedialog.cpp" line="472"/>
         <source>Start to upgrade the main program</source>
-        <translation>开始升级主程序</translation>
+        <translation type="obsolete">开始升级主程序</translation>
     </message>
 </context>
 <context>
     <name>VoiceWidget</name>
     <message>
         <source>Sound theme</source>
-        <translation type="vanished">声音主题</translation>
+        <translation type="obsolete">声音主题</translation>
     </message>
     <message>
         <source>Login tone</source>
-        <translation type="vanished">登录提示音</translation>
+        <translation type="obsolete">登录提示音</translation>
     </message>
     <message>
         <source>Event sounds</source>
-        <translation type="vanished">事件声音</translation>
+        <translation type="obsolete">事件声音</translation>
     </message>
     <message>
         <source>Input feedback sounds</source>
-        <translation type="vanished">输入反馈声音</translation>
+        <translation type="obsolete">输入反馈声音</translation>
     </message>
 </context>
 <context>

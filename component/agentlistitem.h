@@ -48,7 +48,7 @@ public slots:
     void onDeleteButtonClicked();
 
 private:
-    bool mouse_press;
+    bool m_mousePressed;
     QLabel *label;
     QPushButton *delede_button;
 

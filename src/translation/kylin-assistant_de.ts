@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="de_DE">
+<TS version="2.0" language="de_DE">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -55,45 +55,6 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     <message>
         <location filename="../../component/alertdialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>AutoStartWidget</name>
-    <message>
-        <location filename="../autostartwidget.cpp" line="57"/>
-        <source>AutoStart Items:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../autostartwidget.cpp" line="58"/>
-        <source>App</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../autostartwidget.cpp" line="59"/>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../autostartwidget.cpp" line="61"/>
-        <source>ON Items:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../autostartwidget.cpp" line="62"/>
-        <source>OFF Items:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../autostartwidget.cpp" line="39"/>
-        <location filename="../autostartwidget.cpp" line="256"/>
-        <source>Boot Manager</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../autostartwidget.ui" line="14"/>
-        <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -794,7 +755,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>FileSystemDialog</name>
     <message>
-        <location filename="../../plugins/systemmonitor/filesystemdialog.cpp" line="58"/>
+        <location filename="../../plugins/systemmonitor/filesystemdialog.cpp" line="60"/>
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
@@ -903,237 +864,6 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
         <location filename="../../setting/fontwidget.cpp" line="290"/>
         <location filename="../../setting/fontwidget.cpp" line="291"/>
         <source>Restore</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>HomeActionWidget</name>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="144"/>
-        <location filename="../homeactionwidget.cpp" line="326"/>
-        <source>The lastest cleanup time is </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="150"/>
-        <location filename="../homeactionwidget.cpp" line="436"/>
-        <source>The lastest scan time is </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="154"/>
-        <source>You have not implemented the one key scan and clean-up operation.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="190"/>
-        <source>Quick clean up system trash, saving disk space and improving the system efficiency!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="191"/>
-        <source>Start Scan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="192"/>
-        <source>Start Cleanup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="193"/>
-        <source>Back</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="194"/>
-        <location filename="../homeactionwidget.cpp" line="408"/>
-        <source>Scanning......</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="205"/>
-        <source>Scanning:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="195"/>
-        <source>Scan Over</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="221"/>
-        <location filename="../homeactionwidget.cpp" line="225"/>
-        <location filename="../homeactionwidget.cpp" line="236"/>
-        <source> history trace; </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="221"/>
-        <location filename="../homeactionwidget.cpp" line="246"/>
-        <source> browser cookies.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="225"/>
-        <location filename="../homeactionwidget.cpp" line="250"/>
-        <source> browser cookies; </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="225"/>
-        <location filename="../homeactionwidget.cpp" line="236"/>
-        <location filename="../homeactionwidget.cpp" line="250"/>
-        <location filename="../homeactionwidget.cpp" line="261"/>
-        <source> garbage.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="232"/>
-        <source> history trace.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="266"/>
-        <source>No garbage.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="311"/>
-        <source>Cleaning......</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="315"/>
-        <source>Garbage Cleanup OK......</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="318"/>
-        <source>History Cleanup OK......</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="321"/>
-        <source>Cookies Cleanup OK......</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="327"/>
-        <source>Cleanup Cookies:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="327"/>
-        <source>; Garbage:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="327"/>
-        <source>; Historical records:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="358"/>
-        <source>Cleaning up history trace of Firefox...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="361"/>
-        <source>Firefox history trace had been cleared!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="366"/>
-        <source>Cleaning up history trace of Chromium...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="369"/>
-        <source>Chromium history trace had been cleared!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="374"/>
-        <source>Cleaning up Cookies of Firefox...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="377"/>
-        <source>Firefox Cookies had been cleared!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="382"/>
-        <source>Cleaning up Cookies of Chromium...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="385"/>
-        <source>Chromium Cookies had been cleared!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="390"/>
-        <source>Apt cache had been cleared!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="393"/>
-        <source>Cleaning up Apt cache: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="398"/>
-        <source>Software Center cache had been cleared!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="401"/>
-        <source>Cleaning up Software Center cache: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homeactionwidget.cpp" line="428"/>
-        <source>Ready to Cleanup......</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>HomePage</name>
-    <message>
-        <location filename="../homepage.cpp" line="258"/>
-        <source>Current Version Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homepage.cpp" line="259"/>
-        <source>Update to the lastest version, make it work better</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homepage.cpp" line="260"/>
-        <source>updating on the backend</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homepage.cpp" line="261"/>
-        <source>Common toolbox</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homepage.cpp" line="262"/>
-        <source>Fast and practical, making the system more personalized</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homepage.cpp" line="281"/>
-        <source>Upgrade is complete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../homepage.cpp" line="283"/>
-        <source>Updating on the backend</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1419,23 +1149,379 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     </message>
 </context>
 <context>
-    <name>LoginWidget</name>
+    <name>MainBottomWidget</name>
     <message>
-        <location filename="../loginwidget.cpp" line="139"/>
-        <source>Login Kylin Account</source>
+        <location filename="../mainbottomwidget.cpp" line="259"/>
+        <source>Current Version Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../loginwidget.cpp" line="140"/>
-        <source>Logout</source>
+        <location filename="../mainbottomwidget.cpp" line="260"/>
+        <source>Update to the lastest version, make it work better</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainbottomwidget.cpp" line="261"/>
+        <source>updating on the backend</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainbottomwidget.cpp" line="262"/>
+        <source>Common toolbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainbottomwidget.cpp" line="263"/>
+        <source>Fast and practical, making the system more personalized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainbottomwidget.cpp" line="282"/>
+        <source>Upgrade is complete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainbottomwidget.cpp" line="284"/>
+        <source>Updating on the backend</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MainTopWidget</name>
+    <message>
+        <location filename="../maintopwidget.cpp" line="68"/>
+        <location filename="../maintopwidget.cpp" line="651"/>
+        <source>The lastest cleanup time is </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="74"/>
+        <location filename="../maintopwidget.cpp" line="786"/>
+        <source>The lastest scan time is </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="78"/>
+        <source>You have not implemented the one key scan and clean-up operation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="154"/>
+        <source>Kylin Assistant</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="350"/>
+        <source>Start Scan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="351"/>
+        <source>Start Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="352"/>
+        <source>Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="353"/>
+        <location filename="../maintopwidget.cpp" line="744"/>
+        <source>Scanning......</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="356"/>
+        <source>Quick clean up system trash, saving disk space and improving the system efficiency!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="357"/>
+        <source>Scan Over</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="360"/>
+        <source>Regular cleaning, let your computer remains the relaxed state</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="377"/>
+        <source>Clean OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="384"/>
+        <source>Cleaning: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="388"/>
+        <source>, Percent is: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="388"/>
+        <source>%, Status is: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="396"/>
+        <source>Clean Firefox history......</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="400"/>
+        <source>Clean Chromium history......</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="404"/>
+        <source>Clean system history......</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="409"/>
+        <source>Clean apt......</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="413"/>
+        <source>Start clean apt......</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="418"/>
+        <source>Clean Firefox Cookie:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="422"/>
+        <source>Clean Chromium Cookie:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="431"/>
+        <location filename="../maintopwidget.cpp" line="515"/>
+        <source> does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="435"/>
+        <source>Chromium Browser is running......</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="443"/>
+        <source>Cache Scan OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="447"/>
+        <source>Cookies Scan OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="451"/>
+        <source>History Scan OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="455"/>
+        <source>Packages Scan OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="474"/>
+        <location filename="../maintopwidget.cpp" line="485"/>
+        <source>Scaning......</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="499"/>
+        <source>Error: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="502"/>
+        <source>Firefox Browser does not be installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="506"/>
+        <source>Chromium Browser does not be installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="510"/>
+        <source>Chromium Browser is running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="530"/>
+        <source>Scanning:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="546"/>
+        <location filename="../maintopwidget.cpp" line="550"/>
+        <location filename="../maintopwidget.cpp" line="561"/>
+        <source> history trace; </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="546"/>
+        <location filename="../maintopwidget.cpp" line="571"/>
+        <source> browser cookies.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="550"/>
+        <location filename="../maintopwidget.cpp" line="575"/>
+        <source> browser cookies; </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="550"/>
+        <location filename="../maintopwidget.cpp" line="561"/>
+        <location filename="../maintopwidget.cpp" line="575"/>
+        <location filename="../maintopwidget.cpp" line="586"/>
+        <source> garbage.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="557"/>
+        <source> history trace.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="591"/>
+        <source>No garbage.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="636"/>
+        <source>Cleaning......</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="640"/>
+        <source>Garbage Cleanup OK......</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="643"/>
+        <source>History Cleanup OK......</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="646"/>
+        <source>Cookies Cleanup OK......</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="652"/>
+        <source>Cleanup Cookies:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="652"/>
+        <source>; Garbage:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="652"/>
+        <source>; Historical records:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="683"/>
+        <source>Cleaning up history trace of Firefox...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="686"/>
+        <source>Firefox history trace had been cleared!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="691"/>
+        <source>Cleaning up history trace of Chromium...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="694"/>
+        <source>Chromium history trace had been cleared!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="699"/>
+        <source>Cleaning up Cookies of Firefox...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="702"/>
+        <source>Firefox Cookies had been cleared!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="707"/>
+        <source>Cleaning up Cookies of Chromium...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="710"/>
+        <source>Chromium Cookies had been cleared!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="715"/>
+        <source>Apt cache had been cleared!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="718"/>
+        <source>Cleaning up Apt cache: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="723"/>
+        <source>Software Center cache had been cleared!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="726"/>
+        <source>Cleaning up Software Center cache: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../maintopwidget.cpp" line="771"/>
+        <location filename="../maintopwidget.cpp" line="825"/>
+        <source>Ready to Cleanup......</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="69"/>
+        <location filename="../mainwindow.cpp" line="101"/>
         <source>Kylin Assistant</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="411"/>
+        <source>Understand hardware information, provide more convenient channel to obtain hardware information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="420"/>
+        <source>You can perform a full range of customized systems based on personal preferences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="429"/>
+        <source>Provide a practical and lightweight tool, create fast and convenient experience for you</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1532,6 +1618,34 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     </message>
 </context>
 <context>
+    <name>MiddleWidget</name>
+    <message>
+        <location filename="../middlewidget.cpp" line="43"/>
+        <source>Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../middlewidget.cpp" line="43"/>
+        <source>Cleanup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../middlewidget.cpp" line="43"/>
+        <source>Sysinfo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../middlewidget.cpp" line="43"/>
+        <source>Feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../middlewidget.cpp" line="43"/>
+        <source>Toolkits</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MonitorTitleWidget</name>
     <message>
         <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="239"/>
@@ -1554,12 +1668,12 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="360"/>
+        <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="358"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="374"/>
+        <location filename="../../plugins/systemmonitor/monitortitlewidget.cpp" line="372"/>
         <source>Enter the relevant info of process</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1891,107 +2005,107 @@ Are you sure to continue?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="201"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="207"/>
         <source>Running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="205"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="211"/>
         <source>Stopped</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="209"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="215"/>
         <source>Zombie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="213"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="219"/>
         <source>Uninterruptible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="217"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="223"/>
         <source>Sleeping</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="227"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="233"/>
         <source>Very High</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="229"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="235"/>
         <source>High</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="231"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="237"/>
         <source>Normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="233"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="239"/>
         <source>Low</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/util.cpp" line="235"/>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="241"/>
         <source>Very Low</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="41"/>
+        <location filename="../topbasewidget.cpp" line="65"/>
         <source>Choose the theme what you want</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="42"/>
+        <location filename="../topbasewidget.cpp" line="66"/>
         <source>Set the desktop icon theme and the visibility of desktop icons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="43"/>
+        <location filename="../topbasewidget.cpp" line="67"/>
         <source>Replace the theme and size of the mouse pointer, and theme change need to restart system</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="44"/>
+        <location filename="../topbasewidget.cpp" line="68"/>
         <source>Set the sound theme you want</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="45"/>
+        <location filename="../topbasewidget.cpp" line="69"/>
         <source>Setting the panel mode of auto hide and icon size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="46"/>
+        <location filename="../topbasewidget.cpp" line="70"/>
         <source>Manage display of the start menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="47"/>
+        <location filename="../topbasewidget.cpp" line="71"/>
         <source>Window Manager settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="48"/>
+        <location filename="../topbasewidget.cpp" line="72"/>
         <source>According to personal preferences to set the system default font, click the  &apos;Restore&apos; button, can be restored to the state before the font settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="49"/>
+        <location filename="../topbasewidget.cpp" line="73"/>
         <source>Setting the relevant properties of your touchpad,make the operation more convenient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="50"/>
+        <location filename="../topbasewidget.cpp" line="74"/>
         <source>Save energy to let the computer longer standby time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../component/settingaction.cpp" line="51"/>
+        <location filename="../topbasewidget.cpp" line="75"/>
         <source>Manage the file manager. Tips: if the thumbnail&apos;s cache time or size is set to -1, it will not be checked</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2788,27 +2902,6 @@ Are you sure to continue?</source>
     </message>
 </context>
 <context>
-    <name>SettingAction</name>
-    <message>
-        <location filename="../../component/settingaction.cpp" line="80"/>
-        <source>Back</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../component/settingaction.cpp" line="164"/>
-        <source>There may be a mistake.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SettingActionWidget</name>
-    <message>
-        <location filename="../settingactionwidget.cpp" line="251"/>
-        <source>You can perform a full range of customized systems based on personal preferences</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ShredDialog</name>
     <message>
         <location filename="../../plugins/shredmanager/shreddialog.cpp" line="117"/>
@@ -2863,35 +2956,6 @@ Are you sure to continue?</source>
     </message>
 </context>
 <context>
-    <name>SkinCenter</name>
-    <message>
-        <location filename="../skincenter.cpp" line="37"/>
-        <location filename="../skincenter.cpp" line="66"/>
-        <source>Skin Setting</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../skincenter.cpp" line="77"/>
-        <source>Default</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../skincenter.cpp" line="80"/>
-        <source>Custom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../skincenter.cpp" line="503"/>
-        <source>Open File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../skincenter.cpp" line="504"/>
-        <source>Files(*.png *.jpg)</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>SoundWidget</name>
     <message>
         <location filename="../../setting/soundwidget.cpp" line="136"/>
@@ -2938,13 +3002,13 @@ Are you sure to continue?</source>
 <context>
     <name>StartupWorker</name>
     <message>
-        <location filename="../../plugins/startupmanager/startupworker.cpp" line="521"/>
+        <location filename="../../plugins/startupmanager/startupworker.cpp" line="402"/>
         <source>No name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/startupmanager/startupworker.cpp" line="494"/>
-        <location filename="../../plugins/startupmanager/startupworker.cpp" line="526"/>
+        <location filename="../../plugins/startupmanager/startupworker.cpp" line="375"/>
+        <location filename="../../plugins/startupmanager/startupworker.cpp" line="407"/>
         <source>No description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3007,6 +3071,24 @@ Are you sure to continue?</source>
     </message>
 </context>
 <context>
+    <name>TopBaseWidget</name>
+    <message>
+        <location filename="../topbasewidget.cpp" line="188"/>
+        <source>There may be a mistake.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../topbasewidget.cpp" line="204"/>
+        <source>Kylin Assistant</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../topbasewidget.cpp" line="292"/>
+        <source>Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TouchpadWidget</name>
     <message>
         <location filename="../../setting/touchpadwidget.cpp" line="195"/>
@@ -3051,123 +3133,6 @@ Are you sure to continue?</source>
     <message>
         <location filename="../../setting/touchpadwidget.cpp" line="203"/>
         <source>Two-finger Scrolling</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UpgradeDialog</name>
-    <message>
-        <location filename="../upgradedialog.cpp" line="61"/>
-        <source>check and update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="103"/>
-        <location filename="../upgradedialog.cpp" line="398"/>
-        <source>Current verison:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="139"/>
-        <source>Official version</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="162"/>
-        <source>An error occurred!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="163"/>
-        <source>Network or local sources anomaly</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="167"/>
-        <source>you can visit the&lt;a style=&apos;color: #3f96e4;&apos; href = http://www.ubuntukylin.com&gt; UK official website&lt;/a&gt; to download the lastest deb package</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="172"/>
-        <source>Retry</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="185"/>
-        <source>Finish</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="192"/>
-        <source>Upgrade</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="254"/>
-        <location filename="../upgradedialog.cpp" line="337"/>
-        <source>Start to update the local sources</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="333"/>
-        <source>Start to download</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="382"/>
-        <source>Updating local sources...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="410"/>
-        <source>Start to install</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="344"/>
-        <source>Download completely</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="355"/>
-        <source>Local sources updated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="365"/>
-        <source>Found a new version</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="153"/>
-        <source>New version:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="360"/>
-        <location filename="../upgradedialog.cpp" line="374"/>
-        <source>Not found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="164"/>
-        <location filename="../upgradedialog.cpp" line="278"/>
-        <source>Testing network and local sources...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="397"/>
-        <source>Kylin Assistant is the latest version</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="418"/>
-        <source>Upgrading the main program...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../upgradedialog.cpp" line="472"/>
-        <source>Start to upgrade the main program</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

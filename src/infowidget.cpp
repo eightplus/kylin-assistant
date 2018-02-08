@@ -68,7 +68,7 @@ InfoWidget::~InfoWidget()
     }
 }
 
-void InfoWidget::initUI(bool has_battery, bool has_sensor)
+void InfoWidget::initInfoUI(bool has_battery, bool has_sensor)
 {
     type_list.clear();
     icon_list.clear();

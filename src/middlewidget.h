@@ -17,39 +17,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SHADOWWIDGET_H
-#define SHADOWWIDGET_H
+#ifndef MIDDLEWIDGET_H
+#define MIDDLEWIDGET_H
 
 #include <QWidget>
+#include <QLabel>
+#include <QPushButton>
 #include <QMouseEvent>
+#include <QHBoxLayout>
+#include <QSignalMapper>
+#include <QVBoxLayout>
+#include "../component/kylinbutton.h"
+#include "../component/kylintoolbutton.h"
 
-class ShadowWidget : public QWidget
+class MainWindow;
+
+class MiddleWidget : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 public:
-    explicit ShadowWidget(QWidget *parent = 0);
-    void setOpacity(qreal opacity);
-    qreal opacity()
-    {
-        return widget_opacity;
-    }
-    void setColor(QColor color)
-    {
-        widget_color = color;
-    }
+    explicit MiddleWidget(QWidget *parent = 0, QString arch = "", QString os = "");
+    ~MiddleWidget();
+    void setParentWindow(MainWindow* window) { p_mainwindow = window;}
+    void initConnect();
 
-protected:
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void paintEvent(QPaintEvent *);
+signals:
+    void turnCurrentPage(int index);
+
+public slots:
+    void switchSelectedPageIndex(QString index);
+    void showBoxTool();
 
 private:
-    QPoint m_dragPosition; //移动的距离
-    bool m_mousePressed; //按下鼠标左键
-    qreal widget_opacity;
-    QColor  widget_color;
+    QPoint press_point;//鼠标按下去的点
+    bool is_move;
+    QList<KylinToolButton *> button_list;
+    MainWindow *p_mainwindow;
+    QString cur_arch;
+    QString osname;
 };
 
-#endif // SHADOWWIDGET_H
+#endif // MIDDLEWIDGET_H

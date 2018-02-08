@@ -49,13 +49,17 @@ unix {
 
 SOURCES += main.cpp\
     mainwindow.cpp \
+    maintopwidget.cpp \
+    middlewidget.cpp \
+    mainbottomwidget.cpp \
+    topbasewidget.cpp \
     titlewidget.cpp \
-    loginwidget.cpp \
+#    loginwidget.cpp \
     actionwidget.cpp \
-    homeactionwidget.cpp \
+#    homeactionwidget.cpp \
     infoactionwidget.cpp \
     cleaneractionwidget.cpp \
-    settingactionwidget.cpp \
+#    settingactionwidget.cpp \
     boxactionwidget.cpp \
     toolwidget.cpp \
     bottomcontentwidget.cpp \
@@ -72,7 +76,7 @@ SOURCES += main.cpp\
     ../component/systembutton.cpp \
     ../component/kylintitlebar.cpp \
     ../component/threadpool.cpp \
-    homepage.cpp \
+#    homepage.cpp \
     ../info/infounitwidget.cpp \
     ../info/infogui.cpp \
     ../info/infoitemline.cpp \
@@ -96,7 +100,7 @@ SOURCES += main.cpp\
     ../component/agentlistitem.cpp \
     ../component/quibo.cpp \
     ../component/kylinfontdialog.cpp \
-    skincenter.cpp \
+#    skincenter.cpp \
     ../component/kylinlistwidgetitem.cpp \
     ../component/kylinlistwidget.cpp \
     ../component/loadinglabel.cpp \
@@ -109,7 +113,7 @@ SOURCES += main.cpp\
     ../dbusproxy/youkersystemdbus.cpp \
     ../dbusproxy/youkersessiondbus.cpp \
     ../info/devicemanager.cpp \
-    ../component/settingaction.cpp \
+#    ../component/settingaction.cpp \
     kthread.cpp \
     aboutdialog.cpp \
     ../cleaner/cleanlistwidget.cpp \
@@ -121,7 +125,7 @@ SOURCES += main.cpp\
     ../component/cleansubbutton.cpp \
     ../component/cardwidget.cpp \
     ../component/itemcard.cpp \
-    upgradedialog.cpp \
+#    upgradedialog.cpp \
     ../component/normalwidget.cpp \
     ../component/normalcard.cpp \
     shadowwidget.cpp \
@@ -134,15 +138,19 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     kpplication.h \
+    maintopwidget.h \
+    middlewidget.h \
+    mainbottomwidget.h \
+    topbasewidget.h \
     titlewidget.h \
     actionwidget.h \
-    homeactionwidget.h \
+#    homeactionwidget.h \
     infoactionwidget.h \
     cleaneractionwidget.h \
-    settingactionwidget.h \
+#    settingactionwidget.h \
     boxactionwidget.h \
     toolwidget.h \
-    loginwidget.h \
+#    loginwidget.h \
     bottomcontentwidget.h \
     infowidget.h \
     cleanerwidget.h \
@@ -160,7 +168,7 @@ HEADERS  += mainwindow.h \
     ../component/systembutton.h \
     ../component/kylintitlebar.h \
     ../component/threadpool.h \
-    homepage.h \
+#    homepage.h \
     ../info/infounitwidget.h \
     ../info/infogui.h \
     ../info/infoitemline.h \
@@ -185,7 +193,7 @@ HEADERS  += mainwindow.h \
     ../component/agentlistitem.h \
     ../component/quibo.h \
     ../component/kylinfontdialog.h \
-    skincenter.h \
+#    skincenter.h \
     ../component/kylinlistwidgetitem.h \
     ../component/kylinlistwidget.h \
     ../component/loadinglabel.h \
@@ -198,7 +206,7 @@ HEADERS  += mainwindow.h \
     ../dbusproxy/youkersystemdbus.h \
     ../dbusproxy/youkersessiondbus.h \
     ../info/devicemanager.h \
-    ../component/settingaction.h \
+#    ../component/settingaction.h \
     kthread.h \
     aboutdialog.h \
     ../cleaner/cleanlistwidget.h \
@@ -210,7 +218,7 @@ HEADERS  += mainwindow.h \
     ../component/cleansubbutton.h \
     ../component/cardwidget.h \
     ../component/itemcard.h \
-    upgradedialog.h \
+#    upgradedialog.h \
     ../component/normalwidget.h \
     ../component/normalcard.h \
     shadowwidget.h \

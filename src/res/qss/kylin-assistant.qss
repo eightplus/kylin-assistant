@@ -160,7 +160,8 @@ QPushButton#blackButton:pressed{
 }
 
 QPushButton#underlineButton{
-    background:transparent;
+    /*background:transparent;*/
+    background-color: rgba(0, 0, 0, 0);
     text-decoration:underline;
     color:#cfd8dc;
     font-family: "方正黑体_GBK";

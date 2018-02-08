@@ -28,7 +28,7 @@ CleanerActionWidget::CleanerActionWidget(QWidget *parent)
     this->setFixedSize(900, 150);
 
     this->setAutoFillBackground(true);
-    this->setObjectName("transparentWidget");
+//    this->setObjectName("transparentWidget");
 //    cache_page = new CacheActionWidget(this);
 //    statked_widget = new QStackedWidget(this);
 ////    QPalette palette;

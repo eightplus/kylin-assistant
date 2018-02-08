@@ -27,10 +27,7 @@ SessionDispatcher::SessionDispatcher(QObject *parent)
                                "/com/kylin/assistant/sessiondaemon",
                                "com.kylin.assistant.sessiondaemon",
                                QDBusConnection::sessionBus());
-
 //    QObject::connect(sessioniface, SIGNAL(autostartmanage_data_signal(QVariantMap)), this, SLOT(handlerAutoManageData(QVariantMap)));
-
-
 
     QObject::connect(sessioniface, SIGNAL(autostartmanage_data_signal(QStringList)), this, SLOT(handlerAutoManageData(QStringList)));
     QObject::connect(sessioniface, SIGNAL(autostartmanage_status_signal(QString)), this, SLOT(handlerAutoManageStatus(QString)));

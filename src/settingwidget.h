@@ -45,7 +45,7 @@
 #include "../setting/filemanagerwidget.h"
 #include "../component/quibo.h"
 
-#include "../component/settingaction.h"
+//#include "../component/settingaction.h"
 
 class MainWindow;
 class SettingListView;
@@ -55,10 +55,10 @@ class SettingWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SettingWidget(QStringList cpulist, QString cpu, QString cur_desktop, bool has_battery = false, QWidget *parent = 0);
+    explicit SettingWidget(/*QStringList cpulist, QString cpu, */QString cur_desktop, /*bool has_battery = false, */QWidget *parent = 0);
     ~SettingWidget();
     void setParentWindow(MainWindow* window) { p_mainwindow = window;}
-    void initUI(/*QString skin*/);
+    void initSettingsUI(QStringList cpulist, QString cpu, bool has_battery = false /*QString skin*/);
     void resetSkin(QString skin);
 
 signals:

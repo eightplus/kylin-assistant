@@ -52,8 +52,8 @@ protected:
 
 private:
 //    KylinTitleBar *title_bar;
-    QPoint drag_pos; //移动的距离
-    bool mouse_press; //按下鼠标左键
+    QPoint m_dragPosition; //移动的距离
+    bool m_mousePressed; //按下鼠标左键
     QWidget *baseWidget;
     SystemButton *close_btn;
     QPushButton *aboutBtn;
