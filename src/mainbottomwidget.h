@@ -67,8 +67,6 @@ private:
     QPushButton *box_title;
     QLabel *box_tip;
     MainWindow *p_mainwindow;
-//    AutoStartWidget *auto_start;
-//    CameraManager *camera_manager;
     QString current_version;
     QString osname;
     QString osarch;

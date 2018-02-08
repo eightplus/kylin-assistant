@@ -19,5 +19,6 @@ kylin-assistant (1.0.0-0ubuntu1) bionic; urgency=low
   * Add QDbus module(system dbus and session dbus).
   * Make all dbus modules quit when the app quit.
   * Rewrite mainwindow.
+  * Add shadow effect for window.
 
  -- lixiang <lixiang@kylinos.cn>  Mon, 29 Jan 2018 17:54:44 +0800

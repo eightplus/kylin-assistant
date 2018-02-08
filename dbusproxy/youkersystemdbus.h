@@ -115,8 +115,6 @@ public slots:
 //    void handlerFetchSignal(QString msg_type, QStringList msg);
 //    void handlerAptSignal(QString msg_type, QStringList msg);
 
-    void initData();
-
 private:
     QDBusInterface *systemiface;
     KThread *thread;

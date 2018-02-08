@@ -63,7 +63,6 @@ void DataWorker::initDataWorker()
                                "/org/gnome/SettingsDaemon/Power",
                                "org.gnome.SettingsDaemon.Power.Screen",
                                QDBusConnection::sessionBus());
-
     //session dbus
     m_sessionInterface = new SessionDispatcher;
     ThreadPool::Instance()->moveObjectToThread(m_sessionInterface);

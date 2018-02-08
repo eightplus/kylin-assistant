@@ -177,7 +177,7 @@ void TopBaseWidget::setImage(const QString &pic)
 ////    }
 //}
 
-//void SettingActionWidget::displayActionSubPage(SettingAction::SettingModuleID moduleId)
+//void TopBaseWidget::displayActionSubPage(SettingAction::SettingModuleID moduleId)
 void TopBaseWidget::displayActionSubPage(QString moduleName)
 {
 //    this->m_moduleName = moduleName;

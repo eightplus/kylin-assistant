@@ -152,11 +152,11 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-#ifdef QT_NO_DEBUG
-    qDebug() << "release mode";
-#else
-    qDebug() << "debug mode";
-#endif
+//#ifdef QT_NO_DEBUG
+//    qDebug() << "release mode";
+//#else
+//    qDebug() << "debug mode";
+//#endif
 
 //#ifdef QT_NO_INOTIFY
 //    qDebug() << "QT_NO_INOTIFY mode";

@@ -27,6 +27,7 @@ SessionDispatcher::SessionDispatcher(QObject *parent)
                                "/com/kylin/assistant/sessiondaemon",
                                "com.kylin.assistant.sessiondaemon",
                                QDBusConnection::sessionBus());
+    qDebug() << "Starting SessionDispatcher";
 //    QObject::connect(sessioniface, SIGNAL(autostartmanage_data_signal(QVariantMap)), this, SLOT(handlerAutoManageData(QVariantMap)));
 
     QObject::connect(sessioniface, SIGNAL(autostartmanage_data_signal(QStringList)), this, SLOT(handlerAutoManageData(QStringList)));
@@ -38,7 +39,6 @@ SessionDispatcher::SessionDispatcher(QObject *parent)
     QObject::connect(sessioniface, SIGNAL(subpage_error_signal(QString)), this, SLOT(handlerScanCleanerError(QString)));
 
 //    thread = new KThread(this);
-
 
     //kobe
     check_thread = new KThread(this);
