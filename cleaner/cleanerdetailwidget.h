@@ -61,7 +61,7 @@ public slots:
 //    void receivePolicyKitSignal(bool status);
 
 signals:
-    void notifyMainCheckBox(int status);
+//    void notifyMainCheckBox(int status);
 //    void showActionAnimaiton();
     void sendScanOverStatus(bool status);
     void startCleanSystem(QMap<QString, QVariant> itemsMap);

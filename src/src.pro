@@ -47,7 +47,7 @@ unix {
     OBJECTS_DIR = .obj
 }
 
-SOURCES += main.cpp\
+SOURCES += main.cpp \
     mainwindow.cpp \
     maintopwidget.cpp \
     middlewidget.cpp \
@@ -68,6 +68,11 @@ SOURCES += main.cpp\
     ../component/kylintitlebar.cpp \
     ../component/threadpool.cpp \
     ../component/mythread.cpp \
+    ../component/selectlistwidget.cpp \
+    ../component/selectlistitem.cpp \
+    ../component/selectwidget.cpp \
+    ../component/mytitlebar.cpp \
+    ../plugins/widgets/mytristatebutton.cpp \
     ../info/infounitwidget.cpp \
     ../info/infogui.cpp \
     ../info/infoitemline.cpp \
@@ -144,6 +149,11 @@ HEADERS  += mainwindow.h \
     ../component/kylintitlebar.h \
     ../component/threadpool.h \
     ../component/mythread.h \
+    ../component/selectlistwidget.h \
+    ../component/selectlistitem.h \
+    ../component/selectwidget.h \
+    ../component/mytitlebar.h \
+    ../plugins/widgets/mytristatebutton.h \
     ../info/infounitwidget.h \
     ../info/infogui.h \
     ../info/infoitemline.h \

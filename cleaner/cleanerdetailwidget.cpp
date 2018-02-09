@@ -21,6 +21,7 @@
 #include "ui_cleanerdetailwidget.h"
 #include "../src/mainwindow.h"
 #include "../component/cleansubgroup.h"
+#include "../component/selectwidget.h"
 #include <QDebug>
 #include <QBoxLayout>
 
@@ -1043,6 +1044,14 @@ void CleanerDetailWidget::showCustomPage()
         int w_y = parentWindow->frameGeometry().topLeft().y() + (600 /2) - (280 / 2);
         cache_thumbnails_items->move(w_x, w_y);
         cache_thumbnails_items->exec();
+
+        /*SelectWidget *w = new SelectWidget;
+        w->loadData(tr("Thumbnails Cache Clean Items"), cache_thumbnails_list);
+        //子checkbox的状态被改变时，重新设置总按钮的状态
+        connect(w, SIGNAL(notifyMainCheckBox(int)), cache_software_btn, SLOT(resetMainStatus(int)));
+        w->exec();
+        delete w;*/
+        //kobe test 2018
     }
     else if(object_name == "cache-firefox")
     {
