@@ -24,7 +24,7 @@
 #include <QtDBus>
 #include <QDBusInterface>
 #include <QDBusConnection>
-#include "kthread.h"
+//#include "kthread.h"
 
 class SessionDispatcher : public QObject
 {
@@ -89,7 +89,7 @@ public:
     bool set_show_devices_qt(bool flag);
     bool get_show_devices_qt();
 
-    bool start_check_source_useable_qt();
+    void start_check_source_useable_qt();
 //    Q_INVOKABLE bool get_show_cinnamon_desktop_icons_qt();
 //    Q_INVOKABLE bool set_show_cinnamon_desktop_icons_qt(bool flag);
 //    Q_INVOKABLE bool get_show_cinnamon_computer_qt();
@@ -354,9 +354,9 @@ public slots:
 
 private:
     QDBusInterface *sessioniface;
-    KThread *check_thread;
+    /*KThread *check_thread;
     KThread *scan_thread;
-    KThread *onekey_scan_thread;
+    KThread *onekey_scan_thread;*/
 };
 
 #endif // SESSIONDISPATCHER_H

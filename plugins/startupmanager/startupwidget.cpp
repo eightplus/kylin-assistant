@@ -62,10 +62,10 @@ StartupWidget::StartupWidget(QWidget *parent)
     qRegisterMetaType<StartupDataPtrList>();
     qRegisterMetaType<QList<StartupData>>();
 
-    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//Attention: Qt::WindowCloseButtonHint make showMinimized() valid
+//    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//Attention: Qt::WindowCloseButtonHint make showMinimized() valid
     this->setAutoFillBackground(true);
     this->setMouseTracking(true);
-//    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);//去掉边框
+    this->setWindowFlags(/*this->windowFlags() | */Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);//去掉边框
 //    this->setAttribute(Qt::WA_TranslucentBackground);//背景透明
 //    this->setAutoFillBackground(true);
 //    this->setMouseTracking(true);

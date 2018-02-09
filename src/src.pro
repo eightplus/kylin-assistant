@@ -67,6 +67,7 @@ SOURCES += main.cpp\
     ../component/systembutton.cpp \
     ../component/kylintitlebar.cpp \
     ../component/threadpool.cpp \
+    ../component/mythread.cpp \
     ../info/infounitwidget.cpp \
     ../info/infogui.cpp \
     ../info/infoitemline.cpp \
@@ -102,7 +103,6 @@ SOURCES += main.cpp\
     ../dbusproxy/youkersystemdbus.cpp \
     ../dbusproxy/youkersessiondbus.cpp \
     ../info/devicemanager.cpp \
-    kthread.cpp \
     aboutdialog.cpp \
     ../cleaner/cleanlistwidget.cpp \
     ../component/tipdialog.cpp \
@@ -133,7 +133,6 @@ HEADERS  += mainwindow.h \
     settingwidget.h \
     boxwidget.h \
     pluginmanager.h \
-    ../component/workthread.h \
     ../component/plugininterface.h \
     ../component/kylinlistmodel.h \
     ../component/utils.h \
@@ -144,6 +143,7 @@ HEADERS  += mainwindow.h \
     ../component/systembutton.h \
     ../component/kylintitlebar.h \
     ../component/threadpool.h \
+    ../component/mythread.h \
     ../info/infounitwidget.h \
     ../info/infogui.h \
     ../info/infoitemline.h \
@@ -180,7 +180,6 @@ HEADERS  += mainwindow.h \
     ../dbusproxy/youkersystemdbus.h \
     ../dbusproxy/youkersessiondbus.h \
     ../info/devicemanager.h \
-    kthread.h \
     aboutdialog.h \
     ../cleaner/cleanlistwidget.h \
     ../component/tipdialog.h \

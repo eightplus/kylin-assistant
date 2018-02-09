@@ -69,8 +69,11 @@ MainWindow::MainWindow(QString cur_arch, int d_count, QWidget* parent/*, Qt::Win
     if(this->desktop.isEmpty())
         this->desktop = qgetenv("XDG_SESSION_DESKTOP");
 
-    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//Attention: Qt::WindowCloseButtonHint make showMinimized() valid
-//    this->setWindowFlags(Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);
+    //For Unity
+//    this->setWindowFlags(/*Qt::Window | */Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//Attention: Qt::WindowCloseButtonHint make showMinimized() valid
+
+    //For UKUI and Mate
+    this->setWindowFlags(Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
     this->setAutoFillBackground(true);
     this->setMouseTracking(true);
@@ -277,32 +280,39 @@ void MainWindow::onInitDataFinished()
     this->m_cpulist = m_dataWorker->cpuModeList();
     this->m_currentCpuMode = m_dataWorker->cpuCurrentMode();
 
-    connect(m_mainTopWidget, SIGNAL(startOneKeyScan(QStringList)), m_dataWorker, SLOT(onStartOneKeyScan(QStringList)));//Qt::QueuedConnection
-    connect(m_mainTopWidget, SIGNAL(startOneKeyClean()), m_dataWorker, SLOT(onStartOneKeyClean()));
-    connect(m_dataWorker, SIGNAL(isScanning(QString)), m_mainTopWidget, SLOT(getScanResult(QString))/*, Qt::BlockingQueuedConnection*/);
-    connect(m_dataWorker, SIGNAL(finishScanWork(QString)), m_mainTopWidget, SLOT(finishScanResult(QString))/*, Qt::BlockingQueuedConnection*/);
-    connect(m_dataWorker, SIGNAL(tellScanResult(QString,QString)) ,m_mainTopWidget, SLOT(getScanAllResult(QString,QString))/*, Qt::BlockingQueuedConnection*/);
-    connect(m_dataWorker, SIGNAL(finishCleanWorkMain(QString)), m_mainTopWidget, SLOT(getCleanResult(QString))/*, Qt::BlockingQueuedConnection*/);
-    connect(m_dataWorker, SIGNAL(finishCleanWorkMainError(QString)), m_mainTopWidget, SLOT(finishCleanError(QString))/*, Qt::BlockingQueuedConnection*/);
-    connect(m_dataWorker, SIGNAL(quickCleanProcess(QString,QString)), m_mainTopWidget, SLOT(getCleaningMessage(QString,QString))/*, Qt::QueuedConnection*/);
+    /*
+    Qt::AutoConnection 自动连接：（默认值）如果信号在接收者所依附的线程内发射，则等同于直接连接。如果发射信号的线程和接受者所依附的线程不同，则等同于队列连接。
+    Qt::DirectConnection 直接连接：当信号发射时，槽函数将直接被调用。无论槽函数所属对象在哪个线程，槽函数都在发射信号的线程内执行。
+    Qt::QueuedConnection 队列连接：当控制权回到接受者所依附线程的事件循环时，槽函数被调用。槽函数在接收者所依附线程执行。也就是说：这种方式既可以在线程内传递消息，也可以跨线程传递消息
+    Qt::BlockingQueuedConnection 与Qt::QueuedConnection类似，但是会阻塞等到关联的slot都被执行。这里出现了阻塞这个词，说明它是专门用来多线程间传递消息的。
+    */
+    //kobe: why does ui died ??????????????????????
+    connect(m_mainTopWidget, SIGNAL(startOneKeyScan(QStringList)), m_dataWorker, SLOT(onStartOneKeyScan(QStringList))/*, Qt::QueuedConnection*/);//Qt::QueuedConnection
+    connect(m_mainTopWidget, SIGNAL(startOneKeyClean()), m_dataWorker, SLOT(onStartOneKeyClean())/*, Qt::BlockingQueuedConnection*/);
+    connect(m_dataWorker, SIGNAL(isScanning(QString)), m_mainTopWidget, SLOT(getScanResult(QString)), Qt::BlockingQueuedConnection);//Qt::BlockingQueuedConnection
+    connect(m_dataWorker, SIGNAL(finishScanWork(QString)), m_mainTopWidget, SLOT(finishScanResult(QString)), Qt::BlockingQueuedConnection);
+    connect(m_dataWorker, SIGNAL(tellScanResult(QString,QString)) ,m_mainTopWidget, SLOT(getScanAllResult(QString,QString)), Qt::BlockingQueuedConnection);
+    connect(m_dataWorker, SIGNAL(finishCleanWorkMain(QString)), m_mainTopWidget, SLOT(getCleanResult(QString)), Qt::BlockingQueuedConnection);
+    connect(m_dataWorker, SIGNAL(finishCleanWorkMainError(QString)), m_mainTopWidget, SLOT(finishCleanError(QString)), Qt::BlockingQueuedConnection);
+    connect(m_dataWorker, SIGNAL(quickCleanProcess(QString,QString)), m_mainTopWidget, SLOT(getCleaningMessage(QString,QString)), Qt::BlockingQueuedConnection);
 
     connect(cleaner_action_widget, SIGNAL(showDetailData()),cleaner_widget, SLOT(displayDetailPage()));
     connect(cleaner_action_widget, SIGNAL(showMainData()),cleaner_widget, SLOT(displayMainPage()));
     connect(cleaner_action_widget, SIGNAL(sendCleanSignal()),cleaner_widget, SIGNAL(transCleanSignal()));
 
-    connect(m_dataWorker, SIGNAL(tellCleanerDetailData(QStringList)), cleaner_widget, SIGNAL(tellCleanerDetailData(QStringList)));
-    connect(m_dataWorker, SIGNAL(tellCleanerDetailStatus(QString)), cleaner_widget, SIGNAL(tellCleanerDetailStatus(QString)));
+    connect(m_dataWorker, SIGNAL(tellCleanerDetailData(QStringList)), cleaner_widget, SIGNAL(tellCleanerDetailData(QStringList)), Qt::BlockingQueuedConnection);
+    connect(m_dataWorker, SIGNAL(tellCleanerDetailStatus(QString)), cleaner_widget, SIGNAL(tellCleanerDetailStatus(QString)), Qt::BlockingQueuedConnection);
 
-    connect(m_dataWorker, SIGNAL(tellCleanerDetailStatus(QString)), cleaner_action_widget, SLOT(showCleanReciveStatus(QString)));
-    connect(m_dataWorker, SIGNAL(tellCleanerDetailError(QString)), cleaner_action_widget, SLOT(showCleanReciveError(QString)));
+    connect(m_dataWorker, SIGNAL(tellCleanerDetailStatus(QString)), cleaner_action_widget, SLOT(showCleanReciveStatus(QString)), Qt::BlockingQueuedConnection);
+    connect(m_dataWorker, SIGNAL(tellCleanerDetailError(QString)), cleaner_action_widget, SLOT(showCleanReciveError(QString)), Qt::BlockingQueuedConnection);
 
     connect(m_dataWorker, SIGNAL(sendCleanOverSignal()), cleaner_widget, SLOT(displayMainPage()));
     connect(m_dataWorker, SIGNAL(sendCleanOverSignal()), cleaner_action_widget, SLOT(displayOrgPage()));
     connect(m_dataWorker, SIGNAL(sendCleanOverSignal()), cleaner_action_widget, SLOT(showCleanOverStatus()));
     connect(m_dataWorker, SIGNAL(policykitCleanSignal(bool)), cleaner_action_widget, SLOT(receivePolicyKitSignal(bool)));
-    connect(m_dataWorker, SIGNAL(tellCleanerMainData(QStringList)), cleaner_action_widget, SLOT(showCleanerData(QStringList)));
-    connect(m_dataWorker, SIGNAL(tellCleanerMainStatus(QString, QString)), cleaner_action_widget, SLOT(showCleanerStatus(QString, QString)));
-    connect(m_dataWorker, SIGNAL(sendCleanErrorSignal(QString)), cleaner_action_widget, SLOT(showCleanerError(QString)));
+    connect(m_dataWorker, SIGNAL(tellCleanerMainData(QStringList)), cleaner_action_widget, SLOT(showCleanerData(QStringList)), Qt::BlockingQueuedConnection);
+    connect(m_dataWorker, SIGNAL(tellCleanerMainStatus(QString, QString)), cleaner_action_widget, SLOT(showCleanerStatus(QString, QString)), Qt::BlockingQueuedConnection);
+    connect(m_dataWorker, SIGNAL(sendCleanErrorSignal(QString)), cleaner_action_widget, SLOT(showCleanerError(QString)), Qt::BlockingQueuedConnection);
 
     connect(cleaner_widget, SIGNAL(startScanSystem(QMap<QString,QVariant>)), m_dataWorker, SLOT(onStartScanSystem(QMap<QString,QVariant>)));
     connect(cleaner_widget, SIGNAL(startCleanSystem(QMap<QString,QVariant>)), m_dataWorker, SLOT(onStartCleanSystem(QMap<QString,QVariant>)));
@@ -737,13 +747,24 @@ void MainWindow::startDbusDaemon()
 {
 //    qDebug() << "mainwindow thread id=" << QThread::currentThreadId();
     m_dataWorker = new DataWorker(this->desktop);
+
+    /*QThread *thread = new QThread;
+    m_dataWorker->moveToThread(thread);
+    thread->start();
+    connect(thread, SIGNAL(started()), m_dataWorker, SLOT(doWork()), Qt::QueuedConnection);
+    connect(m_dataWorker, SIGNAL(dataLoadFinished()), this, SLOT(onInitDataFinished()), Qt::QueuedConnection);
+    connect(thread, &QThread::finished, this, [=] {
+        thread->deleteLater();
+        qDebug() << "DataWorker thread finished......";
+    });*/
+
     QThread *w_thread = ThreadPool::Instance()->createNewThread();
     m_dataWorker->moveToThread(w_thread);
 //    connect(w_thread, SIGNAL(started()), m_dataWorker, SLOT(doWork()));
 //    connect(m_dataWorker, SIGNAL(dataLoadFinished()), this, SLOT(onInitDataFinished()));
 //    connect(w_thread, &QThread::finished, w_thread, &QThread::deleteLater, Qt::QueuedConnection);
     connect(w_thread, &QThread::started, m_dataWorker, &DataWorker::doWork/*, Qt::QueuedConnection*/);
-    connect(m_dataWorker, &DataWorker::dataLoadFinished, this, &MainWindow::onInitDataFinished, Qt::QueuedConnection);
+    connect(m_dataWorker, &DataWorker::dataLoadFinished, this, &MainWindow::onInitDataFinished/*, Qt::BlockingQueuedConnection*/);
     connect(w_thread, &QThread::finished, this, [=] {
         w_thread->deleteLater();
         qDebug() << "DataWorker thread finished......";

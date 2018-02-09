@@ -23,7 +23,7 @@
 #include <QObject>
 #include <QDBusInterface>
 #include <QDBusConnection>
-#include "kthread.h"
+//#include "kthread.h"
 
 class SystemDispatcher : public QObject
 {
@@ -117,8 +117,8 @@ public slots:
 
 private:
     QDBusInterface *systemiface;
-    KThread *thread;
-    KThread *clean_thread;
+//    KThread *thread;
+//    KThread *clean_thread;
 };
 
 #endif // YOUKERSYSTEMDBUS_H

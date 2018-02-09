@@ -19,7 +19,9 @@
 
 #include "youkersystemdbus.h"
 #include <QDebug>
+#include <QDBusReply>
 #include <QMap>
+#include <QDir>
 
 SystemDispatcher::SystemDispatcher(QObject *parent)
     : QObject(parent)
@@ -48,13 +50,12 @@ SystemDispatcher::SystemDispatcher(QObject *parent)
 
 //    emit this->dbusInitFinished();
 
-    thread = new KThread(this);
-
-    clean_thread = new KThread(this);
+    /*thread = new KThread(this);
+    clean_thread = new KThread(this);*/
 }
 
 SystemDispatcher::~SystemDispatcher() {
-    thread->terminate();
+    /*thread->terminate();
     thread->wait();
     if(thread != NULL) {
         delete thread;
@@ -66,7 +67,7 @@ SystemDispatcher::~SystemDispatcher() {
     if(clean_thread != NULL) {
         delete clean_thread;
         clean_thread = NULL;
-    }
+    }*/
 
     this->exit_qt();
     if (systemiface != NULL) {
@@ -112,7 +113,7 @@ QString SystemDispatcher::get_current_cpufreq_scaling_governer_qt()
 
 bool SystemDispatcher::update_myself()
 {
-    QStringList tmp;
+    /*QStringList tmp;
     QMap<QString, QVariant> data;
     QEventLoop q;
     KThread *apt_thread = new KThread(this);
@@ -122,7 +123,7 @@ bool SystemDispatcher::update_myself()
     q.exec();
     if(apt_thread->isFinished()){
        q.quit();
-    }
+    }*/
     return true;
 //    QDBusReply<bool> reply = systemiface->call("install", "kylin-assistant");
 //    return reply.value();
@@ -130,7 +131,7 @@ bool SystemDispatcher::update_myself()
 
 bool SystemDispatcher::update_source()
 {
-    QStringList tmp;
+    /*QStringList tmp;
     QMap<QString, QVariant> data;
     QEventLoop q;
     KThread *source_thread = new KThread(this);
@@ -140,7 +141,7 @@ bool SystemDispatcher::update_source()
     q.exec();
     if(source_thread->isFinished()){
        q.quit();
-    }
+    }*/
     return true;
 }
 
@@ -158,7 +159,10 @@ bool SystemDispatcher::delete_file_qt(QString filename)
 
 void SystemDispatcher::cleanAllSelectItems(QMap<QString, QVariant> selectMap)
 {
-    if (clean_thread->isRunning()) {
+    systemiface->call("remove_select_items", selectMap);
+
+
+    /*if (clean_thread->isRunning()) {
         qDebug() << "clean_thread is running......";
     }
     else {
@@ -179,7 +183,7 @@ void SystemDispatcher::cleanAllSelectItems(QMap<QString, QVariant> selectMap)
 //    QElapsedTimer et;
 //    et.start();
 //    while(et.elapsed()<300)
-//        QCoreApplication::processEvents();
+//        QCoreApplication::processEvents();*/
 }
 
 //void SystemDispatcher::kill_root_process_qt(QString pid) {
@@ -491,8 +495,13 @@ QString SystemDispatcher::delete_plymouth_qt(QString plymouthName) {
     return reply.value();
 }
 
-void SystemDispatcher::clean_by_main_one_key_qt() {
-    if (thread->isRunning()) {
+void SystemDispatcher::clean_by_main_one_key_qt()
+{
+    QStringList argList;
+    argList << "1" << "1" << "1";
+    systemiface->call("onekey_clean_crufts_function", argList);
+
+    /*if (thread->isRunning()) {
         qDebug() << "onekey_clean_thread is running......";
     }
     else {
@@ -502,5 +511,5 @@ void SystemDispatcher::clean_by_main_one_key_qt() {
         QMap<QString, QVariant> data;
         thread->initValues(data, argList, systemiface, "onekey_clean_crufts_function");
         thread->start();
-    }
+    }*/
 }

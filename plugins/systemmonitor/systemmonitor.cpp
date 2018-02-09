@@ -39,8 +39,8 @@ SystemMonitor::SystemMonitor(QWidget *parent)
 //    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);//去掉边框
 //    this->setAttribute(Qt::WA_TranslucentBackground);//背景透明
 
-//    this->setWindowFlags(Qt::FramelessWindowHint);
-    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//Attention: Qt::WindowCloseButtonHint make showMinimized() valid
+    this->setWindowFlags(Qt::FramelessWindowHint);
+//    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//Attention: Qt::WindowCloseButtonHint make showMinimized() valid
 
     this->setAutoFillBackground(true);
     this->setMouseTracking(true);

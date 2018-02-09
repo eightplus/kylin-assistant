@@ -39,8 +39,8 @@ const int spacing = 8;
 PropertiesDialog::PropertiesDialog(QWidget *parent, pid_t processId) : QDialog(parent)
   , mousePressed(false)
 {
-//    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint/*  | Qt::WindowCloseButtonHint*/| Qt::WindowStaysOnTopHint);
-    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//Attention: Qt::WindowCloseButtonHint make showMinimized() valid
+    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint/*  | Qt::WindowCloseButtonHint*/| Qt::WindowStaysOnTopHint);
+//    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//Attention: Qt::WindowCloseButtonHint make showMinimized() valid
 
     this->setAttribute(Qt::WA_TranslucentBackground);
     this->setAttribute(Qt::WA_Resized, false);

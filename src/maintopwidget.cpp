@@ -298,16 +298,16 @@ void MainTopWidget::initActionRightContent()
         scan_button->setFixedSize(182, 58);
         clean_button->setFixedSize(182, 58);
     }
-    scan_button->show();
+    scan_button->setVisible(true);
     clean_button->setFocusPolicy(Qt::NoFocus);
     clean_button->setObjectName("greenButton");
-    clean_button->hide();
+    clean_button->setVisible(false);
 
     back_button->setFocusPolicy(Qt::NoFocus);
     back_button->setFixedSize(50, 30);
 //    back_button->setObjectName("backButton");
     back_button->setObjectName("underlineButton");
-    back_button->hide();//setVisible(false)
+    back_button->setVisible(false);
 
     m_toolRightLayout->addWidget(scan_button);
     m_toolRightLayout->addWidget(clean_button);
@@ -372,11 +372,11 @@ void MainTopWidget::setLanguage()
 void MainTopWidget::showCleanOverStatus()
 {
     loading_label->stopLoading();
-    scan_button->show();
+    scan_button->setVisible(true);
     scan_button->setEnabled(true);
-    clean_button->hide();
+    clean_button->setVisible(false);
     clean_button->setEnabled(true);
-    back_button->hide();
+    back_button->setVisible(false);
     doing_label->setText(tr("Clean OK"));
 }
 
@@ -475,25 +475,25 @@ void MainTopWidget::accordScanOverStatusToChange(bool status)
 {
     if (status) {
         doing_label->setText(tr("Scaning......"));
-        doing_label->hide();
+        doing_label->setVisible(false);
         loading_label->stopLoading();
-        scan_button->hide();
+        scan_button->setVisible(false);
         scan_button->setEnabled(true);
-        clean_button->show();
+        clean_button->setVisible(true);
         clean_button->setEnabled(true);
-        suggest_label->show();
-        back_button->show();
+        suggest_label->setVisible(true);
+        back_button->setVisible(true);
     }
     else {
         doing_label->setText(tr("Scaning......"));
-        doing_label->hide();
+        doing_label->setVisible(false);
         loading_label->stopLoading();
-        scan_button->hide();
+        scan_button->setVisible(false);
         scan_button->setEnabled(true);
-        clean_button->hide();
+        clean_button->setVisible(false);
         clean_button->setEnabled(true);
-        suggest_label->show();
-        back_button->show();
+        suggest_label->setVisible(true);
+        back_button->setVisible(true);
     }
 }
 
@@ -521,10 +521,10 @@ void MainTopWidget::showCleanReciveError(const QString &status)
 
 void MainTopWidget::displayAnimation()
 {
-    scan_button->setEnabled(false);
+//    scan_button->setEnabled(false);
     loading_label->startLoading();
-    suggest_label->hide();
-    doing_label->show();
+    suggest_label->setVisible(false);
+    doing_label->setVisible(true);
     emit this->showDetailData();
 }
 
@@ -593,19 +593,19 @@ void MainTopWidget::finishScanResult(QString msg)
         if (msg.isEmpty()) {
             result_label->setText(tr("No garbage."));
             scan_button->setEnabled(true);
-            clean_button->hide();
+            clean_button->setVisible(false);
         }
         else
         {
             result_label->setText(msg);
-            clean_button->show();
+            clean_button->setVisible(true);
             clean_button->setEnabled(true);
         }
         scanFinishTime = this->getCurrentDateTime();
 //        result_label->setText(tr("The lastest scan time is ") + this->getCurrentDateTime());
         this->writeSafeScanDate();
-        scan_button->hide();
-        back_button->show();
+        scan_button->setVisible(false);
+        back_button->setVisible(true);
         loading_label->stopLoading();
     }
 }
@@ -627,15 +627,15 @@ void MainTopWidget::getCleanResult(QString msg/*, QString flag*/)
 //    if(flag == "onekey") {
     if (msg == "yes") {//在弹出输入密码验证时，点击了取消按钮
         loading_label->stopLoading();
-        clean_button->show();
+        clean_button->setVisible(true);
         clean_button->setEnabled(true);
-        back_button->show();
+        back_button->setVisible(true);
     }
     else if (msg == "no") {//在弹出输入密码验证时，输入密码，验证通过，此时让动态图片开始显示
         //show dynamic image
-        clean_button->show();
+        clean_button->setVisible(true);
         clean_button->setEnabled(false);
-        back_button->hide();
+        back_button->setVisible(false);
         doing_label->setText(tr("Cleaning......"));//正在清理......
         loading_label->startLoading();
     }
@@ -657,11 +657,11 @@ void MainTopWidget::getCleanResult(QString msg/*, QString flag*/)
         cookies.clear();
         garbage.clear();
         loading_label->stopLoading();
-        scan_button->show();
+        scan_button->setVisible(true);
         scan_button->setEnabled(true);
-        clean_button->hide();
+        clean_button->setVisible(false);
         clean_button->setEnabled(true);
-        back_button->hide();
+        back_button->setVisible(false);
     }
 //    }
 }
@@ -733,31 +733,33 @@ void MainTopWidget::getCleaningMessage(QString type, QString status)
 
 void MainTopWidget::displayOrgPage()
 {
-    doing_label->hide();
-    back_button->hide();
+    doing_label->setVisible(false);
+    back_button->setVisible(false);
 //    loading_label->stopLoading();
-    scan_button->show();
+    scan_button->setVisible(true);
     scan_button->setEnabled(true);
-    clean_button->hide();
-    suggest_label->show();
+    clean_button->setVisible(false);
+    suggest_label->setVisible(true);
 }
 
 void MainTopWidget::onStartButtonClicked()
 {
     doing_label->setText(tr("Scanning......"));//正在扫描......
     if (m_isMain) {
-        scan_button->setEnabled(false);
+        scan_button->setVisible(false);
+//        scan_button->setEnabled(false);
         loading_label->startLoading();
-        suggest_label->hide();
-        scan_result_label->hide();
-        result_label->hide();
-        doing_label->show();
+        suggest_label->setVisible(false);
+        scan_result_label->setVisible(false);
+        result_label->setVisible(false);
+        doing_label->setVisible(true);
         QStringList args;
         args << "cache" << "history" << "cookies";
 
         emit this->startOneKeyScan(args);
     }
     else {
+        scan_button->setVisible(false);
         emit this->sendScanSignal();
     }
 }
@@ -765,20 +767,20 @@ void MainTopWidget::onStartButtonClicked()
 void MainTopWidget::onCleanButtonClicked()
 {
     if (m_isMain) {
-        clean_button->hide();
-        back_button->hide();
+        clean_button->setVisible(false);
+        back_button->setVisible(false);
         loading_label->startLoading();
-        suggest_label->hide();
-        scan_result_label->hide();
-        result_label->hide();
+        suggest_label->setVisible(false);
+        scan_result_label->setVisible(false);
+        result_label->setVisible(false);
         doing_label->setText(tr("Ready to Cleanup......"));//准备清理......
-        doing_label->show();
+        doing_label->setVisible(true);
 
         emit this->startOneKeyClean();
     }
     else {
-        clean_button->hide();
-        back_button->hide();
+        clean_button->setVisible(false);
+        back_button->setVisible(false);
         emit this->sendCleanSignal();
     }
 }
@@ -788,24 +790,24 @@ void MainTopWidget::onEndButtonClicked()
     if (m_isMain) {
         result_label->setText(tr("The lastest scan time is ") + scanFinishTime);
         loading_label->stopLoading();
-        scan_button->show();
+        scan_button->setVisible(true);
         scan_button->setEnabled(true);
-        clean_button->hide();
-        back_button->hide();
-        suggest_label->show();
-        scan_result_label->hide();
-        result_label->show();
-        doing_label->hide();
+        clean_button->setVisible(false);
+        back_button->setVisible(false);
+        suggest_label->setVisible(true);
+        scan_result_label->setVisible(false);
+        result_label->setVisible(true);
+        doing_label->setVisible(false);
     }
     else {
-        doing_label->hide();
-        back_button->hide();
+        doing_label->setVisible(false);
+        back_button->setVisible(false);
         loading_label->stopLoading();
-        scan_button->show();
+        scan_button->setVisible(true);
         scan_button->setEnabled(true);
-        clean_button->hide();
+        clean_button->setVisible(false);
     //    back_button->hide();
-        suggest_label->show();
+        suggest_label->setVisible(true);
     //    result_label->show();
         emit this->showMainData();
     }
@@ -819,18 +821,18 @@ void MainTopWidget::receivePolicyKitSignal(bool status)
     */
     if(status)//ok
     {
-        clean_button->show();
+        clean_button->setVisible(true);
         clean_button->setEnabled(false);
-        back_button->hide();//0713
-        scan_button->hide();
+        back_button->setVisible(false);
+        scan_button->setVisible(false);
         loading_label->startLoading();
-        suggest_label->hide();
+        suggest_label->setVisible(false);
         doing_label->setText(tr("Ready to Cleanup......"));//准备清理......
-        doing_label->show();
+        doing_label->setVisible(true);
     }
     else {
-        clean_button->show();
-        back_button->show();
+        clean_button->setVisible(true);
+        back_button->setVisible(true);
     }
 }
 

@@ -40,10 +40,12 @@ SessionDispatcher::SessionDispatcher(QObject *parent)
 
 //    thread = new KThread(this);
 
+/*
     //kobe
     check_thread = new KThread(this);
     scan_thread = new KThread(this);
     onekey_scan_thread = new KThread(this);
+*/
 
     QObject::connect(sessioniface, SIGNAL(display_scan_process(QString)), this, SLOT(handler_scan_process(QString)));
     QObject::connect(sessioniface, SIGNAL(scan_complete(QString)), this, SLOT(handler_scan_complete(QString)));
@@ -65,7 +67,7 @@ SessionDispatcher::SessionDispatcher(QObject *parent)
 }
 
 SessionDispatcher::~SessionDispatcher() {
-    check_thread->terminate();
+    /*check_thread->terminate();
     check_thread->wait();
     if(check_thread != NULL) {
         delete check_thread;
@@ -82,7 +84,7 @@ SessionDispatcher::~SessionDispatcher() {
     if(onekey_scan_thread != NULL) {
         delete onekey_scan_thread;
         onekey_scan_thread = NULL;
-    }
+    }*/
 
 
 //    thread->terminate();
@@ -99,7 +101,8 @@ SessionDispatcher::~SessionDispatcher() {
 }
 
 //dbus服务退出
-void SessionDispatcher::exit_qt() {
+void SessionDispatcher::exit_qt()
+{
     sessioniface->call("exit");
 }
 
@@ -109,7 +112,8 @@ QString SessionDispatcher::get_os_release_qt()
     return reply.value();
 }
 
-bool SessionDispatcher::submit_uk_pingback() {
+bool SessionDispatcher::submit_uk_pingback()
+{
     QDBusReply<bool> reply = sessioniface->call("submit_uk_pingback", qApp->applicationVersion());
     return reply.value();
 }
@@ -120,11 +124,11 @@ QStringList SessionDispatcher::checkNewVersion()
     return reply.value();
 }
 
-bool SessionDispatcher::start_check_source_useable_qt()
+void SessionDispatcher::start_check_source_useable_qt()
 {
-//    QDBusReply<bool> reply = sessioniface->call("start_check_source_useable");
-//    return reply.value();
-    if (check_thread->isRunning()) {
+    sessioniface->call("start_check_source_useable");
+
+    /*if (check_thread->isRunning()) {
         qDebug() << "check_thread is running......";
     }
     else {
@@ -134,7 +138,7 @@ bool SessionDispatcher::start_check_source_useable_qt()
         check_thread->start();
 //        qDebug() << "check_thread is ready to run......";
     }
-    return true;
+    return true;*/
 }
 
 void SessionDispatcher::runApp(QString pkgname)
@@ -209,7 +213,8 @@ void SessionDispatcher::handlerScanCleanerError(QString status)
 ////    }
 //}
 
-bool SessionDispatcher::judge_power_is_exists_qt() {
+bool SessionDispatcher::judge_power_is_exists_qt()
+{
     QDBusReply<bool> reply = sessioniface->call("judge_power_is_exists");
     return reply.value();
 }
@@ -242,52 +247,63 @@ QMap<QString, QVariant> SessionDispatcher::read_battery_info_qt()
     }
 }
 
-void SessionDispatcher::open_folder_qt(QString path) {
+void SessionDispatcher::open_folder_qt(QString path)
+{
     sessioniface->call("open_folder", path);
 }
 
-void SessionDispatcher::check_user_qt() {
+void SessionDispatcher::check_user_qt()
+{
 //    sessioniface->call("check_user");
 }
 
 //弹出登录框
-void SessionDispatcher::popup_login_dialog() {
+void SessionDispatcher::popup_login_dialog()
+{
     //add ubuntukylin sso
 //    sessioniface->call("slot_do_login_account");
 }
 
-void SessionDispatcher::popup_register_dialog() {
+void SessionDispatcher::popup_register_dialog()
+{
     //add ubuntukylin sso
 //    sessioniface->call("slot_do_register");
 }
 
 //退出登录
-void SessionDispatcher::logout_ubuntukylin_account() {
+void SessionDispatcher::logout_ubuntukylin_account()
+{
     //add ubuntukylin sso
 //    sessioniface->call("slot_do_logout");
 }
 
-void SessionDispatcher::handlerYoukerID(QString displayName, QString emailAddress) {
+void SessionDispatcher::handlerYoukerID(QString displayName, QString emailAddress)
+{
     emit this->ssoSuccessSignal(displayName, emailAddress);
 }
 
-void SessionDispatcher::handlerLogoutSuccess() {
+void SessionDispatcher::handlerLogoutSuccess()
+{
     emit this->ssoLoginLogoutSignal(true);
 }
 
-void SessionDispatcher::handlerLoginFail() {
+void SessionDispatcher::handlerLoginFail()
+{
     emit this->ssoLoginLogoutSignal(false);
 }
 
-void SessionDispatcher::handler_scan_complete(QString msg) {
+void SessionDispatcher::handler_scan_complete(QString msg)
+{
     emit finishScanWork(msg);
 }
 
-void SessionDispatcher::handler_scan_process(QString msg) {
+void SessionDispatcher::handler_scan_process(QString msg)
+{
     emit isScanning(msg);
 }
 
-void SessionDispatcher::handler_total_data_transmit(QString flag, QString msg) {
+void SessionDispatcher::handler_total_data_transmit(QString flag, QString msg)
+{
     emit tellScanResult(flag, msg);
 }
 
@@ -296,12 +312,17 @@ void SessionDispatcher::handler_total_data_transmit(QString flag, QString msg) {
 //    return locale;
 //}
 
-void SessionDispatcher::onekey_scan_function_qt(QStringList selectedList) {
+void SessionDispatcher::onekey_scan_function_qt(QStringList selectedList)
+{
 //    QMap<QString, QVariant> data;
 //    thread->initValues(data, selectedList, sessioniface, "onekey_scan_function");
 //    thread->start();
 
-    if (scan_thread->isRunning()) {
+
+    sessioniface->call("onekey_scan_function", selectedList);
+
+
+    /*if (scan_thread->isRunning()) {
         qDebug() << "onekey_scan_thread is running......";
     }
     else {
@@ -309,15 +330,14 @@ void SessionDispatcher::onekey_scan_function_qt(QStringList selectedList) {
         QMap<QString, QVariant> data;
         onekey_scan_thread->initValues(data, selectedList, sessioniface, "onekey_scan_function");
         onekey_scan_thread->start();
-    }
+    }*/
 }
 
 void SessionDispatcher::scanSystemCleanerItems(QMap<QString, QVariant> data)
 {
-//    QStringList tmp;
-//    thread->initValues(data, tmp, sessioniface, "get_scan_result");
-//    thread->start();
-    if (scan_thread->isRunning()) {
+    sessioniface->call("get_scan_result", data);
+
+    /*if (scan_thread->isRunning()) {
         qDebug() << "scan_thread is running......";
     }
     else {
@@ -332,10 +352,11 @@ void SessionDispatcher::scanSystemCleanerItems(QMap<QString, QVariant> data)
 //        et.start();
 //        while(et.elapsed()<300)
 //            QCoreApplication::processEvents();
-    }
+    }*/
 }
 
-QString SessionDispatcher::getHomePath() {
+QString SessionDispatcher::getHomePath()
+{
     QString homepath = QDir::homePath();
     return homepath;
 }
@@ -369,62 +390,74 @@ QMap<QString, QVariant>  SessionDispatcher::get_system_message_qt()
 }
 
 /*-----------------------------desktop of beauty-----------------------------*/
-bool SessionDispatcher::set_show_desktop_icons_qt(bool flag) {
+bool SessionDispatcher::set_show_desktop_icons_qt(bool flag)
+{
     QDBusReply<bool> reply = sessioniface->call("set_show_desktop_icons", flag);
     return reply.value();
 }
 
-bool SessionDispatcher::get_show_desktop_icons_qt() {
+bool SessionDispatcher::get_show_desktop_icons_qt()
+{
     QDBusReply<bool> reply = sessioniface->call("get_show_desktop_icons");
     return reply.value();
 }
 
-bool SessionDispatcher::set_show_computer_qt(bool flag) {
+bool SessionDispatcher::set_show_computer_qt(bool flag)
+{
     QDBusReply<bool> reply = sessioniface->call("set_show_computer", flag);
     return reply.value();
 }
 
-bool SessionDispatcher::get_show_computer_qt() {
+bool SessionDispatcher::get_show_computer_qt()
+{
     QDBusReply<bool> reply = sessioniface->call("get_show_computer");
     return reply.value();
 }
 
-bool SessionDispatcher::set_show_homefolder_qt(bool flag) {
+bool SessionDispatcher::set_show_homefolder_qt(bool flag)
+{
     QDBusReply<bool> reply = sessioniface->call("set_show_homefolder", flag);
     return reply.value();
 }
 
-bool SessionDispatcher::get_show_homefolder_qt() {
+bool SessionDispatcher::get_show_homefolder_qt()
+{
     QDBusReply<bool> reply = sessioniface->call("get_show_homefolder");
     return reply.value();
 }
 
-bool SessionDispatcher::set_show_network_qt(bool flag) {
+bool SessionDispatcher::set_show_network_qt(bool flag)
+{
     QDBusReply<bool> reply = sessioniface->call("set_show_network", flag);
     return reply.value();
 }
 
-bool SessionDispatcher::get_show_network_qt() {
+bool SessionDispatcher::get_show_network_qt()
+{
     QDBusReply<bool> reply = sessioniface->call("get_show_network");
     return reply.value();
 }
 
-bool SessionDispatcher::set_show_trash_qt(bool flag) {
+bool SessionDispatcher::set_show_trash_qt(bool flag)
+{
     QDBusReply<bool> reply = sessioniface->call("set_show_trash", flag);
     return reply.value();
 }
 
-bool SessionDispatcher::get_show_trash_qt() {
+bool SessionDispatcher::get_show_trash_qt()
+{
     QDBusReply<bool> reply = sessioniface->call("get_show_trash");
     return reply.value();
 }
 
-bool SessionDispatcher::set_show_devices_qt(bool flag) {
+bool SessionDispatcher::set_show_devices_qt(bool flag)
+{
     QDBusReply<bool> reply = sessioniface->call("set_show_devices", flag);
     return reply.value();
 }
 
-bool SessionDispatcher::get_show_devices_qt() {
+bool SessionDispatcher::get_show_devices_qt()
+{
     QDBusReply<bool> reply = sessioniface->call("get_show_devices");
     return reply.value();
 }
@@ -493,35 +526,41 @@ bool SessionDispatcher::get_show_devices_qt() {
 //    sessioniface->call("set_default_launcher_have_showdesktopicon");
 //}
 
-bool SessionDispatcher::set_launcher_autohide_qt(bool flag) {
+bool SessionDispatcher::set_launcher_autohide_qt(bool flag)
+{
     QDBusReply<bool> reply = sessioniface->call("set_launcher_autohide", flag);
     return reply.value();
 //    return true;
 }
 
-bool SessionDispatcher::get_launcher_autohide_qt() {
+bool SessionDispatcher::get_launcher_autohide_qt()
+{
     QDBusReply<bool> reply = sessioniface->call("get_launcher_autohide");
     return reply.value();
 //    return true;
 }
 
-bool SessionDispatcher::set_launcher_icon_size_qt(int num) {
+bool SessionDispatcher::set_launcher_icon_size_qt(int num)
+{
     QDBusReply<bool> reply = sessioniface->call("set_launcher_icon_size", num);
     return reply.value();
 }
 
-int SessionDispatcher::get_launcher_icon_size_qt() {
+int SessionDispatcher::get_launcher_icon_size_qt()
+{
     QDBusReply<int> reply = sessioniface->call("get_launcher_icon_size");
     return reply.value();
 //    return 32;
 }
-bool SessionDispatcher::set_launcher_have_showdesktopicon_qt(bool flag) {
+bool SessionDispatcher::set_launcher_have_showdesktopicon_qt(bool flag)
+{
     QDBusReply<bool> reply = sessioniface->call("set_launcher_have_showdesktopicon", flag);
     return reply.value();
 //    return true;
 }
 
-bool SessionDispatcher::get_launcher_have_showdesktopicon_qt() {
+bool SessionDispatcher::get_launcher_have_showdesktopicon_qt()
+{
     QDBusReply<bool> reply = sessioniface->call("get_launcher_have_showdesktopicon");
     return reply.value();
 //    return true;

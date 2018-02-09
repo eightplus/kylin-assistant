@@ -161,7 +161,8 @@ QPushButton#blackButton:pressed{
 
 QPushButton#underlineButton{
     /*background:transparent;*/
-    background-color: rgba(0, 0, 0, 0);
+    /*background-color: rgba(0, 0, 0, 0);*/
+    border:none;
     text-decoration:underline;
     color:#cfd8dc;
     font-family: "方正黑体_GBK";
@@ -170,24 +171,26 @@ QPushButton#underlineButton{
 }
 
 QPushButton#underlineButton:hover{
-        color:#ffffff;
-        text-decoration:underline;
+    color:#ffffff;
+    text-decoration:underline;
 }
 
 QPushButton#whiteButton{
-        color:#ffffff;
-        font-family: "方正黑体_GBK";
-        font-size: 16px;
-        text-align: center;
-        background:transparent;
+    border:none;
+    color:#ffffff;
+    font-family: "方正黑体_GBK";
+    font-size: 16px;
+    text-align: center;
+    /*background:transparent;*/
 }
 
 QPushButton#checkButton{
+    border:none;
     color:#3f96e4;
     font-family: "方正黑体_GBK";
     font-size: 14px;
     text-align: center;
-    background:transparent;
+    /*background:transparent;*/
 }
 
 QPushButton#checkButton:hover{
@@ -195,7 +198,7 @@ QPushButton#checkButton:hover{
     font-family: "方正黑体_GBK";
     font-size: 14px;
     text-align: center;
-    background:transparent;
+    /*background:transparent;*/
 }
 
 QPushButton#checkButton:pressed{
@@ -203,7 +206,7 @@ QPushButton#checkButton:pressed{
     font-family: "方正黑体_GBK";
     font-size: 14px;
     text-align: center;
-    background:transparent;
+    /*background:transparent;*/
 }
 
 QPushButton#greenButton{
@@ -236,7 +239,7 @@ QPushButton#backButton:pressed{
 
 QPushButton#bottomButton{
     color:rgb(0, 120, 230);
-    background:transparent;
+    /*background:transparent;*/
 }
 
 QPushButton#bottomButton:hover{

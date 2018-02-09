@@ -144,6 +144,7 @@ bool DataWorker::copyAppointedFile(QString filename)
 void DataWorker::onStartOneKeyScan(const QStringList &categorys)
 {
     m_sessionInterface->onekey_scan_function_qt(categorys);
+//    QCoreApplication::processEvents();
 }
 
 //---------------clean on homepage
@@ -157,6 +158,23 @@ void DataWorker::onStartOneKeyClean()
 void DataWorker::onStartScanSystem(QMap<QString, QVariant> itemsMap)
 {
     m_sessionInterface->scanSystemCleanerItems(itemsMap);
+
+
+
+//    QEventLoop loop;
+//    MyThread *t = new MyThread(0,QString("aaa"));
+//    connect(t, SIGNAL(finished()), &loop, SLOT(quit()));
+//    t->start();
+//    loop.exec();
+//    int i = t->getMyThreadResult();
+//    if(i == 0)//success
+//    {
+//        return true;
+//    }else
+//    {
+//        return false;
+//    }
+//    delete t;
 }
 
 //-------------clean
