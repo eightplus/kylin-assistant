@@ -26,8 +26,9 @@
 #include <QLabel>
 #include <QPainter>
 
-MyTitleBar::MyTitleBar(bool needMin, QWidget *parent)
+MyTitleBar::MyTitleBar(const QString &title, bool needMin, QWidget *parent)
     :QFrame(parent)
+    , m_title(title)
     , m_needMin(needMin)
 {
     this->setWindowFlags(Qt::FramelessWindowHint);//this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);
@@ -101,6 +102,7 @@ void MyTitleBar::initLeftContent()
 
     QLabel *titleLabel = new QLabel;
     titleLabel->setStyleSheet("QLabel{background-color:transparent;color:#ffffff; font-size:12px;}");
+    titleLabel->setText(m_title);
     m_lLayout->addWidget(titleLabel);
 
     m_layout->addWidget(w, 1, Qt::AlignLeft);

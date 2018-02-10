@@ -19,9 +19,11 @@
 
 #include "selectlistitem.h"
 
-SelectListItem::SelectListItem(QWidget *parent, QString description,int itemWidth) :
+SelectListItem::SelectListItem(QWidget *parent, QString description, QString tipMsg, bool hasTip, int itemWidth) :
     QWidget(parent)
     , m_description(description)
+    , m_tip(tipMsg)
+    , m_hasTip(hasTip)
 {
     m_mainLayout = new QHBoxLayout(this);
     m_mainLayout->setSpacing(5);
@@ -32,7 +34,7 @@ SelectListItem::SelectListItem(QWidget *parent, QString description,int itemWidt
     m_checkBox->setChecked(true);
 
     connect(m_checkBox, &QCheckBox::clicked, [=] (bool checked) {
-        emit this->selectedSignal(checked, m_description);
+        emit this->selectedSignal(checked, this->itemDescription());
     });
 
     m_descLabel = new QLabel(this);
@@ -57,5 +59,8 @@ bool SelectListItem::itemIsChecked()
 
 QString SelectListItem::itemDescription()
 {
-    return this->m_description;
+    if (m_hasTip)
+        return this->m_tip;
+    else
+        return this->m_description;
 }

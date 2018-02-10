@@ -28,7 +28,7 @@ class MyTitleBar : public QFrame
 {
     Q_OBJECT
 public:
-    MyTitleBar(bool needMin = false, QWidget *parent = 0);
+    MyTitleBar(const QString &title = "", bool needMin = false, QWidget *parent = 0);
     ~MyTitleBar();
 
     void setLeftContent(QWidget *content);
@@ -44,6 +44,7 @@ signals:
     void closeSignal();
 
 private:
+    QString m_title;
     bool m_needMin;
     QHBoxLayout *m_layout = nullptr;
     QHBoxLayout *m_lLayout = nullptr;

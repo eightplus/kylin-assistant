@@ -39,7 +39,24 @@
 const QString KYLIN_COMPANY_SETTING = "kylin/kylin-assistant";
 const QString KYLIN_SETTING_FILE_NAME_SETTING = "kylin-assistant";
 
+enum CleanerModuleID {
+    CacheApt = 0,
+    CacheSoftware,
+    CacheThumbnail,
+    CacheFirefox,
+    CacheChromium,
+    CookieFirefox,
+    CookieChromium,
+    TraceX11,
+    InvalidID,
+};
 
+enum CleanerCategoryID {
+    CacheCategory = 0,
+    CookieCategory,
+    TraceCategory,
+    InvalidCategory,
+};
 
 typedef enum{
     YOUKER_EN,

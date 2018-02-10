@@ -51,7 +51,6 @@ public slots:
 signals:
     void transCleanSignal();
     void transScanSignal();
-    void clearDetailPage();
     void tranActionAnimaitonSignal();
 //    void tranCleanActionAnimaitonSignal();
     void tranScanOverSignal(bool status);

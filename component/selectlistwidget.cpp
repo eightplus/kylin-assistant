@@ -20,15 +20,11 @@
 #include "selectlistwidget.h"
 #include <QDebug>
 
-SelectListWidget::SelectListWidget(QWidget *parent) :
+SelectListWidget::SelectListWidget(bool hasTip, QWidget *parent) :
     QWidget(parent)
+  , m_hasTip(hasTip)
 {
     m_gridLayout = new QGridLayout(this);
-    m_titleLabel = new QLabel;
-    m_titleLabel->setFixedSize(80,30);
-    m_titleLabel->setText(tr("Items:"));
-    m_countLabel = new QLabel;
-    m_countLabel->setFixedSize(100,30);
     m_widget = new QWidget;
     m_widget->setObjectName("transparentWidget");
     m_listAreaWidgetLayout = new QVBoxLayout(m_widget);
@@ -36,10 +32,20 @@ SelectListWidget::SelectListWidget(QWidget *parent) :
     m_scrollArea->setWidgetResizable(true);
     m_scrollArea->setWidget(m_widget);
 
-    m_gridLayout->addWidget(m_titleLabel,0,0,1,1);
-    m_gridLayout->addItem(new QSpacerItem(10,10),0,0,1,3);
-    m_gridLayout->addWidget(m_countLabel,0,1,1,1);
-    m_gridLayout->addWidget(m_scrollArea,1,0,5,5);
+    if (hasTip) {
+        m_gridLayout->addWidget(m_scrollArea);
+    }
+    else {
+        m_titleLabel = new QLabel;
+        m_titleLabel->setFixedSize(80,30);
+        m_titleLabel->setText(tr("Items:"));
+        m_countLabel = new QLabel;
+        m_countLabel->setFixedSize(100,30);
+        m_gridLayout->addWidget(m_titleLabel,0,0,1,1);
+        m_gridLayout->addItem(new QSpacerItem(10,10),0,0,1,3);
+        m_gridLayout->addWidget(m_countLabel,0,1,1,1);
+        m_gridLayout->addWidget(m_scrollArea,1,0,5,5);
+    }
 
     resetToDefault();
 }
@@ -57,12 +63,30 @@ void SelectListWidget::loadListItems(const QString &title, const QStringList &ca
     m_countLabel->setText(QString::number(count));
 
     foreach (QString cache, cachelist) {
-        SelectListItem *item = new SelectListItem(0, cache, itemWidth);
+        SelectListItem *item = new SelectListItem(0, cache, "", false, itemWidth);
         connect(item, SIGNAL(selectedSignal(bool,QString)), this, SLOT(onSelectedSignal(bool,QString)));
         item->setMaximumSize(itemWidth, 30);
         m_listAreaWidgetLayout->addWidget(item);
         m_itemsMap.insert(cache, item);
     }
+    m_listAreaWidgetLayout->addStretch();
+}
+
+void SelectListWidget::loadListItemsWithTips(const QStringList &arglist, const QStringList &statuslist, int itemWidth)
+{
+    if (arglist.length() != statuslist.length())
+        return;
+
+    m_itemsMap.clear();
+
+    for (int i = 0; i < arglist.length(); ++i) {
+        SelectListItem *item = new SelectListItem(0, arglist.at(i), statuslist.at(i), true, itemWidth);
+        connect(item, SIGNAL(selectedSignal(bool,QString)), this, SLOT(onSelectedSignal(bool,QString)));
+        item->setMaximumSize(itemWidth, 30);
+        m_listAreaWidgetLayout->addWidget(item);
+        m_itemsMap.insert(arglist.at(i), item);
+    }
+
     m_listAreaWidgetLayout->addStretch();
 }
 
@@ -99,7 +123,9 @@ void SelectListWidget::scanAllSubCheckbox()
         if (item->itemIsChecked())
             selectedCount += 1;
     }
-    m_countLabel->setText(QString::number(selectedCount));
+    if (!m_hasTip)
+        m_countLabel->setText(QString::number(selectedCount));
+
     if (selectedCount == 0) {
         emit this->notifyMainCheckBox(0);
     }
@@ -154,7 +180,7 @@ void SelectListWidget::resetSubCheckbox(int status)
 
 void SelectListWidget::onSelectedSignal(bool checked, QString description)
 {
-
+    this->scanAllSubCheckbox();
 }
 
 void SelectListWidget::resetToDefault()

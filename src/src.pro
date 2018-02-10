@@ -71,6 +71,7 @@ SOURCES += main.cpp \
     ../component/selectlistwidget.cpp \
     ../component/selectlistitem.cpp \
     ../component/selectwidget.cpp \
+    ../component/selectcategorywidget.cpp \
     ../component/mytitlebar.cpp \
     ../plugins/widgets/mytristatebutton.cpp \
     ../info/infounitwidget.cpp \
@@ -152,6 +153,7 @@ HEADERS  += mainwindow.h \
     ../component/selectlistwidget.h \
     ../component/selectlistitem.h \
     ../component/selectwidget.h \
+    ../component/selectcategorywidget.h \
     ../component/mytitlebar.h \
     ../plugins/widgets/mytristatebutton.h \
     ../info/infounitwidget.h \

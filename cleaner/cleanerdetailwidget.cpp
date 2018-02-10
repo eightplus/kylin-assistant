@@ -25,8 +25,8 @@
 #include <QDebug>
 #include <QBoxLayout>
 
-CleanerDetailWidget::CleanerDetailWidget(QWidget *parent, /*SessionDispatcher *seroxy, SystemDispatcher *syproxy, */MainWindow *window, Toolkits *kits, QString skin)
-    : QWidget(parent), /*sessionproxy(seroxy), systemproxy(syproxy), */parentWindow(window), toolKits(kits),cur_skin(skin),
+CleanerDetailWidget::CleanerDetailWidget(QWidget *parent, MainWindow *window, Toolkits *kits, QString skin)
+    : QWidget(parent), parentWindow(window), toolKits(kits),cur_skin(skin),
     ui(new Ui::CleanerDetailWidget)
 {
     ui->setupUi(this);
@@ -62,15 +62,15 @@ CleanerDetailWidget::CleanerDetailWidget(QWidget *parent, /*SessionDispatcher *s
 //    grid_layout = new QGridLayout();
 //    rowIndex = columnIndex = 0;
 
-    cache_apt_items = NULL;
+//    cache_apt_items = NULL;
     cache_apt_btn = NULL;
-    cache_software_items = NULL;
+//    cache_software_items = NULL;
     cache_software_btn = NULL;
-    cache_thumbnails_items = NULL;
+//    cache_thumbnails_items = NULL;
     cache_thumbnails_btn = NULL;
-    cache_firefox_items = NULL;
+//    cache_firefox_items = NULL;
     cache_firefox_btn = NULL;
-    cache_chromium_items = NULL;
+//    cache_chromium_items = NULL;
     cache_chromium_btn = NULL;
 
 //    package_unneed_items = NULL;
@@ -80,9 +80,9 @@ CleanerDetailWidget::CleanerDetailWidget(QWidget *parent, /*SessionDispatcher *s
 //    package_configfile_items = NULL;
 //    package_configfile_btn = NULL;
 
-    cookies_firefox_items = NULL;
+//    cookies_firefox_items = NULL;
     cookies_firefox_btn = NULL;
-    cookies_chromium_items = NULL;
+//    cookies_chromium_items = NULL;
     cookies_chromium_btn = NULL;
 
     trace_firefox_btn = NULL;
@@ -90,7 +90,7 @@ CleanerDetailWidget::CleanerDetailWidget(QWidget *parent, /*SessionDispatcher *s
     trace_system_btn = NULL;
     trace_bash_btn = NULL;
     trace_x11_btn = NULL;
-    trace_x11_items = NULL;
+//    trace_x11_items = NULL;
 
 //    ui->scrollAreaWidgetContents->setLayout(grid_layout);
     this->number_per_row = (this->width() + this->cardspace - 60) / (this->itemwidth + this->cardspace);
@@ -99,31 +99,31 @@ CleanerDetailWidget::CleanerDetailWidget(QWidget *parent, /*SessionDispatcher *s
 
 CleanerDetailWidget::~CleanerDetailWidget()
 {
-    if(cache_apt_items != NULL)
-    {
-        delete cache_apt_items;
-        cache_apt_items = NULL;
-    }
-    if(cache_software_items != NULL)
-    {
-        delete cache_software_items;
-        cache_software_items = NULL;
-    }
-    if(cache_thumbnails_items != NULL)
-    {
-        delete cache_thumbnails_items;
-        cache_thumbnails_items = NULL;
-    }
-    if(cache_firefox_items != NULL)
-    {
-        delete cache_firefox_items;
-        cache_firefox_items = NULL;
-    }
-    if(cache_chromium_items != NULL)
-    {
-        delete cache_chromium_items;
-        cache_chromium_items = NULL;
-    }
+//    if(cache_apt_items != NULL)
+//    {
+//        delete cache_apt_items;
+//        cache_apt_items = NULL;
+//    }
+//    if(cache_software_items != NULL)
+//    {
+//        delete cache_software_items;
+//        cache_software_items = NULL;
+//    }
+//    if(cache_thumbnails_items != NULL)
+//    {
+//        delete cache_thumbnails_items;
+//        cache_thumbnails_items = NULL;
+//    }
+//    if(cache_firefox_items != NULL)
+//    {
+//        delete cache_firefox_items;
+//        cache_firefox_items = NULL;
+//    }
+//    if(cache_chromium_items != NULL)
+//    {
+//        delete cache_chromium_items;
+//        cache_chromium_items = NULL;
+//    }
     /*if(package_unneed_items != NULL)
     {
         delete package_unneed_items;
@@ -139,27 +139,67 @@ CleanerDetailWidget::~CleanerDetailWidget()
         delete package_configfile_items;
         package_configfile_items = NULL;
     }*/
-    if(cookies_firefox_items != NULL)
-    {
-        delete cookies_firefox_items;
-        cookies_firefox_items = NULL;
-    }
-    if(cookies_chromium_items != NULL)
-    {
-        delete cookies_chromium_items;
-        cookies_chromium_items = NULL;
-    }
-    if(trace_x11_items != NULL)
-    {
-        delete trace_x11_items;
-        trace_x11_items = NULL;
-    }
+//    if(cookies_firefox_items != NULL)
+//    {
+//        delete cookies_firefox_items;
+//        cookies_firefox_items = NULL;
+//    }
+//    if(cookies_chromium_items != NULL)
+//    {
+//        delete cookies_chromium_items;
+//        cookies_chromium_items = NULL;
+//    }
+//    if(trace_x11_items != NULL)
+//    {
+//        delete trace_x11_items;
+//        trace_x11_items = NULL;
+//    }
 //    if(grid_layout != NULL)
 //    {
 //        delete grid_layout;
 //        grid_layout = NULL;
 //    }
     delete ui;
+}
+
+void CleanerDetailWidget::onRefreshSelectedItems(CleanerModuleID id, const QStringList &infos)
+{
+    switch (id) {
+    case CleanerModuleID::CacheApt:
+        m_selectedAptList.clear();
+        m_selectedAptList = infos;
+        break;
+    case CleanerModuleID::CacheSoftware:
+        m_selectedSoftwareList.clear();
+        m_selectedSoftwareList = infos;
+        break;
+    case CleanerModuleID::CacheThumbnail:
+        m_selectedThumbnailsList.clear();
+        m_selectedThumbnailsList = infos;
+        break;
+    case CleanerModuleID::CacheFirefox:
+        m_selectedFirefoxCacheList.clear();
+        m_selectedFirefoxCacheList = infos;
+        break;
+    case CleanerModuleID::CacheChromium:
+        m_selectedChromiumCacheList.clear();
+        m_selectedChromiumCacheList = infos;
+        break;
+    case CleanerModuleID::CookieFirefox:
+        m_selectedFirefoxCookieList.clear();
+        m_selectedFirefoxCookieList = infos;
+        break;
+    case CleanerModuleID::CookieChromium:
+        m_selectedChromiumCookieList.clear();
+        m_selectedChromiumCookieList = infos;
+        break;
+    case CleanerModuleID::TraceX11:
+        m_selectedTraceX11List.clear();
+        m_selectedTraceX11List = infos;
+        break;
+    default:
+        break;
+    }
 }
 
 void CleanerDetailWidget::CleanUIAndData()
@@ -185,6 +225,15 @@ void CleanerDetailWidget::CleanUIAndData()
     trace_bash_size.clear();
     trace_bash_path.clear();
     trace_x11_list.clear();
+
+    m_selectedAptList.clear();
+    m_selectedSoftwareList.clear();
+    m_selectedThumbnailsList.clear();
+    m_selectedFirefoxCacheList.clear();
+    m_selectedChromiumCacheList.clear();
+    m_selectedFirefoxCookieList.clear();
+    m_selectedChromiumCookieList.clear();
+    m_selectedTraceX11List.clear();
 
     //clear ui
 //    foreach (QObject *child, ui->scrollAreaWidgetContents->children()) {
@@ -369,11 +418,11 @@ void CleanerDetailWidget::showReciveData(const QStringList &data)
 
 void CleanerDetailWidget::showReciveStatus(const QString &status)
 {
-    if(status == "Complete:Cache")
-    {
-        if(cache_apt_list.length() > 0)
-        {
-            cache_apt_items = new CleanListWidget(cache_apt_list, this->cur_skin, tr("Apt Cache Clean Items"));
+    if(status == "Complete:Cache") {
+        if(cache_apt_list.length() > 0) {
+            m_selectedAptList.clear();
+            m_selectedAptList = cache_apt_list;
+
 //            cache_apt_btn = new CommonCheckBox(0, "://res/cache");
             cache_apt_btn = new CleanSubGroup(this, "://res/janitor/apt");
             cache_apt_btn->setFocusPolicy(Qt::NoFocus);
@@ -381,12 +430,13 @@ void CleanerDetailWidget::showReciveStatus(const QString &status)
 //            cache_apt_btn->setFixedSize(160, 200);
             cache_apt_btn->setStatusTip("cache-apt");
             cache_apt_btn->setLabelText(tr("Apt Cache count:"), cache_apt_list.length());
-            //子checkbox的状态被改变时，重新设置总按钮的状态
-            connect(cache_apt_items, SIGNAL(notifyMainCheckBox(int)), cache_apt_btn, SLOT(resetMainStatus(int)));
             //点击自定义按钮后，显示自定义页面
             connect(cache_apt_btn, SIGNAL(customButtonClicked()), this, SLOT(showCustomPage()));
+            /*cache_apt_items = new CleanListWidget(cache_apt_list, this->cur_skin, tr("Apt Cache Clean Items"));
+            //子checkbox的状态被改变时，重新设置总按钮的状态
+            connect(cache_apt_items, SIGNAL(notifyMainCheckBox(int)), cache_apt_btn, SLOT(resetMainStatus(int)));
             //点击总按钮后，根据总按钮的状态去改变子checkbox的状态
-            connect(cache_apt_btn, SIGNAL(spreadStatus(int)), cache_apt_items, SLOT(resetSubCheckbox(int)));
+            connect(cache_apt_btn, SIGNAL(spreadStatus(int)), cache_apt_items, SLOT(resetSubCheckbox(int)));*/
 //            if(grid_layout == NULL)
 //            {
 //                grid_layout = new QGridLayout();
@@ -415,9 +465,10 @@ void CleanerDetailWidget::showReciveStatus(const QString &status)
 //                columnIndex += 1;
 //            }
         }
-        if(cache_software_list.length() > 0)
-        {
-            cache_software_items = new CleanListWidget(cache_software_list, this->cur_skin, tr("Software Cache Clean Items"));
+        if(cache_software_list.length() > 0) {
+            m_selectedSoftwareList.clear();
+            m_selectedSoftwareList = cache_software_list;
+
 //            cache_software_btn = new CommonCheckBox(0, "://res/cache");
             cache_software_btn = new CleanSubGroup(this, "://res/janitor/software");
             cache_software_btn->setFocusPolicy(Qt::NoFocus);
@@ -425,12 +476,13 @@ void CleanerDetailWidget::showReciveStatus(const QString &status)
 //            cache_software_btn->setFixedSize(160, 200);
             cache_software_btn->setStatusTip("cache-software");
             cache_software_btn->setLabelText(tr("Software Cache count:"), cache_software_list.length());
-            //子checkbox的状态被改变时，重新设置总按钮的状态
-            connect(cache_software_items, SIGNAL(notifyMainCheckBox(int)), cache_software_btn, SLOT(resetMainStatus(int)));
             //点击自定义按钮后，根据总按钮的状态去改变子checkbox的状态
             connect(cache_software_btn, SIGNAL(customButtonClicked()), this, SLOT(showCustomPage()));
+            /*cache_software_items = new CleanListWidget(cache_software_list, this->cur_skin, tr("Software Cache Clean Items"));
+            //子checkbox的状态被改变时，重新设置总按钮的状态
+            connect(cache_software_items, SIGNAL(notifyMainCheckBox(int)), cache_software_btn, SLOT(resetMainStatus(int)));
             //点击总按钮后，根据总按钮的状态去改变子checkbox的状态
-            connect(cache_software_btn, SIGNAL(spreadStatus(int)), cache_software_items, SLOT(resetSubCheckbox(int)));
+            connect(cache_software_btn, SIGNAL(spreadStatus(int)), cache_software_items, SLOT(resetSubCheckbox(int)));*/
 
             int x = int(this->subCount % this->number_per_row) * (this->itemwidth + this->cardspace) + 30;
             int y = int(this->subCount / this->number_per_row) * (this->itemheight + this->cardspace) + 30;
@@ -460,9 +512,10 @@ void CleanerDetailWidget::showReciveStatus(const QString &status)
 //                columnIndex += 1;
 //            }
         }
-        if(cache_thumbnails_list.length() > 0)
-        {
-            cache_thumbnails_items = new CleanListWidget(cache_thumbnails_list, this->cur_skin,  tr("Thumbnails Cache Clean Items"));
+        if(cache_thumbnails_list.length() > 0) {
+            m_selectedThumbnailsList.clear();
+            m_selectedThumbnailsList = cache_thumbnails_list;
+
 //            cache_thumbnails_btn = new CommonCheckBox(0, "://res/cache");
             cache_thumbnails_btn = new CleanSubGroup(this, "://res/janitor/thumbnails");
             cache_thumbnails_btn->setFocusPolicy(Qt::NoFocus);
@@ -470,12 +523,13 @@ void CleanerDetailWidget::showReciveStatus(const QString &status)
 //            cache_thumbnails_btn->setFixedSize(160, 200);
             cache_thumbnails_btn->setStatusTip("cache-thumbnails");
             cache_thumbnails_btn->setLabelText(tr("Thumbnails Cache Count:"), cache_thumbnails_list.length());
-            //子checkbox的状态被改变时，重新设置总按钮的状态
-            connect(cache_thumbnails_items, SIGNAL(notifyMainCheckBox(int)), cache_thumbnails_btn, SLOT(resetMainStatus(int)));
             //点击自定义按钮后，根据总按钮的状态去改变子checkbox的状态
             connect(cache_thumbnails_btn, SIGNAL(customButtonClicked()), this, SLOT(showCustomPage()));
+            /*cache_thumbnails_items = new CleanListWidget(cache_thumbnails_list, this->cur_skin,  tr("Thumbnails Cache Clean Items"));
+            //子checkbox的状态被改变时，重新设置总按钮的状态
+            connect(cache_thumbnails_items, SIGNAL(notifyMainCheckBox(int)), cache_thumbnails_btn, SLOT(resetMainStatus(int)));
             //点击总按钮后，根据总按钮的状态去改变子checkbox的状态
-            connect(cache_thumbnails_btn, SIGNAL(spreadStatus(int)), cache_thumbnails_items, SLOT(resetSubCheckbox(int)));
+            connect(cache_thumbnails_btn, SIGNAL(spreadStatus(int)), cache_thumbnails_items, SLOT(resetSubCheckbox(int)));*/
 
             int x = int(this->subCount % this->number_per_row) * (this->itemwidth + this->cardspace) + 30;
             int y = int(this->subCount / this->number_per_row) * (this->itemheight + this->cardspace) + 30;
@@ -507,21 +561,24 @@ void CleanerDetailWidget::showReciveStatus(const QString &status)
         }
 
 
-        if(cache_firefox_list.length() > 0)
-        {
-            cache_firefox_items = new CleanListWidget(cache_firefox_list, this->cur_skin,  tr("Software Cache Clean Items"));
+        if(cache_firefox_list.length() > 0) {
+            m_selectedFirefoxCacheList.clear();
+            m_selectedFirefoxCacheList = cache_firefox_list;
+
 //            cache_firefox_btn = new CommonCheckBox(0, "://res/cache");
             cache_firefox_btn = new CleanSubGroup(this, "://res/janitor/firefox");
             cache_firefox_btn->setFocusPolicy(Qt::NoFocus);
 //            cache_firefox_btn->setFixedSize(160, 130);
             cache_firefox_btn->setStatusTip("cache-firefox");
             cache_firefox_btn->setLabelText(tr("Firefox Cache Count:"), cache_firefox_list.length());
-            //子checkbox的状态被改变时，重新设置总按钮的状态
-            connect(cache_firefox_items, SIGNAL(notifyMainCheckBox(int)), cache_firefox_btn, SLOT(resetMainStatus(int)));
             //点击自定义按钮后，根据总按钮的状态去改变子checkbox的状态
             connect(cache_firefox_btn, SIGNAL(customButtonClicked()), this, SLOT(showCustomPage()));
+
+            /*cache_firefox_items = new CleanListWidget(cache_firefox_list, this->cur_skin,  tr("Firefox Cache Clean Items"));
+            //子checkbox的状态被改变时，重新设置总按钮的状态
+            connect(cache_firefox_items, SIGNAL(notifyMainCheckBox(int)), cache_firefox_btn, SLOT(resetMainStatus(int)));
             //点击总按钮后，根据总按钮的状态去改变子checkbox的状态
-            connect(cache_firefox_btn, SIGNAL(spreadStatus(int)), cache_firefox_items, SLOT(resetSubCheckbox(int)));
+            connect(cache_firefox_btn, SIGNAL(spreadStatus(int)), cache_firefox_items, SLOT(resetSubCheckbox(int)));*/
 
             int x = int(this->subCount % this->number_per_row) * (this->itemwidth + this->cardspace) + 30;
             int y = int(this->subCount / this->number_per_row) * (this->itemheight + this->cardspace) + 30;
@@ -550,21 +607,24 @@ void CleanerDetailWidget::showReciveStatus(const QString &status)
 //                columnIndex += 1;
 //            }
         }
-        if(cache_chromium_list.length() > 0)
-        {
-            cache_chromium_items = new CleanListWidget(cache_chromium_list, this->cur_skin, tr("Thumbnails Cache Clean Items"));
+        if(cache_chromium_list.length() > 0) {
+            m_selectedChromiumCacheList.clear();
+            m_selectedChromiumCacheList = cache_chromium_list;
+
 //            cache_chromium_btn = new CommonCheckBox(0, "://res/cache");
             cache_chromium_btn = new CleanSubGroup(this, "://res/janitor/chromium");
             cache_chromium_btn->setFocusPolicy(Qt::NoFocus);
 //            cache_chromium_btn->setFixedSize(160, 130);
             cache_chromium_btn->setStatusTip("cache-chromium");
             cache_chromium_btn->setLabelText(tr("Chromium Cache Count:"), cache_chromium_list.length());
-            //子checkbox的状态被改变时，重新设置总按钮的状态
-            connect(cache_chromium_items, SIGNAL(notifyMainCheckBox(int)), cache_chromium_btn, SLOT(resetMainStatus(int)));
             //点击自定义按钮后，根据总按钮的状态去改变子checkbox的状态
             connect(cache_chromium_btn, SIGNAL(customButtonClicked()), this, SLOT(showCustomPage()));
+
+            /*cache_chromium_items = new CleanListWidget(cache_chromium_list, this->cur_skin, tr("Thumbnails Cache Clean Items"));
+            //子checkbox的状态被改变时，重新设置总按钮的状态
+            connect(cache_chromium_items, SIGNAL(notifyMainCheckBox(int)), cache_chromium_btn, SLOT(resetMainStatus(int)));
             //点击总按钮后，根据总按钮的状态去改变子checkbox的状态
-            connect(cache_chromium_btn, SIGNAL(spreadStatus(int)), cache_chromium_items, SLOT(resetSubCheckbox(int)));
+            connect(cache_chromium_btn, SIGNAL(spreadStatus(int)), cache_chromium_items, SLOT(resetSubCheckbox(int)));*/
 
             int x = int(this->subCount % this->number_per_row) * (this->itemwidth + this->cardspace) + 30;
             int y = int(this->subCount / this->number_per_row) * (this->itemheight + this->cardspace) + 30;
@@ -594,24 +654,25 @@ void CleanerDetailWidget::showReciveStatus(const QString &status)
 //            }
         }
     }
-    else if(status == "Complete:Cookies")
-    {
+    else if(status == "Complete:Cookies") {
 //        doing_label->setText(tr("Cookies Scan OK......"));
-        if(cookies_firefox_list.length() > 0)
-        {
-            cookies_firefox_items = new CleanListWidget(cookies_firefox_list, this->cur_skin, tr("Firefox Cookies Clean Items"));
+        if(cookies_firefox_list.length() > 0) {
+            m_selectedFirefoxCookieList.clear();
+            m_selectedFirefoxCookieList = cookies_firefox_list;
+
 //            cookies_firefox_btn = new CommonCheckBox(0, "://res/cookie");
             cookies_firefox_btn = new CleanSubGroup(this, "://res/janitor/firefox");
             cookies_firefox_btn->setFocusPolicy(Qt::NoFocus);
 //            cookies_firefox_btn->setFixedSize(160, 130);
             cookies_firefox_btn->setStatusTip("cookes-firefox");
             cookies_firefox_btn->setLabelText(tr("Firefox Cookies Count:"), cookies_firefox_list.length());
-            //子checkbox的状态被改变时，重新设置总按钮的状态
-            connect(cookies_firefox_items, SIGNAL(notifyMainCheckBox(int)), cookies_firefox_btn, SLOT(resetMainStatus(int)));
             //点击自定义按钮后，根据总按钮的状态去改变子checkbox的状态
             connect(cookies_firefox_btn, SIGNAL(customButtonClicked()), this, SLOT(showCustomPage()));
+            /*cookies_firefox_items = new CleanListWidget(cookies_firefox_list, this->cur_skin, tr("Firefox Cookies Clean Items"));
+            //子checkbox的状态被改变时，重新设置总按钮的状态
+            connect(cookies_firefox_items, SIGNAL(notifyMainCheckBox(int)), cookies_firefox_btn, SLOT(resetMainStatus(int)));
             //点击总按钮后，根据总按钮的状态去改变子checkbox的状态
-            connect(cookies_firefox_btn, SIGNAL(spreadStatus(int)), cookies_firefox_items, SLOT(resetSubCheckbox(int)));
+            connect(cookies_firefox_btn, SIGNAL(spreadStatus(int)), cookies_firefox_items, SLOT(resetSubCheckbox(int)));*/
 
 
             int x = int(this->subCount % this->number_per_row) * (this->itemwidth + this->cardspace) + 30;
@@ -641,21 +702,23 @@ void CleanerDetailWidget::showReciveStatus(const QString &status)
 //                columnIndex += 1;
 //            }
         }
-        if(cookies_chromium_list.length() > 0)
-        {
-            cookies_chromium_items = new CleanListWidget(cookies_chromium_list, this->cur_skin, tr("Chromium Cookies Clean Items"));
+        if(cookies_chromium_list.length() > 0) {
+            m_selectedChromiumCookieList.clear();
+            m_selectedChromiumCookieList = cookies_chromium_list;
+
 //            cookies_chromium_btn = new CommonCheckBox(0, "://res/cache");
             cookies_chromium_btn = new CleanSubGroup(this, "://res/janitor/chromium");
             cookies_chromium_btn->setFocusPolicy(Qt::NoFocus);
 //            cookies_chromium_btn->setFixedSize(160, 130);
             cookies_chromium_btn->setStatusTip("cookes-chromium");
             cookies_chromium_btn->setLabelText(tr("Chromium Cookies Count:"), cookies_chromium_list.length());
-            //子checkbox的状态被改变时，重新设置总按钮的状态
-            connect(cookies_chromium_items, SIGNAL(notifyMainCheckBox(int)), cookies_chromium_btn, SLOT(resetMainStatus(int)));
             //点击自定义按钮后，根据总按钮的状态去改变子checkbox的状态
             connect(cookies_chromium_btn, SIGNAL(customButtonClicked()), this, SLOT(showCustomPage()));
+            /*cookies_chromium_items = new CleanListWidget(cookies_chromium_list, this->cur_skin, tr("Chromium Cookies Clean Items"));
+            //子checkbox的状态被改变时，重新设置总按钮的状态
+            connect(cookies_chromium_items, SIGNAL(notifyMainCheckBox(int)), cookies_chromium_btn, SLOT(resetMainStatus(int)));
             //点击总按钮后，根据总按钮的状态去改变子checkbox的状态
-            connect(cookies_chromium_btn, SIGNAL(spreadStatus(int)), cookies_chromium_items, SLOT(resetSubCheckbox(int)));
+            connect(cookies_chromium_btn, SIGNAL(spreadStatus(int)), cookies_chromium_items, SLOT(resetSubCheckbox(int)));*/
 
             int x = int(this->subCount % this->number_per_row) * (this->itemwidth + this->cardspace) + 30;
             int y = int(this->subCount / this->number_per_row) * (this->itemheight + this->cardspace) + 30;
@@ -685,11 +748,9 @@ void CleanerDetailWidget::showReciveStatus(const QString &status)
 //            }
         }
     }
-    else if(status == "Complete:History")
-    {
+    else if(status == "Complete:History") {
 //        doing_label->setText(tr("History Scan OK"));
-        if(trace_firefox_count.length() > 0)
-        {
+        if(trace_firefox_count.length() > 0) {
 //            trace_firefox_btn = new CommonCheckBox(0, "://res/cache");
             trace_firefox_btn = new CleanSubGroup(this, "://res/janitor/firefox");
             trace_firefox_btn->setFocusPolicy(Qt::NoFocus);
@@ -725,8 +786,7 @@ void CleanerDetailWidget::showReciveStatus(const QString &status)
 //                columnIndex += 1;
 //            }
         }
-        if(trace_chromium_count.length() > 0)
-        {
+        if(trace_chromium_count.length() > 0) {
             trace_chromium_btn = new CleanSubGroup(this, "://res/janitor/chromium");
             trace_chromium_btn->setFocusPolicy(Qt::NoFocus);
             trace_chromium_btn->hideCustomButton();
@@ -761,8 +821,7 @@ void CleanerDetailWidget::showReciveStatus(const QString &status)
 //            }
         }
 
-        if(trace_system_count.length() > 0)
-        {
+        if(trace_system_count.length() > 0) {
             trace_system_btn = new CleanSubGroup(this, "://res/janitor/trace");
             trace_system_btn->setFocusPolicy(Qt::NoFocus);
             trace_system_btn->hideCustomButton();
@@ -798,8 +857,7 @@ void CleanerDetailWidget::showReciveStatus(const QString &status)
 //            }
         }
         //kobe
-        if(!trace_bash_path.isEmpty())
-        {
+        if(!trace_bash_path.isEmpty()) {
             trace_bash_btn = new CleanSubGroup(this, "://res/janitor/trace");
             trace_bash_btn->setFocusPolicy(Qt::NoFocus);
             trace_bash_btn->hideCustomButton();
@@ -835,19 +893,21 @@ void CleanerDetailWidget::showReciveStatus(const QString &status)
 //            }
         }
 
-        if(trace_x11_list.length() > 0)
-        {
-            trace_x11_items = new CleanListWidget(trace_x11_list, this->cur_skin, tr("Debug log Items"));
+        if(trace_x11_list.length() > 0) {
+            m_selectedTraceX11List.clear();
+            m_selectedTraceX11List = trace_x11_list;
+
             trace_x11_btn = new CleanSubGroup(this, "://res/janitor/debug");
             trace_x11_btn->setFocusPolicy(Qt::NoFocus);
             trace_x11_btn->setStatusTip("x11-history");
             trace_x11_btn->setLabelText(tr("Debug log:"), trace_x11_list.length());
-            //子checkbox的状态被改变时，重新设置总按钮的状态
-            connect(trace_x11_items, SIGNAL(notifyMainCheckBox(int)), trace_x11_btn, SLOT(resetMainStatus(int)));
             //点击自定义按钮后，根据总按钮的状态去改变子checkbox的状态
             connect(trace_x11_btn, SIGNAL(customButtonClicked()), this, SLOT(showCustomPage()));
+            /*trace_x11_items = new CleanListWidget(trace_x11_list, this->cur_skin, tr("Debug log Items"));
+            //子checkbox的状态被改变时，重新设置总按钮的状态
+            connect(trace_x11_items, SIGNAL(notifyMainCheckBox(int)), trace_x11_btn, SLOT(resetMainStatus(int)));
             //点击总按钮后，根据总按钮的状态去改变子checkbox的状态
-            connect(trace_x11_btn, SIGNAL(spreadStatus(int)), trace_x11_items, SLOT(resetSubCheckbox(int)));
+            connect(trace_x11_btn, SIGNAL(spreadStatus(int)), trace_x11_items, SLOT(resetSubCheckbox(int)));*/
 
             int x = int(this->subCount % this->number_per_row) * (this->itemwidth + this->cardspace) + 30;
             int y = int(this->subCount / this->number_per_row) * (this->itemheight + this->cardspace) + 30;
@@ -1024,62 +1084,100 @@ void CleanerDetailWidget::showCustomPage()
 //    CommonCheckBox *checkbox = qobject_cast<CommonCheckBox *>(object);
     CleanSubGroup *checkbox = qobject_cast<CleanSubGroup *>(object);
     QString object_name = checkbox->statusTip();
-    if(object_name == "cache-apt")
-    {
-        int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
+    if(object_name == "cache-apt") {
+        /*int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
         int w_y = parentWindow->frameGeometry().topLeft().y() + (600 /2) - (280 / 2);
         cache_apt_items->move(w_x, w_y);
-        cache_apt_items->exec();
+        cache_apt_items->exec();*/
+
+        SelectWidget *w = new SelectWidget(CleanerModuleID::CacheApt, tr("Apt Cache Clean Items"));
+        w->loadData(tr("Apt Cache Clean Items"), cache_apt_list);
+        //子checkbox的状态被改变时，重新设置总按钮的状态
+        connect(w, SIGNAL(notifyMainCheckBox(int)), cache_apt_btn, SLOT(resetMainStatus(int)));
+        connect(w, SIGNAL(refreshSelectedItems(CleanerModuleID,QStringList)), this, SLOT(onRefreshSelectedItems(CleanerModuleID,QStringList)));
+        w->exec();
+        delete w;
     }
-    else if(object_name == "cache-software")
-    {
-        int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
+    else if(object_name == "cache-software") {
+        /*int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
         int w_y = parentWindow->frameGeometry().topLeft().y() + (600 /2) - (280 / 2);
         cache_software_items->move(w_x, w_y);
-        cache_software_items->exec();
-    }
-    else if(object_name == "cache-thumbnails")
-    {
-        int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
-        int w_y = parentWindow->frameGeometry().topLeft().y() + (600 /2) - (280 / 2);
-        cache_thumbnails_items->move(w_x, w_y);
-        cache_thumbnails_items->exec();
+        cache_software_items->exec();*/
 
-        /*SelectWidget *w = new SelectWidget;
-        w->loadData(tr("Thumbnails Cache Clean Items"), cache_thumbnails_list);
+        SelectWidget *w = new SelectWidget(CleanerModuleID::CacheSoftware, tr("Software Cache Clean Items"));
+        w->loadData(tr("Software Cache Clean Items"), cache_software_list);
         //子checkbox的状态被改变时，重新设置总按钮的状态
         connect(w, SIGNAL(notifyMainCheckBox(int)), cache_software_btn, SLOT(resetMainStatus(int)));
+        connect(w, SIGNAL(refreshSelectedItems(CleanerModuleID,QStringList)), this, SLOT(onRefreshSelectedItems(CleanerModuleID,QStringList)));
         w->exec();
-        delete w;*/
-        //kobe test 2018
+        delete w;
     }
-    else if(object_name == "cache-firefox")
-    {
-        int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
+    else if(object_name == "cache-thumbnails") {
+        /*int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
+        int w_y = parentWindow->frameGeometry().topLeft().y() + (600 /2) - (280 / 2);
+        cache_thumbnails_items->move(w_x, w_y);
+        cache_thumbnails_items->exec();*/
+
+        SelectWidget *w = new SelectWidget(CleanerModuleID::CacheThumbnail, tr("Thumbnails Cache Clean Items"));
+        w->loadData(tr("Thumbnails Cache Clean Items"), cache_thumbnails_list);
+        //子checkbox的状态被改变时，重新设置总按钮的状态
+        connect(w, SIGNAL(notifyMainCheckBox(int)), cache_thumbnails_btn, SLOT(resetMainStatus(int)));
+        connect(w, SIGNAL(refreshSelectedItems(CleanerModuleID,QStringList)), this, SLOT(onRefreshSelectedItems(CleanerModuleID,QStringList)));
+        w->exec();
+        delete w;
+    }
+    else if(object_name == "cache-firefox") {
+        /*int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
         int w_y = parentWindow->frameGeometry().topLeft().y() + (600 /2) - (280 / 2);
         cache_firefox_items->move(w_x, w_y);
-        cache_firefox_items->exec();
+        cache_firefox_items->exec();*/
+        SelectWidget *w = new SelectWidget(CleanerModuleID::CacheFirefox, tr("Firefox Cache Clean Items"));
+        w->loadData(tr("Firefox Cache Clean Items"), cache_firefox_list);
+        //子checkbox的状态被改变时，重新设置总按钮的状态
+        connect(w, SIGNAL(notifyMainCheckBox(int)), cache_firefox_btn, SLOT(resetMainStatus(int)));
+        connect(w, SIGNAL(refreshSelectedItems(CleanerModuleID,QStringList)), this, SLOT(onRefreshSelectedItems(CleanerModuleID,QStringList)));
+        w->exec();
+        delete w;
     }
-    else if(object_name == "cache-chromium")
-    {
-        int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
+    else if(object_name == "cache-chromium") {
+        /*int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
         int w_y = parentWindow->frameGeometry().topLeft().y() + (600 /2) - (280 / 2);
         cache_chromium_items->move(w_x, w_y);
-        cache_chromium_items->exec();
+        cache_chromium_items->exec();*/
+        SelectWidget *w = new SelectWidget(CleanerModuleID::CacheChromium, tr("Chromium Cache Clean Items"));
+        w->loadData(tr("Chromium Cache Clean Items"), cache_chromium_list);
+        //子checkbox的状态被改变时，重新设置总按钮的状态
+        connect(w, SIGNAL(notifyMainCheckBox(int)), cache_chromium_btn, SLOT(resetMainStatus(int)));
+        connect(w, SIGNAL(refreshSelectedItems(CleanerModuleID,QStringList)), this, SLOT(onRefreshSelectedItems(CleanerModuleID,QStringList)));
+        w->exec();
+        delete w;
     }
-    else if(object_name == "cookes-firefox")
-    {
-        int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
+    else if(object_name == "cookes-firefox") {
+        /*int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
         int w_y = parentWindow->frameGeometry().topLeft().y() + (600 /2) - (280 / 2);
         cookies_firefox_items->move(w_x, w_y);
-        cookies_firefox_items->exec();
+        cookies_firefox_items->exec();*/
+        SelectWidget *w = new SelectWidget(CleanerModuleID::CookieFirefox, tr("Firefox Cookies Clean Items"));
+        w->loadData(tr("Firefox Cookies Clean Items"), cookies_firefox_list);
+        //子checkbox的状态被改变时，重新设置总按钮的状态
+        connect(w, SIGNAL(notifyMainCheckBox(int)), cookies_firefox_btn, SLOT(resetMainStatus(int)));
+        connect(w, SIGNAL(refreshSelectedItems(CleanerModuleID,QStringList)), this, SLOT(onRefreshSelectedItems(CleanerModuleID,QStringList)));
+        w->exec();
+        delete w;
     }
-    else if(object_name == "cookes-chromium")
-    {
-        int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
+    else if(object_name == "cookes-chromium") {
+        /*int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
         int w_y = parentWindow->frameGeometry().topLeft().y() + (600 /2) - (280 / 2);
         cookies_chromium_items->move(w_x, w_y);
-        cookies_chromium_items->exec();
+        cookies_chromium_items->exec();*/
+
+        SelectWidget *w = new SelectWidget(CleanerModuleID::CookieChromium, tr("Chromium Cookies Clean Items"));
+        w->loadData(tr("Chromium Cookies Clean Items"), cookies_chromium_list);
+        //子checkbox的状态被改变时，重新设置总按钮的状态
+        connect(w, SIGNAL(notifyMainCheckBox(int)), cookies_chromium_btn, SLOT(resetMainStatus(int)));
+        connect(w, SIGNAL(refreshSelectedItems(CleanerModuleID,QStringList)), this, SLOT(onRefreshSelectedItems(CleanerModuleID,QStringList)));
+        w->exec();
+        delete w;
     }
     /*else if(object_name == "package-unneed")
     {
@@ -1102,12 +1200,19 @@ void CleanerDetailWidget::showCustomPage()
         package_configfile_items->move(w_x, w_y);
         package_configfile_items->exec();
     }*/
-    else if(object_name == "x11-history")
-    {
-        int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
+    else if(object_name == "x11-history") {
+        /*int w_x = parentWindow->frameGeometry().topLeft().x() + (900 / 2) - (410  / 2);
         int w_y = parentWindow->frameGeometry().topLeft().y() + (600 /2) - (280 / 2);
         trace_x11_items->move(w_x, w_y);
-        trace_x11_items->exec();
+        trace_x11_items->exec();*/
+
+        SelectWidget *w = new SelectWidget(CleanerModuleID::TraceX11, tr("Debug log Items"));
+        w->loadData(tr("Debug log Items"), trace_x11_list);
+        //子checkbox的状态被改变时，重新设置总按钮的状态
+        connect(w, SIGNAL(notifyMainCheckBox(int)), trace_x11_btn, SLOT(resetMainStatus(int)));
+        connect(w, SIGNAL(refreshSelectedItems(CleanerModuleID,QStringList)), this, SLOT(onRefreshSelectedItems(CleanerModuleID,QStringList)));
+        w->exec();
+        delete w;
     }
 //    else if(object_name == "history-firefox" || object_name == "history-chromium" || object_name == "history-system"|| object_name == "history-bash" ) {
 //    }
@@ -1125,28 +1230,28 @@ void CleanerDetailWidget::resetCurrentSkin(QString skin)
     this->cur_skin = skin;
 
     //can remove this code
-    if(cache_apt_items != NULL)
-        cache_apt_items->resetTitleSkin(skin);
-    if(cache_software_items != NULL)
-        cache_software_items->resetTitleSkin(skin);
-    if(cache_thumbnails_items != NULL)
-        cache_thumbnails_items->resetTitleSkin(skin);
-    if(cache_firefox_items != NULL)
-        cache_firefox_items->resetTitleSkin(skin);
-    if(cache_chromium_items != NULL)
-        cache_chromium_items->resetTitleSkin(skin);
-    if(cookies_firefox_items != NULL)
-        cookies_firefox_items->resetTitleSkin(skin);
-    if(cookies_chromium_items != NULL)
-        cookies_chromium_items->resetTitleSkin(skin);
+//    if(cache_apt_items != NULL)
+//        cache_apt_items->resetTitleSkin(skin);
+//    if(cache_software_items != NULL)
+//        cache_software_items->resetTitleSkin(skin);
+//    if(cache_thumbnails_items != NULL)
+//        cache_thumbnails_items->resetTitleSkin(skin);
+//    if(cache_firefox_items != NULL)
+//        cache_firefox_items->resetTitleSkin(skin);
+//    if(cache_chromium_items != NULL)
+//        cache_chromium_items->resetTitleSkin(skin);
+//    if(cookies_firefox_items != NULL)
+//        cookies_firefox_items->resetTitleSkin(skin);
+//    if(cookies_chromium_items != NULL)
+//        cookies_chromium_items->resetTitleSkin(skin);
     /*if(package_unneed_items != NULL)
         package_unneed_items->resetTitleSkin(skin);
     if(package_oldkernel_items != NULL)
         package_oldkernel_items->resetTitleSkin(skin);
     if(package_configfile_items != NULL)
         package_configfile_items->resetTitleSkin(skin);*/
-    if(trace_x11_items != NULL)
-        trace_x11_items->resetTitleSkin(skin);
+//    if(trace_x11_items != NULL)
+//        trace_x11_items->resetTitleSkin(skin);
 }
 
 void CleanerDetailWidget::receiveCleanSignal()
@@ -1180,50 +1285,89 @@ void CleanerDetailWidget::getAllSelectedItems()
     argsData.clear();
     QStringList fileTmp;
 //    QStringList packageTmp;
-    QStringList firefoxcookieTmp;
-    QStringList chromiumcookieTmp;
-    QStringList traceTmp;
+//    QStringList firefoxcookieTmp;
+//    QStringList chromiumcookieTmp;
+//    QStringList traceTmp;
 
-    if(cache_apt_btn != NULL && cache_apt_btn->getCheckBoxStatus() != 0)
-    {
-        QStringList tmp = cache_apt_items->getSelectedItems();
-        for(int i = 0; i<tmp.length();i++)
-        {
-            fileTmp.append(tmp.at(i));
-        }
+    foreach (QString info, m_selectedAptList) {
+        fileTmp.append(info);
     }
-    if(cache_software_btn != NULL && cache_software_btn->getCheckBoxStatus() != 0)
-    {
-        QStringList tmp = cache_software_items->getSelectedItems();
-        for(int i = 0; i<tmp.length();i++)
-        {
-            fileTmp.append(tmp.at(i));
-        }
+    foreach (QString info, m_selectedSoftwareList) {
+        fileTmp.append(info);
     }
-    if(cache_thumbnails_btn != NULL && cache_thumbnails_btn->getCheckBoxStatus() != 0)
-    {
-        QStringList tmp = cache_thumbnails_items->getSelectedItems();
-        for(int i = 0; i<tmp.length();i++)
-        {
-            fileTmp.append(tmp.at(i));
-        }
+    foreach (QString info, m_selectedThumbnailsList) {
+        fileTmp.append(info);
     }
-    if(cache_firefox_btn != NULL && cache_firefox_btn->getCheckBoxStatus() != 0)
-    {
-        QStringList tmp = cache_firefox_items->getSelectedItems();
-        for(int i = 0; i<tmp.length();i++)
-        {
-            fileTmp.append(tmp.at(i));
-        }
+    foreach (QString info, m_selectedFirefoxCacheList) {
+        fileTmp.append(info);
     }
-    if(cache_chromium_btn != NULL && cache_chromium_btn->getCheckBoxStatus() != 0)
-    {
-        QStringList tmp = cache_chromium_items->getSelectedItems();
-        for(int i = 0; i<tmp.length();i++)
-        {
-            fileTmp.append(tmp.at(i));
-        }
+    foreach (QString info, m_selectedChromiumCacheList) {
+        fileTmp.append(info);
     }
+
+    if(trace_firefox_btn != NULL && trace_firefox_btn->getCheckBoxStatus() != 0) {
+        argsData.insert("firefox-history", QStringList() << trace_firefox_count);
+    }
+    if(trace_chromium_btn != NULL && trace_chromium_btn->getCheckBoxStatus() != 0) {
+       argsData.insert("chromium-history", QStringList() << trace_chromium_count);
+    }
+    if(trace_system_btn != NULL && trace_system_btn->getCheckBoxStatus() != 0) {
+       argsData.insert("system-history", QStringList() << trace_system_count);
+    }
+    if(trace_bash_btn != NULL && trace_bash_btn->getCheckBoxStatus() != 0) {
+       argsData.insert("bash-history", QStringList() << trace_bash_path);
+    }
+
+    if(fileTmp.length() > 0)
+        argsData.insert("file", fileTmp);
+    if(m_selectedFirefoxCookieList.length() > 0)
+        argsData.insert("firefox-cookie", m_selectedFirefoxCookieList);
+    if(m_selectedChromiumCookieList.length() > 0)
+        argsData.insert("chromium-cookie", m_selectedChromiumCookieList);
+    if(m_selectedTraceX11List.length() > 0)
+        argsData.insert("x11-history", m_selectedTraceX11List);
+
+
+//    if(cache_apt_btn != NULL && cache_apt_btn->getCheckBoxStatus() != 0)
+//    {
+//        QStringList tmp = cache_apt_items->getSelectedItems();
+//        for(int i = 0; i<tmp.length();i++)
+//        {
+//            fileTmp.append(tmp.at(i));
+//        }
+//    }
+//    if(cache_software_btn != NULL && cache_software_btn->getCheckBoxStatus() != 0)
+//    {
+//        QStringList tmp = cache_software_items->getSelectedItems();
+//        for(int i = 0; i<tmp.length();i++)
+//        {
+//            fileTmp.append(tmp.at(i));
+//        }
+//    }
+//    if(cache_thumbnails_btn != NULL && cache_thumbnails_btn->getCheckBoxStatus() != 0)
+//    {
+//        QStringList tmp = cache_thumbnails_items->getSelectedItems();
+//        for(int i = 0; i<tmp.length();i++)
+//        {
+//            fileTmp.append(tmp.at(i));
+//        }
+//    }
+//    if(cache_firefox_btn != NULL && cache_firefox_btn->getCheckBoxStatus() != 0)
+//    {
+//        QStringList tmp = cache_firefox_items->getSelectedItems();
+//        for(int i = 0; i<tmp.length();i++)
+//        {
+//            fileTmp.append(tmp.at(i));
+//        }
+//    }
+//    if(cache_chromium_btn != NULL && cache_chromium_btn->getCheckBoxStatus() != 0)
+//    {
+//        QStringList tmp = cache_chromium_items->getSelectedItems();
+//        for(int i = 0; i<tmp.length();i++)
+//        {
+//            fileTmp.append(tmp.at(i));
+//        }
+//    }
     /*if(package_unneed_btn != NULL && package_unneed_btn->getCheckBoxStatus() != 0)
     {
         QStringList tmp = package_unneed_items->getSelectedItems();
@@ -1248,56 +1392,56 @@ void CleanerDetailWidget::getAllSelectedItems()
             packageTmp.append(tmp.at(i));
         }
     }*/
-    if(cookies_firefox_btn != NULL && cookies_firefox_btn->getCheckBoxStatus() != 0)
-    {
-        QStringList tmp = cookies_firefox_items->getSelectedItems();
-        for(int i = 0; i<tmp.length();i++)
-        {
-            firefoxcookieTmp.append(tmp.at(i));
-        }
-    }
-    if(cookies_chromium_btn != NULL && cookies_chromium_btn->getCheckBoxStatus() != 0)
-    {
-        QStringList tmp = cookies_chromium_items->getSelectedItems();
-        for(int i = 0; i<tmp.length();i++)
-        {
-            chromiumcookieTmp.append(tmp.at(i));
-        }
-    }
-    if(trace_firefox_btn != NULL && trace_firefox_btn->getCheckBoxStatus() != 0)
-    {
-        argsData.insert("firefox-history", QStringList() << trace_firefox_count);
-    }
-    if(trace_chromium_btn != NULL && trace_chromium_btn->getCheckBoxStatus() != 0)
-    {
-       argsData.insert("chromium-history", QStringList() << trace_chromium_count);
-    }
-    if(trace_system_btn != NULL && trace_system_btn->getCheckBoxStatus() != 0)
-    {
-       argsData.insert("system-history", QStringList() << trace_system_count);
-    }
-    //kobe
-    if(trace_bash_btn != NULL && trace_bash_btn->getCheckBoxStatus() != 0)
-    {
-       argsData.insert("bash-history", QStringList() << trace_bash_path);
-    }
-    if(trace_x11_btn != NULL && trace_x11_btn->getCheckBoxStatus() != 0)
-    {
-        QStringList tmp = trace_x11_items->getSelectedItems();
-        for(int i = 0; i<tmp.length();i++)
-        {
-            traceTmp.append(tmp.at(i));
-        }
-    }
+//    if(cookies_firefox_btn != NULL && cookies_firefox_btn->getCheckBoxStatus() != 0)
+//    {
+//        QStringList tmp = cookies_firefox_items->getSelectedItems();
+//        for(int i = 0; i<tmp.length();i++)
+//        {
+//            firefoxcookieTmp.append(tmp.at(i));
+//        }
+//    }
+//    if(cookies_chromium_btn != NULL && cookies_chromium_btn->getCheckBoxStatus() != 0)
+//    {
+//        QStringList tmp = cookies_chromium_items->getSelectedItems();
+//        for(int i = 0; i<tmp.length();i++)
+//        {
+//            chromiumcookieTmp.append(tmp.at(i));
+//        }
+//    }
+//    if(trace_firefox_btn != NULL && trace_firefox_btn->getCheckBoxStatus() != 0)
+//    {
+//        argsData.insert("firefox-history", QStringList() << trace_firefox_count);
+//    }
+//    if(trace_chromium_btn != NULL && trace_chromium_btn->getCheckBoxStatus() != 0)
+//    {
+//       argsData.insert("chromium-history", QStringList() << trace_chromium_count);
+//    }
+//    if(trace_system_btn != NULL && trace_system_btn->getCheckBoxStatus() != 0)
+//    {
+//       argsData.insert("system-history", QStringList() << trace_system_count);
+//    }
+//    //kobe
+//    if(trace_bash_btn != NULL && trace_bash_btn->getCheckBoxStatus() != 0)
+//    {
+//       argsData.insert("bash-history", QStringList() << trace_bash_path);
+//    }
+////    if(trace_x11_btn != NULL && trace_x11_btn->getCheckBoxStatus() != 0)
+////    {
+////        QStringList tmp = trace_x11_items->getSelectedItems();
+////        for(int i = 0; i<tmp.length();i++)
+////        {
+////            traceTmp.append(tmp.at(i));
+////        }
+////    }
 
-    if(fileTmp.length() > 0)
-        argsData.insert("file", fileTmp);
-//    if(packageTmp.length() > 0)
-//        argsData.insert("package", packageTmp);
-    if(firefoxcookieTmp.length() > 0)
-        argsData.insert("firefox-cookie", firefoxcookieTmp);
-    if(chromiumcookieTmp.length() > 0)
-        argsData.insert("chromium-cookie", chromiumcookieTmp);
-    if(traceTmp.length() > 0)
-        argsData.insert("x11-history", traceTmp);
+//    if(fileTmp.length() > 0)
+//        argsData.insert("file", fileTmp);
+////    if(packageTmp.length() > 0)
+////        argsData.insert("package", packageTmp);
+//    if(firefoxcookieTmp.length() > 0)
+//        argsData.insert("firefox-cookie", firefoxcookieTmp);
+//    if(chromiumcookieTmp.length() > 0)
+//        argsData.insert("chromium-cookie", chromiumcookieTmp);
+//    if(traceTmp.length() > 0)
+//        argsData.insert("x11-history", traceTmp);
 }

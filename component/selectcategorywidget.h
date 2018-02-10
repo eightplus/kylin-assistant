@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SELECTWIDGET_H
-#define SELECTWIDGET_H
+#ifndef SELECTCATEGORYWIDGET_H
+#define SELECTCATEGORYWIDGET_H
 
 #include <QDialog>
 #include <QVBoxLayout>
@@ -28,14 +28,15 @@
 #include "selectlistwidget.h"
 #include "../component/utils.h"
 
-class SelectWidget : public QDialog
+class SelectCategoryWidget : public QDialog
 {
     Q_OBJECT
-public:
-    SelectWidget(CleanerModuleID id = InvalidID, const QString &title = "", bool needMin = false, QWidget *parent = 0);
-    ~SelectWidget();
 
-    void loadData(const QString &title, const QStringList &cachelist);
+public:
+    SelectCategoryWidget(CleanerCategoryID id = InvalidCategory, const QString &title = "", bool needMin = false, QWidget *parent = 0);
+    ~SelectCategoryWidget();
+
+    void loadData(const QStringList &arglist, const QStringList &statuslist);
     void moveCenter();
 
 public slots:
@@ -43,7 +44,7 @@ public slots:
 
 signals:
     void notifyMainCheckBox(int status);
-    void refreshSelectedItems(CleanerModuleID id, const QStringList &selecteds);
+    void refreshSelectedItems(CleanerCategoryID id, const QStringList &selecteds);
 
 protected:
     void mousePressEvent(QMouseEvent *event);
@@ -51,7 +52,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
 
 private:
-    CleanerModuleID m_id;
+    CleanerCategoryID m_id;
     QVBoxLayout *m_mainLayout = nullptr;
     MyTitleBar *m_titleBar = nullptr;
     SelectListWidget *m_listWidget = nullptr;
@@ -59,4 +60,4 @@ private:
     bool m_mousePressed; //按下鼠标左键
 };
 
-#endif // SELECTWIDGET_H
+#endif // SELECTCATEGORYWIDGET_H

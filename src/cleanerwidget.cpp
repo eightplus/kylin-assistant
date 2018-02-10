@@ -56,8 +56,6 @@ void CleanerWidget::initUI(QString skin)
 //    connect(detail_widget, SIGNAL(showActionAnimaiton()), this, SIGNAL(tranCleanActionAnimaitonSignal()));
     connect(detail_widget, SIGNAL(sendScanOverStatus(bool)), this, SIGNAL(tranScanOverSignal(bool)));
 
-    connect(this, SIGNAL(clearDetailPage()), detail_widget, SLOT(CleanUIAndData()));
-
     statked_widget->addWidget(main_widget);
     statked_widget->addWidget(detail_widget);
     QVBoxLayout *layout1 = new QVBoxLayout();
@@ -90,5 +88,6 @@ void CleanerWidget::displayDetailPage()
 void CleanerWidget::displayMainPage()
 {
     statked_widget->setCurrentIndex(0);
-    emit this->clearDetailPage();
+    main_widget->resetDefaultStatus();
+    detail_widget->CleanUIAndData();
 }

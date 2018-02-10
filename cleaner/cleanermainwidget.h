@@ -23,17 +23,17 @@
 #include <QWidget>
 #include <QStackedWidget>
 #include "cleaneritems.h"
+#include "../component/utils.h"
 
 class MainWindow;
 class CleanGroup;
-class SessionDispatcher;
 class Toolkits;
 
 class CleanerMainWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CleanerMainWidget(QWidget *parent = 0, /*SessionDispatcher *seroxy = 0, */MainWindow *window = 0, Toolkits *kits = 0, QString skin = ":/background/res/skin/1.png");
+    explicit CleanerMainWidget(QWidget *parent = 0, MainWindow *window = 0, Toolkits *kits = 0, QString skin = ":/background/res/skin/1.png");
     ~CleanerMainWidget();
     void setLanguage();
     void getAllScanSelectedItems();
@@ -42,6 +42,8 @@ public:
 public slots:
     void onButtonClicked();
     void receiveScanSignal();
+    void onRefreshSelectedItems(CleanerCategoryID id, const QStringList &infos);
+    void resetDefaultStatus();
 
 signals:
     void showActionAnimaiton();
@@ -52,17 +54,27 @@ private:
     QLabel *tip_label;
 
     CleanGroup *cache_btn;
-    CleanerItems *cache_items;
+//    CleanerItems *cache_items;
 //    CleanGroup *package_btn;
 //    CleanerItems *package_items;
     CleanGroup *cookies_btn;
-    CleanerItems *cookies_items;
+//    CleanerItems *cookies_items;
     CleanGroup *trace_btn;
-    CleanerItems *trace_items;
+//    CleanerItems *trace_items;
 
     QMap<QString, QVariant> argsMap;
-//    SessionDispatcher *sessionproxy;
     Toolkits *toolKits;
+
+    QStringList cache_list;
+    QStringList cache_status_list;
+    QStringList cookies_list;
+    QStringList cookies_status_list;
+    QStringList trace_list;
+    QStringList trace_status_list;
+
+    QStringList m_selectedCache;
+    QStringList m_selectedCookie;
+    QStringList m_selectedTrace;
 };
 
 #endif // CLEANERMAINWIDGET_H

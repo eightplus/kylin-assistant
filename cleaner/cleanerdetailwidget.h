@@ -23,6 +23,7 @@
 #include <QWidget>
 #include "cleaneritems.h"
 #include "cleanlistwidget.h"
+#include "../component/utils.h"
 
 class QLabel;
 class QBoxLayout;
@@ -59,6 +60,7 @@ public slots:
     void showReciveStatus(const QString &status);
     void CleanUIAndData();
 //    void receivePolicyKitSignal(bool status);
+    void onRefreshSelectedItems(CleanerModuleID id, const QStringList &infos);
 
 signals:
 //    void notifyMainCheckBox(int status);
@@ -76,15 +78,15 @@ private:
 //    SystemDispatcher *systemproxy;
     Toolkits *toolKits;
     QMap<QString, QVariant> argsData;
-    CleanListWidget *cache_apt_items ;
+//    CleanListWidget *cache_apt_items ;
     CleanSubGroup *cache_apt_btn;
-    CleanListWidget *cache_software_items ;
+//    CleanListWidget *cache_software_items ;
     CleanSubGroup *cache_software_btn;
-    CleanListWidget *cache_thumbnails_items ;
+//    CleanListWidget *cache_thumbnails_items ;
     CleanSubGroup *cache_thumbnails_btn;
-    CleanListWidget *cache_firefox_items ;
+//    CleanListWidget *cache_firefox_items ;
     CleanSubGroup *cache_firefox_btn;
-    CleanListWidget *cache_chromium_items ;
+//    CleanListWidget *cache_chromium_items ;
     CleanSubGroup *cache_chromium_btn;
 
     /*CleanListWidget *package_unneed_items ;
@@ -94,16 +96,16 @@ private:
     CleanListWidget *package_configfile_items ;
     CleanSubGroup *package_configfile_btn;*/
 
-    CleanListWidget *cookies_firefox_items ;
+//    CleanListWidget *cookies_firefox_items ;
     CleanSubGroup *cookies_firefox_btn;
-    CleanListWidget *cookies_chromium_items ;
+//    CleanListWidget *cookies_chromium_items ;
     CleanSubGroup *cookies_chromium_btn;
 
     CleanSubGroup *trace_firefox_btn;
     CleanSubGroup *trace_chromium_btn;
     CleanSubGroup *trace_system_btn;
     CleanSubGroup *trace_bash_btn;
-    CleanListWidget *trace_x11_items ;
+//    CleanListWidget *trace_x11_items ;
     CleanSubGroup *trace_x11_btn;
 
     QStringList cache_apt_list;
@@ -122,6 +124,20 @@ private:
     QString trace_bash_size;
     QString trace_bash_path;
     QStringList trace_x11_list;
+
+
+
+    QStringList m_selectedAptList;
+    QStringList m_selectedSoftwareList;
+    QStringList m_selectedThumbnailsList;
+    QStringList m_selectedFirefoxCacheList;
+    QStringList m_selectedChromiumCacheList;
+    QStringList m_selectedFirefoxCookieList;
+    QStringList m_selectedChromiumCookieList;
+    QStringList m_selectedTraceX11List;
+
+
+
 
     QGridLayout *grid_layout;
 //    int rowIndex;

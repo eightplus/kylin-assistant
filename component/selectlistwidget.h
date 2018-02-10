@@ -35,11 +35,12 @@ class SelectListWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SelectListWidget(QWidget *parent = 0);
+    explicit SelectListWidget(bool hasTip = false, QWidget *parent = 0);
     ~SelectListWidget();
 
 public slots:
     void loadListItems(const QString &title, const QStringList &cachelist, int itemWidth);
+    void loadListItemsWithTips(const QStringList &arglist, const QStringList &statuslist, int itemWidth);
     void removeOneItem(const QString &description);
     void resetToDefault();
     QStringList getSelectedItems();
@@ -51,6 +52,7 @@ signals:
     void notifyMainCheckBox(int status);
 
 private:
+    bool m_hasTip;
     QGridLayout *m_gridLayout = nullptr;
     QScrollArea *m_scrollArea = nullptr;
     QWidget *m_widget = nullptr;

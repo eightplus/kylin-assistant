@@ -17,12 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "selectwidget.h"
+#include "selectcategorywidget.h"
 #include "utils.h"
 
 #include <QApplication>
 
-SelectWidget::SelectWidget(CleanerModuleID id, const QString &title, bool needMin, QWidget *parent)
+SelectCategoryWidget::SelectCategoryWidget(CleanerCategoryID id, const QString &title, bool needMin, QWidget *parent)
     : QDialog(parent)
     , m_mousePressed(false)
     , m_id(id)
@@ -36,7 +36,7 @@ SelectWidget::SelectWidget(CleanerModuleID id, const QString &title, bool needMi
     m_mainLayout->setMargin(0);
     m_titleBar = new MyTitleBar(title, needMin, this);
     m_titleBar->setFixedSize(this->width(), TITILE_BAR_HEIGHT);
-    m_listWidget = new SelectListWidget(false, this);
+    m_listWidget = new SelectListWidget(true, this);
     m_listWidget->setFixedSize(this->width(), this->height() - TITILE_BAR_HEIGHT);
     m_mainLayout->addWidget(m_titleBar);
     m_mainLayout->addWidget(m_listWidget);
@@ -49,23 +49,23 @@ SelectWidget::SelectWidget(CleanerModuleID id, const QString &title, bool needMi
     this->move((desktop->width() - this->width())/2, (desktop->height() - this->height())/3);
 }
 
-SelectWidget::~SelectWidget()
+SelectCategoryWidget::~SelectCategoryWidget()
 {
 
 }
 
-void SelectWidget::onClose()
+void SelectCategoryWidget::onClose()
 {
     emit refreshSelectedItems(m_id, m_listWidget->getSelectedItems());
     this->close();
 }
 
-void SelectWidget::loadData(const QString &title, const QStringList &cachelist)
+void SelectCategoryWidget::loadData(const QStringList &arglist, const QStringList &statuslist)
 {
-    m_listWidget->loadListItems(title, cachelist, this->width());
+    m_listWidget->loadListItemsWithTips(arglist, statuslist, this->width());
 }
 
-void SelectWidget::moveCenter()
+void SelectCategoryWidget::moveCenter()
 {
     /*QPoint pos = QCursor::pos();
     QRect primaryGeometry;
@@ -86,7 +86,7 @@ void SelectWidget::moveCenter()
 }
 
 
-void SelectWidget::mousePressEvent(QMouseEvent *event)
+void SelectCategoryWidget::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         this->m_dragPosition = event->globalPos() - frameGeometry().topLeft();
@@ -96,7 +96,7 @@ void SelectWidget::mousePressEvent(QMouseEvent *event)
     QDialog::mousePressEvent(event);
 }
 
-void SelectWidget::mouseReleaseEvent(QMouseEvent *event)
+void SelectCategoryWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     this->m_mousePressed = false;
     setWindowOpacity(1);
@@ -104,7 +104,7 @@ void SelectWidget::mouseReleaseEvent(QMouseEvent *event)
     QDialog::mouseReleaseEvent(event);
 }
 
-void SelectWidget::mouseMoveEvent(QMouseEvent *event)
+void SelectCategoryWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if (this->m_mousePressed) {
         move(event->globalPos() - this->m_dragPosition);
