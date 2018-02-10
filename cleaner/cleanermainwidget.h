@@ -22,9 +22,12 @@
 
 #include <QWidget>
 #include <QStackedWidget>
-#include "cleaneritems.h"
+#include <QMap>
+#include <QVariant>
+
 #include "../component/utils.h"
 
+class QLabel;
 class MainWindow;
 class CleanGroup;
 class Toolkits;

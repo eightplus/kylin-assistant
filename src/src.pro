@@ -102,15 +102,12 @@ SOURCES += main.cpp \
     ../component/loadinglabel.cpp \
     ../component/alertdialog.cpp \
     ../component/toolkits.cpp \
-    ../cleaner/cacheactionwidget.cpp \
     ../cleaner/cleanerdetailwidget.cpp \
     ../cleaner/cleanermainwidget.cpp \
-    ../cleaner/cleaneritems.cpp \
     ../dbusproxy/youkersystemdbus.cpp \
     ../dbusproxy/youkersessiondbus.cpp \
     ../info/devicemanager.cpp \
     aboutdialog.cpp \
-    ../cleaner/cleanlistwidget.cpp \
     ../component/tipdialog.cpp \
     ../component/toolbutton.cpp \
     ../component/cleangroup.cpp \
@@ -185,15 +182,12 @@ HEADERS  += mainwindow.h \
     ../component/loadinglabel.h \
     ../component/alertdialog.h \
     ../component/toolkits.h \
-    ../cleaner/cacheactionwidget.h \
     ../cleaner/cleanerdetailwidget.h \
     ../cleaner/cleanermainwidget.h \
-    ../cleaner/cleaneritems.h \
     ../dbusproxy/youkersystemdbus.h \
     ../dbusproxy/youkersessiondbus.h \
     ../info/devicemanager.h \
     aboutdialog.h \
-    ../cleaner/cleanlistwidget.h \
     ../component/tipdialog.h \
     ../component/toolbutton.h \
     ../component/cleangroup.h \
@@ -214,8 +208,6 @@ HEADERS  += mainwindow.h \
 FORMS    += \
     ../component/quibo.ui \
     ../component/alertdialog.ui \
-    ../cleaner/cleanlistwidget.ui \
-    ../cleaner/cleanerdetailwidget.ui \
     ../component/normalcard.ui
 
 RESOURCES += \
