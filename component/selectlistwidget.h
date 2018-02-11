@@ -58,7 +58,7 @@ private:
     QWidget *m_widget = nullptr;
     QVBoxLayout *m_listAreaWidgetLayout = nullptr;
     QLabel *m_titleLabel = nullptr;
-    QLabel *m_countLabel = nullptr;
+//    QLabel *m_countLabel = nullptr;
     QMap<QString, SelectListItem *> m_itemsMap;
 };
 

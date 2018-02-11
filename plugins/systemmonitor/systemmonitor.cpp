@@ -29,6 +29,7 @@
 #include <QHBoxLayout>
 #include <QApplication>
 #include <QScreen>
+#include <QGraphicsDropShadowEffect>
 
 SystemMonitor::SystemMonitor(QWidget *parent)
     : QFrame(parent)
@@ -46,6 +47,9 @@ SystemMonitor::SystemMonitor(QWidget *parent)
     this->setMouseTracking(true);
 //    installEventFilter(this);
 
+    this->setWindowTitle(tr("Kylin System Monitor"));
+    this->setWindowIcon(QIcon(":/model/res/plugin/processmanager.png"));
+
     this->resize(900, 600);
     setMinimumSize(640, 480);
 
@@ -55,6 +59,13 @@ SystemMonitor::SystemMonitor(QWidget *parent)
     this->initTitleWidget();
     this->initPanelStack();
     this->initConnections();
+
+    //边框阴影效果
+    QGraphicsDropShadowEffect *shadow_effect = new QGraphicsDropShadowEffect(this);
+    shadow_effect->setBlurRadius(5);
+    shadow_effect->setColor(QColor(0, 0, 0, 127));
+    shadow_effect->setOffset(2, 4);
+    this->setGraphicsEffect(shadow_effect);
 
     this->moveCenter();
 }
@@ -360,7 +371,7 @@ void SystemMonitor::closeEvent(QCloseEvent *event)
     event->accept();
 }
 
-void SystemMonitor::paintEvent(QPaintEvent *event)
+/*void SystemMonitor::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
@@ -379,7 +390,7 @@ void SystemMonitor::paintEvent(QPaintEvent *event)
     painter.drawRoundedRect(r, 4, 4);
 
     QFrame::paintEvent(event);
-}
+}*/
 
 void SystemMonitor::mousePressEvent(QMouseEvent *event)
 {

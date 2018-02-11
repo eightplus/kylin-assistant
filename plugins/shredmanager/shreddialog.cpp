@@ -44,7 +44,10 @@ ShredDialog::ShredDialog(QWidget *parent) :
     setWindowFlags(Qt::FramelessWindowHint);
 //    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//Attention: Qt::WindowCloseButtonHint make showMinimized() valid
     this->setStyleSheet("QDialog{border: 1px solid white;border-radius:1px;background-color: #ffffff;}");
-    this->setWindowIcon(QIcon(":/res/kylin-assistant.png"));
+
+    this->setWindowTitle(tr("Kylin Shred Manager"));
+    this->setWindowIcon(QIcon(":/model/res/plugin/shredder.png"));
+
     this->setFixedSize(500, 471);
 //    process_plugin = plugin;
 

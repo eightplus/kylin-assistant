@@ -24,11 +24,16 @@ SelectListWidget::SelectListWidget(bool hasTip, QWidget *parent) :
     QWidget(parent)
   , m_hasTip(hasTip)
 {
+    this->setStyleSheet("QWidget{background-color:transparent;}");
     m_gridLayout = new QGridLayout(this);
-    m_widget = new QWidget;
+    m_gridLayout->setVerticalSpacing(0);
+    m_widget = new QWidget(this);
     m_widget->setObjectName("transparentWidget");
     m_listAreaWidgetLayout = new QVBoxLayout(m_widget);
+    m_listAreaWidgetLayout->setContentsMargins(0,0,0,0);
     m_scrollArea = new QScrollArea(this);
+    m_scrollArea->setStyleSheet("QScrollArea{border:none;background-color:#ffffff;}");
+    m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_scrollArea->setWidgetResizable(true);
     m_scrollArea->setWidget(m_widget);
 
@@ -37,13 +42,10 @@ SelectListWidget::SelectListWidget(bool hasTip, QWidget *parent) :
     }
     else {
         m_titleLabel = new QLabel;
-        m_titleLabel->setFixedSize(80,30);
-        m_titleLabel->setText(tr("Items:"));
-        m_countLabel = new QLabel;
-        m_countLabel->setFixedSize(100,30);
-        m_gridLayout->addWidget(m_titleLabel,0,0,1,1);
-        m_gridLayout->addItem(new QSpacerItem(10,10),0,0,1,3);
-        m_gridLayout->addWidget(m_countLabel,0,1,1,1);
+        m_titleLabel->setFixedHeight(30);
+        m_titleLabel->setStyleSheet("QLabel{background-color:rgb(233 ,238, 241);color:#000000;font-family: 方正黑体_GBK;font-size:12px;text-align:left;}");
+        m_titleLabel->setText(tr("Clean Items:"));
+        m_gridLayout->addWidget(m_titleLabel,0,0,1,5/*, Qt::AlignLeft | Qt::AlignVCenter*/);
         m_gridLayout->addWidget(m_scrollArea,1,0,5,5);
     }
 
@@ -60,7 +62,7 @@ void SelectListWidget::loadListItems(const QString &title, const QStringList &ca
     m_itemsMap.clear();
 
     int count = cachelist.count();
-    m_countLabel->setText(QString::number(count));
+    m_titleLabel->setText(QString("%1 %2").arg(tr("Clean Items:")).arg(QString::number(count)));
 
     foreach (QString cache, cachelist) {
         SelectListItem *item = new SelectListItem(0, cache, "", false, itemWidth);
@@ -124,7 +126,7 @@ void SelectListWidget::scanAllSubCheckbox()
             selectedCount += 1;
     }
     if (!m_hasTip)
-        m_countLabel->setText(QString::number(selectedCount));
+        m_titleLabel->setText(QString("%1 %2").arg(tr("Clean Items:")).arg(QString::number(selectedCount)));
 
     if (selectedCount == 0) {
         emit this->notifyMainCheckBox(0);

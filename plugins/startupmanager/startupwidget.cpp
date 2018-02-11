@@ -70,6 +70,9 @@ StartupWidget::StartupWidget(QWidget *parent)
 //    this->setAutoFillBackground(true);
 //    this->setMouseTracking(true);
 
+    this->setWindowTitle(tr("Kylin Startup Manager"));
+    this->setWindowIcon(QIcon(":/model/res/plugin/startupmanager.png"));
+
     this->setFixedSize(500, 645);
 
     m_titleWidget = new StartupTitleWidget(this);

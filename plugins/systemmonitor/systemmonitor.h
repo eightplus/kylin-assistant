@@ -58,7 +58,7 @@ public slots:
 
 protected:
     void resizeEvent(QResizeEvent *e) override;
-    void paintEvent(QPaintEvent *);
+//    void paintEvent(QPaintEvent *);
     void closeEvent(QCloseEvent *event);
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;

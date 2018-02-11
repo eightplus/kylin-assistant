@@ -97,6 +97,8 @@ void InfoUnitWidget::setInfoVendor(const QString &vendor)
     painterPath.addEllipse(QRect(0, 0, 48, 48));
 
     const QPixmap pixmap = QPixmap(vendor).scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    if (pixmap.isNull())
+        return;
 
     QPixmap pic(48, 48);
     pic.fill(Qt::transparent);

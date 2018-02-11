@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2015 National University of Defense Technology(NUDT) & Kylin Ltd.
+ * Copyright (C) 2013 ~ 2018 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    xiangli@ubuntukylin.com/kobe24_lixiang@126.com
@@ -18,6 +18,8 @@
  */
 
 #include "themewidget.h"
+#include "theme/themeview.h"
+
 #include <QStandardItemModel>
 #include <QSignalMapper>
 #include <QListWidgetItem>
@@ -32,15 +34,26 @@ ThemeWidget::ThemeWidget(QWidget *parent) :
 //    this->resize(parent->size());
 //    this->setFixedSize(900, 403);
 
-
     label = new QLabel(this);
     label->setObjectName("tipLabel");
-    label->setGeometry(QRect(30, 15, 860, 50));
+    label->setFixedHeight(30);
+//    label->setGeometry(QRect(30, 15, 860, 50));
     label->setText(tr("Please choose theme which you need"));
 
-    list_widget = new NormalWidget(119, 139, 20, this);
+    /*list_widget = new NormalWidget(119, 139, 20, this);
     list_widget->setGeometry(QRect(30, 55, 860, 330));
-    list_widget->calculate_data();
+    list_widget->calculate_data();*/
+
+    m_themeView = new ThemeView(this);
+    connect(m_themeView, SIGNAL(sendSelectThemeName(QString)), this, SLOT(changeTheme(QString)));
+
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
+    layout->setMargin(0);
+    layout->addWidget(label);
+    layout->addWidget(m_themeView);
+    this->setLayout(layout);
 }
 
 QString ThemeWidget::settingModuleName()
@@ -53,9 +66,21 @@ void ThemeWidget::onReceiveThemeList(const QString &currentTheme, const QStringL
 //    qDebug() << "currentTheme="<<currentTheme<<", themeList="<<themeList;
 
     if (!themeList.isEmpty()) {
+        m_themeView->clearData();
+
         syslist.clear();
         syslist = themeList;
-        this->resetUI();
+        //kobe test 2018
+
+        for (const QString theme : themeList) {
+            if(currentTheme == theme)
+                m_themeView->loadOneTheme(theme, true);
+            else
+                m_themeView->loadOneTheme(theme, false);
+        }
+
+
+        /*this->resetUI();
         list_widget->resetData();
 
         QSignalMapper *signal_mapper = new QSignalMapper(this);
@@ -72,7 +97,7 @@ void ThemeWidget::onReceiveThemeList(const QString &currentTheme, const QStringL
             signal_mapper->setMapping(card, QString::number(i, 10));
             connect(signal_mapper, SIGNAL(mapped(QString)), this, SLOT(switchUsingLogo(QString)));
             connect(card, SIGNAL(sendSelectThemeName(QString)), this, SLOT(changeTheme(QString)));
-        }
+        }*/
     }
 }
 
@@ -113,13 +138,14 @@ ThemeWidget::~ThemeWidget()
 
 void ThemeWidget::resetUI()
 {
-    for(int i=0; i<card_list.count(); i++)
+    //kobe test 2018
+    /*for(int i=0; i<card_list.count(); i++)
     {
         NormalCard *card = card_list.at(i);
         delete card;
         card = NULL;
     }
-    card_list.clear();
+    card_list.clear();*/
 }
 
 void ThemeWidget::initConnect() {
@@ -129,7 +155,8 @@ void ThemeWidget::initConnect() {
 
 void ThemeWidget::switchUsingLogo(QString index)
 {
-    bool ok;
+    //kobe test 2018
+    /*bool ok;
     int current_index = index.toInt(&ok, 10);
     for(int i=0; i<card_list.count(); i++)
     {
@@ -142,7 +169,7 @@ void ThemeWidget::switchUsingLogo(QString index)
         {
             card->showUsingLogo(false);
         }
-    }
+    }*/
 }
 
 void ThemeWidget::changeTheme(QString name)

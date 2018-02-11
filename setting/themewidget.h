@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 ~ 2015 National University of Defense Technology(NUDT) & Kylin Ltd.
+ * Copyright (C) 2013 ~ 2018 National University of Defense Technology(NUDT) & Tianjin Kylin Ltd.
  *
  * Authors:
  *  Kobe Lee    xiangli@ubuntukylin.com/kobe24_lixiang@126.com
@@ -28,6 +28,7 @@ class QLabel;
 class QPushButton;
 class QListWidget;
 class QListWidgetItem;
+class ThemeView;
 
 #include "settingmodulelpage.h"
 
@@ -36,7 +37,7 @@ class ThemeWidget : public SettingModulePage
 {
     Q_OBJECT
 public:
-    explicit ThemeWidget(QWidget *parent = 0/*, SessionDispatcher *proxy = 0*/);
+    explicit ThemeWidget(QWidget *parent = 0);
     ~ThemeWidget();
     void initConnect();
 
@@ -57,8 +58,9 @@ signals:
     void changeSystemTheme(const QString &name);
 
 private:
+    ThemeView *m_themeView = nullptr;
     QStringList syslist;
-    NormalWidget *list_widget;
+//    NormalWidget *list_widget;
     QList<NormalCard *> card_list;
     QLabel *label;
 };

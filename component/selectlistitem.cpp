@@ -25,9 +25,12 @@ SelectListItem::SelectListItem(QWidget *parent, QString description, QString tip
     , m_tip(tipMsg)
     , m_hasTip(hasTip)
 {
+    this->setStyleSheet("QWidget{padding: 2px 0;} QWidget:hover{background-color:rgba(43,182,234,0.1);border-radius:2px;}");//#2bb6ea
+
     m_mainLayout = new QHBoxLayout(this);
-    m_mainLayout->setSpacing(5);
+    m_mainLayout->setSpacing(0);
     m_mainLayout->setMargin(0);
+    m_mainLayout->setContentsMargins(0,0,0,0);
 
     m_checkBox = new QCheckBox(this);
     m_checkBox->setFocusPolicy(Qt::NoFocus);
@@ -38,7 +41,7 @@ SelectListItem::SelectListItem(QWidget *parent, QString description, QString tip
     });
 
     m_descLabel = new QLabel(this);
-    m_descLabel->setFixedWidth(itemWidth - m_checkBox->width() - 10);
+    m_descLabel->setFixedWidth(itemWidth - m_checkBox->width());
     m_descLabel->setWordWrap(true);
     m_descLabel->setText(description);
 

@@ -62,6 +62,7 @@ CleanerDetailWidget::CleanerDetailWidget(QWidget *parent, MainWindow *window, To
     m_scrollArea = new QScrollArea(this);
     m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_scrollArea->setWidgetResizable(true);
+    m_scrollArea->setStyleSheet("QScrollArea{border: none;background-color: #ffffff;}");
     areaWidget = new QWidget(/*this*/);
     areaWidget->setObjectName("transparentWidget");
     m_scrollArea->setWidget(areaWidget);

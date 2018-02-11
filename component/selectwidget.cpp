@@ -21,6 +21,7 @@
 #include "utils.h"
 
 #include <QApplication>
+#include <QGraphicsDropShadowEffect>
 
 SelectWidget::SelectWidget(CleanerModuleID id, const QString &title, bool needMin, QWidget *parent)
     : QDialog(parent)
@@ -44,6 +45,13 @@ SelectWidget::SelectWidget(CleanerModuleID id, const QString &title, bool needMi
     connect(m_titleBar, SIGNAL(minSignal()), this, SLOT(hide()));
     connect(m_titleBar, SIGNAL(closeSignal()), this, SLOT(onClose()));
     connect(m_listWidget, SIGNAL(notifyMainCheckBox(int)), this, SIGNAL(notifyMainCheckBox(int)));
+
+//    //边框阴影效果
+//    QGraphicsDropShadowEffect *shadow_effect = new QGraphicsDropShadowEffect(this);
+//    shadow_effect->setBlurRadius(5);
+//    shadow_effect->setColor(QColor(0, 0, 0, 127));
+//    shadow_effect->setOffset(2, 4);
+//    this->setGraphicsEffect(shadow_effect);
 
     QDesktopWidget* desktop = QApplication::desktop();
     this->move((desktop->width() - this->width())/2, (desktop->height() - this->height())/3);

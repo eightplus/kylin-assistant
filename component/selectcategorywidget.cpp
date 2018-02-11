@@ -21,6 +21,7 @@
 #include "utils.h"
 
 #include <QApplication>
+#include <QGraphicsDropShadowEffect>
 
 SelectCategoryWidget::SelectCategoryWidget(CleanerCategoryID id, const QString &title, bool needMin, QWidget *parent)
     : QDialog(parent)
@@ -34,6 +35,7 @@ SelectCategoryWidget::SelectCategoryWidget(CleanerCategoryID id, const QString &
     m_mainLayout = new QVBoxLayout(containerW);
     m_mainLayout->setSpacing(0);
     m_mainLayout->setMargin(0);
+    m_mainLayout->setContentsMargins(0,0,0,0);
     m_titleBar = new MyTitleBar(title, needMin, this);
     m_titleBar->setFixedSize(this->width(), TITILE_BAR_HEIGHT);
     m_listWidget = new SelectListWidget(true, this);
@@ -44,6 +46,13 @@ SelectCategoryWidget::SelectCategoryWidget(CleanerCategoryID id, const QString &
     connect(m_titleBar, SIGNAL(minSignal()), this, SLOT(hide()));
     connect(m_titleBar, SIGNAL(closeSignal()), this, SLOT(onClose()));
     connect(m_listWidget, SIGNAL(notifyMainCheckBox(int)), this, SIGNAL(notifyMainCheckBox(int)));
+
+    //边框阴影效果
+//    QGraphicsDropShadowEffect *shadow_effect = new QGraphicsDropShadowEffect(this);
+//    shadow_effect->setBlurRadius(5);
+//    shadow_effect->setColor(QColor(0, 0, 0, 127));
+//    shadow_effect->setOffset(2, 4);
+//    this->setGraphicsEffect(shadow_effect);
 
     QDesktopWidget* desktop = QApplication::desktop();
     this->move((desktop->width() - this->width())/2, (desktop->height() - this->height())/3);
