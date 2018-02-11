@@ -144,7 +144,7 @@ void ThemeDelegate::drawImage(const QStyleOptionViewItem &option, const QModelIn
     painter->drawPixmap(rect.x() + THEME_IMAGE_MARGIN, rect.y() + THEME_IMAGE_MARGIN, pixmapSize, pixmapSize, scalePixmap);
 
     if (isCurrent) {
-        painter->drawPixmap(rect.x() + 2*THEME_IMAGE_MARGIN, rect.y() + 2*THEME_IMAGE_MARGIN, 22, 22, QPixmap("://res/choose.png"));
+        painter->drawPixmap(rect.x() + 2*THEME_IMAGE_MARGIN, rect.y() + 2*THEME_IMAGE_MARGIN, 20, 20, QPixmap("://res/choose.png"));
     }
 }
 
@@ -167,13 +167,13 @@ void ThemeDelegate::drawTitle(const QStyleOptionViewItem &option, const QModelIn
     textFont.setPixelSize(12);
     textFont.setWeight(24);
     const QFontMetrics fm(textFont);
-    QSize textSize(qMin(fm.width(name) + 18, rect.width()), fm.height() + 2);
 
     const int textHeight = rect.height() * 0.78;
     const QRectF textRect = QRect(rect.x(), rect.y() + textHeight + 5, rect.width(), rect.height() - textHeight);
 
     // Draw theme name text background
-    /*QRect bgRect(rect.x() + (rect.width() - textSize.width()) / 2, textRect.y()+ (textRect.height() - textSize.height()) / 2, textSize.width(), textSize.height());
+    /*QSize textSize(qMin(fm.width(name) + 18, rect.width()), fm.height() + 2);
+    QRect bgRect(rect.x() + (rect.width() - textSize.width()) / 2, textRect.y()+ (textRect.height() - textSize.height()) / 2, textSize.width(), textSize.height());
     if (option.state & QStyle::State_Selected) {
         QPainterPath textPainterPath;
         textPainterPath.addRoundedRect(bgRect, 2, 2);

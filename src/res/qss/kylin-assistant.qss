@@ -454,6 +454,7 @@ QScrollBar::add-line:vertical{
 
 QListView {
     show-decoration-selected: 1;
+    border:none;
 }
 
 QListView::item:alternate {

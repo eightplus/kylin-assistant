@@ -31,15 +31,15 @@ SelectCategoryWidget::SelectCategoryWidget(CleanerCategoryID id, const QString &
     this->setWindowFlags(Qt::FramelessWindowHint);
     this->setFixedSize(464, 500);
 
-    QWidget *containerW = new QWidget(this);
-    m_mainLayout = new QVBoxLayout(containerW);
+    QWidget *containerWidget = new QWidget(this);
+    m_mainLayout = new QVBoxLayout(containerWidget);
     m_mainLayout->setSpacing(0);
     m_mainLayout->setMargin(0);
     m_mainLayout->setContentsMargins(0,0,0,0);
     m_titleBar = new MyTitleBar(title, needMin, this);
-    m_titleBar->setFixedSize(this->width(), TITILE_BAR_HEIGHT);
+    m_titleBar->setFixedSize(this->width(), TITLE_BAR_HEIGHT);
     m_listWidget = new SelectListWidget(true, this);
-    m_listWidget->setFixedSize(this->width(), this->height() - TITILE_BAR_HEIGHT);
+    m_listWidget->setFixedSize(this->width(), this->height() - TITLE_BAR_HEIGHT);
     m_mainLayout->addWidget(m_titleBar);
     m_mainLayout->addWidget(m_listWidget);
 
@@ -60,7 +60,9 @@ SelectCategoryWidget::SelectCategoryWidget(CleanerCategoryID id, const QString &
 
 SelectCategoryWidget::~SelectCategoryWidget()
 {
-
+    delete m_titleBar;
+    delete m_listWidget;
+    delete m_mainLayout;
 }
 
 void SelectCategoryWidget::onClose()
@@ -71,7 +73,7 @@ void SelectCategoryWidget::onClose()
 
 void SelectCategoryWidget::loadData(const QStringList &arglist, const QStringList &statuslist)
 {
-    m_listWidget->loadListItemsWithTips(arglist, statuslist, this->width());
+    m_listWidget->loadListItemsWithTips(arglist, statuslist, this->width()-2*ITEM_LEFT_RIGHT_PADDING);
 }
 
 void SelectCategoryWidget::moveCenter()

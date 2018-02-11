@@ -48,9 +48,9 @@ ThemeWidget::ThemeWidget(QWidget *parent) :
     connect(m_themeView, SIGNAL(sendSelectThemeName(QString)), this, SLOT(changeTheme(QString)));
 
     QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->setSpacing(0);
+    layout->setSpacing(5);
     layout->setMargin(0);
+    layout->setContentsMargins(10, 5, 10, 0);
     layout->addWidget(label);
     layout->addWidget(m_themeView);
     this->setLayout(layout);

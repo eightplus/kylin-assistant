@@ -31,7 +31,8 @@
 #define SHADOW_RIGHT_BOTTOM_PADDING 4
 #define MAIN_WINDOW_WIDTH 900
 #define MAIN_WINDOW_HEIGHT 600
-#define TITILE_BAR_HEIGHT 39
+#define TITLE_BAR_HEIGHT 39
+#define ITEM_LEFT_RIGHT_PADDING 5
 //const int windowShadowPadding = 10;
 
 //#define VERSION "2.4.1"

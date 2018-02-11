@@ -18,6 +18,7 @@
  */
 
 #include "selectlistwidget.h"
+#include "utils.h"
 #include <QDebug>
 
 SelectListWidget::SelectListWidget(bool hasTip, QWidget *parent) :
@@ -26,6 +27,7 @@ SelectListWidget::SelectListWidget(bool hasTip, QWidget *parent) :
 {
     this->setStyleSheet("QWidget{background-color:transparent;}");
     m_gridLayout = new QGridLayout(this);
+    m_gridLayout->setContentsMargins(ITEM_LEFT_RIGHT_PADDING,0,ITEM_LEFT_RIGHT_PADDING,0);
     m_gridLayout->setVerticalSpacing(0);
     m_widget = new QWidget(this);
     m_widget->setObjectName("transparentWidget");
@@ -65,9 +67,8 @@ void SelectListWidget::loadListItems(const QString &title, const QStringList &ca
     m_titleLabel->setText(QString("%1 %2").arg(tr("Clean Items:")).arg(QString::number(count)));
 
     foreach (QString cache, cachelist) {
-        SelectListItem *item = new SelectListItem(0, cache, "", false, itemWidth);
+        SelectListItem *item = new SelectListItem(0, cache, "", false, itemWidth-2*ITEM_LEFT_RIGHT_PADDING);
         connect(item, SIGNAL(selectedSignal(bool,QString)), this, SLOT(onSelectedSignal(bool,QString)));
-        item->setMaximumSize(itemWidth, 30);
         m_listAreaWidgetLayout->addWidget(item);
         m_itemsMap.insert(cache, item);
     }
@@ -82,7 +83,7 @@ void SelectListWidget::loadListItemsWithTips(const QStringList &arglist, const Q
     m_itemsMap.clear();
 
     for (int i = 0; i < arglist.length(); ++i) {
-        SelectListItem *item = new SelectListItem(0, arglist.at(i), statuslist.at(i), true, itemWidth);
+        SelectListItem *item = new SelectListItem(0, arglist.at(i), statuslist.at(i), true, itemWidth-2*ITEM_LEFT_RIGHT_PADDING);
         connect(item, SIGNAL(selectedSignal(bool,QString)), this, SLOT(onSelectedSignal(bool,QString)));
         item->setMaximumSize(itemWidth, 30);
         m_listAreaWidgetLayout->addWidget(item);
