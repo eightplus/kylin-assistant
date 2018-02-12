@@ -100,14 +100,16 @@ private:
     QAction *m_endAction = nullptr;//结束
     QAction *m_killAction = nullptr;//杀死
     ProcessCategory *processCategory = nullptr;
-    //  QMenu *m_priorityMenu;
-    //  MyActionGroup * priorityGroup;
-    //  MyAction *veryHighAction;
-    //  MyAction *highAction;
-    //  MyAction *normalAction;
-    //  MyAction *lowAction;
-    //  MyAction *veryLowAction;
-    //  MyAction *customAction;
+
+  QMenu *m_priorityMenu;
+  MyActionGroup * priorityGroup;
+  MyAction *veryHighAction;
+  MyAction *highAction;
+  MyAction *normalAction;
+  MyAction *lowAction;
+  MyAction *veryLowAction;
+  MyAction *customAction;
+
     QList<pid_t> *actionPids;
     QMenu *m_menu = nullptr;
     QString whose_processes;

@@ -23,5 +23,6 @@ kylin-assistant (1.0.0-0ubuntu1) bionic; urgency=low
   * Rewrite cleaner ui module.
   * Rewrite theme ui module.
   * Scaning system with Thread.
+  * Renice process priority.
 
  -- lixiang <lixiang@kylinos.cn>  Mon, 29 Jan 2018 17:54:44 +0800

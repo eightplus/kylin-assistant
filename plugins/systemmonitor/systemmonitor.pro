@@ -65,7 +65,9 @@ HEADERS += \
     resourcescategory.h \
     filesystemlistwidget.h \
     filesystemlistitem.h \
-    filesystemwatcher.h
+    filesystemwatcher.h \
+    renicedialog.h \
+    ../../component/mytitlebar.h
 
 SOURCES += \
     systemmonitor.cpp \
@@ -102,7 +104,9 @@ SOURCES += \
     resourcescategory.cpp \
     filesystemlistwidget.cpp \
     filesystemlistitem.cpp \
-    filesystemwatcher.cpp
+    filesystemwatcher.cpp \
+    renicedialog.cpp \
+    ../../component/mytitlebar.cpp
 
 OTHER_FILES += \
     systemmonitor.json

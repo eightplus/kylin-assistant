@@ -43,14 +43,10 @@ MenuWidget::MenuWidget(QWidget *parent, QString cur_desktop) :
     size_bottom_value_label = new QLabel();
     position_label = new QLabel();
 
-
     size_slider = new QSlider(Qt::Horizontal);
-//    size_slider->setTickPosition(QSlider::TicksRight);
     size_slider->setFocusPolicy(Qt::NoFocus);
     size_slider->setRange(32, 64);
     size_slider->setSingleStep(1);
-//    size_slider->setMinimum(1);
-//    size_slider->setMaximum(10);
 
     hide_switcher = new KylinSwitcher();
     icon_switcher = new KylinSwitcher();
@@ -73,11 +69,6 @@ MenuWidget::MenuWidget(QWidget *parent, QString cur_desktop) :
     hide_bottom_switcher = new KylinSwitcher();
 
     position_combo = new QComboBox();
-
-//    QSlider *size_top_slider;
-//    QSlider *size_bottom_slider;
-//    KylinSwitcher *hide_top_switcher;
-//    KylinSwitcher *icon_bottom_switcher;
 
     if (this->desktop == "mate" || this->desktop == "MATE" || this->desktop == "UKUI" || this->desktop == "ukui") {
         size_label->hide();
@@ -190,16 +181,6 @@ MenuWidget::MenuWidget(QWidget *parent, QString cur_desktop) :
     layout->setSpacing(10);
     layout->setContentsMargins(20, 20, 0, 0);
 
-//    splitter->addWidget(top_widget);
-//    splitter->addWidget(bottom_widget);
-
-//    QHBoxLayout *main_layout = new QHBoxLayout;
-//    main_layout->addStretch();
-//    main_layout->addWidget(splitter);
-//    main_layout->setSpacing(0);
-//    main_layout->setContentsMargins(0, 0, 0, 0);
-//    setLayout(main_layout);
-//    this->initSettingData();
     this->setLanguage();
 }
 
@@ -305,9 +286,6 @@ QString MenuWidget::settingModuleName()
 }
 
 void MenuWidget::setLanguage() {
-//    title_label->setText(tr("Launcher settings"));
-//    description_label->setText(tr("Setting the Launcher display mode, Icon size."));
-//    back_btn->setText(tr("Back"));
     size_label->setText(tr("Launcher icon size") + ":");
     hide_label->setText(tr("Launcher hide mode") + ":");
     icon_label->setText(tr("Display desktop icon") + ":");
@@ -324,64 +302,9 @@ void MenuWidget::initSettingData()
 {
     if (this->desktop == "mate" || this->desktop == "MATE" || this->desktop == "UKUI" || this->desktop == "ukui") {
         emit this->requestMateOrUnityMenuData(true);
-        /*size_top_slider->setValue(sessionproxy->get_mate_panel_icon_size_qt("top"));
-        size_top_value_label->setText(QString::number(size_top_slider->value()));
-        size_bottom_slider->setValue(sessionproxy->get_mate_panel_icon_size_qt("bottom"));
-        size_bottom_value_label->setText(QString::number(size_bottom_slider->value()));
-        hide_top_switcher->switchedOn = sessionproxy->get_mate_panel_autohide_qt("top");
-        hide_bottom_switcher->switchedOn = sessionproxy->get_mate_panel_autohide_qt("bottom");*/
     }
-    else
-    {
+    else {
         emit this->requestMateOrUnityMenuData(false);
-        /*size_slider->setValue(sessionproxy->get_launcher_icon_size_qt());
-        size_value_label->setText(QString::number(size_slider->value()));
-        hide_switcher->switchedOn = sessionproxy->get_launcher_autohide_qt();
-        icon_switcher->switchedOn = sessionproxy->get_launcher_have_showdesktopicon_qt();
-        transparency_slider->setValue(sessionproxy->get_launcher_transparency_qt());
-        int cur_index = sessionproxy->get_launcher_icon_colouring_qt();
-        QString current_icon_colouring = "";
-        if (cur_index == 0) {
-            current_icon_colouring = "all programs";
-        }
-        else if (cur_index == 1) {
-            current_icon_colouring = "only run app";
-        }
-        else if (cur_index == 2) {
-            current_icon_colouring = "no coloring";
-        }
-        else if (cur_index == 3) {
-            current_icon_colouring = "edge coloring";
-        }
-        else if (cur_index == 4) {
-            current_icon_colouring = "each workspace alternating coloring";
-        }
-        m_colourlist  = sessionproxy->get_all_launcher_icon_colourings_qt();
-        backgound_combo->clear();
-        backgound_combo->clearEditText();
-        backgound_combo->addItems(m_colourlist);
-        QList<QString>::Iterator it = m_colourlist.begin(), itend = m_colourlist.end();
-        int initIndex = 0;
-        for(;it != itend; it++,initIndex++)
-        {
-            if(*it == current_icon_colouring)
-                break;
-        }
-        backgound_combo->setCurrentIndex(initIndex);
-
-        QString current_position = sessionproxy->get_current_launcher_position_qt();
-        m_positionlist  = sessionproxy->get_all_launcher_position_qt();
-        position_combo->clear();
-        position_combo->clearEditText();
-        position_combo->addItems(m_positionlist);
-        QList<QString>::Iterator it2 = m_positionlist.begin(), itend2 = m_positionlist.end();
-        initIndex = 0;
-        for(;it2 != itend2; it2++,initIndex++)
-        {
-            if(*it2 == current_position)
-                break;
-        }
-        position_combo->setCurrentIndex(initIndex);*/
     }
 
     this->initConnect();
@@ -492,7 +415,6 @@ void MenuWidget::launcherwidget_notify_bool(QString key, bool value)
 
 void MenuWidget::launcherwidget_notify_int(QString key, int value)
 {
-//    qDebug() << "MenuWidget::launcherwidget_notify_int============";
     if (key == "icon-size") {
         size_slider->setValue(value);
         size_value_label->setText(QString::number(value));
@@ -574,71 +496,57 @@ void MenuWidget::launcherwidget_notify_string(QString key, QString value)
 void MenuWidget::setIconSizeValue(int value) {
     size_value_label->setText(QString::number(value));
     emit resetIconSizeValue(value);
-//    sessionproxy->set_launcher_icon_size_qt(value);
 }
 
 void MenuWidget::setTransparencyValue(double value)
 {
     emit resetTransparencyValue(value);
-//    sessionproxy->set_launcher_transparency_qt(value);
 }
 
 void MenuWidget::setIconColouring(QString selectColour) {
     if (selectColour == "all programs") {
         emit this->resetIconColouring(0);
-//        sessionproxy->set_launcher_icon_colouring_qt(0);
     }
     else if (selectColour == "only run app") {
         emit this->resetIconColouring(1);
-//        sessionproxy->set_launcher_icon_colouring_qt(1);
     }
     else if (selectColour == "no coloring") {
         emit this->resetIconColouring(2);
-//        sessionproxy->set_launcher_icon_colouring_qt(2);
     }
     else if (selectColour == "edge coloring") {
         emit this->resetIconColouring(3);
-//        sessionproxy->set_launcher_icon_colouring_qt(3);
     }
     else if (selectColour == "each workspace alternating coloring") {
         emit this->resetIconColouring(4);
-//        sessionproxy->set_launcher_icon_colouring_qt(4);
     }
 }
 
 void MenuWidget::setAutoHide() {
     emit this->resetAutoHide(hide_switcher->switchedOn);
-//    sessionproxy->set_launcher_autohide_qt(hide_switcher->switchedOn);
 }
 
 void MenuWidget::setDisplayDesktopIcon() {
     emit this->resetDisplayDesktopIcon(icon_switcher->switchedOn);
-//    sessionproxy->set_launcher_have_showdesktopicon_qt(icon_switcher->switchedOn);
 }
 
 void MenuWidget::setTopIconSizeValue(int value){
     size_top_value_label->setText(QString::number(value));
     emit this->resetTopIconSizeValue(value);
-//    sessionproxy->set_mate_panel_icon_size_qt("top", value);
 }
 
 void MenuWidget::setBottomIconSizeValue(int value){
     size_bottom_value_label->setText(QString::number(value));
     emit this->resetBottomIconSizeValue(value);
-//    sessionproxy->set_mate_panel_icon_size_qt("bottom", value);
 }
 
 void MenuWidget::setTopAutoHide() {
     emit this->resetTopAutoHide(hide_top_switcher->switchedOn);
-//    sessionproxy->set_mate_panel_autohide_qt("top", hide_top_switcher->switchedOn);
 }
 
 void MenuWidget::setBottomAutoHide() {
     emit this->resetBottomAutoHide(hide_bottom_switcher->switchedOn);
-//    sessionproxy->set_mate_panel_autohide_qt("bottom", hide_bottom_switcher->switchedOn);
 }
 
 void MenuWidget::setLauncherPosition(QString position) {
     emit this->resetLauncherPosition(position);
-//    sessionproxy->set_launcher_position_qt(position);
 }

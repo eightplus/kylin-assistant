@@ -241,6 +241,20 @@ QString getNiceLevel(int nice)
         return QObject::tr("Very Low");
 }
 
+QString getNiceLevelWithPriority(int nice)
+{
+    if (nice < -7)
+        return QObject::tr("Very High Priority");
+    else if (nice < -2)
+        return QObject::tr("High Priority");
+    else if (nice < 3)
+        return QObject::tr("Normal Priority");
+    else if (nice < 7)
+        return QObject::tr("Low Priority");
+    else
+        return QObject::tr("Very Low Priority");
+}
+
 void setFontSize(QPainter &painter, int textSize)
 {
     QFont font = painter.font() ;

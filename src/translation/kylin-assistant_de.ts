@@ -4,12 +4,12 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../aboutdialog.cpp" line="89"/>
+        <location filename="../aboutdialog.cpp" line="90"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="128"/>
+        <location filename="../aboutdialog.cpp" line="129"/>
         <source>      The software is still under development. Please visit </source>
         <translation type="unfinished"></translation>
     </message>
@@ -19,33 +19,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="83"/>
+        <location filename="../aboutdialog.cpp" line="84"/>
         <source>Kylin Assistant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="126"/>
+        <location filename="../aboutdialog.cpp" line="127"/>
         <source>Maintainer:
 Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="127"/>
+        <location filename="../aboutdialog.cpp" line="128"/>
         <source>      Kylin Assistant is a powerful system supporting software which is developed by Kylin team. Mainly for the naive user, it can help users manage the system. At present, It provides system junk scanning and cleaning, viewing the system hardware and software information, task manager, and some other functions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="128"/>
+        <location filename="../aboutdialog.cpp" line="129"/>
         <source> for more information. Welcome everyone to join with us. kylin-assistant Homepage: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="92"/>
+        <location filename="../aboutdialog.cpp" line="93"/>
         <source>Contributor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="148"/>
+        <location filename="../aboutdialog.cpp" line="150"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -61,9 +61,14 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>BoxWidget</name>
     <message>
-        <location filename="../boxwidget.cpp" line="148"/>
         <location filename="../boxwidget.cpp" line="150"/>
+        <location filename="../boxwidget.cpp" line="152"/>
         <source>Kylin Software Center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../boxwidget.cpp" line="207"/>
+        <source>No software center was found!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -224,7 +229,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../cleaner/cleanermainwidget.cpp" line="288"/>
+        <location filename="../../cleaner/cleanermainwidget.cpp" line="282"/>
         <source>Cache Items</source>
         <translation type="unfinished"></translation>
     </message>
@@ -249,7 +254,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../cleaner/cleanermainwidget.cpp" line="310"/>
+        <location filename="../../cleaner/cleanermainwidget.cpp" line="304"/>
         <source>Cookies Items</source>
         <translation type="unfinished"></translation>
     </message>
@@ -289,7 +294,7 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../cleaner/cleanermainwidget.cpp" line="327"/>
+        <location filename="../../cleaner/cleanermainwidget.cpp" line="321"/>
         <source>Trace Items</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1311,22 +1316,22 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="80"/>
+        <location filename="../mainwindow.cpp" line="79"/>
         <source>Kylin Assistant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="208"/>
+        <location filename="../mainwindow.cpp" line="207"/>
         <source>Understand hardware information, provide more convenient channel to obtain hardware information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="217"/>
+        <location filename="../mainwindow.cpp" line="216"/>
         <source>You can perform a full range of customized systems based on personal preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="226"/>
+        <location filename="../mainwindow.cpp" line="225"/>
         <source>Provide a practical and lightweight tool, create fast and convenient experience for you</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1373,52 +1378,52 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>MenuWidget</name>
     <message>
-        <location filename="../../setting/menuwidget.cpp" line="311"/>
+        <location filename="../../setting/menuwidget.cpp" line="289"/>
         <source>Launcher icon size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/menuwidget.cpp" line="312"/>
+        <location filename="../../setting/menuwidget.cpp" line="290"/>
         <source>Launcher hide mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/menuwidget.cpp" line="313"/>
+        <location filename="../../setting/menuwidget.cpp" line="291"/>
         <source>Display desktop icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/menuwidget.cpp" line="314"/>
+        <location filename="../../setting/menuwidget.cpp" line="292"/>
         <source>Launcher Transparency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/menuwidget.cpp" line="315"/>
+        <location filename="../../setting/menuwidget.cpp" line="293"/>
         <source>Icon Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/menuwidget.cpp" line="316"/>
+        <location filename="../../setting/menuwidget.cpp" line="294"/>
         <source>Top panel icon size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/menuwidget.cpp" line="317"/>
+        <location filename="../../setting/menuwidget.cpp" line="295"/>
         <source>Top panel auto hide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/menuwidget.cpp" line="318"/>
+        <location filename="../../setting/menuwidget.cpp" line="296"/>
         <source>Bottom panel icon size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/menuwidget.cpp" line="319"/>
+        <location filename="../../setting/menuwidget.cpp" line="297"/>
         <source>Bottom panel auto hide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../setting/menuwidget.cpp" line="320"/>
+        <location filename="../../setting/menuwidget.cpp" line="298"/>
         <source>Launcher position</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1549,14 +1554,6 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
     </message>
 </context>
 <context>
-    <name>NormalCard</name>
-    <message>
-        <location filename="../../component/normalcard.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>PanelWidget</name>
     <message>
         <location filename="../../setting/panelwidget.cpp" line="354"/>
@@ -1660,50 +1657,90 @@ Kylin Team &lt;ubuntukylin-members@list.launchpad.net&gt;</source>
 <context>
     <name>ProcessDialog</name>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="156"/>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="159"/>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="173"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="157"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="160"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="174"/>
         <source>End process</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="156"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="157"/>
         <source>Ending a process may destroy data, break the session or introduce a security risk. Only unresponsive processes should be ended.
 Are you sure to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="158"/>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="164"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="159"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="165"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="162"/>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="165"/>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="175"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="163"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="166"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="176"/>
         <source>Kill process</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="162"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="163"/>
         <source>Killing a process may destroy data, break the session or introduce a security risk. Only unresponsive processes should be killed.
 Are you sure to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="169"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="170"/>
         <source>Stop process</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="171"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="172"/>
         <source>Continue process</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="200"/>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="190"/>
+        <source>Very High</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="191"/>
+        <source>High</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="192"/>
+        <source>Normal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="193"/>
+        <source>Low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="194"/>
+        <source>Very Low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="195"/>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="199"/>
+        <source>Change Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="201"/>
         <source>Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/processdialog.cpp" line="334"/>
+        <source>Change Priority of Process %1 (PID: %2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1858,6 +1895,31 @@ Are you sure to continue?</source>
     <message>
         <location filename="../../plugins/systemmonitor/util.cpp" line="241"/>
         <source>Very Low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="247"/>
+        <source>Very High Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="249"/>
+        <source>High Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="251"/>
+        <source>Normal Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="253"/>
+        <source>Low Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/util.cpp" line="255"/>
+        <source>Very Low Priority</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2690,6 +2752,34 @@ Are you sure to continue?</source>
     </message>
 </context>
 <context>
+    <name>ReniceDialog</name>
+    <message>
+        <location filename="../../plugins/systemmonitor/renicedialog.cpp" line="55"/>
+        <source>Nice value:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/renicedialog.cpp" line="77"/>
+        <source>Note:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/renicedialog.cpp" line="81"/>
+        <source>The priority of a process is given by its nice value. A lower nice value corresponds to a higher priority.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/renicedialog.cpp" line="93"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../plugins/systemmonitor/renicedialog.cpp" line="98"/>
+        <source>Change Priority</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ResourcesCategory</name>
     <message>
         <location filename="../../plugins/systemmonitor/resourcescategory.cpp" line="37"/>
@@ -2854,19 +2944,6 @@ Are you sure to continue?</source>
     <message>
         <location filename="../../setting/themewidget.cpp" line="41"/>
         <source>Please choose theme which you need</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>TipDialog</name>
-    <message>
-        <location filename="../../component/tipdialog.cpp" line="86"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../component/tipdialog.cpp" line="109"/>
-        <source>Tip Dialog</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

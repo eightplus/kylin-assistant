@@ -33,6 +33,7 @@ AboutDialog::AboutDialog(QWidget *parent, /*const QString &version, */QString sk
     this->setFixedSize(442, 326);
     this->setStyleSheet("QDialog{border: 1px solid white;border-radius:1px;background-color: #ffffff;}");
     this->setWindowTitle(tr("About us"));
+    this->setWindowIcon(QIcon(":/res/kylin-assistant.png"));
 
     aboutGroup = NULL;
     contributorGroup = NULL;
@@ -127,6 +128,7 @@ AboutDialog::AboutDialog(QWidget *parent, /*const QString &version, */QString sk
     aboutEdit->append(tr("      Kylin Assistant is a powerful system supporting software which is developed by Kylin team. Mainly for the naive user, it can help users manage the system. At present, It provides system junk scanning and cleaning, viewing the system hardware and software information, task manager, and some other functions."));
     aboutEdit->append(tr("      The software is still under development. Please visit ") + QString::fromLocal8Bit("<a style='color: #3f96e4;' href = http://www.ubuntukylin.com>www.ubuntukylin.com</a>") + tr(" for more information. Welcome everyone to join with us. kylin-assistant Homepage: "));
 
+    aboutEdit->append(QString::fromLocal8Bit("<a style='color: #3f96e4;' href=\"https://github.com/KylinAppCenter/kylin-assistant\">https://github.com/KylinAppCenter/kylin-assistant</a>"));
     aboutEdit->append(QString::fromLocal8Bit("<a style='color: #3f96e4;' href=\"https://launchpad.net/youker-assistant\">https://launchpad.net/youker-assistant</a>"));
 
     contributorEdit->hide();

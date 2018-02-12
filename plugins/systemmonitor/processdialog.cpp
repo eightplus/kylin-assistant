@@ -21,6 +21,7 @@
 #include "propertiesdialog.h"
 #include "processdata.h"
 #include "processcategory.h"
+#include "renicedialog.h"
 #include "util.h"
 
 #include <QStringList>
@@ -166,6 +167,7 @@ ProcessDialog::ProcessDialog(QList<bool> toBeDisplayedColumns, int currentSortIn
     connect(killProcessDialog, &MyDialog::buttonClicked, this, &ProcessDialog::killDialogButtonClicked);
 
     m_menu = new QMenu();
+    m_menu->setObjectName("MonitorMenu");
     m_stopAction = new QAction(tr("Stop process"), this);
     connect(m_stopAction, &QAction::triggered, this, &ProcessDialog::stopProcesses);
     m_continueAction = new QAction(tr("Continue process"), this);
@@ -175,27 +177,28 @@ ProcessDialog::ProcessDialog(QList<bool> toBeDisplayedColumns, int currentSortIn
     m_killAction = new QAction(tr("Kill process"), this);
     connect(m_killAction, &QAction::triggered, this, &ProcessDialog::showKillProcessDialog);
 
-//    priorityGroup = new MyActionGroup(this);
-//    veryHighAction = new MyActionGroupItem(this, priorityGroup, "very_high_action", -20);
-//    highAction = new MyActionGroupItem(this, priorityGroup, "high_action", -5);
-//    normalAction = new MyActionGroupItem(this, priorityGroup, "normal_action", 0);
-//    lowAction = new MyActionGroupItem(this, priorityGroup, "low_action", 5);
-//    veryLowAction = new MyActionGroupItem(this, priorityGroup, "very_low_action", 19);
-//    customAction = new MyActionGroupItem(this, priorityGroup, "custom_action", 32);
-//    {
-//        QAction *sep = new QAction(priorityGroup);
-//        sep->setSeparator(true);
-//    }
-//    veryHighAction->change(tr("Very High"));
-//    highAction->change(tr("High"));
-//    normalAction->change(tr("Normal"));
-//    lowAction->change(tr("Low"));
-//    veryLowAction->change(tr("Very Low"));
-//    customAction->change(tr("Custom"));
-//    connect(priorityGroup, SIGNAL(activated(int)), this, SLOT(changeProcPriority(int)));
-//    m_priorityMenu = new QMenu();
-//    m_priorityMenu->addActions(priorityGroup->actions());
-//    m_priorityMenu->menuAction()->setText(tr("Change Priority"));
+    priorityGroup = new MyActionGroup(this);
+    veryHighAction = new MyActionGroupItem(this, priorityGroup, "very_high_action", -20);
+    highAction = new MyActionGroupItem(this, priorityGroup, "high_action", -5);
+    normalAction = new MyActionGroupItem(this, priorityGroup, "normal_action", 0);
+    lowAction = new MyActionGroupItem(this, priorityGroup, "low_action", 5);
+    veryLowAction = new MyActionGroupItem(this, priorityGroup, "very_low_action", 19);
+    customAction = new MyActionGroupItem(this, priorityGroup, "custom_action", 32);
+    {
+        QAction *sep = new QAction(priorityGroup);
+        sep->setSeparator(true);
+    }
+    veryHighAction->change(tr("Very High"));
+    highAction->change(tr("High"));
+    normalAction->change(tr("Normal"));
+    lowAction->change(tr("Low"));
+    veryLowAction->change(tr("Very Low"));
+    customAction->change(tr("Custom"));
+    connect(priorityGroup, SIGNAL(activated(int)), this, SLOT(changeProcPriority(int)));
+    m_priorityMenu = new QMenu();
+    m_priorityMenu->setObjectName("MonitorMenu");
+    m_priorityMenu->addActions(priorityGroup->actions());
+    m_priorityMenu->menuAction()->setText(tr("Change Priority"));
 
     m_propertiyAction = new QAction(tr("Properties"), this);
     connect(m_propertiyAction, &QAction::triggered, this, &ProcessDialog::showPropertiesDialog);
@@ -204,8 +207,8 @@ ProcessDialog::ProcessDialog(QList<bool> toBeDisplayedColumns, int currentSortIn
     m_menu->addAction(m_continueAction);//继续进程
     m_menu->addAction(m_endAction);//结束
     m_menu->addAction(m_killAction);//杀死
-//    m_menu->addSeparator();
-//    m_menu->addMenu(m_priorityMenu);
+    m_menu->addSeparator();
+    m_menu->addMenu(m_priorityMenu);
     m_menu->addSeparator();
     m_menu->addAction(m_propertiyAction);
 
@@ -239,13 +242,15 @@ ProcessDialog::~ProcessDialog()
     delete m_continueAction;
     delete m_endAction;
     delete m_killAction;
-//    delete veryHighAction;
-//    delete highAction;
-//    delete normalAction;
-//    delete lowAction;
-//    delete veryLowAction;
-//    delete customAction;
-//    delete m_priorityMenu;
+
+    delete veryHighAction;
+    delete highAction;
+    delete normalAction;
+    delete lowAction;
+    delete veryLowAction;
+    delete customAction;
+    delete m_priorityMenu;
+
     delete m_propertiyAction;
     delete m_menu;
     delete actionPids;
@@ -312,20 +317,29 @@ void ProcessDialog::clearOriginProcList()
     ProcessWorker::all.clear();
 }
 
-QString rootCommand(QString command, int value, pid_t pid)
-{
-    return QString("gksu \"%1 %1 %1\"").arg(command, value, pid);
-}
-
-void startRenice(QString command, int value, pid_t pid)
-{
-    QProcess::startDetached(rootCommand(command, value, pid));
-}
-
 void ProcessDialog::changeProcPriority(int nice)
 {
     if (nice == 32) {
         //show renice dialog
+        pid_t cur_pid = -1;
+        for (pid_t pid : *actionPids) {
+            cur_pid = pid;
+            break;
+        }
+        if (cur_pid > -1) {
+            ProcessWorker *info = ProcessWorker::find(cur_pid);
+            if (!info) {
+                actionPids->clear();
+                return;
+            }
+            QString name = QString::fromStdString(info->name);
+            ReniceDialog *w = new ReniceDialog(tr("Change Priority of Process %1 (PID: %2)").arg(name).arg(QString::number(cur_pid)));
+            w->loadData(info->nice);
+            connect(w, &ReniceDialog::resetReniceValue, [=] (int value) {
+                this->changeProcPriority(value);
+            });
+            w->exec();
+        }
     }
     else {
         pid_t cur_pid = -1;
@@ -355,138 +369,40 @@ void ProcessDialog::changeProcPriority(int nice)
             //need to be root
             if(errno == EPERM || errno == EACCES) {
                 qDebug() << "Change priority need to be root!!!";
+                /*
+                 * renice: sudo apt install bsdutils
+                 * Maybe: QProcess::startDetached(command)
+                 * QProcess::start()与QProcess::execute()都能完成启动外部程序的任务，区别在于start()是非阻塞的，而execute()是阻塞的: execute()=start()+waitforFinished()
+                */
 
-                //kobe test
-                //startRenice("renice", nice, cur_pid);
-
-                bool success = false;
-                QString command = QString("renice %1 %1").arg(nice).arg(cur_pid);
-                QFile file("/usr/bin/pkexec");
-                if(file.exists()) {
-//                    gint *exit_status = NULL;
-//                    GError *error = NULL;
-                    QString cmd = QString("pkexec --disable-internal-agent /usr/lib/gnome-system-monitor/gnome-system-monitor/gsm-%1").arg(command);//gsm-renice
-                    qDebug() << "cmd="<<cmd;
-                    //                    if (!g_spawn_command_line_sync(command_line, NULL, NULL, exit_status, &error)) {
-//                        g_critical("Could not run pkexec(\"%s\") : %s\n",
-//                                   command, error->message);
-//                        g_error_free(error);
-//                    }
-//                    else
-//                    {
-//                        g_debug("pkexec did fine\n");
-//                        ret = TRUE;
-//                    }
+                if (QFileInfo("/usr/bin/pkexec").exists()) {//sudo apt install policykit-1
+                    QProcess process;
+                    process.execute(QString("pkexec --disable-internal-agent %1 %2 %3").arg("renice").arg(nice).arg(cur_pid));
+                    /*process.start(QString("pkexec --disable-internal-agent %1 %2 %3").arg("renice").arg(nice).arg(cur_pid));
+                    process.waitForStarted(1000);
+                    process.waitForFinished(20*1000);*/
+                }
+                else if (QFileInfo("/usr/bin/gksudo").exists()) {//sudo apt install gksu
+                    QProcess process;
+                    process.execute(QString("gksudo \"%1 %2 %3\"").arg("renice").arg(nice).arg(cur_pid));
+                    /*process.start(QString("gksudo \"%1 %2 %3\"").arg("renice").arg(nice).arg(cur_pid));
+                    process.waitForStarted(1000);
+                    process.waitForFinished(20*1000);*/
+                }
+                else if (QFileInfo("/usr/bin/gksu").exists()) {//sudo apt install gksu
+                    QProcess process;
+                    process.execute(QString("gksu \"%1 %2 %3\"").arg("renice").arg(nice).arg(cur_pid));
+//                    process.start(QString("gksu \"%1 %2 %3\"").arg("renice").arg(nice).arg(cur_pid));
+//                    process.waitForStarted(1000);
+//                    process.waitForFinished(20*1000);
                 }
                 else {
-                    qDebug() << "change to root failed......";
+                    //
                 }
-
-
-
-                /*gboolean success;
-
-                success = procdialog_create_root_password_dialog (
-                    PROCMAN_ACTION_RENICE, args->app, info->pid,
-                    nice);
-
-                if(success) return;
-
-                if(errno) {
-                    saved_errno = errno;
-                }*/
-
-
-//                static char *
-//                procman_action_to_command(ProcmanActionType type,
-//                                          gint pid,
-//                                          gint extra_value)
-//                {
-//                    switch (type) {
-//                        case PROCMAN_ACTION_KILL:
-//                            return g_strdup_printf("kill -s %d %d", extra_value, pid);
-//                        case PROCMAN_ACTION_RENICE:
-//                            return g_strdup_printf("renice %d %d", extra_value, pid);
-//                        default:
-//                            g_assert_not_reached();
-//                    }
-//                }
-
-//                gboolean procdialog_create_root_password_dialog(ProcmanActionType type,
-//                                                       GsmApplication *app,
-//                                                       gint pid,
-//                                                       gint nice)
-//                {
-//                    char * command;
-//                    gboolean ret = FALSE;
-//                    command = g_strdup_printf("renice %d %d", nice, pid);
-//                    //command = procman_action_to_command(type, pid, nice);
-
-//                    procman_debug("Trying to run '%s' as root", command);
-
-//                if (g_file_test("/usr/bin/pkexec", G_FILE_TEST_EXISTS)) {
-//                    gboolean ret = FALSE;
-//                    gint *exit_status = NULL;
-//                    GError *error = NULL;
-//                    gchar *command_line = g_strdup_printf("pkexec --disable-internal-agent %s/gsm-%s",
-//                                                          GSM_LIBEXEC_DIR, command);
-//                    if (!g_spawn_command_line_sync(command_line, NULL, NULL, exit_status, &error)) {
-//                        g_critical("Could not run pkexec(\"%s\") : %s\n",
-//                                   command, error->message);
-//                        g_error_free(error);
-//                    }
-//                    else
-//                    {
-//                        g_debug("pkexec did fine\n");
-//                        ret = TRUE;
-//                    }
-//                    g_free (command_line);
-//                    return ret;
-//                }
-
-//                    if (procman_has_pkexec())
-//                        ret = gsm_pkexec_create_root_password_dialog(command);
-//                    else if (procman_has_gksu())
-//                        ret = gsm_gksu_create_root_password_dialog(command);
-//                    else if (procman_has_gnomesu())
-//                        ret = gsm_gnomesu_create_root_password_dialog(command);
-
-//                    g_free(command);
-//                    return ret;
-//                }
             }
         }
     }
     actionPids->clear();
-
-//    static void
-//    renice_scale_changed (GtkAdjustment *adj, gpointer data)
-//    {
-//        GtkWidget *label = GTK_WIDGET (data);
-
-//        new_nice_value = int(gtk_adjustment_get_value (adj));
-//        gchar* text = g_strdup(procman::get_nice_level_with_priority (new_nice_value));
-//        gtk_label_set_text (GTK_LABEL (label), text);
-//        g_free(text);
-
-//    }
-
-//    static void
-//    renice_dialog_button_pressed (GtkDialog *dialog, gint id, gpointer data)
-//    {
-//        GsmApplication *app = static_cast<GsmApplication *>(data);
-//        if (id == 100) {
-//            if (new_nice_value == -100)
-//                return;
-//            renice(app, new_nice_value);
-//        }
-
-//        gtk_widget_destroy (GTK_WIDGET (dialog));
-//        renice_dialog = NULL;
-//    }
-
-//renice_scale_changed
-    //renice_dialog_button_pressed
 }
 
 //void ProcessDialog::onCloseButtonClicked()
@@ -708,11 +624,10 @@ void ProcessDialog::onSearch(QString text)
     m_processListWidget->doSearch(text);
 }
 
-//杀死
+//杀死   SIGSTOP,SIGCONT,SIGTERM,SIGKILL
 void ProcessDialog::killProcesses()
 {
     int error;
-//    int saved_errno;
 
     for (pid_t pid : *actionPids) {
         // Resume process first, otherwise kill process too slow.
@@ -727,20 +642,32 @@ void ProcessDialog::killProcesses()
         }
         else {
             //need to be root
-            if(errno == EPERM) {
+            if(errno == EPERM) {//(kill -s %d %d", sig, pid)
                 qDebug() << QString("Kill process %1 failed, permission denied.").arg(pid);
-                /*gboolean success;
-                success = procdialog_create_root_password_dialog (
-                    PROCMAN_ACTION_KILL, args->app, info->pid,
-                    args->arg_value);
-                if(success) {
-                    actionPids->clear();
-                    return;
+                if (QFileInfo("/usr/bin/pkexec").exists()) {//sudo apt install policykit-1
+                    QProcess process;
+                    process.execute(QString("pkexec --disable-internal-agent %1 %2 %3").arg("kill").arg(SIGKILL).arg(pid));
+                    /*process.start(QString("pkexec --disable-internal-agent %1 %2 %3").arg("kill").arg(SIGKILL).arg(pid));
+                    process.waitForStarted(1000);
+                    process.waitForFinished(20*1000);*/
                 }
-
-                if(errno) {
-                    saved_errno = errno;
-                }*/
+                else if (QFileInfo("/usr/bin/gksudo").exists()) {//sudo apt install gksu
+                    QProcess process;
+                    process.execute(QString("gksudo \"%1 %2 %3\"").arg("kill").arg(SIGKILL).arg(pid));
+                    /*process.start(QString("gksudo \"%1 %2 %3\"").arg("kill").arg(SIGKILL).arg(pid));
+                    process.waitForStarted(1000);
+                    process.waitForFinished(20*1000);*/
+                }
+                else if (QFileInfo("/usr/bin/gksu").exists()) {//sudo apt install gksu
+                    QProcess process;
+                    process.execute(QString("gksu \"%1 %2 %3\"").arg("kill").arg(SIGKILL).arg(pid));
+//                    process.start(QString("gksu \"%1 %2 %3\"").arg("kill").arg(SIGKILL).arg(pid));
+//                    process.waitForStarted(1000);
+//                    process.waitForFinished(20*1000);
+                }
+                else {
+                    //
+                }
             }
         }
     }
@@ -752,8 +679,6 @@ void ProcessDialog::killProcesses()
 void ProcessDialog::endProcesses()
 {
     int error;
-//    int saved_errno;
-
     for (pid_t pid : *actionPids) {
 //        if (kill(pid, SIGTERM) != 0) {
 //            qDebug() << QString("Kill process %1 failed, permission denied.").arg(pid);
@@ -766,18 +691,31 @@ void ProcessDialog::endProcesses()
             //need to be root
             if(errno == EPERM) {
                 qDebug() << QString("End process %1 failed, permission denied.").arg(pid);
-                /*gboolean success;
-                success = procdialog_create_root_password_dialog (
-                    PROCMAN_ACTION_KILL, args->app, info->pid,
-                    args->arg_value);
-                if(success) {
-                    actionPids->clear();
-                    return;
-                }
 
-                if(errno) {
-                    saved_errno = errno;
-                }*/
+                if (QFileInfo("/usr/bin/pkexec").exists()) {//sudo apt install policykit-1
+                    QProcess process;
+                    process.execute(QString("pkexec --disable-internal-agent %1 %2 %3").arg("kill").arg(SIGTERM).arg(pid));
+                    /*process.start(QString("pkexec --disable-internal-agent %1 %2 %3").arg("kill").arg(SIGTERM).arg(pid));
+                    process.waitForStarted(1000);
+                    process.waitForFinished(20*1000);*/
+                }
+                else if (QFileInfo("/usr/bin/gksudo").exists()) {//sudo apt install gksu
+                    QProcess process;
+                    process.execute(QString("gksudo \"%1 %2 %3\"").arg("kill").arg(SIGTERM).arg(pid));
+                    /*process.start(QString("gksudo \"%1 %2 %3\"").arg("kill").arg(SIGTERM).arg(pid));
+                    process.waitForStarted(1000);
+                    process.waitForFinished(20*1000);*/
+                }
+                else if (QFileInfo("/usr/bin/gksu").exists()) {//sudo apt install gksu
+                    QProcess process;
+                    process.execute(QString("gksu \"%1 %2 %3\"").arg("kill").arg(SIGTERM).arg(pid));
+//                    process.start(QString("gksu \"%1 %2 %3\"").arg("kill").arg(SIGTERM).arg(pid));
+//                    process.waitForStarted(1000);
+//                    process.waitForFinished(20*1000);
+                }
+                else {
+                    //
+                }
             }
         }
     }
@@ -795,10 +733,9 @@ void ProcessDialog::popupMenu(QPoint pos, QList<ProcessListItem*> items)
         count ++;
         ProcessListItem *procItem = static_cast<ProcessListItem*>(item);
         cur_pid = procItem->getPid();
-//        qDebug() << "HAHAHAH===========" << cur_pid;
         actionPids->append(cur_pid);
     }
-    /*if (count == 1) {
+    if (count == 1) {
         ProcessWorker *info = ProcessWorker::find(cur_pid);
         if (!info) {
             priorityGroup->setActionsEnabled(false);
@@ -822,7 +759,7 @@ void ProcessDialog::popupMenu(QPoint pos, QList<ProcessListItem*> items)
     }
     else {
         priorityGroup->setActionsEnabled(false);
-    }*/
+    }
     m_menu->exec(pos);
 }
 

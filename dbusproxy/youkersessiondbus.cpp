@@ -589,7 +589,7 @@ bool SessionDispatcher::set_mate_panel_icon_size_qt(QString positon, int num)
 
 int SessionDispatcher::get_mate_panel_icon_size_qt(QString positon)
 {
-    QDBusReply<bool> reply = sessioniface->call("get_mate_panel_icon_size", positon);
+    QDBusReply<int> reply = sessioniface->call("get_mate_panel_icon_size", positon);
     return reply.value();
 }
 

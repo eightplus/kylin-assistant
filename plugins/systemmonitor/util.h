@@ -41,6 +41,7 @@ QString getDisplayNameAccordProcName(QString procName, std::string desktopFile);
 std::string make_string(char *c_str);
 QString formatProcessState(guint state);
 QString getNiceLevel(int nice);
+QString getNiceLevelWithPriority(int nice);
 QString formatUnitSize(double v, const char** orders, int nb_orders);
 QString formatByteCount(double v);
 void setFontSize(QPainter &painter, int textSize);

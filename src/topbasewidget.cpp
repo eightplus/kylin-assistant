@@ -262,7 +262,7 @@ void TopBaseWidget::initContentLeftContent()
 
     suggest_label->setObjectName("whiteLabel");
     suggest_label->setWordWrap(true);//QLabel自动换行
-    suggest_label->setFixedWidth(550);
+    suggest_label->setFixedWidth(650);
 
     m_toolLeftLayout->setSpacing(10);
     m_toolLeftLayout->addStretch();
