@@ -30,14 +30,15 @@ public:
     explicit ThemeDelegate(QObject *parent = nullptr);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
-    void setEditorData(QWidget* editor, const QModelIndex& index) const Q_DECL_OVERRIDE;
+    void setEditorData(QWidget* editor, const QModelIndex &index) const Q_DECL_OVERRIDE;
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const Q_DECL_OVERRIDE;
-    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
-    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex &index) const Q_DECL_OVERRIDE;
+//    bool editorEvent(QEvent* event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
 
     void drawBackground(const QStyleOptionViewItem &option, QPainter *painter) const;
-    void drawImage(const QStyleOptionViewItem &option, const QModelIndex& index, QPainter *painter) const;
-    void drawTitle(const QStyleOptionViewItem &option, const QModelIndex& index, QPainter *painter) const;
+    void drawImage(const QStyleOptionViewItem &option, const QModelIndex &index, QPainter *painter) const;
+    void drawTitle(const QStyleOptionViewItem &option, const QModelIndex &index, QPainter *painter) const;
 
 private:
     QColor m_textColor;

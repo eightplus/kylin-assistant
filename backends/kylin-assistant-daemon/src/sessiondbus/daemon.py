@@ -919,8 +919,11 @@ class SessionDaemon(dbus.service.Object):
     @dbus.service.method(INTERFACE, in_signature='as', out_signature='')
     def onekey_scan_function(self, mode_list):
         onekeyfunc_obj = cleaner.OneKeyClean()
-        onekeyfunc_obj.get_onekey_crufts(self, mode_list)
-        self.scan_complete_msg('onekey')
+        # change by kobe
+        t = threading.Thread(target = onekeyfunc_obj.get_onekey_crufts, args = (self, mode_list, ))
+        t.start()
+        #onekeyfunc_obj.get_onekey_crufts(self, mode_list)
+        #self.scan_complete_msg('onekey')
 
 #    @dbus.service.method(INTERFACE, in_signature='as', out_signature='')
 #    def mainpage_scan_function(self):
@@ -1985,7 +1988,10 @@ class SessionDaemon(dbus.service.Object):
     #----START-------------------New-Youker-------------------------
     @dbus.service.method(INTERFACE, in_signature='a{sv}', out_signature='')
     def get_scan_result(self, mode_dic):
-        cleaner.interface_get_subpage_session(self, mode_dic)
+        # change by kobe
+        t = threading.Thread(target = cleaner.interface_get_subpage_session, args = (self, mode_dic, ))
+        t.start()
+        #cleaner.interface_get_subpage_session(self, mode_dic)
 
     @dbus.service.signal(INTERFACE, signature='as')
     def subpage_data_signal(self, info):

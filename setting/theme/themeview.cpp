@@ -51,6 +51,7 @@ ThemeView::ThemeView(QWidget *parent)
     setSpacing(60);
     setDragEnabled(false);
 
+//    connect(this, SIGNAL(ri))
     connect(this, &ThemeView::doubleClicked, this, &ThemeView::onItemClicked);
     connect(this, &ThemeView::clicked, this, &ThemeView::onItemClicked);
     connect(selectionModel(), &QItemSelectionModel::currentChanged, this, [=] (const QModelIndex &current) {
@@ -166,3 +167,27 @@ void ThemeView::mousePressEvent(QMouseEvent *e)
 
     QListView::mousePressEvent(e);
 }
+
+/*bool ThemeView::eventFilter(QObject *obj, QEvent *event)
+{
+    if(event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent *me = (QMouseEvent *)event;
+    }
+
+
+    if (event->type() == QEvent::KeyPress) {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        qDebug("Key press %d", keyEvent->key());
+        if (keyEvent->key() == Qt::Key_Tab) {
+
+        }
+        else if (keyEvent->key() == Qt::Key_Escape) {
+
+        }
+        return true;
+    }
+    else {
+        // standard event processing
+        return QObject::eventFilter(obj, event);
+    }
+}*/

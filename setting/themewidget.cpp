@@ -40,10 +40,6 @@ ThemeWidget::ThemeWidget(QWidget *parent) :
 //    label->setGeometry(QRect(30, 15, 860, 50));
     label->setText(tr("Please choose theme which you need"));
 
-    /*list_widget = new NormalWidget(119, 139, 20, this);
-    list_widget->setGeometry(QRect(30, 55, 860, 330));
-    list_widget->calculate_data();*/
-
     m_themeView = new ThemeView(this);
     connect(m_themeView, SIGNAL(sendSelectThemeName(QString)), this, SLOT(changeTheme(QString)));
 
@@ -78,26 +74,6 @@ void ThemeWidget::onReceiveThemeList(const QString &currentTheme, const QStringL
             else
                 m_themeView->loadOneTheme(theme, false);
         }
-
-
-        /*this->resetUI();
-        list_widget->resetData();
-
-        QSignalMapper *signal_mapper = new QSignalMapper(this);
-        for(int i = 0; i<syslist.length(); ++i)
-        {
-            NormalCard *card = new NormalCard(syslist[i], list_widget->cardPanel);
-            card_list.append(card);
-            if(currentTheme == syslist[i]) {
-                card->showUsingLogo(true);
-            }
-            list_widget->add_card(card);
-            card->show();
-            connect(card, SIGNAL(sendSelectThemeName(QString)), signal_mapper, SLOT(map()));
-            signal_mapper->setMapping(card, QString::number(i, 10));
-            connect(signal_mapper, SIGNAL(mapped(QString)), this, SLOT(switchUsingLogo(QString)));
-            connect(card, SIGNAL(sendSelectThemeName(QString)), this, SLOT(changeTheme(QString)));
-        }*/
     }
 }
 
@@ -105,28 +81,6 @@ void ThemeWidget::onReceiveThemeList(const QString &currentTheme, const QStringL
 void ThemeWidget::initSettingData()
 {
     emit this->requestThemeData();
-
-//    list_widget = new NormalWidget(119, 139, 20, this);
-//    list_widget->setGeometry(QRect(30, 55, 860, 330));
-//    list_widget->calculate_data();
-
-//    QString current_theme = sessionproxy->get_theme_qt();
-//    syslist = sessionproxy->get_themes_qt();
-//    card_list.clear();
-//    QSignalMapper *signal_mapper = new QSignalMapper(this);
-//    for(int i = 0; i<syslist.length(); ++i)
-//    {
-//        NormalCard *card = new NormalCard(syslist[i], list_widget->cardPanel);
-//        card_list.append(card);
-//        if(current_theme == syslist[i]) {
-//            card->showUsingLogo(true);
-//        }
-//        list_widget->add_card(card);
-//        connect(card, SIGNAL(sendSelectThemeName(QString)), signal_mapper, SLOT(map()));
-//        signal_mapper->setMapping(card, QString::number(i, 10));
-//        connect(signal_mapper, SIGNAL(mapped(QString)), this, SLOT(switchUsingLogo(QString)));
-//        connect(card, SIGNAL(sendSelectThemeName(QString)), this, SLOT(changeTheme(QString)));
-//    }
 
     this->initConnect();
 }
@@ -138,14 +92,7 @@ ThemeWidget::~ThemeWidget()
 
 void ThemeWidget::resetUI()
 {
-    //kobe test 2018
-    /*for(int i=0; i<card_list.count(); i++)
-    {
-        NormalCard *card = card_list.at(i);
-        delete card;
-        card = NULL;
-    }
-    card_list.clear();*/
+
 }
 
 void ThemeWidget::initConnect() {
@@ -155,27 +102,12 @@ void ThemeWidget::initConnect() {
 
 void ThemeWidget::switchUsingLogo(QString index)
 {
-    //kobe test 2018
-    /*bool ok;
-    int current_index = index.toInt(&ok, 10);
-    for(int i=0; i<card_list.count(); i++)
-    {
-        NormalCard *card = card_list.at(i);
-        if(current_index == i)
-        {
-            card->showUsingLogo(true);
-        }
-        else
-        {
-            card->showUsingLogo(false);
-        }
-    }*/
+
 }
 
 void ThemeWidget::changeTheme(QString name)
 {
     emit changeSystemTheme(name);
-//    sessionproxy->set_theme_qt(name);
 }
 
 

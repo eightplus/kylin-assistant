@@ -33,7 +33,7 @@ class MouseWidget : public SettingModulePage
 {
     Q_OBJECT
 public:
-    explicit MouseWidget(QWidget *parent = 0, /*SessionDispatcher *proxy = 0, SystemDispatcher *sproxy = 0, */QString cur_desktop = "");
+    explicit MouseWidget(QWidget *parent = 0, QString cur_desktop = "");
     ~MouseWidget();
     void setLanguage();
     void initConnect();

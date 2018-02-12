@@ -26,9 +26,7 @@
 #include <QPushButton>
 #include <QListView>
 #include "../component/kylinlistmodel.h"
-//#include "../component/kylinlistview.h"
 
-class SessionDispatcher;
 class PluginManager;
 class QStackedLayout;
 
@@ -40,10 +38,10 @@ public:
     ~BoxWidget();
     void loadPlugins();
     void initPluginWidget();
-    void setSessionDbusProxy(SessionDispatcher *dispatcher) { sessionProxy = dispatcher;}
 
 signals:
     void sendSubIndex(int index);
+    void pluginModuleError(const QString &info);
 
 public slots:
   void OnClickListView(const QModelIndex & index);
@@ -54,17 +52,10 @@ public slots:
 
 private:
     QListView *list_view;
-//    KylinListView *list_view;
     KylinListModel pluginModel;
     QString osname;
     QString osarch;
     QString plugin_path;
-    SessionDispatcher *sessionProxy;
-
-//    PluginManager *m_pluginsManager = nullptr;
-//    QStackedLayout *m_pluginsLayout;
-//    QWidget *m_pluginLayoutWidget;
-//    QWidget *m_pluginWidget;
 };
 
 #endif // BOXWIDGET_H

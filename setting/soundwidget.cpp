@@ -144,29 +144,6 @@ void SoundWidget::initSettingData()
 {
     emit this->requestSoundData();
 
-    /*QString current_sound = sessionproxy->get_sound_theme_qt();
-    m_soundlist  = systemproxy->get_sound_themes_qt();
-    theme_combo->clear();
-    theme_combo->clearEditText();
-    theme_combo->addItems(m_soundlist);
-
-    QList<QString>::Iterator it = m_soundlist.begin(), itend = m_soundlist.end();
-    int initIndex = 0;
-    for(;it != itend; it++,initIndex++)
-    {
-        if(*it == current_sound)
-            break;
-    }
-    theme_combo->setCurrentIndex(initIndex);
-
-    if (desktop != "mate" && desktop != "MATE")
-    {
-        tip_switcher->switchedOn = sessionproxy->get_login_music_enable_qt();
-    }
-
-    event_switcher->switchedOn = sessionproxy->get_sound_event_enable_qt();
-    feedback_switcher->switchedOn = sessionproxy->get_input_feedback_sounds_enable_qt();
-    */
     this->initConnect();
 }
 

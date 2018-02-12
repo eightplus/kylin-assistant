@@ -165,20 +165,14 @@ void CleanerMainWidget::receiveScanSignal()
         toolKits->alertMSG(parentWindow->geometry().topLeft().x(), parentWindow->geometry().topLeft().y(), tr("Scan args is empty!"));
     }
     else {
-//        qDebug() << "args is.........." << argsMap;
         emit this->showActionAnimaiton();
         emit this->startScanSystem(argsMap);
-//        sessionproxy->scanSystemCleanerItems(argsMap);
     }
 }
 
 void CleanerMainWidget::getAllScanSelectedItems()
 {
     argsMap.clear();
-
-    qDebug() << "m_selectedCache=" << m_selectedCache;
-    qDebug() << "m_selectedCookie=" << m_selectedCookie;
-    qDebug() << "m_selectedTrace=" << m_selectedTrace;
 
     if (!m_selectedCache.isEmpty())
         argsMap.insert("Cache", m_selectedCache);

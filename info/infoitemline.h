@@ -35,11 +35,7 @@ public:
     void setInfoKey(const QString &key);
     void setInfoValue(const QString &value);
 
-    void createCpuSwitcherGroup();
     QString getLineKey();
-
-public slots:
-    void setRadioButtonRowStatus();
 
 signals:
     void clicked(const QString &context) const;
@@ -48,9 +44,7 @@ private:
     QLabel *m_keyLabel = nullptr;
     QLabel *m_valueLabel = nullptr;
     QString m_key;
-//    QRadioButton *ondemand_radio = nullptr;
-//    QRadioButton *powersave_radio = nullptr;
-//    QRadioButton *performance_radio = nullptr;
+    int keyWidth;
 };
 
 #endif // INFOITEMLINE_H

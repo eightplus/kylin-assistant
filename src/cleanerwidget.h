@@ -25,8 +25,6 @@
 #include "../cleaner/cleanerdetailwidget.h"
 #include <QStackedWidget>
 
-class SessionDispatcher;
-class SystemDispatcher;
 class Toolkits;
 class MainWindow;
 
@@ -38,8 +36,6 @@ public:
     explicit CleanerWidget(QWidget *parent = 0);
     ~CleanerWidget();
     void setParentWindow(MainWindow* window) { p_mainwindow = window;}
-//    void setSessionDbusProxy(SessionDispatcher* dispatcher) { sessionProxy = dispatcher;}
-//    void setSystemDbusProxy(SystemDispatcher* dispatcher) { systemProxy = dispatcher;}
     void setToolKits(Toolkits* kits) { toolKits = kits;}
     void initUI(QString skin);
     void resetSkin(QString skin);
@@ -67,8 +63,6 @@ private:
     CleanerMainWidget *main_widget;
     CleanerDetailWidget *detail_widget;
     MainWindow *p_mainwindow;
-//    SystemDispatcher *systemProxy;
-//    SessionDispatcher *sessionProxy;
     Toolkits *toolKits;
 };
 

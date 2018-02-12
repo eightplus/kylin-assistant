@@ -21,8 +21,6 @@
 #define THEMEWIDGET_H
 
 #include <QWidget>
-#include "../component/normalwidget.h"
-#include "../component/normalcard.h"
 
 class QLabel;
 class QPushButton;
@@ -60,9 +58,7 @@ signals:
 private:
     ThemeView *m_themeView = nullptr;
     QStringList syslist;
-//    NormalWidget *list_widget;
-    QList<NormalCard *> card_list;
-    QLabel *label;
+    QLabel *label = nullptr;
 };
 
 #endif // THEMEWIDGET_H

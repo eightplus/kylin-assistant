@@ -20,7 +20,7 @@
 #include <QDialog>
 #include <QSettings>
 #include "../../component/kylineditbutton.h"
-#include "../../component/kylintitlebar.h"
+#include "../../component/mytitlebar.h"
 #include "../../component/toolkits.h"
 #include "../../component/utils.h"
 
@@ -40,14 +40,17 @@ public:
   ~ShredDialog();
   void setLanguage();
   void initConnect();
-  void initTitleBar();
-  QString getCurrrentSkinName();
-  void resetSkin();
+//  void initTitleBar();
+//  QString getCurrrentSkinName();
+//  void resetSkin();
 
   void moveCenter();
 
 protected:
     void closeEvent(QCloseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 public slots:
     void onSelectButtonClicked();
@@ -59,11 +62,13 @@ public slots:
 
 private:
 //    ShredManager *process_plugin;
-    KylinTitleBar *title_bar;
+    MyTitleBar *title_bar;
     KylinEditButton *select_btn;
     QLineEdit *select_edit;
     QPushButton *shred_btn;
     QPushButton *cacel_btn;
     Toolkits *toolkits;
-    QSettings *shredSettings;
+    QPoint dragPosition;
+    bool mousePressed;
+//    QSettings *shredSettings;
 };

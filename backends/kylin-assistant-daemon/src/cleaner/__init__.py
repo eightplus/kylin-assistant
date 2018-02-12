@@ -125,6 +125,8 @@ class OneKeyClean():
                     cachesize += os.path.getsize(oneswcenter)
             total_dic['cache'] = common.confirm_filesize_unit(cachesize)
             sesdaemon.total_data_transmit('c', total_dic['cache'])
+        # add by kobe
+        sesdaemon.scan_complete_msg('onekey')
 
     def clean_all_onekey_crufts(self, sysdaemon, mode_list):
         homedir = return_homedir_sysdaemon()

@@ -32,7 +32,7 @@ class FileManagerWidget : public SettingModulePage
 {
     Q_OBJECT
 public:
-    explicit FileManagerWidget(QWidget *parent = 0/*, SessionDispatcher *proxy = 0*/);
+    explicit FileManagerWidget(QWidget *parent = 0);
     ~FileManagerWidget();
     void setLanguage();
     void initConnect();

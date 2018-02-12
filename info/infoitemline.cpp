@@ -21,6 +21,7 @@
 
 #include <QHBoxLayout>
 #include <QObject>
+#include <QDebug>
 
 inline const QString covertKeyName(const QString &key)
 {
@@ -394,100 +395,25 @@ void InfoItemLine::setInfoKey(const QString &key)
     const QString name = covertKeyName(key);
     m_keyLabel->setText(name);
     m_key = key;
+
+    QFont ft;
+    QFontMetrics fm(ft);
+    this->keyWidth = fm.width(key);
 }
 
 void InfoItemLine::setInfoValue(const QString &value)
 {
-    m_valueLabel->setText(value);
+    int maxWidth = this->width() - keyWidth - 40;
+
+    QFont ft;
+    QFontMetrics fm(ft);
+    QString elided_text = fm.elidedText(value, Qt::ElideRight, maxWidth);
+    m_valueLabel->setText(elided_text);
+    if(elided_text.endsWith("…"))
+        m_valueLabel->setToolTip(value);
 }
 
 QString InfoItemLine::getLineKey()
 {
     return m_key;
-}
-
-void InfoItemLine::createCpuSwitcherGroup()
-{
-    /*ondemand_radio = new QRadioButton();
-    ondemand_radio->setFocusPolicy(Qt::NoFocus);
-    ondemand_radio->setFixedHeight(30);
-    ondemand_radio->setText(tr("Ondemand"));
-    ondemand_radio->setObjectName("ondemandradio");
-    ondemand_radio->setChecked(false);
-    ondemand_radio->hide();
-    powersave_radio = new QRadioButton();
-    powersave_radio->setFixedHeight(30);
-    powersave_radio->setFocusPolicy(Qt::NoFocus);
-    powersave_radio->setText(tr("Powersave"));
-    powersave_radio->setObjectName("powersaveradio");
-    powersave_radio->setChecked(false);
-    powersave_radio->hide();
-    performance_radio = new QRadioButton();
-    performance_radio->setFixedHeight(30);
-    performance_radio->setFocusPolicy(Qt::NoFocus);
-    performance_radio->setText(tr("Performance"));
-    performance_radio->setObjectName("performanceradio");
-    performance_radio->setChecked(false);
-    performance_radio->hide();
-    connect(ondemand_radio, SIGNAL(clicked()), this, SLOT(setRadioButtonRowStatus()));
-    connect(powersave_radio, SIGNAL(clicked()), this, SLOT(setRadioButtonRowStatus()));
-    connect(performance_radio, SIGNAL(clicked()), this, SLOT(setRadioButtonRowStatus()));
-    layout = new QHBoxLayout();
-    layout->setSpacing(10);
-    layout->addWidget(ondemand_radio);
-    layout->addWidget(powersave_radio);
-    layout->addWidget(performance_radio);
-    layout->addStretch();
-
-    QString cur_cpu = systemProxy->get_current_cpufreq_scaling_governer_qt();
-    QList<QString>::Iterator it = cpulist.begin(), itend = cpulist.end();
-    bool showed = false;
-    for(;it != itend; it++)
-    {
-        if(*it == "ondemand") {
-            if (cur_cpu == *it) {
-                ondemand_radio->setChecked(true);
-                powersave_radio->setChecked(false);
-                performance_radio->setChecked(false);
-            }
-            ondemand_radio->show();
-            showed = true;
-        }
-        else if(*it == "powersave") {
-            if (cur_cpu == *it) {
-                powersave_radio->setChecked(true);
-                ondemand_radio->setChecked(false);
-                performance_radio->setChecked(false);
-            }
-            powersave_radio->show();
-            showed = true;
-        }
-        else if(*it == "performance") {
-            if (cur_cpu == *it) {
-                performance_radio->setChecked(true);
-                ondemand_radio->setChecked(false);
-                powersave_radio->setChecked(false);
-            }
-            performance_radio->show();
-            showed = true;
-        }
-    }*/
-}
-
-void InfoItemLine::setRadioButtonRowStatus()
-{
-    //emit this->clicked("aaa");
-
-    /*QObject *obj = sender(); //返回发出信号的对象，用QObject类型接收
-    QRadioButton* pbtn = qobject_cast<QRadioButton*>(obj);
-    QString obj_name = pbtn->objectName();
-    if(obj_name == "ondemandradio") {
-        systemProxy->adjust_cpufreq_scaling_governer_qt("ondemand");
-    }
-    else if(obj_name == "powersaveradio") {
-        systemProxy->adjust_cpufreq_scaling_governer_qt("powersave");
-    }
-    else if(obj_name == "performanceradio") {
-        systemProxy->adjust_cpufreq_scaling_governer_qt("performance");
-    }*/
 }

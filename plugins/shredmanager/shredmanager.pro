@@ -33,9 +33,10 @@ HEADERS += \
     ../../component/alertdialog.h \
     ../../component/utils.h \
     ../../component/toolkits.h \
-    ../../component/kylintitlebar.h \
+    ../../component/mytitlebar.h \
     ../../component/systembutton.h \
-    ../../component/kylineditbutton.h
+    ../../component/kylineditbutton.h \
+    ../widgets/mytristatebutton.h
 
 SOURCES += \
     filewipe.cpp \
@@ -43,9 +44,10 @@ SOURCES += \
     shreddialog.cpp \
     ../../component/alertdialog.cpp \
     ../../component/toolkits.cpp \
-    ../../component/kylintitlebar.cpp \
+    ../../component/mytitlebar.cpp \
     ../../component/systembutton.cpp \
-    ../../component/kylineditbutton.cpp
+    ../../component/kylineditbutton.cpp \
+    ../widgets/mytristatebutton.cpp
 
 OTHER_FILES += \
     shred.json

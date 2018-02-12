@@ -90,6 +90,7 @@ public slots:
     void aboutUs();
     void startDbusDaemon();
     void onInitDataFinished();
+    void onPluginModuleError(const QString &info);
 
 private:
     QStackedWidget *m_topStack = nullptr;

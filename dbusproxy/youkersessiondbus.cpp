@@ -312,6 +312,7 @@ void SessionDispatcher::handler_total_data_transmit(QString flag, QString msg)
 //    return locale;
 //}
 
+//一键扫描
 void SessionDispatcher::onekey_scan_function_qt(QStringList selectedList)
 {
 //    QMap<QString, QVariant> data;
@@ -333,6 +334,7 @@ void SessionDispatcher::onekey_scan_function_qt(QStringList selectedList)
     }*/
 }
 
+//系统扫描
 void SessionDispatcher::scanSystemCleanerItems(QMap<QString, QVariant> data)
 {
     sessioniface->call("get_scan_result", data);

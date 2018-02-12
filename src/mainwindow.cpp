@@ -23,7 +23,6 @@
 #include <QDesktopWidget>
 #include <QGraphicsDropShadowEffect>
 #include <QStackedLayout>
-#include "shadowwidget.h"
 #include "../component/utils.h"
 #include "../component/threadpool.h"
 #include "dataworker.h"
@@ -255,6 +254,7 @@ void MainWindow::initWidgets()
     m_bottomStack->addWidget(setting_widget);
 
     box_widget = new BoxWidget(this, this->arch, this->osName, getPluginsDirectory());
+    connect(box_widget, SIGNAL(pluginModuleError(QString)), this, SLOT(onPluginModuleError(QString)));
     m_bottomStack->addWidget(box_widget);
 
     centralWidget = new QWidget;
@@ -274,7 +274,6 @@ void MainWindow::initWidgets()
 
 void MainWindow::onInitDataFinished()
 {
-    qDebug() << "onInitDataFinished......";
     this->battery = m_dataWorker->isBatteryExist();
     this->sensor = m_dataWorker->isSensorExist();
     this->m_cpulist = m_dataWorker->cpuModeList();
@@ -550,6 +549,10 @@ void MainWindow::moveCenter()
     this->raise();
 }
 
+void MainWindow::onPluginModuleError(const QString &info)
+{
+    toolKits->alertMSG(this->geometry().topLeft().x(), this->geometry().topLeft().y(), info);
+}
 
 QString MainWindow::accessOSName()
 {
@@ -748,15 +751,6 @@ void MainWindow::startDbusDaemon()
 //    qDebug() << "mainwindow thread id=" << QThread::currentThreadId();
     m_dataWorker = new DataWorker(this->desktop);
 
-    /*QThread *thread = new QThread;
-    m_dataWorker->moveToThread(thread);
-    thread->start();
-    connect(thread, SIGNAL(started()), m_dataWorker, SLOT(doWork()), Qt::QueuedConnection);
-    connect(m_dataWorker, SIGNAL(dataLoadFinished()), this, SLOT(onInitDataFinished()), Qt::QueuedConnection);
-    connect(thread, &QThread::finished, this, [=] {
-        thread->deleteLater();
-        qDebug() << "DataWorker thread finished......";
-    });*/
 
     QThread *w_thread = ThreadPool::Instance()->createNewThread();
     m_dataWorker->moveToThread(w_thread);

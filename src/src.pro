@@ -59,13 +59,15 @@ SOURCES += main.cpp \
     settingwidget.cpp \
     boxwidget.cpp \
     pluginmanager.cpp \
+    aboutdialog.cpp \
+    shadowwidget.cpp \
+    dataworker.cpp \
     ../component/kylinlistmodel.cpp \
     ../component/kylinbutton.cpp \
     ../component/kylinmenu.cpp \
     ../component/kylintoolbutton.cpp \
     ../component/kylinswitcher.cpp \
     ../component/systembutton.cpp \
-    ../component/kylintitlebar.cpp \
     ../component/threadpool.cpp \
     ../component/mythread.cpp \
     ../component/selectlistwidget.cpp \
@@ -78,6 +80,7 @@ SOURCES += main.cpp \
     ../info/infogui.cpp \
     ../info/infoitemline.cpp \
     ../info/infoitemsgroup.cpp \
+    ../info/devicemanager.cpp \
     ../setting/settinglistview.cpp \
     ../setting/settingmodel.cpp \
     ../setting/settingdelegate.cpp \
@@ -85,22 +88,17 @@ SOURCES += main.cpp \
     ../setting/iconwidget.cpp \
     ../setting/mousewidget.cpp \
     ../setting/soundwidget.cpp \
-#    ../setting/animationwidget.cpp \
     ../setting/menuwidget.cpp \
     ../setting/panelwidget.cpp \
     ../setting/windowwidget.cpp \
     ../setting/fontwidget.cpp \
     ../setting/touchpadwidget.cpp \
-#    ../setting/deadpixelwidget.cpp \
     ../setting/energywidget.cpp \
     ../setting/filemanagerwidget.cpp \
     ../setting/theme/themeview.cpp \
     ../setting/theme/themedelegate.cpp \
-    ../component/agentlistitem.cpp \
     ../component/quibo.cpp \
     ../component/kylinfontdialog.cpp \
-    ../component/kylinlistwidgetitem.cpp \
-    ../component/kylinlistwidget.cpp \
     ../component/loadinglabel.cpp \
     ../component/alertdialog.cpp \
     ../component/toolkits.cpp \
@@ -108,19 +106,12 @@ SOURCES += main.cpp \
     ../cleaner/cleanermainwidget.cpp \
     ../dbusproxy/youkersystemdbus.cpp \
     ../dbusproxy/youkersessiondbus.cpp \
-    ../info/devicemanager.cpp \
-    aboutdialog.cpp \
-    ../component/tipdialog.cpp \
     ../component/toolbutton.cpp \
     ../component/cleangroup.cpp \
     ../component/cleanbutton.cpp \
     ../component/cleansubgroup.cpp \
     ../component/cleansubbutton.cpp \
-    ../component/normalwidget.cpp \
-    ../component/normalcard.cpp \
-    shadowwidget.cpp \
     ../component/basewidget.cpp \
-    dataworker.cpp \
     ../qdbusservice/systemdbus/data/systemdbusproxy.cpp \
     ../qdbusservice/systemdbus/data/systeminterface.cpp \
     ../qdbusservice/systemdbus/customdata.cpp \
@@ -138,6 +129,9 @@ HEADERS  += mainwindow.h \
     settingwidget.h \
     boxwidget.h \
     pluginmanager.h \
+    aboutdialog.h \
+    shadowwidget.h \
+    dataworker.h \
     ../component/plugininterface.h \
     ../component/kylinlistmodel.h \
     ../component/utils.h \
@@ -146,7 +140,6 @@ HEADERS  += mainwindow.h \
     ../component/kylintoolbutton.h \
     ../component/kylinswitcher.h \
     ../component/systembutton.h \
-    ../component/kylintitlebar.h \
     ../component/threadpool.h \
     ../component/mythread.h \
     ../component/selectlistwidget.h \
@@ -159,6 +152,7 @@ HEADERS  += mainwindow.h \
     ../info/infogui.h \
     ../info/infoitemline.h \
     ../info/infoitemsgroup.h \
+    ../info/devicemanager.h \
     ../setting/settingmodulelpage.h \
     ../setting/settinglistview.h \
     ../setting/settingmodel.h \
@@ -167,22 +161,17 @@ HEADERS  += mainwindow.h \
     ../setting/iconwidget.h \
     ../setting/mousewidget.h \
     ../setting/soundwidget.h \
-#    ../setting/animationwidget.h \
     ../setting/menuwidget.h \
     ../setting/panelwidget.h \
     ../setting/windowwidget.h \
     ../setting/fontwidget.h \
     ../setting/touchpadwidget.h \
-#    ../setting/deadpixelwidget.h \
     ../setting/energywidget.h \
     ../setting/filemanagerwidget.h \
     ../setting/theme/themeview.h \
     ../setting/theme/themedelegate.h \
-    ../component/agentlistitem.h \
     ../component/quibo.h \
     ../component/kylinfontdialog.h \
-    ../component/kylinlistwidgetitem.h \
-    ../component/kylinlistwidget.h \
     ../component/loadinglabel.h \
     ../component/alertdialog.h \
     ../component/toolkits.h \
@@ -190,19 +179,12 @@ HEADERS  += mainwindow.h \
     ../cleaner/cleanermainwidget.h \
     ../dbusproxy/youkersystemdbus.h \
     ../dbusproxy/youkersessiondbus.h \
-    ../info/devicemanager.h \
-    aboutdialog.h \
-    ../component/tipdialog.h \
     ../component/toolbutton.h \
     ../component/cleangroup.h \
     ../component/cleanbutton.h \
     ../component/cleansubgroup.h \
     ../component/cleansubbutton.h \
-    ../component/normalwidget.h \
-    ../component/normalcard.h \
-    shadowwidget.h \
     ../component/basewidget.h \
-    dataworker.h \
     ../qdbusservice/systemdbus/data/systemdbusproxy.h \
     ../qdbusservice/systemdbus/data/systeminterface.h \
     ../qdbusservice/systemdbus/data/systemdbushandler.h \
@@ -211,8 +193,7 @@ HEADERS  += mainwindow.h \
 
 FORMS    += \
     ../component/quibo.ui \
-    ../component/alertdialog.ui \
-    ../component/normalcard.ui
+    ../component/alertdialog.ui
 
 RESOURCES += \
     img.qrc

@@ -34,10 +34,12 @@ InfoUnitWidget::InfoUnitWidget(QString title, QWidget *parent)
 
     //kobe: QHBoxLayout *mainLayout = static_cast<QHBoxLayout *>(layout());
     m_titleLabel = new QLabel;
+    m_titleLabel->setStyleSheet("QLabel{background-color:transparent;color:#000000;font-size:15px;font-weight:bold;}");
     m_titleLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
     m_vendorLabel = new QLabel;
+    m_titleLabel->setStyleSheet("QLabel{background-color:transparent;}");
     m_vendorLabel->setFixedSize(48, 48);
 
     this->setInfoTitle(title);
@@ -50,7 +52,7 @@ InfoUnitWidget::InfoUnitWidget(QString title, QWidget *parent)
     headerLayout->setAlignment(m_vendorLabel, Qt::AlignCenter);
 
     QFrame *headerWidget = new QFrame;
-    headerWidget->setStyleSheet("QFrame {padding: 5px 0;} QFrame:hover {background-color: rgba(253, 245, 230, 0.1);border-radius: 4px;}");
+    headerWidget->setStyleSheet("QFrame {padding:5px 0;} QFrame:hover {background-color:rgba(141,238,238,0.2);border-radius:4px;}");
     headerWidget->setLayout(headerLayout);
 
     m_infoLayout = new QVBoxLayout;
@@ -96,9 +98,10 @@ void InfoUnitWidget::setInfoVendor(const QString &vendor)
     QPainterPath painterPath;
     painterPath.addEllipse(QRect(0, 0, 48, 48));
 
-    const QPixmap pixmap = QPixmap(vendor).scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    QPixmap pixmap = QPixmap(vendor);
     if (pixmap.isNull())
         return;
+    pixmap = pixmap.scaled(48, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
     QPixmap pic(48, 48);
     pic.fill(Qt::transparent);

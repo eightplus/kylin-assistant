@@ -635,8 +635,7 @@ void DataWorker::onRequestFontData()
     emit sendFontValue(current_font);
 
     QString desktop_font = m_sessionInterface->get_desktop_font_qt();
-    if(desktop_font.isEmpty())
-    {
+    if(desktop_font.isEmpty()) {
 //        sessionproxy->set_desktop_font_qt_default();
         if (this->desktop == "mate" || this->desktop == "MATE" || this->desktop == "UKUI" || this->desktop == "ukui")
             desktop_font = "Sans 10";

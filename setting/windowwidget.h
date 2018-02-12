@@ -33,7 +33,7 @@ class WindowWidget : public SettingModulePage
 {
     Q_OBJECT
 public:
-    explicit WindowWidget(QWidget *parent = 0, /*SessionDispatcher *proxy = 0, */QString cur_desktop = "");
+    explicit WindowWidget(QWidget *parent = 0, QString cur_desktop = "");
     ~WindowWidget();
     void setLanguage();
     void initConnect();

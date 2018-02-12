@@ -21,8 +21,8 @@
 #define ABOUTDIALOG_H
 
 #include <QDialog>
-#include "../component/kylintitlebar.h"
 #include <QTextEdit>
+#include <QLabel>
 #include <QTextBrowser>
 #include "../component/systembutton.h"
 
@@ -51,7 +51,6 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
 
 private:
-//    KylinTitleBar *title_bar;
     QPoint m_dragPosition; //移动的距离
     bool m_mousePressed; //按下鼠标左键
     QWidget *baseWidget;

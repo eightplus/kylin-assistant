@@ -142,7 +142,6 @@ void SettingWidget::initSettingsUI(QStringList cpulist, QString cpu, bool has_ba
     launcher_widget = new MenuWidget(this, desktop);
     panel_widget = new PanelWidget(this, desktop, battery);
     window_widget = new WindowWidget(this, desktop);
-//    font_widget = new FontWidget(this, sessionProxy, p_mainwindow, desktop, skin);
     font_widget = new FontWidget(this, p_mainwindow, desktop, "");//TODO:read skin from ini file
     touchpad_widget = new TouchpadWidget(this, desktop);
 //    deadpixel_widget = new DeadpixelWidget(this);

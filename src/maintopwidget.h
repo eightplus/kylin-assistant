@@ -50,6 +50,8 @@ public:
     QString getSafeScanDate();
     QString getOneKeyFlag();
 
+    void setDoingLabelText(const QString &description, int defaultWidth = 700);
+
     void initTitlebarLeftContent();
     void initTitlebarRightContent();
     void initContentLeftContent();

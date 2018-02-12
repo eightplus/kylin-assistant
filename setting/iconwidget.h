@@ -33,7 +33,7 @@ class IconWidget : public SettingModulePage
 {
     Q_OBJECT
 public:
-    explicit IconWidget(QWidget *parent = 0, /*SessionDispatcher *proxy = 0,*/ QString cur_desktop = "");
+    explicit IconWidget(QWidget *parent = 0, QString cur_desktop = "");
     ~IconWidget();
     void setLanguage();
     void initConnect();

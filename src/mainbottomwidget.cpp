@@ -56,7 +56,7 @@ MainBottomWidget::MainBottomWidget(QWidget *parent, QString arch, QString os/*, 
     box_title->setFixedWidth(240);
     box_title->setCursor(Qt::PointingHandCursor);
     box_title->setFocusPolicy(Qt::NoFocus);
-    box_title->setStyleSheet("QPushButton{background:#ffffff;border:none;text-align:left;font-family: 方正黑体_GBK;font-size:24px;color:#000000;}QPushButton:hover{color:#3f96e4;}");//background:transparent;
+    box_title->setStyleSheet("QPushButton{background-color:transparent;border:none;text-align:left;font-family: 方正黑体_GBK;font-size:24px;color:#000000;}QPushButton:hover{color:#3f96e4;}");//background:transparent;
 //    box_title->installEventFilter(this);
     box_tip = new QLabel();
 //    more_text_btn = new QPushButton();

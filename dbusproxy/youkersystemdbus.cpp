@@ -157,6 +157,7 @@ bool SystemDispatcher::delete_file_qt(QString filename)
     return reply.value();
 }
 
+//系统清理
 void SystemDispatcher::cleanAllSelectItems(QMap<QString, QVariant> selectMap)
 {
     systemiface->call("remove_select_items", selectMap);
@@ -495,6 +496,7 @@ QString SystemDispatcher::delete_plymouth_qt(QString plymouthName) {
     return reply.value();
 }
 
+//一键清理
 void SystemDispatcher::clean_by_main_one_key_qt()
 {
     QStringList argList;

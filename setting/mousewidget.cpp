@@ -249,8 +249,6 @@ void MouseWidget::mousewidget_notify_int(QString key, int value)
 void MouseWidget::setMouseCursorTheme(QString selectTheme)
 {
     emit resetMouseCursorTheme(selectTheme);
-//    sessionproxy->set_cursor_theme_qt(selectTheme);
-//    systemproxy->set_cursor_theme_with_root_qt(selectTheme);
 }
 
 void MouseWidget::setRadioButtonRowStatus(/*bool status*/)

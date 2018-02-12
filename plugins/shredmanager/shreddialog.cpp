@@ -20,7 +20,7 @@
 #include "shreddialog.h"
 #include "filewipe.h"
 //#include "shredmanager.h"
-
+#include <QObject>
 #include <QStringList>
 #include <QCloseEvent>
 #include <QBitmap>
@@ -40,6 +40,7 @@
 //    :QDialog(parent)
 ShredDialog::ShredDialog(QWidget *parent) :
     QWidget(parent)
+    , mousePressed(false)
 {
     setWindowFlags(Qt::FramelessWindowHint);
 //    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//Attention: Qt::WindowCloseButtonHint make showMinimized() valid
@@ -51,11 +52,13 @@ ShredDialog::ShredDialog(QWidget *parent) :
     this->setFixedSize(500, 471);
 //    process_plugin = plugin;
 
-    shredSettings = new QSettings(KYLIN_COMPANY_SETTING, KYLIN_SETTING_FILE_NAME_SETTING);
-    shredSettings->setIniCodec("UTF-8");
+//    shredSettings = new QSettings(KYLIN_COMPANY_SETTING, KYLIN_SETTING_FILE_NAME_SETTING);
+//    shredSettings->setIniCodec("UTF-8");
 
-    title_bar = new KylinTitleBar();
-    initTitleBar();
+//    title_bar = new KylinTitleBar();
+//    initTitleBar();
+    title_bar = new MyTitleBar(tr("Shred Manager"), false, this);
+    title_bar->setFixedSize(this->width(), TITLE_BAR_HEIGHT);
 
     toolkits = new Toolkits(0, this->width(), this->height());
 
@@ -108,17 +111,16 @@ ShredDialog::ShredDialog(QWidget *parent) :
 
 ShredDialog::~ShredDialog()
 {
-    if (shredSettings != NULL)
-    {
-        shredSettings->sync();
-        delete shredSettings;
-        shredSettings = NULL;
-    }
+//    if (shredSettings != NULL)
+//    {
+//        shredSettings->sync();
+//        delete shredSettings;
+//        shredSettings = NULL;
+//    }
 }
 
 void ShredDialog::setLanguage()
 {
-    this->setWindowTitle(tr("Shred Manager"));
     select_edit->setText(tr("No select any file which need to be shredded"));
     shred_btn->setText(tr("Shred File"));
     cacel_btn->setText(tr("Deselect"));
@@ -130,7 +132,7 @@ void ShredDialog::initConnect()
     connect(shred_btn, SIGNAL(clicked()), this, SLOT(onShredButtonClicked()));
     connect(cacel_btn, SIGNAL(clicked()), this, SLOT(onCacelButtonClicked()));
 //    connect(title_bar, SIGNAL(showMinDialog()), this, SLOT(onMinButtonClicked()));
-    connect(title_bar,SIGNAL(closeDialog()), this, SLOT(onCloseButtonClicked()));
+    connect(title_bar,SIGNAL(closeSignal()), this, SLOT(onCloseButtonClicked()));
 }
 
 void ShredDialog::onCloseButtonClicked()
@@ -144,66 +146,66 @@ void ShredDialog::onCloseButtonClicked()
 ////    this->hide();
 //}
 
-QString ShredDialog::getCurrrentSkinName()
-{
-    shredSettings->beginGroup("Background");
-    QString skin = shredSettings->value("Path").toString();
-    if(skin.isEmpty()) {
-        skin = ":/background/res/skin/1.png";
-    }
-    else {
-        QStringList skinlist;
-        QString path = "/var/lib/kylin-assistant-daemon/default/";
-        QDir picdir(path);
-        picdir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
-        picdir.setSorting(QDir::Size | QDir::Reversed);
-        QStringList filters;
-        filters << "*.jpg" << "*.png";
-        picdir.setNameFilters(filters);
-        QFileInfoList list = picdir.entryInfoList();
-        if(list.size() < 1) {
-            skinlist << ":/background/res/skin/1.png" << ":/background/res/skin/2.png" << ":/background/res/skin/3.png" << ":/background/res/skin/4.png";
-        }
-        else {
-            for (int j = 0; j < list.size(); ++j) {
-                QFileInfo fileInfo = list.at(j);
-                skinlist << path + fileInfo.fileName();
-            }
-            skinlist << ":/background/res/skin/1.png" << ":/background/res/skin/2.png" << ":/background/res/skin/3.png" << ":/background/res/skin/4.png";
-        }
+//QString ShredDialog::getCurrrentSkinName()
+//{
+//    shredSettings->beginGroup("Background");
+//    QString skin = shredSettings->value("Path").toString();
+//    if(skin.isEmpty()) {
+//        skin = ":/background/res/skin/1.png";
+//    }
+//    else {
+//        QStringList skinlist;
+//        QString path = "/var/lib/kylin-assistant-daemon/default/";
+//        QDir picdir(path);
+//        picdir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+//        picdir.setSorting(QDir::Size | QDir::Reversed);
+//        QStringList filters;
+//        filters << "*.jpg" << "*.png";
+//        picdir.setNameFilters(filters);
+//        QFileInfoList list = picdir.entryInfoList();
+//        if(list.size() < 1) {
+//            skinlist << ":/background/res/skin/1.png" << ":/background/res/skin/2.png" << ":/background/res/skin/3.png" << ":/background/res/skin/4.png";
+//        }
+//        else {
+//            for (int j = 0; j < list.size(); ++j) {
+//                QFileInfo fileInfo = list.at(j);
+//                skinlist << path + fileInfo.fileName();
+//            }
+//            skinlist << ":/background/res/skin/1.png" << ":/background/res/skin/2.png" << ":/background/res/skin/3.png" << ":/background/res/skin/4.png";
+//        }
 
-        QList<QString>::Iterator it = skinlist.begin(), itend = skinlist.end();
-        bool flag = false;
-        for(;it != itend; it++)
-        {
-            if(*it == skin) {
-                flag = true;
-                break;
-            }
-        }
-        if (flag == false) {
-            skin = skinlist.at(0);
-        }
-    }
-    shredSettings->endGroup();
-    shredSettings->sync();
-    return skin;
-}
+//        QList<QString>::Iterator it = skinlist.begin(), itend = skinlist.end();
+//        bool flag = false;
+//        for(;it != itend; it++)
+//        {
+//            if(*it == skin) {
+//                flag = true;
+//                break;
+//            }
+//        }
+//        if (flag == false) {
+//            skin = skinlist.at(0);
+//        }
+//    }
+//    shredSettings->endGroup();
+//    shredSettings->sync();
+//    return skin;
+//}
 
-void ShredDialog::initTitleBar()
-{
-    QString skin = this->getCurrrentSkinName();
-    title_bar->setTitleWidth(500);
-    title_bar->setTitleName(tr("Shred Manager"));
-//    title_bar->setTitleBackgound(":/background/res/skin/1.png");
-    title_bar->setTitleBackgound(skin);
-}
+//void ShredDialog::initTitleBar()
+//{
+//    QString skin = this->getCurrrentSkinName();
+//    title_bar->setTitleWidth(500);
+//    title_bar->setTitleName(tr("Shred Manager"));
+////    title_bar->setTitleBackgound(":/background/res/skin/1.png");
+//    title_bar->setTitleBackgound(skin);
+//}
 
-void ShredDialog::resetSkin()
-{
-    QString skin = this->getCurrrentSkinName();
-    title_bar->resetBackground(skin);
-}
+//void ShredDialog::resetSkin()
+//{
+//    QString skin = this->getCurrrentSkinName();
+//    title_bar->resetBackground(skin);
+//}
 
 //void ShredDialog::onSelecteComboActivated(int index)
 //{
@@ -285,4 +287,31 @@ void ShredDialog::moveCenter()
 
     this->move(primaryGeometry.x() + (primaryGeometry.width() - this->width())/2,
                primaryGeometry.y() + (primaryGeometry.height() - this->height())/2);
+}
+
+void ShredDialog::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        this->dragPosition = event->globalPos() - frameGeometry().topLeft();
+        this->mousePressed = true;
+    }
+    QWidget::mousePressEvent(event);
+}
+
+void ShredDialog::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        this->mousePressed = false;
+    }
+
+    QWidget::mouseReleaseEvent(event);
+}
+
+void ShredDialog::mouseMoveEvent(QMouseEvent *event)
+{
+    if (this->mousePressed) {
+        move(event->globalPos() - this->dragPosition);
+    }
+
+    QWidget::mouseMoveEvent(event);
 }

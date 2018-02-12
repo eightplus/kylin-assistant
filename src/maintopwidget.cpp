@@ -234,18 +234,18 @@ void MainTopWidget::initContentLeftContent()
         result_label->setObjectName("smallWhiteLabel");
         result_label->setFixedWidth(460);
         suggest_label->setFixedWidth(460);
-        doing_label->setFixedWidth(460);
+        doing_label->setFixedWidth(700);//460
     }
     else {
         loading_label = new LoadingLabel(this, "clean");
         suggest_label->setFixedWidth(550);
-        doing_label->setFixedWidth(550);
+        doing_label->setFixedWidth(700);//550
     }
     loading_label->show();
 
     suggest_label->setObjectName("whiteLabel");
     suggest_label->setWordWrap(true);//QLabel自动换行
-    doing_label->setWordWrap(true);//QLabel自动换行
+//    doing_label->setWordWrap(true);//QLabel自动换行
     doing_label->setObjectName("whiteLabel");
     doing_label->hide();
 
@@ -382,13 +382,13 @@ void MainTopWidget::showCleanOverStatus()
 
 void MainTopWidget::showCleanerData(const QStringList &data)
 {
-    if(data.length() == 2)
-    {
-        doing_label->setText(tr("Cleaning: ") + data.at(0).split(":").at(1));
+    if(data.length() == 2) {
+        this->setDoingLabelText(tr("Cleaning: ") + data.at(0).split(":").at(1));
+//        doing_label->setText(tr("Cleaning: ") + data.at(0).split(":").at(1));
     }
-    else if(data.length() == 3)
-    {
-        doing_label->setText(data.at(0).split(":").at(1) + tr(", Percent is: ") + data.at(1).split(":").at(1) + tr("%, Status is: ") + data.at(2).split(":").at(1));
+    else if(data.length() == 3) {
+        this->setDoingLabelText(data.at(0).split(":").at(1) + tr(", Percent is: ") + data.at(1).split(":").at(1) + tr("%, Status is: ") + data.at(2).split(":").at(1));
+//        doing_label->setText(data.at(0).split(":").at(1) + tr(", Percent is: ") + data.at(1).split(":").at(1) + tr("%, Status is: ") + data.at(2).split(":").at(1));
     }
 }
 
@@ -428,13 +428,13 @@ void MainTopWidget::showCleanerStatus(const QString &status, const QString &doma
 
 void MainTopWidget::showCleanerError(const QString &status)
 {
-    if(status.contains("Non-existent:"))
-    {
-        if(status.split(":").at(1).length() > 0)
-            doing_label->setText(status.split(":").at(1) + tr(" does not exist"));
+    if(status.contains("Non-existent:")) {
+        if(status.split(":").at(1).length() > 0) {
+            this->setDoingLabelText(status.split(":").at(1) + tr(" does not exist"));
+//            doing_label->setText(status.split(":").at(1) + tr(" does not exist"));
+        }
     }
-    else if(status.contains("Working:Chromium"))
-    {
+    else if(status.contains("Working:Chromium")) {
         doing_label->setText(tr("Chromium Browser is running......"));
     }
 }
@@ -514,8 +514,10 @@ void MainTopWidget::showCleanReciveError(const QString &status)
     }
     else
     {
-        if(status.contains("Non-existent:"))
-            doing_label->setText(status.split(":").at(1) + tr(" does not exist"));
+        if(status.contains("Non-existent:")) {
+            this->setDoingLabelText(status.split(":").at(1) + tr(" does not exist"));
+//            doing_label->setText(status.split(":").at(1) + tr(" does not exist"));
+        }
     }
 }
 
@@ -530,7 +532,8 @@ void MainTopWidget::displayAnimation()
 
 void MainTopWidget::getScanResult(QString msg)
 {
-    doing_label->setText(tr("Scanning:") + msg);//正在扫描:
+    this->setDoingLabelText(tr("Scanning:") + msg);
+//    doing_label->setText(tr("Scanning:") + msg);//正在扫描:
 }
 
 void MainTopWidget::finishScanResult(QString msg)
@@ -652,7 +655,8 @@ void MainTopWidget::getCleanResult(QString msg/*, QString flag*/)
         this->writeFixCleanDate();
         //清理完毕后显示清理总数
         result_label->setText(tr("The lastest cleanup time is ") + this->getCurrentDateTime());
-        doing_label->setText(tr("Cleanup Cookies:") +cookies + tr("; Garbage:") + garbage + tr("; Historical records:") +trace );
+        this->setDoingLabelText(tr("Cleanup Cookies:") +cookies + tr("; Garbage:") + garbage + tr("; Historical records:")+trace, 460);
+//        doing_label->setText(tr("Cleanup Cookies:") +cookies + tr("; Garbage:") + garbage + tr("; Historical records:") +trace);
         trace.clear();
         cookies.clear();
         garbage.clear();
@@ -885,4 +889,13 @@ QString MainTopWidget::getOneKeyFlag() {
     pSettings->endGroup();
     pSettings->sync();
     return value;
+}
+
+void MainTopWidget::setDoingLabelText(const QString &description, int defaultWidth)
+{
+    QFont font;
+    font.setPixelSize(20);
+    const QFontMetrics fm(font);
+    QString elided_text = fm.elidedText(description, Qt::ElideRight, defaultWidth);
+    doing_label->setText(elided_text);
 }

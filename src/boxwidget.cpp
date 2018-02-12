@@ -18,12 +18,14 @@
  */
 
 #include "boxwidget.h"
-#include <QDebug>
 #include "../component/plugininterface.h"
 #include "pluginmanager.h"
+
+#include <QDebug>
 #include <QGridLayout>
 #include <QStackedLayout>
-#include "../dbusproxy/youkersessiondbus.h"
+#include <QProcess>
+#include <QFileInfo>
 
 BoxWidget::BoxWidget(QWidget *parent, QString arch, QString os, QString path) :
     QWidget(parent), osarch(arch), osname(os), plugin_path(path)
@@ -189,10 +191,25 @@ void BoxWidget::initPluginWidget()
 void BoxWidget::OnClickListView(const QModelIndex & index)
 {
     if(index.row() == 0) {
-        if(this->osarch == "aarch64" || this->osname == "Kylin" || this->osname == "YHKylin")
+        if (QFileInfo("/usr/bin/kylin-software-center").exists()) {
+            QProcess process;
+            process.start("/usr/bin/kylin-software-center");
+            process.waitForStarted(1000);
+            process.waitForFinished(20*1000);
+        }
+        else if (QFileInfo("/usr/bin/ubuntu-kylin-software-center").exists()) {
+            QProcess process;
+            process.start("/usr/bin/ubuntu-kylin-software-center");
+            process.waitForStarted(1000);
+            process.waitForFinished(20*1000);
+        }
+        else {
+            emit this->pluginModuleError(tr("No software center was found!"));
+        }
+        /*if(this->osarch == "aarch64" || this->osname == "Kylin" || this->osname == "YHKylin")
             sessionProxy->runApp("kylin-software-center");
         else
-            sessionProxy->runApp("ubuntu-kylin-software-center");
+            sessionProxy->runApp("ubuntu-kylin-software-center");*/
     }
 //    else if(index.row() == 1) {
 //        emit this->sendSubIndex(0);

@@ -35,7 +35,7 @@ class FontWidget : public SettingModulePage
 {
     Q_OBJECT
 public:
-    explicit FontWidget(QWidget *parent = 0, /*SessionDispatcher *proxy = 0, */MainWindow *window = 0, QString cur_desktop = "", QString skin = ":/background/res/skin/1.png");
+    explicit FontWidget(QWidget *parent = 0, MainWindow *window = 0, QString cur_desktop = "", QString skin = ":/background/res/skin/1.png");
     ~FontWidget();
     void setLanguage();
     void initConnect();

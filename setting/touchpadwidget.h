@@ -32,7 +32,7 @@ class TouchpadWidget : public SettingModulePage
 {
     Q_OBJECT
 public:
-    explicit TouchpadWidget(QWidget *parent = 0, /*SessionDispatcher *proxy = 0, */QString cur_desktop = "");
+    explicit TouchpadWidget(QWidget *parent = 0, QString cur_desktop = "");
     ~TouchpadWidget();
     void setLanguage();
     void initConnect();

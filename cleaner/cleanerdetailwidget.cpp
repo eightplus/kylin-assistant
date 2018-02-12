@@ -1419,12 +1419,8 @@ void CleanerDetailWidget::receiveCleanSignal()
     if(argsData.empty()) {
         toolKits->alertMSG(parentWindow->geometry().topLeft().x(), parentWindow->geometry().topLeft().y(), tr("Clean args is empty!"));
     }
-    else
-    {
-//        qDebug() << "args is.........." << argsData;
+    else {
         emit this->startCleanSystem(argsData);
-//        systemproxy->set_user_homedir_qt();
-//        systemproxy->cleanAllSelectItems(argsData);
     }
 }
 

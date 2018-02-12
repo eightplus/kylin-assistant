@@ -35,7 +35,7 @@ class PanelWidget : public SettingModulePage
 {
     Q_OBJECT
 public:
-    explicit PanelWidget(QWidget *parent = 0, /*SessionDispatcher *proxy = 0, */QString cur_desktop = "", bool has_battery = false);
+    explicit PanelWidget(QWidget *parent = 0, QString cur_desktop = "", bool has_battery = false);
     ~PanelWidget();
     void setLanguage();
     void initConnect();

@@ -20,6 +20,8 @@
 #include "themedelegate.h"
 
 #include <QPainter>
+#include <QEvent>
+#include <QMouseEvent>
 #include <QDebug>
 
 namespace {
@@ -32,7 +34,6 @@ ThemeDelegate::ThemeDelegate(QObject *parent)
     : QStyledItemDelegate(parent)
     , m_textColor(QColor("rgba(0,153,68,0.3)"))
 {
-//"#009944" "#e60012"
 }
 
 QWidget *ThemeDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -72,6 +73,28 @@ void ThemeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
     }
 }
 
+/*bool ThemeDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
+{
+    Q_UNUSED(index)
+    Q_UNUSED(option)
+
+    QMouseEvent *pEvent = static_cast<QMouseEvent *> (event);
+    qDebug() << pEvent->globalPos();
+    //QPoint m_mousePoint = pEvent->pos();
+    switch (event->type())
+    {
+    case QEvent::MouseMove://鼠标滑过
+        break;
+    case QEvent::MouseButtonPress://鼠标按下
+        break;
+    case QEvent::MouseButtonRelease://鼠标释放
+        break;
+    default:
+        break;
+    }
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
+}*/
+
 QSize ThemeDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     Q_UNUSED(option)
@@ -89,20 +112,20 @@ void ThemeDelegate::drawBackground(const QStyleOptionViewItem &option, QPainter 
     QColor bgColor;
     QColor borderColor;
     if ((option.state & QStyle::State_MouseOver) && (option.state & QStyle::State_Selected) == 0) {
-        bgColor = QColor("#e0f4f9");
+        bgColor = QColor(224,244,249,127);//QColor("#e0f4f9")
         borderColor = QColor("#999999");
     }
     else if (option.state & QStyle::State_Selected) {
-        bgColor = QColor("#2bb6ea");
+        bgColor = QColor(43,182,234,127);//QColor("#2bb6ea")
         borderColor = QColor("#e0f4f9");
     }
     else {
-        bgColor = QColor("#999999");
+        bgColor = QColor("#ffffff");
         borderColor = QColor("#ffffff");
     }
 
     QPainterPath path;
-    path.addRoundedRect(rect.x(), rect.y(), rect.width(), rect.height(), 3, 4);
+    path.addRoundedRect(rect.x(), rect.y(), rect.width(), rect.height(), 5, 5);
     painter->fillPath(path, QBrush(bgColor));
     QPen borderPen(QBrush(borderColor), 1);
     painter->setPen(borderPen);
