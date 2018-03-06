@@ -6,7 +6,6 @@ Comment[zh_CN]=系统辅助工具
 Keywords=Settings;Cleaning;Customization
 Exec=/usr/bin/kylin-assistant %u
 Icon=kylin-assistant.png
-StartupNotify=true
 Terminal=false
 Type=Application
 Categories=GNOME;GTK;System;Viewer;
