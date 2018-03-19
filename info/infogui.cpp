@@ -45,7 +45,7 @@ InfoGui::InfoGui(QWidget *parent)
     m_scrollArea = new QScrollArea;
     m_scrollArea->setWidgetResizable(true);
     m_scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_scrollArea->setStyleSheet("QScrollArea{border: none;background-color: #ffffff;}");
+//    m_scrollArea->setStyleSheet("QScrollArea{border: none;background-color: #ffffff;}");
 
     m_vLayout->setSpacing(10);
     m_vLayout->setMargin(0);

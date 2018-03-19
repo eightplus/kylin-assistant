@@ -62,10 +62,12 @@ StartupWidget::StartupWidget(QWidget *parent)
     qRegisterMetaType<StartupDataPtrList>();
     qRegisterMetaType<QList<StartupData>>();
 
+    //kobe:如果不加Qt::WindowMinimizeButtonHint，则调用setFixedSize()之后，调用窗口最小化函数将会没有效果
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
 //    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//Attention: Qt::WindowCloseButtonHint make showMinimized() valid
     this->setAutoFillBackground(true);
     this->setMouseTracking(true);
-    this->setWindowFlags(/*this->windowFlags() | */Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);//去掉边框
+//    this->setWindowFlags(/*this->windowFlags() | */Qt::FramelessWindowHint  | Qt::WindowCloseButtonHint);//去掉边框
 //    this->setAttribute(Qt::WA_TranslucentBackground);//背景透明
 //    this->setAutoFillBackground(true);
 //    this->setMouseTracking(true);
