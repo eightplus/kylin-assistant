@@ -25,5 +25,6 @@ kylin-assistant (1.0.0-0ubuntu1) bionic; urgency=low
   * Scaning system with Thread.
   * Renice process priority.
   * Make Minimize window work.
+  * Solved the problem of Chinese messy code about file system info.
 
  -- lixiang <lixiang@kylinos.cn>  Mon, 29 Jan 2018 17:54:44 +0800
